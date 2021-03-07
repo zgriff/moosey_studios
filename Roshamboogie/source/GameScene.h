@@ -11,15 +11,21 @@
 #include <cugl/cugl.h>
 #include <vector>
 #include "InputController.h"
-#include "Ship.h"
-//#include "PhotonQueue.h"
-#include <stdio.h>
+#include "Player.h"
+#include <Box2D/Dynamics/b2WorldCallbacks.h>
 
 class GameScene : public cugl::Scene2 {
 protected:
     /** The asset manager for this game mode. */
     std::shared_ptr<cugl::AssetManager> _assets;
 
+    /** Reference to the physics root of the scene graph */
+    std::shared_ptr<cugl::scene2::SceneNode> _worldnode;
+    /** The Box2D world */
+    std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
+    /** The scale between the physics world and the screen (MUST BE UNIFORM) */
+    float _scale;
+    
     /**
      * Activates the UI elements to make them interactive
      *
@@ -29,20 +35,14 @@ protected:
     void activateUI(const std::shared_ptr<cugl::scene2::SceneNode>& scene);
     
     // Attach input controllers directly to the scene (no pointers)
-    /** Controller for the blue player */
-    InputController _blueController;
-    /** Controller for the blue player */
-    InputController _redController;
+    /** Controller for the player */
+    InputController _playerController;
 
-    /** Location and animation information for blue ship (MODEL CLASS) */
-    std::shared_ptr<Ship> _blueShip;
-    /** Location and animation information for red ship (MODEL CLASS) */
-    std::shared_ptr<Ship> _redShip;
+    /** Location and animation information for player (MODEL CLASS) */
+    std::shared_ptr<Player> _player;
     
     /** The weapon fire sound for the blue player */
-    std::shared_ptr<cugl::Sound> _blueSound;
-    /** The weapon fire sound for the red player */
-    std::shared_ptr<cugl::Sound> _redSound;
+//    std::shared_ptr<cugl::Sound> _blueSound;
     
     
 public:
@@ -96,21 +96,19 @@ public:
      */
     void update(float timestep) override;
 
-    /**
-     * Draws all this scene to the given SpriteBatch.
-     *
-     * The default implementation of this method simply draws the scene graph
-     * to the sprite batch.  By overriding it, you can do custom drawing
-     * in its place.
-     *
-     * @param batch     The SpriteBatch to draw with.
-     */
-    void render(const std::shared_ptr<cugl::SpriteBatch>& batch) override;
 
     /**
      * Resets the status of the game so that we can play again.
      */
     void reset() override;
+    
+    /**
+     * Returns the active screen size of this scene.
+     *
+     * This method is for graceful handling of different aspect
+     * ratios
+     */
+    cugl::Size computeActiveSize() const;
 };
 
 #endif /* GameScene_hpp */

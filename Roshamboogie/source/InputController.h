@@ -9,7 +9,6 @@
 #ifndef __INPUT_CONTROLLER_H__
 #define __INPUT_CONTROLLER_H__
 
-#include <stdio.h>
 
 class InputController {
 private:
@@ -76,21 +75,27 @@ public:
     /**
      * Disposses this input controller, releasing all resources.
      */
-    ~InputController() {}
+    ~InputController() { dispose(); }
     
     /**
-     * Initializes a new input controller for the specified player.
+     * Deactivates this input controller, releasing all listeners.
+     *
+     * This method will not dispose of the input controller. It can be reused
+     * once it is reinitialized.
+     */
+    void dispose();
+    
+    /**
+     * Initializes a new input controller for the player.
      *
      * The game supports two players working against each other in hot seat mode.
      * We need a separate input controller for each player. In keyboard, this is
      * WASD vs. Arrow keys.  Doing this on mobile requires you to get a little
      * creative.
      *
-     * @param id Player id number (0..1)
-     *
      * @return true if the player was initialized correctly
      */
-    bool init(int id);
+    bool init();
 
     /**
      * Reads the input for this player and converts the result into game logic.

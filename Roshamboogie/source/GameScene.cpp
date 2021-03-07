@@ -7,7 +7,10 @@
 //
 
 #include "GameScene.h"
-#include "CollisionController.h"
+#include <Box2D/Dynamics/b2World.h>
+#include <Box2D/Dynamics/Contacts/b2Contact.h>
+#include <Box2D/Collision/b2Collision.h>
+//#include "CollisionController.h"
 
 #include <cugl/cugl.h>
 #include <iostream>
@@ -20,14 +23,13 @@ using namespace std;
 #pragma mark Level Layout
 
 /** Regardless of logo, lock the height to this */
-#define SCENE_HEIGHT  720
+#define SCENE_WIDTH 1024
+#define SCENE_HEIGHT 720
 
-/** Number of rows in the ship image filmstrip */
-#define SHIP_ROWS   4
-/** Number of columns in this ship image filmstrip */
-#define SHIP_COLS   5
-/** Number of elements in this ship image filmstrip */
-#define SHIP_SIZE   18
+/** Width of the game world in Box2d units */
+#define DEFAULT_WIDTH   32.0f
+/** Height of the game world in Box2d units */
+#define DEFAULT_HEIGHT  18.0f
 
 #pragma mark -
 #pragma mark Constructors
@@ -44,8 +46,8 @@ using namespace std;
  */
 bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Initialize the scene to a locked width
-    Size dimen = Application::get()->getDisplaySize();
-    dimen *= SCENE_HEIGHT/dimen.height;
+    Size dimen = computeActiveSize();
+    Rect rect(0,0,DEFAULT_WIDTH,DEFAULT_HEIGHT);
     if (assets == nullptr) {
         return false;
     } else if (!Scene2::init(dimen)) {
@@ -60,8 +62,17 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     scene->setContentSize(dimen);
     scene->doLayout(); // Repositions the HUD;
 
-    _blueSound = _assets->get<Sound>("laser");
-    _redSound = _assets->get<Sound>("fusion");
+    
+    _world = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
+    _world->activateCollisionCallbacks(true);
+    _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
+    Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
+
+    // Create the scene graph
+    _worldnode = scene2::SceneNode::alloc();
+    _worldnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
+    _worldnode->setPosition(offset);
+    addChild(_worldnode);
     addChild(scene);
     reset();
     return true;
@@ -73,7 +84,10 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 void GameScene::dispose() {
     if (_active) {
         removeAllChildren();
+        _world = nullptr;
+        _worldnode = nullptr;
         _active = false;
+        Scene2::dispose();
     }
 }
 
@@ -84,37 +98,27 @@ void GameScene::dispose() {
  * Resets the status of the game so that we can play again.
  */
 void GameScene::reset() {
+    _world->clear();
+    _worldnode->removeAllChildren();
     auto root = getChild(0);
-    if (_blueShip != nullptr && _blueShip->getSceneNode() != nullptr) {
-        root->removeChild(_blueShip->getSceneNode());
-    }
-    if (_redShip != nullptr && _redShip->getSceneNode() != nullptr) {
-        root->removeChild(_redShip->getSceneNode());
-    }
+    
     Size dimen = root->getContentSize();
     
     auto shipTexture = _assets->get<Texture>("ship");
 
-    _blueShip = Ship::alloc(dimen.width*(2.0f / 3.0f), dimen.height*(1.0f / 2.0f), 90);
-    _blueShip->setColor(Color4f(0.5f, 0.5f, 1.0f, 1.0f));   // Blue, but makes texture easier to see
-    _blueShip->setTextures(shipTexture, dimen.width, dimen.height);
-    _blueShip->setSID(0);
-    _blueController.init(0);
-
-    _redShip = Ship::alloc(dimen.width*(1.0f / 3.0f), dimen.height*(1.0f / 2.0f), -90);
-    _redShip->setColor(Color4f(1.0f, 0.25f, 0.25f, 1.0f));  // Red, but makes texture easier to see
-    _redShip->setTextures(shipTexture, dimen.width, dimen.height);
-    _redShip->setSID(1);
-    _redController.init(1);
+    _player = Player::alloc();
+    _player->setTextures(shipTexture, dimen.width, dimen.height);
+    _player->setID(0);
+    _playerController.init();
     
-    root->addChild(_redShip->getSceneNode());
-    root->addChild(_blueShip->getSceneNode());
+    root->addChild(_player->getSceneNode());
+    _world->addObstacle(_player);
 }
 
 void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
-    _redController.readInput();
-    _blueController.readInput();
+    _playerController.readInput();
+    _world->update(timestep);
     
 //    // Move the photons forward, and add new ones if necessary.
 //    if (_redController.didPressFire() && firePhoton(_redShip)) {
@@ -127,30 +131,22 @@ void GameScene::update(float timestep) {
 //    }
 
     // Move the ships and photons forward (ignoring collisions)
-    _redShip->move( _redController.getForward(),  _redController.getTurn());
-    _blueShip->move(_blueController.getForward(), _blueController.getTurn());
-    
-    collisions::checkForCollision(_blueShip, _redShip);
-    collisions::checkInBounds(_blueShip, getBounds());
-    collisions::checkInBounds(_redShip, getBounds());
 }
 
 /**
- * Draws all this scene to the given SpriteBatch.
+ * Returns the active screen size of this scene.
  *
- * The default implementation of this method simply draws the scene graph
- * to the sprite batch.  By overriding it, you can do custom drawing
- * in its place.
- *
- * @param batch     The SpriteBatch to draw with.
+ * This method is for graceful handling of different aspect
+ * ratios
  */
-void GameScene::render(const std::shared_ptr<cugl::SpriteBatch>& batch) {
-    // Call SUPER to do standard rendering
-    Scene2::render(batch);
-    
-    // Now do 3152-style rendering for the photons
-    batch->begin(getCamera()->getCombined());
-    batch->setBlendFunc(GL_ONE, GL_ONE); // Additive blending
-    batch->end();
-
+Size GameScene::computeActiveSize() const {
+    Size dimen = Application::get()->getDisplaySize();
+    float ratio1 = dimen.width/dimen.height;
+    float ratio2 = ((float)SCENE_WIDTH)/((float)SCENE_HEIGHT);
+    if (ratio1 < ratio2) {
+        dimen *= SCENE_WIDTH/dimen.width;
+    } else {
+        dimen *= SCENE_HEIGHT/dimen.height;
+    }
+    return dimen;
 }

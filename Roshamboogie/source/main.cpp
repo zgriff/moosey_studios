@@ -26,7 +26,7 @@ int main(int argc, char * argv[]) {
     
     // Set the properties of your application
     app.setName("Roshamboogie");
-    app.setOrganization("GDIAC");
+    app.setOrganization("Moosey Studios");
     app.setHighDPI(true);
     app.setFPS(60.0f);
 

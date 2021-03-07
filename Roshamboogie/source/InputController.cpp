@@ -11,6 +11,8 @@
 #include <cugl/cugl.h>
 
 using namespace cugl;
+/** The key for the event handlers */
+#define LISTENER_KEY        1
 
 /**
  * Creates a new input controller with the default settings
@@ -18,26 +20,48 @@ using namespace cugl;
  * To use this controller, you will need to initialize it first
  */
 InputController::InputController() :
-_player(0),
 _forward(0),
 _turning(0) {
 }
 
 /**
- * Initializes a new input controller for the specified player.
+ * Initializes a new input controller for the  player.
  *
  * The game supports two players working against each other in hot seat mode.
  * We need a separate input controller for each player. In keyboard, this is
  * WASD vs. Arrow keys.  Doing this on mobile requires you to get a little
  * creative.
  *
- * @param id Player id number (0..1)
- *
  * @return true if the player was initialized correctly
  */
-bool InputController::init(int id) {
-    _player = id;
-    return true;
+bool InputController::init() {
+    bool success = true;
+        
+        // Only process keyboard on desktop
+#ifndef CU_MOBILE
+    success = Input::activate<Keyboard>();
+#else
+    success = Input::activate<Accelerometer>();
+    Touchscreen* touch = Input::get<Touchscreen>();
+//    touch->addBeginListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+//        this->touchBeganCB(event,focus);
+//    });
+//    touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+//        this->touchEndedCB(event,focus);
+//    });
+#endif
+    return success;
+}
+
+void InputController::dispose() {
+#ifndef CU_MOBILE
+        Input::deactivate<Keyboard>();
+#else
+        Input::deactivate<Accelerometer>();
+        Touchscreen* touch = Input::get<Touchscreen>();
+//        touch->removeBeginListener(LISTENER_KEY);
+//        touch->removeEndListener(LISTENER_KEY);
+#endif
 }
 
 /**
@@ -55,19 +79,11 @@ void InputController::readInput() {
     // Figure out, based on which player we are, which keys
     // control our actions (depends on player).
     KeyCode up, left, right, down;
-    if (_player == 0) {
         up    = KeyCode::ARROW_UP;
         down  = KeyCode::ARROW_DOWN;
         left  = KeyCode::ARROW_LEFT;
         right = KeyCode::ARROW_RIGHT;
 //        shoot = KeyCode::SPACE;
-    } else {
-        up    = KeyCode::W;
-        down  = KeyCode::S;
-        left  = KeyCode::A;
-        right = KeyCode::D;
-//        shoot = KeyCode::X;
-    }
     
     // Convert keyboard state into game commands
     _forward = _turning = 0;
@@ -88,9 +104,5 @@ void InputController::readInput() {
         _turning = 1;
     }
 
-    // Shooting
-//    if (keys->keyDown(shoot)) {
-//        _didFire = true;
-//    }
 #endif
 }
