@@ -1,13 +1,13 @@
 //
-//  RPSInputController.hpp
+//  InputController.hpp
 //  Roshamboogie
 //
 //  Created by Zach Griffin on 3/6/21.
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#ifndef __RPS_INPUT_CONTROLLER_H__
-#define __RPS_INPUT_CONTROLLER_H__
+#ifndef __INPUT_CONTROLLER_H__
+#define __INPUT_CONTROLLER_H__
 
 #include <stdio.h>
 
@@ -103,4 +103,4 @@ public:
     void readInput();
 };
 
-#endif /* RPSInputController_hpp */
+#endif /* InputController_hpp */

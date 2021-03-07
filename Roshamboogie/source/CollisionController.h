@@ -1,14 +1,14 @@
 //
-//  RPSCollisionController.hpp
+//  CollisionController.hpp
 //  Roshamboogie
 //
 //  Created by Zach Griffin on 3/6/21.
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#ifndef __RPS_COLLISION_CONTROLLER_H__
-#define __RPS_COLLISION_CONTROLLER_H__
-#include "RPSShip.h"
+#ifndef __COLLISION_CONTROLLER_H__
+#define __COLLISION_CONTROLLER_H__
+#include "Ship.h"
 #include <vector>
 #include <cugl/cugl.h>
 #include <stdio.h>
@@ -42,4 +42,4 @@ void checkInBounds(const std::shared_ptr<Ship>& ship, const cugl::Rect bounds);
 
 }
 
-#endif /* RPSCollisionController_hpp */
+#endif /* CollisionController_hpp */

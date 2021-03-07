@@ -1,12 +1,12 @@
 //
-//  RPSCollisionController.cpp
+//  CollisionController.cpp
 //  Roshamboogie
 //
 //  Created by Zach Griffin on 3/6/21.
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#include "RPSCollisionController.h"
+#include "CollisionController.h"
 
 
 /** Impulse for giving collisions a slight bounce. */

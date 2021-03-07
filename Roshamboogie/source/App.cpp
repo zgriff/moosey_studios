@@ -1,12 +1,12 @@
 //
-//  RPSApp.cpp
+//  App.cpp
 //  Roshamboogie
 //
 //  Created by Zach Griffin on 3/6/21.
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#include "RPSApp.h"
+#include "App.h"
 
 using namespace cugl;
 
@@ -15,7 +15,7 @@ using namespace cugl;
 #pragma mark Gameplay Control
 
 
-void RPSApp::onStartup() {
+void App::onStartup() {
     _assets = AssetManager::alloc();
     _batch  = SpriteBatch::alloc();
     auto cam = OrthographicCamera::alloc(getDisplaySize());
@@ -46,7 +46,7 @@ void RPSApp::onStartup() {
 }
 
 
-void RPSApp::onShutdown() {
+void App::onShutdown() {
     _loading.dispose();
     _gameplay.dispose();
     _assets = nullptr;
@@ -77,7 +77,7 @@ void RPSApp::onShutdown() {
  * Otherwise, the audio thread may persist while the application is in
  * the background.
  */
-void RPSApp::onSuspend() {
+void App::onSuspend() {
     AudioEngine::get()->pause();
 }
 
@@ -91,7 +91,7 @@ void RPSApp::onSuspend() {
  * If you are using audio, you should use this method to resume any audio
  * paused before app suspension.
  */
-void RPSApp::onResume() {
+void App::onResume() {
     AudioEngine::get()->resume();
 }
 
@@ -106,7 +106,7 @@ void RPSApp::onResume() {
  *
  * @param timestep  The amount of time (in seconds) since the last frame
  */
-void RPSApp::update(float timestep) {
+void App::update(float timestep) {
     if (!_loaded && _loading.isActive()) {
         _loading.update(0.01f);
     } else if (!_loaded) {
@@ -127,7 +127,7 @@ void RPSApp::update(float timestep) {
  * When overriding this method, you do not need to call the parent method
  * at all. The default implmentation does nothing.
  */
-void RPSApp::draw() {
+void App::draw() {
     if (!_loaded) {
         _loading.render(_batch);
     } else {

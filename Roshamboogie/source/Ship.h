@@ -1,13 +1,13 @@
 //
-//  RPSPlayer.hpp
+//  Ship.h
 //  Roshamboogie
 //
 //  Created by Zach Griffin on 3/6/21.
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#ifndef __RPS_SHIP_H__
-#define __RPS_SHIP_H__
+#ifndef __SHIP_H__
+#define __SHIP_H__
 
 #include <stdio.h>
 #include <cugl/cugl.h>
@@ -280,4 +280,4 @@ public:
     void processTurn(float turn);
 };
     
-#endif /* RPSShip_hpp */
+#endif /* Ship_hpp */

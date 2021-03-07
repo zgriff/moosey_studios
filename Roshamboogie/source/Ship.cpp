@@ -1,12 +1,12 @@
 //
-//  RPSPlayer.cpp
+//  Ship.cpp
 //  Roshamboogie
 //
 //  Created by Zach Griffin on 3/6/21.
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#include "RPSShip.h"
+#include "Ship.h"
 
 /** The size of the ship in pixels (image is square) */
 #define SHIP_SIZE       81

@@ -6,16 +6,16 @@
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#ifndef __RPS_APP_H__
-#define __RPS_APP_H__
+#ifndef __APP_H__
+#define __APP_H__
 #include <cugl/cugl.h>
-#include "RPSGameScene.h"
-#include "RPSLoadingScene.h"
+#include "GameScene.h"
+#include "LoadingScene.h"
 
 /**
  * This class represents the application root for the project.
  */
-class RPSApp :  public cugl::Application {
+class App :  public cugl::Application {
 protected:
     /** The global sprite batch for drawing (only want one of these) */
     std::shared_ptr<cugl::SpriteBatch> _batch;
@@ -41,7 +41,7 @@ public:
      * of initialization from the constructor allows main.cpp to perform
      * advanced configuration of the application before it starts.
      */
-    RPSApp() : cugl::Application(), _loaded(false) {}
+    App() : cugl::Application(), _loaded(false) {}
     
     /**
      * Disposes of this application, releasing all resources.
@@ -50,7 +50,7 @@ public:
      * It simply calls the dispose() method in Application.  There is nothing
      * special to do here.
      */
-    ~RPSApp() { }
+    ~App() { }
     
 #pragma mark Application State
     /**

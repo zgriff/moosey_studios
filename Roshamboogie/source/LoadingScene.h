@@ -1,13 +1,13 @@
 //
-//  RPSLoadingScene.hpp
+//  LoadingScene.hpp
 //  Roshamboogie
 //
 //  Created by Zach Griffin on 3/6/21.
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#ifndef __RPS_LOADING_SCENE_H__
-#define __RPS_LOADING_SCENE_H__
+#ifndef __LOADING_SCENE_H__
+#define __LOADING_SCENE_H__
 #include <cugl/cugl.h>
 #include <stdio.h>
 
@@ -88,4 +88,4 @@ public:
     bool isPending( ) const;
 };
 
-#endif /* RPSLoadingScene_hpp */
+#endif /* LoadingScene_hpp */

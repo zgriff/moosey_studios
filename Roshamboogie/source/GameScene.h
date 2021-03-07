@@ -1,18 +1,18 @@
 //
-//  RPSGameScene.hpp
+//  GameScene.hpp
 //  Roshamboogie
 //
 //  Created by Zach Griffin on 3/6/21.
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#ifndef __RPS_GAME_SCENE_H__
-#define __RPS_GAME_SCENE_H__
+#ifndef __GAME_SCENE_H__
+#define __GAME_SCENE_H__
 #include <cugl/cugl.h>
 #include <vector>
-#include "RPSInputController.h"
-#include "RPSShip.h"
-//#include "RPSPhotonQueue.h"
+#include "InputController.h"
+#include "Ship.h"
+//#include "PhotonQueue.h"
 #include <stdio.h>
 
 class GameScene : public cugl::Scene2 {
@@ -113,4 +113,4 @@ public:
     void reset() override;
 };
 
-#endif /* RPSGameScene_hpp */
+#endif /* GameScene_hpp */
