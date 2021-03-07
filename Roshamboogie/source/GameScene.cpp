@@ -125,17 +125,10 @@ void GameScene::update(float timestep) {
     _playerController.readInput();
     _world->update(timestep);
     
-//    // Move the photons forward, and add new ones if necessary.
-//    if (_redController.didPressFire() && firePhoton(_redShip)) {
-//        // The last argument is force=true.  It makes sure only one instance plays.
-//        AudioEngine::get()->play("redfire", _redSound, false, 1.0f, true);
-//    }
-//    if (_blueController.didPressFire() && firePhoton(_blueShip)) {
-//        // The last argument is force=true.  It makes sure only one instance plays.
-//        AudioEngine::get()->play("bluefire", _blueSound, false, 1.0f, true);
-//    }
-
-    // Move the ships and photons forward (ignoring collisions)
+    Vec3 tilt = _playerController.getTiltVec();
+    Vec2 moveVec(tilt.x, -tilt.y);
+    _player->setForce(moveVec * 10);
+    _player->applyForce();
 }
 
 /**

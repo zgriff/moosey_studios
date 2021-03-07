@@ -19,9 +19,7 @@ using namespace cugl;
  *
  * To use this controller, you will need to initialize it first
  */
-InputController::InputController() :
-_forward(0),
-_turning(0) {
+InputController::InputController() {
 }
 
 /**
@@ -75,6 +73,7 @@ void InputController::dispose() {
 void InputController::readInput() {
 #ifdef CU_MOBILE
     // YOU NEED TO PUT SOME CODE HERE
+    _tiltVec = Input::get<Accelerometer>()->getAcceleration();
 #else
     // Figure out, based on which player we are, which keys
     // control our actions (depends on player).
@@ -85,24 +84,21 @@ void InputController::readInput() {
         right = KeyCode::ARROW_RIGHT;
 //        shoot = KeyCode::SPACE;
     
-    // Convert keyboard state into game commands
-    _forward = _turning = 0;
-//    _didFire = false;
-
+    
     // Movement forward/backward
     Keyboard* keys = Input::get<Keyboard>();
-    if (keys->keyDown(up) && !keys->keyDown(down)) {
-        _forward = 1;
-    } else if (keys->keyDown(down) && !keys->keyDown(up)) {
-        _forward = -1;
-    }
-    
-    // Movement left/right
-    if (keys->keyDown(left) && !keys->keyDown(right)) {
-        _turning = -1;
-    } else if (keys->keyDown(right) && !keys->keyDown(left)) {
-        _turning = 1;
-    }
+//    if (keys->keyDown(up) && !keys->keyDown(down)) {
+//        _forward = 1;
+//    } else if (keys->keyDown(down) && !keys->keyDown(up)) {
+//        _forward = -1;
+//    }
+//
+//    // Movement left/right
+//    if (keys->keyDown(left) && !keys->keyDown(right)) {
+//        _turning = -1;
+//    } else if (keys->keyDown(right) && !keys->keyDown(left)) {
+//        _turning = 1;
+//    }
 
 #endif
 }

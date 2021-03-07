@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28D048A725F59412005AB6CC /* CollisionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D048A525F59412005AB6CC /* CollisionController.cpp */; };
+		28D048A825F59412005AB6CC /* CollisionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D048A525F59412005AB6CC /* CollisionController.cpp */; };
+		28D048A925F59412005AB6CC /* CollisionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D048A525F59412005AB6CC /* CollisionController.cpp */; };
 		925FC4F625F42B2800532483 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4F525F42B2800532483 /* main.cpp */; };
 		925FC4F725F42B2800532483 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4F525F42B2800532483 /* main.cpp */; };
 		925FC4F825F42B2800532483 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4F525F42B2800532483 /* main.cpp */; };
@@ -128,6 +131,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		28D048A525F59412005AB6CC /* CollisionController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionController.cpp; sourceTree = "<group>"; };
+		28D048A625F59412005AB6CC /* CollisionController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollisionController.h; sourceTree = "<group>"; };
 		925FC4F525F42B2800532483 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		925FC4FF25F42B6F00532483 /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = App.cpp; sourceTree = "<group>"; };
 		925FC50025F42B6F00532483 /* App.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = App.h; sourceTree = "<group>"; };
@@ -390,6 +395,8 @@
 				925FC53A25F42D5C00532483 /* OrbManager.cpp */,
 				925FC54325F42D6800532483 /* SwapStation.h */,
 				925FC54225F42D6800532483 /* SwapStation.cpp */,
+				28D048A525F59412005AB6CC /* CollisionController.cpp */,
+				28D048A625F59412005AB6CC /* CollisionController.h */,
 			);
 			name = Source;
 			path = ../source;
@@ -572,6 +579,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28D048A925F59412005AB6CC /* CollisionController.cpp in Sources */,
 				925FC4F825F42B2800532483 /* main.cpp in Sources */,
 				925FC53E25F42D5C00532483 /* OrbManager.cpp in Sources */,
 				925FC51E25F42D1800532483 /* InputController.cpp in Sources */,
@@ -588,6 +596,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28D048A825F59412005AB6CC /* CollisionController.cpp in Sources */,
 				925FC4F725F42B2800532483 /* main.cpp in Sources */,
 				925FC53D25F42D5C00532483 /* OrbManager.cpp in Sources */,
 				925FC51D25F42D1800532483 /* InputController.cpp in Sources */,
@@ -604,6 +613,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28D048A725F59412005AB6CC /* CollisionController.cpp in Sources */,
 				925FC4F625F42B2800532483 /* main.cpp in Sources */,
 				925FC53C25F42D5C00532483 /* OrbManager.cpp in Sources */,
 				925FC51C25F42D1800532483 /* InputController.cpp in Sources */,
