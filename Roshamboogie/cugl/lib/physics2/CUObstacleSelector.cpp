@@ -312,13 +312,13 @@ void ObstacleSelector::updateTarget(Obstacle* obstacle) {
  */
 void ObstacleSelector::resetDebug() {
     if (_hatch == nullptr) {
-        _hatch = scene2::WireNode::allocWithTraversal(hatchPoly(),poly2::Traversal::NONE);
+        _hatch = scene2::WireNode::allocWithTraversal(hatchPoly(),poly2::Traversal::OPEN);
         _hatch->setColor(_dcolor);
 
         PolyFactory factory;
         factory.setGeometry(Geometry::PATH);
         Poly2 poly = factory.makeLine(Vec2::ZERO,Vec2::ZERO);
-        _connect = scene2::WireNode::allocWithTraversal(poly,poly2::Traversal::NONE);
+        _connect = scene2::WireNode::allocWithTraversal(poly,poly2::Traversal::OPEN);
         _connect->setColor(_dcolor);
         _connect->setAbsolute(true);
         
@@ -328,10 +328,10 @@ void ObstacleSelector::resetDebug() {
         }
     } else {
         PolyFactory factory;
-        _hatch = scene2::WireNode::allocWithTraversal(hatchPoly(),poly2::Traversal::NONE);
+        _hatch = scene2::WireNode::allocWithTraversal(hatchPoly(),poly2::Traversal::OPEN);
         factory.setGeometry(Geometry::PATH);
         Poly2 poly = factory.makeLine(Vec2::ZERO,Vec2::ZERO);
-        _connect = scene2::WireNode::allocWithTraversal(poly,poly2::Traversal::NONE);
+        _connect = scene2::WireNode::allocWithTraversal(poly,poly2::Traversal::OPEN);
     }
     
     _hatch->setAnchor(Vec2::ANCHOR_CENTER);

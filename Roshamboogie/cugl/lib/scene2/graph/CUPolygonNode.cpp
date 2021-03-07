@@ -129,9 +129,6 @@ void PolygonNode::draw(const std::shared_ptr<SpriteBatch>& batch, const Mat4& tr
     batch->setTexture(_texture);
     if (_gradient) {
         auto local = Gradient::alloc(_gradient);
-        //local->setTintColor(tint);
-        //local->setTintStatus(true);
-        //CULog("Setting gradient %s",local->toString().c_str());
         batch->setGradient(local);
     }
     batch->setBlendEquation(_blendEquation);

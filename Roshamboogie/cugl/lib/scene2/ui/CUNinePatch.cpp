@@ -273,6 +273,10 @@ void NinePatch::setContentSize(const Size size) {
     Size actual = size;
     actual.width  = std::max(size.width, _texture->getWidth()-_interior.size.width);
     actual.height = std::max(size.height,_texture->getHeight()-_interior.size.height);
+    if (actual != size) {
+        CULogError("Dimensions for ninepatch '%s' are too small",
+                   getName().c_str());
+    }
     SceneNode::setContentSize(actual);
     clearRenderData();
 }

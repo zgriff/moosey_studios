@@ -224,7 +224,7 @@ void CapsuleObstacle::resetDebug() {
     Poly2 poly = factory.makeCapsule(_orient, Vec2::ZERO, _dimension);
     
     if (_debug == nullptr) {
-        _debug = scene2::WireNode::allocWithTraversal(poly,poly2::Traversal::NONE);
+        _debug = scene2::WireNode::allocWithTraversal(poly,poly2::Traversal::CLOSED);
         _debug->setColor(_dcolor);
         if (_scene != nullptr) {
             _scene->addChild(_debug);

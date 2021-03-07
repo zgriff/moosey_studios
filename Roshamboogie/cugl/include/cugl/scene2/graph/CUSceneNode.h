@@ -219,6 +219,9 @@ protected:
     /** Indicates whether or not the z-order is currently violated */
     bool _zDirty;
     
+    /** The defining JSON data for this node (if any) */
+    std::shared_ptr<JsonValue> _json;
+    
 #pragma mark -
 #pragma mark Constructors
 public:

@@ -228,13 +228,13 @@ Poly2* PolyFactory::makeOpenTraversal(Poly2* poly, const Poly2& src) const {
         for(auto it = bounds.begin(); it != bounds.end(); ++it) {
             icount += (Uint32)(_geometry == Geometry::PATH ? it->size()*2-2 : it->size());
             poly->_vertices.reserve(vcount+it->size());
-            for(Uint32 pos = 0; pos < it->size(); it++) {
+            for(Uint32 pos = 0; pos < it->size(); pos++) {
                 poly->_vertices.push_back(src._vertices[it->at(pos)]);
             }
 
             if (_geometry != Geometry::IMPLICIT) {
                 poly->_indices.reserve(icount);
-                for(Uint32 pos = 0; pos < it->size()-1; it++) {
+                for(Uint32 pos = 0; pos < it->size()-1; pos++) {
                     poly->_indices.push_back(pos+vcount);
                     if (_geometry == Geometry::PATH) {
                         poly->_indices.push_back(pos+vcount+1);
@@ -293,7 +293,7 @@ Poly2* PolyFactory::makeClosedTraversal(Poly2* poly, const Poly2& src) const {
         for(auto it = bounds.begin(); it != bounds.end(); ++it) {
             icount += (Uint32)(_geometry == Geometry::PATH ? it->size()*2 : it->size());
             poly->_vertices.reserve(vcount+it->size());
-            for(Uint32 pos = 0; pos < it->size(); it++) {
+            for(Uint32 pos = 0; pos < it->size(); pos++) {
                 poly->_vertices.push_back(src._vertices[it->at(pos)]);
             }
 
@@ -303,7 +303,7 @@ Poly2* PolyFactory::makeClosedTraversal(Poly2* poly, const Poly2& src) const {
                     poly->_indices.push_back(vcount);
                 }
 
-                for(Uint32 pos = 0; pos < it->size()-1; it++) {
+                for(Uint32 pos = 0; pos < it->size()-1; pos++) {
                     poly->_indices.push_back(pos+vcount);
                     if (_geometry == Geometry::PATH) {
                         poly->_indices.push_back(pos+vcount+1);
@@ -1155,7 +1155,7 @@ Poly2* PolyFactory::makeCapsule(Poly2* poly, poly2::Capsule shape, float x, floa
                 poly->_indices.push_back(ii+offset);
                 poly->_indices.push_back(ii+offset+1);
             }
-            poly->_indices.push_back(vcount+offset);
+            poly->_indices.push_back(vcount+offset-1);
             poly->_indices.push_back(offset);
             break;
         case Geometry::SOLID:

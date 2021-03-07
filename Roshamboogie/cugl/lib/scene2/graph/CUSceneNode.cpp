@@ -231,6 +231,8 @@ bool SceneNode::initWithData(const Scene2Loader* loader, const std::shared_ptr<J
     
     if (transform && !_useTransform) updateTransform();
     
+    // Store the data for later
+    _json = data;
     return true;
 }
 
@@ -267,6 +269,7 @@ void SceneNode::dispose() {
     _hashOfName = 0;
     _zOrder = 0;
     _zDirty = false;
+    _json = nullptr;
 }
 
 /**
@@ -297,6 +300,7 @@ SceneNode* SceneNode::copy(SceneNode* dst) {
     dst->_hashOfName = _hashOfName;
     dst->_zOrder = _zOrder;
     dst->_zDirty = _zDirty;
+    dst->_json = _json;
     return dst;
 }
 

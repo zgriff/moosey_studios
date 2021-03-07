@@ -90,7 +90,7 @@ public:
         ObjectType = 5
     };
 
-private:
+public:
     /** The type (see above) of this node */
     Type _type;
     
@@ -1227,7 +1227,7 @@ public:
     std::shared_ptr<JsonValue> removeChild(const char* name) {
         return removeChild(std::string(name));
     }
-    
+        
 #pragma mark -
 #pragma mark Child Addition
     /**
@@ -1854,7 +1854,6 @@ public:
         insertChild(index,JsonValue::alloc(value));
     }
     
-    
     /**
      * Allocates a new child with no value and appends it to the end.
      *
@@ -2139,6 +2138,19 @@ public:
     void insertObject(unsigned int index, const char* key) {
         insertChild(index,key,JsonValue::allocObject());
     }
+    
+	/**
+	 * Replaces this node with the contents of the given node.
+	 *
+	 * This method is used by {@link WidgetLoader} for variable
+	 * replacement.  It requires that this node be part of a
+	 * large JSON tree (i.e. it cannot be the root).
+	 *
+	 * @param node  The node to substitute
+	 */
+	void merge(std::shared_ptr<JsonValue>& node);
+
+
 
 
 #pragma mark -

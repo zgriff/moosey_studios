@@ -303,7 +303,7 @@ std::shared_ptr<JsonValue> Scene2Loader::getWidgetJson(const std::shared_ptr<Jso
                     }
                 }
                 if (found) {
-                    *spotToChange = *child;
+                    spotToChange->merge(child);
                 } else {
                     std::string err = "No variable found within widget " + widgetSource + " matching name " + child->key();
                     CULogError("%s",err.c_str());
@@ -319,7 +319,7 @@ std::shared_ptr<JsonValue> Scene2Loader::getWidgetJson(const std::shared_ptr<Jso
 			contentCopy->appendChild("layout", std::make_shared<JsonValue>());
 			contentsLayout = contentCopy->get("layout");
 		}
-		*contentsLayout = *layout;
+		contentsLayout->merge(layout);
 	}
 
 	// now recursively check to see if this was a widget

@@ -463,7 +463,15 @@ std::vector<std::vector<Uint32>> Geometry::boundaries(const Uint32* indices, siz
     std::vector<std::vector<Uint32>> result;
     switch (_value) {
         case Geometry::IMPLICIT:
+        {
+            result.push_back(std::vector<Uint32>());
+            std::vector<Uint32> *array = &result.back();
+            for(size_t ii = 0; ii < size; ii++) {
+                Uint32 idx = indices[ii];
+                array->push_back(idx);
+            }
             break;
+        }
         case Geometry::POINTS:
         {
             for(size_t ii = 0; ii < size; ii++) {
@@ -479,22 +487,24 @@ std::vector<std::vector<Uint32>> Geometry::boundaries(const Uint32* indices, siz
             result.push_back(std::vector<Uint32>());
             std::vector<Uint32> *array = &result.back();
             array->reserve(size/2);
-            for(size_t ii = 0; ii < size-2; ii += 2) {
-                if (array->size() == 0) {
+            for(size_t ii = 0; ii < size; ii += 2) {
+                if (array->size() != 0) {
+                    if (indices[ii] != indices[ii-1]) {
+                        result.push_back(std::vector<Uint32>());
+                        array = &result.back();
+                        array->reserve((size-ii)/2);
+                        array->push_back(indices[ii]);
+                    } else if (indices[ii] == array->at(0)) {
+                        result.push_back(std::vector<Uint32>());
+                        array = &result.back();
+                        array->reserve((size-ii)/2);
+                    } else {
+                        array->push_back(indices[ii]);
+                    }
+                } else {
                     array->push_back(indices[ii]);
                 }
-                if (indices[ii+1] != indices[ii+2]) {
-                    array->push_back(indices[ii+1]);
-                    result.push_back(std::vector<Uint32>());
-                    array = &result.back();
-                } else if (indices[ii+1] == array->at(0)) {
-                    array->push_back(indices[ii+1]);
-                    result.push_back(std::vector<Uint32>());
-                    array = &result.back();
-                }
             }
-            array->push_back(indices[size-2]);
-            array->push_back(indices[size-1]);
             break;
         }
         case Geometry::SOLID:

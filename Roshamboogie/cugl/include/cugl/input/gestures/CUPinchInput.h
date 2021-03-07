@@ -177,6 +177,14 @@ protected:
     virtual ~PinchInput() {}
     
     /**
+     * Initializes this device, acquiring any necessary resources
+     *
+     * @return true if initialization was successful
+     */
+    bool init() { return initWithName("Pinch Gesture"); }
+
+    
+    /**
      * Unintializes this device, returning it to its default state
      *
      * An uninitialized device may not work without reinitialization.

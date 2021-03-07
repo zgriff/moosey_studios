@@ -239,8 +239,9 @@ public:
      * of the attribute values of its parent class.  In addition, it supports
      * the following additional attributes:
      *
-     *      "up":       A JSON object defining a scene graph node
-     *      "down":     A JSON object defining a scene graph node OR
+     *      "up":       A string referencing the name of a child node OR
+     *                  a 4-element integer array with values from 0..255
+     *      "down":     A string referencing the name of a child node OR
      *                  a 4-element integer array with values from 0..255
      *      "pushable": An even array of polygon vertices (numbers)
      *
@@ -310,8 +311,9 @@ public:
      * of the attribute values of its parent class.  In addition, it supports
      * the following additional attributes:
      *
-     *      "up":       A JSON object defining a scene graph node
-     *      "down":     A JSON object defining a scene graph node OR
+     *      "up":       A string referencing the name of a child node OR
+     *                  a 4-element integer array with values from 0..255
+     *      "down":     A string referencing the name of a child node OR
      *                  a 4-element integer array with values from 0..255
      *      "pushable": An even array of polygon vertices (numbers)
      *

@@ -113,7 +113,7 @@ void BoxObstacle::resetDebug() {
     poly.setIndices(indx, 8);
     poly.setGeometry(Geometry::PATH);
     if (_debug == nullptr) {
-        _debug = scene2::WireNode::allocWithTraversal(poly,poly2::Traversal::NONE);
+        _debug = scene2::WireNode::allocWithTraversal(poly,poly2::Traversal::CLOSED);
         _debug->setColor(_dcolor);
         if (_scene != nullptr) {
             _scene->addChild(_debug);

@@ -308,7 +308,6 @@ bool TexturedNode::initWithData(const Scene2Loader* loader, const std::shared_pt
             bounds.size = _texture->getSize();
         } else {
             bounds.size = getContentSize();
-            CULog("Bounds are %s",bounds.toString().c_str());
         }
         setPolygon(bounds);
     } else if (indices.empty()) {
