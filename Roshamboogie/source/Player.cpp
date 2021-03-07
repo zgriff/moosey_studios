@@ -29,11 +29,11 @@ using namespace cugl;
  * @param ship      The texture for the ship filmstrip
  * @param target    The texture for the ship target
  */
-void Player::setTextures(const std::shared_ptr<Texture>& ship,
-                       float width, float height) {
+void Player::setTextures(const std::shared_ptr<Texture>& ship) {
 
-    _sceneNode = scene2::SceneNode::alloc();
-
+    _sceneNode = scene2::PolygonNode::allocWithTexture(ship);
+    _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _texture = ship;
 }
 
 void Player::setElement(Element e){
@@ -61,13 +61,15 @@ void Player::dispose() {
  *
  * @return true if the initialization was successful
  */
-bool Player::init() {
+bool Player::init(const cugl::Vec2 pos, const cugl::Size size) {
+    physics2::BoxObstacle::init(pos,size);
     std::string name("player");
     setName(name);
     setDensity(DEFAULT_DENSITY);
     setFriction(DEFAULT_FRICTION);
     setRestitution(DEFAULT_RESTITUTION);
     setFixedRotation(true);
+    _sceneNode = nullptr;
     return true;
 }
 
@@ -89,5 +91,26 @@ void Player::update(float delta) {
     if (_sceneNode != nullptr) {
         _sceneNode->setPosition(getPosition()*_drawscale);
         _sceneNode->setAngle(getAngle());
+    }
+}
+
+void Player::applyForce() {
+    if (!isActive()) {
+        return;
+    }
+    
+    // Orient the force with rotation.
+    Vec4 netforce(_force.x,_force.y,0.0f,1.0f);
+    Mat4::createRotationZ(getAngle(),&_affine);
+    netforce *= _affine;
+    
+    // Apply force to the rocket BODY, not the rocket
+    _body->ApplyForceToCenter(b2Vec2(netforce.x,netforce.y), true);
+}
+
+void Player::setDrawScale(float scale) {
+    _drawscale = scale;
+    if (_sceneNode != nullptr) {
+        _sceneNode->setPosition(getPosition()*_drawscale);
     }
 }

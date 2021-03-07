@@ -31,6 +31,9 @@ using namespace std;
 /** Height of the game world in Box2d units */
 #define DEFAULT_HEIGHT  18.0f
 
+/** The initial rocket position */
+float PLAYER_POS[] = {24,  4};
+
 #pragma mark -
 #pragma mark Constructors
 /**
@@ -56,6 +59,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Start up the input handler
     _assets = assets;
+    _playerController.init();
     
     // Acquire the scene built by the asset loader and resize it the scene
     std::shared_ptr<scene2::SceneNode> scene = _assets->get<scene2::SceneNode>("lab");
@@ -72,8 +76,8 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _worldnode = scene2::SceneNode::alloc();
     _worldnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
     _worldnode->setPosition(offset);
-    addChild(_worldnode);
     addChild(scene);
+    addChild(_worldnode);
     reset();
     return true;
 }
@@ -100,18 +104,19 @@ void GameScene::dispose() {
 void GameScene::reset() {
     _world->clear();
     _worldnode->removeAllChildren();
-    auto root = getChild(0);
+//    auto root = getChild(0);
     
-    Size dimen = root->getContentSize();
-    
-    auto shipTexture = _assets->get<Texture>("ship");
+    auto shipTexture = _assets->get<Texture>("rocket");
 
-    _player = Player::alloc();
-    _player->setTextures(shipTexture, dimen.width, dimen.height);
+    Vec2 playerPos = ((Vec2)PLAYER_POS);
+    Size playerSize(shipTexture->getSize()/_scale);
+    _player = Player::alloc(playerPos, playerSize);
+    _player->setTextures(shipTexture);
     _player->setID(0);
+    _player->setDrawScale(_scale);
     _playerController.init();
     
-    root->addChild(_player->getSceneNode());
+    _worldnode->addChild(_player->getSceneNode());
     _world->addObstacle(_player);
 }
 

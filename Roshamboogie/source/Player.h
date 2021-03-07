@@ -92,8 +92,7 @@ public:
      * @param ship      The texture for the ship filmstrip
      * @param target    The texture for the ship target
      */
-    void setTextures(const std::shared_ptr<cugl::Texture>& ship,
-                     float width, float height);
+    void setTextures(const std::shared_ptr<cugl::Texture>& ship);
     
     
     const std::shared_ptr<cugl::Texture> getTexture() const {
@@ -127,7 +126,7 @@ public:
      *
      * @return true if the initialization was successful
      */
-    virtual bool init() override;
+    virtual bool init(const cugl::Vec2 pos, const cugl::Size size) override;
 
     /**
      * Returns a newly allocated player.
@@ -137,9 +136,9 @@ public:
      *
      * @return a newly allocated player
      */
-    static std::shared_ptr<Player> alloc() {
+    static std::shared_ptr<Player> alloc(const cugl::Vec2 pos, const cugl::Size size) {
         std::shared_ptr<Player> result = std::make_shared<Player>();
-        return (result->init() ? result : nullptr);
+        return (result->init(pos, size) ? result : nullptr);
     }
     
 #pragma mark -
@@ -166,6 +165,34 @@ public:
      */
     virtual void update(float delta) override;
     
-};
+    /**
+     * Sets the ratio of the ship sprite to the physics body
+     *
+     * The rocket needs this value to convert correctly between the physics
+     * coordinates and the drawing screen coordinates.  Otherwise it will
+     * interpret one Box2D unit as one pixel.
+     *
+     * All physics scaling must be uniform.  Rotation does weird things when
+     * attempting to scale physics by a non-uniform factor.
+     *
+     * @param scale The ratio of the ship sprite to the physics body
+     */
+    void setDrawScale(float scale);
     
+    /**
+     * Returns the ratio of the ship sprite to the physics body
+     *
+     * The rocket needs this value to convert correctly between the physics
+     * coordinates and the drawing screen coordinates.  Otherwise it will
+     * interpret one Box2D unit as one pixel.
+     *
+     * All physics scaling must be uniform.  Rotation does weird things when
+     * attempting to scale physics by a non-uniform factor.
+     *
+     * @return the ratio of the ship sprite to the physics body
+     */
+    float getDrawScale() const { return _drawscale; }
+    
+};
+
 #endif
