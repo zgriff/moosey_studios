@@ -110,7 +110,10 @@ void GameScene::reset() {
 
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size playerSize(shipTexture->getSize()/_scale);
+    
     _player = Player::alloc(playerPos, playerSize);
+    _player->setPosition(playerPos);
+    CULog("player pos --  X: %f , Y: %f  ", _player->getPosition().x,_player->getPosition().y);
     _player->setTextures(shipTexture);
     _player->setID(0);
     _player->setDrawScale(_scale);
@@ -125,12 +128,18 @@ void GameScene::update(float timestep) {
 //    _playerController.readInput();
 //    _player->setMovement(_playerController.getSwing());
     _playerController.update(timestep);
-    _player->setForce(_playerController.getSwing()*_player->getThrust());
-    _player->setMovement(_playerController.getSwing());
+    float touchScaleX = DEFAULT_WIDTH/getBounds().getMaxX();
+    float touchScaleY = DEFAULT_HEIGHT/getBounds().getMaxY();
+    float touchX = _playerController.getPath().x*touchScaleX;
+    float touchY = _playerController.getPath().x*touchScaleY;
+    Vec2 touch = Vec2(touchX, touchY);
+    CULog("touch pos --  X: %f , Y: %f  ", touch.x,touch.y);
+    touch = touch - _player->getPosition();
+    _player->setForce(touch);
+    CULog("touch pos --  X: %f , Y: %f  ", touch.x,touch.y);
+    CULog("player pos --  X: %f , Y: %f  ", _player->getPosition().x,_player->getPosition().y);
+    _player->setMovement(touch);
     _player->applyForce();
-    if  (_player->getForce().isNearZero(5.0f)) {
-        _playerController.setSwingFinish(true);
-    }
     _world->update(timestep);
     
 //    // Move the photons forward, and add new ones if necessary.
