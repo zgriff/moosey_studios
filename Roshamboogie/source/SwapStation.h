@@ -9,6 +9,5 @@
 #ifndef __SWAP_STATION_H__
 #define __SWAP_STATION_H__
 
-#include <stdio.h>
 
 #endif /* SwapStation_hpp */

@@ -9,6 +9,5 @@
 #ifndef __ORB_H__
 #define __ORB_H__
 
-#include <stdio.h>
 
 #endif /* Orb_hpp */

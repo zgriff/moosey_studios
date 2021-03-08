@@ -23,7 +23,7 @@ using namespace std;
 #pragma mark Level Layout
 
 /** Regardless of logo, lock the height to this */
-#define SCENE_WIDTH 1024
+#define SCENE_WIDTH 1280
 #define SCENE_HEIGHT 720
 
 /** Width of the game world in Box2d units */
@@ -69,6 +69,12 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _world = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
     _world->activateCollisionCallbacks(true);
+//    _world->onBeginContact = [this](b2Contact* contact) {
+//        collisions::beginContact(contact);
+//    };
+//    _world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
+//        collisions::beforeSolve(contact,oldManifold);
+//    };
     _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
     Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
 
@@ -127,7 +133,7 @@ void GameScene::update(float timestep) {
     
     Vec3 tilt = _playerController.getTiltVec();
     Vec2 moveVec(tilt.x, -tilt.y);
-    _player->setForce(moveVec * 10);
+    _player->setForce(moveVec * 50);
     _player->applyForce();
 }
 

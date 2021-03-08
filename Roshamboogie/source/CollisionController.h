@@ -12,6 +12,9 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
 
-
+namespace collisions {
+    void beginContact(b2Contact* contact);
+    void beforeSolve(b2Contact* contact, const b2Manifold* oldManifold);
+}
 
 #endif /* CollisionController_h */
