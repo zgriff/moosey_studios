@@ -16,7 +16,8 @@
 #pragma mark Physics Constants
 
 /**amount to slow player down after swing*/
-#define PLAYER_DAMPING      10.0f
+#define PLAYER_DAMPING      5.0f
+#define DEFAULT_THRUST      30.0f
 
 
 
@@ -38,7 +39,7 @@ private:
     float _drawscale;
     
     /** The current directional movement of the character */
-    float  _movement;
+    cugl::Vec2  _movement;
 
     
     // Asset references.  These should be set by GameMode
@@ -68,8 +69,16 @@ public:
     void setID(int id) {
         _id = id;
     }
+    
+    float getThrust() const { return DEFAULT_THRUST; }
+    
+    const cugl::Vec2& getMovement() const { return _movement; }
+    
+    void setMovement(cugl::Vec2 value) {_movement.set(value);}
 
     const cugl::Vec2& getForce() const { return _force; }
+    
+    const float getDamping() const { return PLAYER_DAMPING; }
     
     void setForce(const cugl::Vec2& value) { _force.set(value); }
     
@@ -162,30 +171,6 @@ public:
      */
     void applyForce();
     
-    /**
-     * Returns left/right movement of this character.
-     *
-     * This is the result of input times dude force.
-     *
-     * @return left/right movement of this character.
-     */
-    float getMovement() const { return _movement; }
-    
-    /**
-     * Sets left/right movement of this character.
-     *
-     * This is the result of input times dude force.
-     *
-     * @param value left/right movement of this character.
-     */
-    void setMovement(float value);
-    
-    /**
-     * Returns ow hard the brakes are applied to get a dude to stop moving
-     *
-     * @return ow hard the brakes are applied to get a dude to stop moving
-     */
-    float getDamping() const { return PLAYER_DAMPING; }
 
     /**
      * Updates the object's physics state (NOT GAME LOGIC).
