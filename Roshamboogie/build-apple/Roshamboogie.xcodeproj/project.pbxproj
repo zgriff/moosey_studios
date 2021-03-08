@@ -101,6 +101,12 @@
 		EBBF189B1D74904A008E2001 /* Mac.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBBF189A1D74904A008E2001 /* Mac.xcassets */; };
 		EBFE7C051E19B496001007C2 /* json in Resources */ = {isa = PBXBuildFile; fileRef = EBFE7C041E19B496001007C2 /* json */; };
 		EBFE7C091E19B4AC001007C2 /* json in Resources */ = {isa = PBXBuildFile; fileRef = EBFE7C041E19B496001007C2 /* json */; };
+		EC7E025625F5902100F19200 /* InputControllerJS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC7E025425F5902100F19200 /* InputControllerJS.cpp */; };
+		EC7E025725F5902100F19200 /* InputControllerJS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC7E025425F5902100F19200 /* InputControllerJS.cpp */; };
+		EC7E025825F5902100F19200 /* InputControllerJS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC7E025425F5902100F19200 /* InputControllerJS.cpp */; };
+		EC7E026925F5CE2900F19200 /* SwipeMoveInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC7E026825F5CE2900F19200 /* SwipeMoveInput.cpp */; };
+		EC7E026A25F5CE2900F19200 /* SwipeMoveInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC7E026825F5CE2900F19200 /* SwipeMoveInput.cpp */; };
+		EC7E026B25F5CE2900F19200 /* SwipeMoveInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC7E026825F5CE2900F19200 /* SwipeMoveInput.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -188,6 +194,10 @@
 		EBBF189A1D74904A008E2001 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
 		EBBF189F1D74904A008E2001 /* Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
 		EBFE7C041E19B496001007C2 /* json */ = {isa = PBXFileReference; lastKnownFileType = folder; path = json; sourceTree = "<group>"; };
+		EC7E025425F5902100F19200 /* InputControllerJS.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InputControllerJS.cpp; sourceTree = "<group>"; };
+		EC7E025F25F5906300F19200 /* InputControllerJS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InputControllerJS.h; sourceTree = "<group>"; };
+		EC7E026725F5CE1100F19200 /* SwipeMoveInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwipeMoveInput.h; sourceTree = "<group>"; };
+		EC7E026825F5CE2900F19200 /* SwipeMoveInput.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SwipeMoveInput.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -390,6 +400,10 @@
 				925FC53A25F42D5C00532483 /* OrbManager.cpp */,
 				925FC54325F42D6800532483 /* SwapStation.h */,
 				925FC54225F42D6800532483 /* SwapStation.cpp */,
+				EC7E025425F5902100F19200 /* InputControllerJS.cpp */,
+				EC7E025F25F5906300F19200 /* InputControllerJS.h */,
+				EC7E026725F5CE1100F19200 /* SwipeMoveInput.h */,
+				EC7E026825F5CE2900F19200 /* SwipeMoveInput.cpp */,
 			);
 			name = Source;
 			path = ../source;
@@ -573,7 +587,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				925FC4F825F42B2800532483 /* main.cpp in Sources */,
+				EC7E025825F5902100F19200 /* InputControllerJS.cpp in Sources */,
 				925FC53E25F42D5C00532483 /* OrbManager.cpp in Sources */,
+				EC7E026B25F5CE2900F19200 /* SwipeMoveInput.cpp in Sources */,
 				925FC51E25F42D1800532483 /* InputController.cpp in Sources */,
 				925FC50E25F42CFD00532483 /* LoadingScene.cpp in Sources */,
 				925FC53625F42D4D00532483 /* Orb.cpp in Sources */,
@@ -589,7 +605,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				925FC4F725F42B2800532483 /* main.cpp in Sources */,
+				EC7E025725F5902100F19200 /* InputControllerJS.cpp in Sources */,
 				925FC53D25F42D5C00532483 /* OrbManager.cpp in Sources */,
+				EC7E026A25F5CE2900F19200 /* SwipeMoveInput.cpp in Sources */,
 				925FC51D25F42D1800532483 /* InputController.cpp in Sources */,
 				925FC50D25F42CFD00532483 /* LoadingScene.cpp in Sources */,
 				925FC53525F42D4D00532483 /* Orb.cpp in Sources */,
@@ -605,7 +623,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				925FC4F625F42B2800532483 /* main.cpp in Sources */,
+				EC7E025625F5902100F19200 /* InputControllerJS.cpp in Sources */,
 				925FC53C25F42D5C00532483 /* OrbManager.cpp in Sources */,
+				EC7E026925F5CE2900F19200 /* SwipeMoveInput.cpp in Sources */,
 				925FC51C25F42D1800532483 /* InputController.cpp in Sources */,
 				925FC50C25F42CFC00532483 /* LoadingScene.cpp in Sources */,
 				925FC53425F42D4D00532483 /* Orb.cpp in Sources */,

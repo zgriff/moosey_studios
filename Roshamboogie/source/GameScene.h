@@ -11,6 +11,8 @@
 #include <cugl/cugl.h>
 #include <vector>
 #include "InputController.h"
+#include "InputControllerJS.h"
+#include "SwipeMoveInput.h"
 #include "Player.h"
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 
@@ -37,6 +39,8 @@ protected:
     // Attach input controllers directly to the scene (no pointers)
     /** Controller for the player */
     InputController _playerController;
+    InputControllerJS _playerControllerJS;
+    SwipeMoveInput _playerControllerSM;
 
     /** Location and animation information for player (MODEL CLASS) */
     std::shared_ptr<Player> _player;

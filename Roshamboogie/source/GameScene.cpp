@@ -114,7 +114,9 @@ void GameScene::reset() {
     _player->setTextures(shipTexture);
     _player->setID(0);
     _player->setDrawScale(_scale);
-    _playerController.init();
+//    _playerController.init();
+//    _playerControllerJS.init(getBounds()); //JOYSTICK CONTROLLER
+    _playerControllerSM.init(); //SWIPE TO MOVE CONTROLLER
     
     _worldnode->addChild(_player->getSceneNode());
     _world->addObstacle(_player);
@@ -122,20 +124,19 @@ void GameScene::reset() {
 
 void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
-    _playerController.readInput();
-    _world->update(timestep);
+//    _playerController.readInput();
     
-//    // Move the photons forward, and add new ones if necessary.
-//    if (_redController.didPressFire() && firePhoton(_redShip)) {
-//        // The last argument is force=true.  It makes sure only one instance plays.
-//        AudioEngine::get()->play("redfire", _redSound, false, 1.0f, true);
-//    }
-//    if (_blueController.didPressFire() && firePhoton(_blueShip)) {
-//        // The last argument is force=true.  It makes sure only one instance plays.
-//        AudioEngine::get()->play("bluefire", _blueSound, false, 1.0f, true);
-//    }
+    //JOYSTICK
+//    _playerControllerJS.update(timestep);
+//    _player->move(_playerControllerJS.getHorizontal(),_playerControllerJS.getVertical());
+    
+    //SWIPE TO MOVE
+    _playerControllerSM.update(timestep);
+    Vec2 thrust = _playerControllerSM.getThrust();
+    _player->move(thrust.x, thrust.y);
+    
 
-    // Move the ships and photons forward (ignoring collisions)
+    _world->update(timestep);
 }
 
 /**
