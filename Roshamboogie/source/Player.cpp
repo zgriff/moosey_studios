@@ -67,6 +67,7 @@ void Player::dispose() {
  * @return true if the initialization was successful
  */
 bool Player::init(const cugl::Vec2 pos, const cugl::Size size) {
+<<<<<<< HEAD
     if(physics2::BoxObstacle::init(pos,size)){
         std::string name("player");
         setName(name);
@@ -107,15 +108,16 @@ void Player::applyForce() {
         return;
     }
     
-    if (!getMoving()) {
-        b2Vec2 force(-getDamping()*getVX(),-getDamping()*getVY());
-        _body->ApplyForce(force,_body->GetPosition(),true);
-    }
+//    if (!getMoving()) {
+//        b2Vec2 force(-getDamping()*getVX(),-getDamping()*getVY());
+//        _body->ApplyForce(force,_body->GetPosition(),true);
+//    }
     
     if (fabs(getVX()) >= getMaxSpeed() && fabs(getVY()) >= getMaxSpeed()) {
         setVX(SIGNUM(getVX()*getMaxSpeed()));
         setVY(SIGNUM(getVY()*getMaxSpeed()));
     }
+
     // Orient the force with rotation.
     Vec4 netforce(_force.x,_force.y,0.0f,1.0f);
     Mat4::createRotationZ(getAngle(),&_affine);
