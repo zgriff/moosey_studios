@@ -24,6 +24,8 @@ private:
     
     bool _swingStart;
     
+    bool _swingFinish;
+    
     /** The initial touch location for the current gesture */
     cugl::Vec2 _dtouch;
     /** The timestamp for the beginning of the current gesture */
@@ -42,6 +44,8 @@ protected:
     float _horizontal;
     /** How much did we move vertically? */
     float _vertical;
+    
+    cugl::Vec2 _playerSwing;
     
     cugl::Vec2 _swingVec;
     
@@ -163,7 +167,11 @@ public:
      */
     float getVertical() const { return _vertical; }
     
-    cugl::Vec2 getSwing() const {return _swingVec;}
+    const cugl::Vec2& getSwing() const {return _playerSwing;}
+    
+    bool getSwingFinish() const {return _swingFinish;}
+    
+    void setSwingFinish(bool value)  {_swingFinish = value;}
     
     /**
      * Returns true if the reset button was pressed.
