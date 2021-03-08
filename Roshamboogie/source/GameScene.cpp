@@ -130,6 +130,7 @@ void GameScene::reset() {
     _orbTest->setTextures(orbTexture);
     _orbTest->setDrawScale(_scale);
     
+    
     _worldnode->addChild(_orbTest->getSceneNode());
     _worldnode->addChild(_player->getSceneNode());
 }
@@ -143,9 +144,6 @@ void GameScene::update(float timestep) {
     _player->setForce(_playerController.getSwing()*_player->getThrust());
     _player->setMovement(_playerController.getSwing());
     _player->applyForce();
-    if  (_player->getForce().isNearZero(5.0f)) {
-        _playerController.setSwingFinish(true);
-    }
     _world->update(timestep);
     if(orbShouldMove){
         std::random_device r;
