@@ -135,10 +135,10 @@ void GameScene::update(float timestep) {
     Vec2 touch = Vec2(touchX, touchY);
     CULog("touch pos --  X: %f , Y: %f  ", touch.x,touch.y);
     touch = touch - _player->getPosition();
-    _player->setForce(touch);
     CULog("touch pos --  X: %f , Y: %f  ", touch.x,touch.y);
     CULog("player pos --  X: %f , Y: %f  ", _player->getPosition().x,_player->getPosition().y);
-    _player->setMovement(touch);
+//    _player->setMovement(touch);
+    _player->setForce(touch);
     _player->applyForce();
     _world->update(timestep);
     
