@@ -24,6 +24,11 @@
 #pragma mark -
 #pragma mark Player Model
 
+
+
+#pragma mark -
+#pragma mark Player Model
+
 class Player : public cugl::physics2::BoxObstacle{
 private:
     CU_DISALLOW_COPY_AND_ASSIGN(Player);
@@ -40,6 +45,7 @@ private:
     
     /** The current directional movement of the character */
     cugl::Vec2  _movement;
+
 
     
     // Asset references.  These should be set by GameMode

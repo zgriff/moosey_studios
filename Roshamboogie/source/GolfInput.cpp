@@ -39,7 +39,6 @@ _keyReset(false),
 _keyDebug(false),
 _keyExit(false),
 _swingStart(false),
-_swingFinish(false),
 _resetPressed(false),
 _debugPressed(false),
 _exitPressed(false),
@@ -109,13 +108,12 @@ void GolfInput::update(float dt) {
     _keyReset = false;
     _keyDebug = false;
 #endif
-    _playerSwing.set(Vec2(0.0f,0.0f));
     if (_swingVec != Vec2(0.0f,0.0f) && _swingStart) {
-        _playerSwing.set(_swingVec);
         _swingStart=false;
         _swingVec.set(Vec2(0.0f,0.0f));
     }
 //    CULog("Swing vec is x: %f , y: %f", _swingVec.x,_swingVec.y);
+
 }
 
 
@@ -137,10 +135,9 @@ void GolfInput::touchBeganCB(const TouchEvent &event, bool focus) {
 
 void GolfInput::touchEndedCB(const TouchEvent &event, bool focus) {
     _swingVec.set(_dtouch - touch2Screen(event.position));
-    if (_swingVec.length() < SWIPE_LENGTH || !_swingFinish) {
+    if (_swingVec.length() < SWIPE_LENGTH ) {
         _swingVec.set(Vec2(0.0f,0.0f));
     }
-    _swingFinish = false;
 //    CULog("x: %f , y: %f",_swingVec.x,_swingVec.y);
 }
 
