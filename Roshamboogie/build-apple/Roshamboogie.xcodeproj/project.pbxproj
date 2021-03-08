@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		922F001025F58D96001F0204 /* GolfInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 922F000E25F58D96001F0204 /* GolfInput.cpp */; };
+		922F001125F58D96001F0204 /* GolfInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 922F000E25F58D96001F0204 /* GolfInput.cpp */; };
+		922F001225F58D96001F0204 /* GolfInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 922F000E25F58D96001F0204 /* GolfInput.cpp */; };
 		925FC4F625F42B2800532483 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4F525F42B2800532483 /* main.cpp */; };
 		925FC4F725F42B2800532483 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4F525F42B2800532483 /* main.cpp */; };
 		925FC4F825F42B2800532483 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4F525F42B2800532483 /* main.cpp */; };
@@ -128,6 +131,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		922F000E25F58D96001F0204 /* GolfInput.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GolfInput.cpp; sourceTree = "<group>"; };
+		922F000F25F58D96001F0204 /* GolfInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GolfInput.h; sourceTree = "<group>"; };
 		925FC4F525F42B2800532483 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		925FC4FF25F42B6F00532483 /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = App.cpp; sourceTree = "<group>"; };
 		925FC50025F42B6F00532483 /* App.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = App.h; sourceTree = "<group>"; };
@@ -380,6 +385,8 @@
 				925FC50A25F42CFC00532483 /* LoadingScene.cpp */,
 				925FC51325F42D0800532483 /* GameScene.h */,
 				925FC51225F42D0800532483 /* GameScene.cpp */,
+				922F000F25F58D96001F0204 /* GolfInput.h */,
+				922F000E25F58D96001F0204 /* GolfInput.cpp */,
 				925FC51B25F42D1800532483 /* InputController.h */,
 				925FC51A25F42D1800532483 /* InputController.cpp */,
 				925FC52B25F42D3700532483 /* Player.h */,
@@ -574,6 +581,7 @@
 			files = (
 				925FC4F825F42B2800532483 /* main.cpp in Sources */,
 				925FC53E25F42D5C00532483 /* OrbManager.cpp in Sources */,
+				922F001225F58D96001F0204 /* GolfInput.cpp in Sources */,
 				925FC51E25F42D1800532483 /* InputController.cpp in Sources */,
 				925FC50E25F42CFD00532483 /* LoadingScene.cpp in Sources */,
 				925FC53625F42D4D00532483 /* Orb.cpp in Sources */,
@@ -590,6 +598,7 @@
 			files = (
 				925FC4F725F42B2800532483 /* main.cpp in Sources */,
 				925FC53D25F42D5C00532483 /* OrbManager.cpp in Sources */,
+				922F001125F58D96001F0204 /* GolfInput.cpp in Sources */,
 				925FC51D25F42D1800532483 /* InputController.cpp in Sources */,
 				925FC50D25F42CFD00532483 /* LoadingScene.cpp in Sources */,
 				925FC53525F42D4D00532483 /* Orb.cpp in Sources */,
@@ -606,6 +615,7 @@
 			files = (
 				925FC4F625F42B2800532483 /* main.cpp in Sources */,
 				925FC53C25F42D5C00532483 /* OrbManager.cpp in Sources */,
+				922F001025F58D96001F0204 /* GolfInput.cpp in Sources */,
 				925FC51C25F42D1800532483 /* InputController.cpp in Sources */,
 				925FC50C25F42CFC00532483 /* LoadingScene.cpp in Sources */,
 				925FC53425F42D4D00532483 /* Orb.cpp in Sources */,

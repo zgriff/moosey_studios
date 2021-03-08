@@ -11,9 +11,21 @@
 
 #include <cugl/cugl.h>
 
+#pragma mark -
+#pragma mark Physics Constants
+
+/**amount to slow player down after swing*/
+#define PLAYER_DAMPING      10.0f
+
+
+
 enum class Element {
     Grass, Water, Fire
 };
+
+
+#pragma mark -
+#pragma mark Player Model
 
 class Player : public cugl::physics2::BoxObstacle{
 private:
@@ -28,6 +40,9 @@ private:
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
     float _drawscale;
+    
+    /** The current directional movement of the character */
+    float  _movement;
 
     
     // Asset references.  These should be set by GameMode
@@ -65,6 +80,7 @@ public:
     void setElement(Element e);
     
     Element getElement() { return element; }
+    
 
     
 #pragma mark Graphics
@@ -149,6 +165,31 @@ public:
      * This method should be called after the force attribute is set.
      */
     void applyForce();
+    
+    /**
+     * Returns left/right movement of this character.
+     *
+     * This is the result of input times dude force.
+     *
+     * @return left/right movement of this character.
+     */
+    float getMovement() const { return _movement; }
+    
+    /**
+     * Sets left/right movement of this character.
+     *
+     * This is the result of input times dude force.
+     *
+     * @param value left/right movement of this character.
+     */
+    void setMovement(float value);
+    
+    /**
+     * Returns ow hard the brakes are applied to get a dude to stop moving
+     *
+     * @return ow hard the brakes are applied to get a dude to stop moving
+     */
+    float getDamping() const { return PLAYER_DAMPING; }
 
     /**
      * Updates the object's physics state (NOT GAME LOGIC).

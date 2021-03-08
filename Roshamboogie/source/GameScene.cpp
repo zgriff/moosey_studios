@@ -59,7 +59,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Start up the input handler
     _assets = assets;
-    _playerController.init();
+    _playerController.init(getBounds());
     
     // Acquire the scene built by the asset loader and resize it the scene
     std::shared_ptr<scene2::SceneNode> scene = _assets->get<scene2::SceneNode>("lab");
@@ -114,7 +114,7 @@ void GameScene::reset() {
     _player->setTextures(shipTexture);
     _player->setID(0);
     _player->setDrawScale(_scale);
-    _playerController.init();
+    _playerController.init(getBounds());
     
     _worldnode->addChild(_player->getSceneNode());
     _world->addObstacle(_player);
@@ -122,7 +122,9 @@ void GameScene::reset() {
 
 void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
-    _playerController.readInput();
+//    _playerController.readInput();
+    _player->setForce(_playerController.getSwing());
+    _player->applyForce();
     _world->update(timestep);
     
 //    // Move the photons forward, and add new ones if necessary.
