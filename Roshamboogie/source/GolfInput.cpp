@@ -127,14 +127,14 @@ Vec2 GolfInput::touch2Screen(const Vec2 pos) const {
 
 void GolfInput::touchBeganCB(const TouchEvent &event, bool focus) {
     CULog("Touch start");
-    _dtouch = event.position;
+    _dtouch = touch2Screen(event.position);
     _swingStart = true;
     _timestamp.mark();
 }
 
 void GolfInput::touchEndedCB(const TouchEvent &event, bool focus) {
     CULog("Touch end");
-    _swingVec = event.position - _dtouch;
+    _swingVec = _dtouch - touch2Screen(event.position);
     CULog("x: %f , y: %f",_swingVec.x,_swingVec.y);
     
 }
