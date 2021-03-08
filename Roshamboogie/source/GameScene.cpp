@@ -169,8 +169,9 @@ void GameScene::update(float timestep) {
     _player->setMovement(_playerController.getSwing());
     _player->applyForce();
 //    if  (_player->getForce().isNearZero(5.0f)) {
-    _playerController.setSwingFinish(true);
+//    _playerController.setSwingFinish(true);
 //    }
+
     _world->update(timestep);
     if(orbShouldMove){
         std::random_device r;

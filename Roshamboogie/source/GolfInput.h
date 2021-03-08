@@ -25,7 +25,7 @@ private:
     bool _swingStart;
     
     bool _swingFinish;
-    
+
     /** The initial touch location for the current gesture */
     cugl::Vec2 _dtouch;
     /** The timestamp for the beginning of the current gesture */
@@ -47,6 +47,7 @@ protected:
     
     cugl::Vec2 _playerSwing;
     
+
     cugl::Vec2 _swingVec;
     
     
@@ -169,7 +170,8 @@ public:
     
     
 
-    const cugl::Vec2 getSwing() const {return _swingVec;}
+    const cugl::Vec2& getSwing() const {return _playerSwing;}
+
 
     
     /**

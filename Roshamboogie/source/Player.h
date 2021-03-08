@@ -26,6 +26,7 @@
 
 
 
+
 #pragma mark -
 #pragma mark Player Model
 
@@ -45,10 +46,6 @@ private:
     
     /** The current directional movement of the character */
     cugl::Vec2  _movement;
-<<<<<<< HEAD
-
-=======
->>>>>>> golf swing and wait until stop
 
     
     // Asset references.  These should be set by GameMode
@@ -179,7 +176,6 @@ public:
      * This method should be called after the force attribute is set.
      */
     void applyForce();
-    
 
     /**
      * Updates the object's physics state (NOT GAME LOGIC).
