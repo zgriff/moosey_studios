@@ -99,10 +99,14 @@ void Player::applyForce() {
         return;
     }
     
-    if (getMovement() == 0.0f) {
+    if (getMovement() == Vec2(0.0f,0.0f)) {
         b2Vec2 force(-getDamping()*getVX(),-getDamping()*getVY());
-        _body->ApplyForce(force,_body->GetPosition(),true);
+//        CULog("Damping by x: %f, y: %f", force.x,force.y);
+        _force.x += force.x;
+        _force.y += force.y;
+//        _body->ApplyForce(force,_body->GetPosition(),true);
     }
+    
     
     // Orient the force with rotation.
     Vec4 netforce(_force.x,_force.y,0.0f,1.0f);

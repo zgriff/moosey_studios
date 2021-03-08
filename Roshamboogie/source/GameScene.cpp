@@ -123,8 +123,14 @@ void GameScene::reset() {
 void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
 //    _playerController.readInput();
-    _player->setForce(_playerController.getSwing());
+//    _player->setMovement(_playerController.getSwing());
+    _playerController.update(timestep);
+    _player->setForce(_playerController.getSwing()*_player->getThrust());
+    _player->setMovement(_playerController.getSwing());
     _player->applyForce();
+    if  (_player->getForce().isNearZero(5.0f)) {
+        _playerController.setSwingFinish(true);
+    }
     _world->update(timestep);
     
 //    // Move the photons forward, and add new ones if necessary.
