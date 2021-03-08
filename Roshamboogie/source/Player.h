@@ -45,7 +45,10 @@ private:
     
     /** The current directional movement of the character */
     cugl::Vec2  _movement;
+<<<<<<< HEAD
 
+=======
+>>>>>>> golf swing and wait until stop
 
     
     // Asset references.  These should be set by GameMode
