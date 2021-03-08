@@ -151,6 +151,7 @@ void GameScene::reset() {
     _world->addObstacle(_orbTest);
     _orbTest->setTextures(orbTexture);
     _orbTest->setDrawScale(_scale);
+
     
     populate();
     

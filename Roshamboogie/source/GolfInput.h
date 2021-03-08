@@ -23,8 +23,6 @@ private:
     bool  _keyExit;
     
     bool _swingStart;
-    
-    bool _swingFinish;
 
     /** The initial touch location for the current gesture */
     cugl::Vec2 _dtouch;
@@ -46,7 +44,7 @@ protected:
     float _vertical;
     
     cugl::Vec2 _playerSwing;
-    
+
     cugl::Vec2 _swingVec;
     
     
@@ -169,7 +167,6 @@ public:
         
 
     const cugl::Vec2& getSwing() const {return _playerSwing;}
-
 
     
     /**

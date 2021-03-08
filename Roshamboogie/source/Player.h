@@ -16,11 +16,25 @@
 #pragma mark Physics Constants
 
 /**amount to slow player down after swing*/
+<<<<<<< HEAD
 #define PLAYER_DAMPING      5.0f
 #define DEFAULT_THRUST      10.0f
 
 
 
+
+
+#pragma mark -
+#pragma mark Player Model
+=======
+#define PLAYER_DAMPING      10.0f
+
+
+
+enum class Element {
+    Grass, Water, Fire
+};
+>>>>>>> player moving, no damping, no boundaries
 
 
 #pragma mark -
@@ -41,7 +55,11 @@ private:
     float _drawscale;
     
     /** The current directional movement of the character */
+<<<<<<< HEAD
     cugl::Vec2  _movement;
+=======
+    float  _movement;
+>>>>>>> player moving, no damping, no boundaries
 
     
     // Asset references.  These should be set by GameMode
@@ -172,10 +190,7 @@ public:
      * This method should be called after the force attribute is set.
      */
     void applyForce();
-<<<<<<< HEAD
-=======
-    
->>>>>>> golf swing and wait until stop
+
 
     /**
      * Updates the object's physics state (NOT GAME LOGIC).
