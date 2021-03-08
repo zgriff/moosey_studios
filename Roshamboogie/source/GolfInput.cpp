@@ -144,6 +144,7 @@ void GolfInput::touchEndedCB(const TouchEvent &event, bool focus) {
 //    CULog("x: %f , y: %f",_swingVec.x,_swingVec.y);
 
 
+
 }
 
 

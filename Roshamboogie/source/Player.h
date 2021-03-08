@@ -21,10 +21,6 @@
 
 
 
-#pragma mark -
-#pragma mark Player Model
-
-
 
 
 #pragma mark -
@@ -176,6 +172,10 @@ public:
      * This method should be called after the force attribute is set.
      */
     void applyForce();
+<<<<<<< HEAD
+=======
+    
+>>>>>>> golf swing and wait until stop
 
     /**
      * Updates the object's physics state (NOT GAME LOGIC).

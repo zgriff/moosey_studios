@@ -47,7 +47,6 @@ protected:
     
     cugl::Vec2 _playerSwing;
     
-
     cugl::Vec2 _swingVec;
     
     
@@ -167,8 +166,7 @@ public:
      * @return the amount of vertical movement.
      */
     float getVertical() const { return _vertical; }
-    
-    
+        
 
     const cugl::Vec2& getSwing() const {return _playerSwing;}
 
