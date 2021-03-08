@@ -19,6 +19,9 @@ using namespace cugl;
 /** The restitution of this rocket */
 #define DEFAULT_RESTITUTION 0.4f
 
+#define SIGNUM(x)  ((x > 0) - (x < 0))
+
+
 
 /**
  * Sets the textures for this ship.
@@ -71,6 +74,7 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size) {
         setFriction(DEFAULT_FRICTION);
         setRestitution(DEFAULT_RESTITUTION);
         setFixedRotation(true);
+        setMoving(false);
         _sceneNode = nullptr;
         return true;
     }
@@ -103,15 +107,15 @@ void Player::applyForce() {
         return;
     }
     
-    if (getMovement() == Vec2(0.0f,0.0f)) {
+    if (!getMoving()) {
         b2Vec2 force(-getDamping()*getVX(),-getDamping()*getVY());
-//        CULog("Damping by x: %f, y: %f", force.x,force.y);
-        _force.x += force.x;
-        _force.y += force.y;
-//        _body->ApplyForce(force,_body->GetPosition(),true);
+        _body->ApplyForce(force,_body->GetPosition(),true);
     }
     
-    
+    if (fabs(getVX()) >= getMaxSpeed() && fabs(getVY()) >= getMaxSpeed()) {
+        setVX(SIGNUM(getVX()*getMaxSpeed()));
+        setVY(SIGNUM(getVY()*getMaxSpeed()));
+    }
     // Orient the force with rotation.
     Vec4 netforce(_force.x,_force.y,0.0f,1.0f);
     Mat4::createRotationZ(getAngle(),&_affine);

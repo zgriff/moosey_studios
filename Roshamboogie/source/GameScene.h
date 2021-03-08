@@ -10,7 +10,7 @@
 #define __GAME_SCENE_H__
 #include <cugl/cugl.h>
 #include <vector>
-#include "GolfInput.h"
+#include "PathInput.h"
 #include "Player.h"
 #include "Orb.h"
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
@@ -39,7 +39,7 @@ protected:
     
     // Attach input controllers directly to the scene (no pointers)
     /** Controller for the player */
-    GolfInput _playerController;
+    PathInput _playerController;
 
     /** Location and animation information for player (MODEL CLASS) */
     std::shared_ptr<Player> _player;

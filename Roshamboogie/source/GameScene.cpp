@@ -35,6 +35,7 @@ using namespace std;
 /** The initial rocket position */
 float PLAYER_POS[] = {24,  4};
 
+
 #pragma mark -
 #pragma mark Constructors
 /**
@@ -130,22 +131,35 @@ void GameScene::reset() {
     _orbTest->setTextures(orbTexture);
     _orbTest->setDrawScale(_scale);
     
+//    Size horizontalWall(Vec2(DEFAULT_WIDTH,1.0f));
+//    Size verticalWall(Vec2(1.0f,DEFAULT_HEIGHT));
+//    Vec2 leftWallPos =
+    
     _worldnode->addChild(_orbTest->getSceneNode());
     _worldnode->addChild(_player->getSceneNode());
 }
 
 void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
-
-//    _playerController.readInput();
-//    _player->setMovement(_playerController.getSwing());
     _playerController.update(timestep);
-    _player->setForce(_playerController.getSwing()*_player->getThrust());
-    _player->setMovement(_playerController.getSwing());
-    _player->applyForce();
-    if  (_player->getForce().isNearZero(5.0f)) {
-        _playerController.setSwingFinish(true);
+    if (_playerController.getPath() != Vec2().ZERO) {
+        float touchScaleX = DEFAULT_WIDTH/getBounds().getMaxX();
+        float touchScaleY = DEFAULT_HEIGHT/getBounds().getMaxY();
+        float touchX = _playerController.getPath().x*touchScaleX;
+        float touchY = _playerController.getPath().y*touchScaleY;
+        CULog("touch pos --  X: %f , Y: %f  ", touchX,touchY);
+        Vec2 touch;
+        Vec2::subtract(Vec2(touchX,touchY), _player->getPosition(), &touch);
+        CULog("player pos --  X: %f , Y: %f  ", _player->getPosition().x,_player->getPosition().y);
+        
+        CULog("vec pos --  X: %f , Y: %f  ", touch.x,touch.y);
+        _player->setLinearVelocity(touch.normalize()*10);
+        _player->setMoving(true);
+    } else {
+        _player->setLinearVelocity(0.0f, 0.0f);
+        _player->setMoving(false);
     }
+//    _player->applyForce();
     _world->update(timestep);
     if(orbShouldMove){
         std::random_device r;

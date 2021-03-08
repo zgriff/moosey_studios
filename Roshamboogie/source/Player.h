@@ -18,6 +18,7 @@
 /**amount to slow player down after swing*/
 #define PLAYER_DAMPING      5.0f
 #define DEFAULT_THRUST      30.0f
+#define PLAYER_MAX_SPEED    5.0f
 
 
 
@@ -44,8 +45,7 @@ private:
     float _drawscale;
     
     /** The current directional movement of the character */
-    cugl::Vec2  _movement;
-
+    bool _isMove;
     
     // Asset references.  These should be set by GameMode
     /** Reference to the node for the group of the ship and the aiming reticule */
@@ -75,11 +75,13 @@ public:
         _id = id;
     }
     
+    bool getMoving() const {return  _isMove;}
+    
+    void setMoving(bool value) {_isMove = value;}
+    
     float getThrust() const { return DEFAULT_THRUST; }
-    
-    const cugl::Vec2& getMovement() const { return _movement; }
-    
-    void setMovement(cugl::Vec2 value) {_movement.set(value);}
+            
+    float getMaxSpeed() const { return PLAYER_MAX_SPEED;}
 
     const cugl::Vec2& getForce() const { return _force; }
     
