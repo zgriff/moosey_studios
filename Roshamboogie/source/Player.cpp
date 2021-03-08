@@ -18,6 +18,10 @@ using namespace cugl;
 #define DEFAULT_FRICTION 0.1f
 /** The restitution of this rocket */
 #define DEFAULT_RESTITUTION 0.4f
+/** Amount to decay forward thrust over time */
+#define DAMPING 0.9f
+/** Amount to adjust forward movement from input */
+#define THRUST_FACTOR   0.05f
 
 
 /**
@@ -41,6 +45,7 @@ void Player::setTextures(const std::shared_ptr<Texture>& ship) {
 void Player::setElement(Element e){
     element = e;
 }
+
 
 /**
  * Disposes the ship, releasing all resources.
@@ -110,6 +115,36 @@ void Player::applyForce() {
     
     // Apply force to the rocket BODY, not the rocket
     _body->ApplyForceToCenter(b2Vec2(netforce.x,netforce.y), true);
+//    b2Vec2 force(-10.0f*getVX(),0);
+//    _body->ApplyForce(force,_body->GetPosition(),true);
+}
+
+//moving with force
+void Player::move(float horizontal, float vertical) {
+
+    // Process the ship thrust.
+    if (horizontal != 0.0f) {
+        // Thrust key pressed; increase the ship velocity.
+        setVX(horizontal * THRUST_FACTOR);
+    } else {
+        // Gradually slow the ship down
+        setVX(getVX() * DAMPING);
+    }
+    
+    // Process the ship thrust.
+    if (vertical != 0.0f) {
+        // Thrust key pressed; increase the ship velocity.
+        setVY(vertical * THRUST_FACTOR);
+    } else {
+        // Gradually slow the ship down
+        setVY(getVY() * DAMPING);
+    }
+    
+    
+    // Move the ship position by the ship velocity
+    // The setter also updates the scene graph
+    setPosition(getPosition()+getLinearVelocity());
+
 }
 
 void Player::setDrawScale(float scale) {

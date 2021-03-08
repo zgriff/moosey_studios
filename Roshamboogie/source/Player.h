@@ -37,6 +37,11 @@ private:
 
 public:
 #pragma mark Properties
+    
+    /** The current horizontal movement of the character */
+    float _horizontal;
+    /** The current vertical movement of the character */
+    float _vertical;
     /**
      * Returns the id of the player.
      *
@@ -54,6 +59,26 @@ public:
     void setID(int id) {
         _id = id;
     }
+    
+    /**
+     * Returns left/right movement of this character.
+     *
+     * This is the result of input times dude force.
+     *
+     * @return left/right movement of this character.
+     */
+    float getHorizontal() const { return _horizontal; }
+    
+    float getVertical() const { return _vertical; }
+    
+    /**
+     * Sets left/right movement of this character.
+     *
+     * This is the result of input times dude force.
+     *
+     * @param value left/right movement of this character.
+     */
+    void setMovement(float horizontal, float vertical);
 
     const cugl::Vec2& getForce() const { return _force; }
     
@@ -146,6 +171,8 @@ public:
      * This method should be called after the force attribute is set.
      */
     void applyForce();
+    
+    void move(float horizontal, float vertical) ;
 
     /**
      * Updates the object's physics state (NOT GAME LOGIC).

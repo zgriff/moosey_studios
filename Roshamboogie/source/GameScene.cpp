@@ -123,7 +123,9 @@ void GameScene::reset() {
     _player->setTextures(shipTexture);
     _player->setID(0);
     _player->setDrawScale(_scale);
-    _playerController.init();
+//    _playerController.init();
+//    _playerControllerJS.init(getBounds()); //JOYSTICK CONTROLLER
+    _playerControllerSM.init(); //SWIPE TO MOVE CONTROLLER
     
     _orbTest = Orb::alloc(Element::Fire);
     _world->addObstacle(_orbTest);
@@ -136,7 +138,18 @@ void GameScene::reset() {
 
 void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
-    _playerController.readInput();
+//    _playerController.readInput();
+    //JOYSTICK
+//    _playerControllerJS.update(timestep);
+//    _player->move(_playerControllerJS.getHorizontal(),_playerControllerJS.getVertical());
+    
+    //SWIPE TO MOVE
+    _playerControllerSM.update(timestep);
+    Vec2 thrust = _playerControllerSM.getThrust();
+    _player->move(thrust.x, thrust.y);
+    
+
+    _world->update(timestep);
 #ifndef CU_MOBILE
     _player->setLinearVelocity(_playerController.getMov() * 3);
 #endif
@@ -160,6 +173,9 @@ void GameScene::update(float timestep) {
 //    }
 
     // Move the ships and photons forward (ignoring collisions)
+//    _playerController.readInput();
+    
+
 }
 
 /**
