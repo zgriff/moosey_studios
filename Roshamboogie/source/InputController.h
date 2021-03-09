@@ -9,62 +9,18 @@
 #ifndef __INPUT_CONTROLLER_H__
 #define __INPUT_CONTROLLER_H__
 
+#include <cugl/cugl.h>
 
 class InputController {
 private:
-    /** Player id, to identify which keys map to this player */
-    int _player;
-
-    /** How much forward are we going? */
-    float _forward;
+    cugl::Vec2 moveVec;
+    void touchBeganCB(const cugl::TouchEvent& event, bool focus);
+    void touchEndedCB(const cugl::TouchEvent& event, bool focus);
+    cugl::Timestamp _timestamp;
+    cugl::Vec2 _dtouch;
+    bool processed;
     
-    /** How much are we turning? */
-    float _turning;
-    
-//    /** Did we press the fire button? */
-//    bool _didFire;
-
 public:
-    /**
-     * Returns the player for this controller
-     *
-     * @return the player for this controller
-     */
-    int getPlayer() const {
-        return _player;
-    }
-    
-    /**
-     * Returns the amount of forward movement.
-     *
-     * -1 = backward, 1 = forward, 0 = still
-     *
-     * @return amount of forward movement.
-     */
-    float getForward() const {
-        return _forward;
-    }
-
-    /**
-     * Returns the amount to turn the ship.
-     *
-     * -1 = clockwise, 1 = counter-clockwise, 0 = still
-     *
-     * @return amount to turn the ship.
-     */
-    float getTurn() const {
-        return _turning;
-    }
-
-//    /**
-//     * Returns whether the fire button was pressed.
-//     *
-//     * @return whether the fire button was pressed.
-//     */
-//    bool didPressFire() const {
-//        return _didFire;
-//    }
-
     /**
      * Creates a new input controller with the default settings
      *
@@ -77,6 +33,9 @@ public:
      */
     ~InputController() { dispose(); }
     
+    cugl::Vec2 getMoveVec() const {
+        return moveVec;
+    }
     /**
      * Deactivates this input controller, releasing all listeners.
      *

@@ -19,9 +19,7 @@ using namespace cugl;
  *
  * To use this controller, you will need to initialize it first
  */
-InputController::InputController() :
-_forward(0),
-_turning(0) {
+InputController::InputController() {
 }
 
 /**
@@ -41,26 +39,39 @@ bool InputController::init() {
 #ifndef CU_MOBILE
     success = Input::activate<Keyboard>();
 #else
-    success = Input::activate<Accelerometer>();
     Touchscreen* touch = Input::get<Touchscreen>();
-//    touch->addBeginListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
-//        this->touchBeganCB(event,focus);
-//    });
-//    touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
-//        this->touchEndedCB(event,focus);
-//    });
+    touch->addBeginListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+        this->touchBeganCB(event,focus);
+    });
+    touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+        this->touchEndedCB(event,focus);
+    });
 #endif
     return success;
+}
+
+void InputController::touchBeganCB(const TouchEvent& event, bool focus){
+    _timestamp = event.timestamp;
+    _dtouch = event.position;
+}
+
+void InputController::touchEndedCB(const TouchEvent& event, bool focus){
+    Vec2 diff = event.position-_dtouch;
+    Uint64 t = event.timestamp.ellapsedMillis(_timestamp);
+//    diff.getAngle();
+//    _accel = diff.getAngle();
+//    _accel_amount = 1/t
+    moveVec = diff.normalize() * (1000.0/t);
+    processed = false;
 }
 
 void InputController::dispose() {
 #ifndef CU_MOBILE
         Input::deactivate<Keyboard>();
 #else
-        Input::deactivate<Accelerometer>();
         Touchscreen* touch = Input::get<Touchscreen>();
-//        touch->removeBeginListener(LISTENER_KEY);
-//        touch->removeEndListener(LISTENER_KEY);
+        touch->removeBeginListener(LISTENER_KEY);
+        touch->removeEndListener(LISTENER_KEY);
 #endif
 }
 
@@ -75,34 +86,13 @@ void InputController::dispose() {
 void InputController::readInput() {
 #ifdef CU_MOBILE
     // YOU NEED TO PUT SOME CODE HERE
+    if(!processed){
+        processed = true;
+    }else{
+        moveVec = Vec2::ZERO;
+    }
 #else
-    // Figure out, based on which player we are, which keys
-    // control our actions (depends on player).
-    KeyCode up, left, right, down;
-        up    = KeyCode::ARROW_UP;
-        down  = KeyCode::ARROW_DOWN;
-        left  = KeyCode::ARROW_LEFT;
-        right = KeyCode::ARROW_RIGHT;
-//        shoot = KeyCode::SPACE;
-    
-    // Convert keyboard state into game commands
-    _forward = _turning = 0;
-//    _didFire = false;
-
-    // Movement forward/backward
-    Keyboard* keys = Input::get<Keyboard>();
-    if (keys->keyDown(up) && !keys->keyDown(down)) {
-        _forward = 1;
-    } else if (keys->keyDown(down) && !keys->keyDown(up)) {
-        _forward = -1;
-    }
-    
-    // Movement left/right
-    if (keys->keyDown(left) && !keys->keyDown(right)) {
-        _turning = -1;
-    } else if (keys->keyDown(right) && !keys->keyDown(left)) {
-        _turning = 1;
-    }
+   
 
 #endif
 }

@@ -136,6 +136,11 @@ void GameScene::update(float timestep) {
 //    }
 
     // Move the ships and photons forward (ignoring collisions)
+    Vec2 moveVec = _playerController.getMoveVec();
+    Vec2 _moveVec(moveVec.x, -moveVec.y);
+    _player->setForce(_moveVec * 30);
+    _player->applyForce();
+    
 }
 
 /**
