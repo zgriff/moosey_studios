@@ -128,6 +128,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		28E6A53625F76E72004998CF /* Element.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Element.h; sourceTree = "<group>"; };
 		925FC4F525F42B2800532483 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		925FC4FF25F42B6F00532483 /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = App.cpp; sourceTree = "<group>"; };
 		925FC50025F42B6F00532483 /* App.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = App.h; sourceTree = "<group>"; };
@@ -390,6 +391,7 @@
 				925FC53A25F42D5C00532483 /* OrbManager.cpp */,
 				925FC54325F42D6800532483 /* SwapStation.h */,
 				925FC54225F42D6800532483 /* SwapStation.cpp */,
+				28E6A53625F76E72004998CF /* Element.h */,
 			);
 			name = Source;
 			path = ../source;
