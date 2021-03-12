@@ -162,7 +162,10 @@ void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
     _playerController.readInput();
 #ifndef CU_MOBILE
-    _player->setLinearVelocity(_playerController.getMov() * 3);
+    auto ang = _player->getAngle();
+    ang += _playerController.getMov().x * M_PI / -30.0f;
+    _player->setAngle(ang);
+    _player->applyForce();
 #endif
     _world->update(timestep);
     if(orbShouldMove){
@@ -173,17 +176,6 @@ void GameScene::update(float timestep) {
     }
     
     orbShouldMove = false;
-//    // Move the photons forward, and add new ones if necessary.
-//    if (_redController.didPressFire() && firePhoton(_redShip)) {
-//        // The last argument is force=true.  It makes sure only one instance plays.
-//        AudioEngine::get()->play("redfire", _redSound, false, 1.0f, true);
-//    }
-//    if (_blueController.didPressFire() && firePhoton(_blueShip)) {
-//        // The last argument is force=true.  It makes sure only one instance plays.
-//        AudioEngine::get()->play("bluefire", _blueSound, false, 1.0f, true);
-//    }
-
-    // Move the ships and photons forward (ignoring collisions)
 }
 
 void GameScene::populate() {
