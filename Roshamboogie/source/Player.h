@@ -17,7 +17,7 @@
 
 /**amount to slow player down after swing*/
 #define PLAYER_DAMPING      5.0f
-#define DEFAULT_THRUST      30.0f
+#define DEFAULT_THRUST      10.0f
 
 
 
