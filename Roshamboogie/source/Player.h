@@ -24,6 +24,11 @@
 #pragma mark -
 #pragma mark Player Model
 
+
+
+#pragma mark -
+#pragma mark Player Model
+
 class Player : public cugl::physics2::BoxObstacle{
 private:
     CU_DISALLOW_COPY_AND_ASSIGN(Player);
