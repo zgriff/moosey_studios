@@ -75,16 +75,6 @@ void TapMoveInputController::dispose() {
 void TapMoveInputController::readInput() {
 #ifdef CU_MOBILE
     Input::deactivate<Keyboard>();
-    void InputController::touchBeganCB(const cugl::TouchEvent & event, bool focus) {
-        // Update the touch location for later gestures
-        _dtouch.set(event.position);
-    }
-
-    void InputController::touchEndedCB(const cugl::TouchEvent & event, bool focus) {
-        _turning = 0;
-        _forward = 0;
-        _didFire = false;
-    }
 #else
     // Figure out, based on which player we are, which keys
     // control our actions (depends on player).

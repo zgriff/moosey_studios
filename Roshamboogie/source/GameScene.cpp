@@ -149,6 +149,9 @@ void GameScene::update(float timestep) {
             Vec2(DEFAULT_WIDTH, DEFAULT_HEIGHT)), &difference);
         _player->setLinearVelocity(difference.normalize() * 10);
     }
+    else {
+        _player->setLinearVelocity(0);
+    }
     CULog("MousePosition");
     CULog(_playerController.getMousePosition().toString().c_str());
     CULog("PlayerPosition");
