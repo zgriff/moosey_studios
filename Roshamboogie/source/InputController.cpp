@@ -92,7 +92,24 @@ void InputController::readInput() {
         moveVec = Vec2::ZERO;
     }
 #else
-   
-
+    // Figure out, based on which player we are, which keys
+    // control our actions (depends on player).
+    KeyCode up, left, right, down;
+        up    = KeyCode::ARROW_UP;
+        down  = KeyCode::ARROW_DOWN;
+        left  = KeyCode::ARROW_LEFT;
+        right = KeyCode::ARROW_RIGHT;
+//        shoot = KeyCode::SPACE;
+    
+    // Convert keyboard state into game commands
+//    _didFire = false;
+    mov = Vec2::ZERO;
+    
+    // Movement forward/backward
+    Keyboard* keys = Input::get<Keyboard>();
+    mov.y += keys->keyDown(up) ? 1 : 0;
+    mov.y += keys->keyDown(down) ? -1 : 0;
+    mov.x += keys->keyDown(left) ? -1 : 0;
+    mov.x += keys->keyDown(right) ? 1 : 0;
 #endif
 }

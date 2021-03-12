@@ -19,6 +19,8 @@ private:
     cugl::Timestamp _timestamp;
     cugl::Vec2 _dtouch;
     bool processed;
+
+    cugl::Vec2 mov;
     
 public:
     /**
@@ -65,6 +67,10 @@ public:
      * are more appropriate for menus and buttons (like the loading screen).
      */
     void readInput();
+    
+    cugl::Vec2 getMov(){
+        return mov;
+    }
 };
 
 #endif /* InputController_hpp */

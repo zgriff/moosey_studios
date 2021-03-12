@@ -7,6 +7,7 @@
 //
 
 #include "Player.h"
+#include "Element.h"
 
 using namespace cugl;
 
@@ -34,6 +35,7 @@ void Player::setTextures(const std::shared_ptr<Texture>& ship) {
     _sceneNode = scene2::PolygonNode::allocWithTexture(ship);
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
     _texture = ship;
+    _body->SetUserData(this);
 }
 
 void Player::setElement(Element e){
@@ -62,15 +64,17 @@ void Player::dispose() {
  * @return true if the initialization was successful
  */
 bool Player::init(const cugl::Vec2 pos, const cugl::Size size) {
-    physics2::BoxObstacle::init(pos,size);
-    std::string name("player");
-    setName(name);
-    setDensity(DEFAULT_DENSITY);
-    setFriction(DEFAULT_FRICTION);
-    setRestitution(DEFAULT_RESTITUTION);
-    setFixedRotation(true);
-    _sceneNode = nullptr;
-    return true;
+    if(physics2::BoxObstacle::init(pos,size)){
+        std::string name("player");
+        setName(name);
+        setDensity(DEFAULT_DENSITY);
+        setFriction(DEFAULT_FRICTION);
+        setRestitution(DEFAULT_RESTITUTION);
+        setFixedRotation(true);
+        _sceneNode = nullptr;
+        return true;
+    }
+    return false;
 }
 
 /**
