@@ -86,6 +86,10 @@ public:
         return _mousePosition;
     }
 
+    void setMousePosition(cugl::Vec2 pos) {
+        _mousePosition = pos;
+    }
+
     cugl::Vec2 getMov() {
         return mov;
     }

@@ -127,6 +127,8 @@ void GameScene::reset() {
     _player->setID(0);
     _player->setDrawScale(_scale);
     _playerController.init(getBounds());
+    _playerController.setMousePosition(_player->getPixelPosition(Vec2(SCENE_WIDTH, SCENE_HEIGHT),
+        Vec2(DEFAULT_WIDTH, DEFAULT_HEIGHT)));
     
     _orbTest = Orb::alloc(Element::Fire);
     _world->addObstacle(_orbTest);
@@ -143,14 +145,18 @@ void GameScene::update(float timestep) {
 #ifndef CU_MOBILE
     _player->setLinearVelocity(_playerController.getMov() * 3);
 #endif
-    if (_playerController.getPressed()) {
-        Vec2 difference;
-        Vec2::subtract(_playerController.getMousePosition(), _player->getPixelPosition(Vec2(SCENE_WIDTH, SCENE_HEIGHT), 
-            Vec2(DEFAULT_WIDTH, DEFAULT_HEIGHT)), &difference);
+    Vec2 difference;
+    Vec2::subtract(_playerController.getMousePosition(), _player->getPixelPosition(Vec2(SCENE_WIDTH, SCENE_HEIGHT),
+        Vec2(DEFAULT_WIDTH, DEFAULT_HEIGHT)), &difference);
+    if (pow(difference.x, 2) + pow(difference.y, 2) > 30) {
         _player->setLinearVelocity(difference.normalize() * 10);
     }
+    else if(pow(difference.x, 2) + pow(difference.y, 2) > 5) {
+        // slowing down speed when the rocket gets close to its destination so there's no overshoot stutter
+        _player->setLinearVelocity(difference.normalize() * 2);
+    }
     else {
-        _player->setLinearVelocity(0);
+        _player->setLinearVelocity(Vec2(0, 0));
     }
     CULog("MousePosition");
     CULog(_playerController.getMousePosition().toString().c_str());
