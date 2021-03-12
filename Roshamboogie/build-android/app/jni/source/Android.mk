@@ -6,6 +6,7 @@
 LOCAL_PATH := $(call my-dir)
 PROJ_PATH  := $(LOCAL_PATH)/../../../..
 CUGL_PATH  := $(PROJ_PATH)/cugl
+LOCAL_SHORT_COMMANDS := true
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := main
