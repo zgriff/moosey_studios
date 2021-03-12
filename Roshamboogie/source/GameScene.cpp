@@ -78,8 +78,8 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     };
     _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
     Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
-    CULog("offset");
-    CULog(offset.toString().c_str());
+    /*CULog("offset");
+    CULog(offset.toString().c_str());*/
     offset = Vec2(0, 0);
 
     // Create the scene graph
@@ -158,12 +158,12 @@ void GameScene::update(float timestep) {
     else {
         _player->setLinearVelocity(Vec2(0, 0));
     }
-    CULog("MousePosition");
+   /* CULog("MousePosition");
     CULog(_playerController.getMousePosition().toString().c_str());
     CULog("PlayerPosition");
-    /*CULog(_player->getPixelPosition(Vec2(SCENE_WIDTH, SCENE_HEIGHT),
-        Vec2(DEFAULT_WIDTH, DEFAULT_HEIGHT)).toString().c_str());*/
-    CULog(_player->getPosition().toString().c_str());
+    CULog(_player->getPixelPosition(Vec2(SCENE_WIDTH, SCENE_HEIGHT),
+        Vec2(DEFAULT_WIDTH, DEFAULT_HEIGHT)).toString().c_str());
+    CULog(_player->getPosition().toString().c_str());*/
 
     _world->update(timestep);
     if(orbShouldMove){
