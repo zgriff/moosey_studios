@@ -12,7 +12,10 @@
 #include <vector>
 #include "InputController.h"
 #include "Player.h"
+#include "Orb.h"
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
+#include <Box2D/Dynamics/Contacts/b2Contact.h>
+#include <Box2D/Collision/b2Collision.h>
 
 class GameScene : public cugl::Scene2 {
 protected:
@@ -41,9 +44,11 @@ protected:
     /** Location and animation information for player (MODEL CLASS) */
     std::shared_ptr<Player> _player;
     
+    std::shared_ptr<Orb> _orbTest;
+    
     /** The weapon fire sound for the blue player */
 //    std::shared_ptr<cugl::Sound> _blueSound;
-    
+    bool orbShouldMove = false;
     
 public:
 #pragma mark -
@@ -109,6 +114,15 @@ public:
      * ratios
      */
     cugl::Size computeActiveSize() const;
+    
+    void moveOrb(Orb* orb);
+    
+#pragma mark -
+#pragma mark Collision Handling
+    void beginContact(b2Contact* contact);
+
+    void beforeSolve(b2Contact* contact, const b2Manifold* oldManifold);
+
 };
 
 #endif /* GameScene_hpp */

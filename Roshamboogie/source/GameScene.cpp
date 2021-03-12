@@ -10,11 +10,12 @@
 #include <Box2D/Dynamics/b2World.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
-//#include "CollisionController.h"
+#include "Element.h"
 
 #include <cugl/cugl.h>
 #include <iostream>
 #include <sstream>
+#include <random>
 
 using namespace cugl;
 using namespace std;
@@ -69,12 +70,12 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _world = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
     _world->activateCollisionCallbacks(true);
-//    _world->onBeginContact = [this](b2Contact* contact) {
-//        collisions::beginContact(contact);
-//    };
-//    _world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
-//        collisions::beforeSolve(contact,oldManifold);
-//    };
+    _world->onBeginContact = [this](b2Contact* contact) {
+        beginContact(contact);
+    };
+    _world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
+        beforeSolve(contact,oldManifold);
+    };
     _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
     Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
 
@@ -113,28 +114,47 @@ void GameScene::reset() {
 //    auto root = getChild(0);
     
     auto shipTexture = _assets->get<Texture>("rocket");
+    auto orbTexture = _assets->get<Texture>("photon");
 
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size playerSize(shipTexture->getSize()/_scale);
     _player = Player::alloc(playerPos, playerSize);
+    _world->addObstacle(_player);
     _player->setTextures(shipTexture);
     _player->setID(0);
     _player->setDrawScale(_scale);
     _playerController.init();
     
+    _orbTest = Orb::alloc(Element::Fire);
+    _world->addObstacle(_orbTest);
+    _orbTest->setTextures(orbTexture);
+    _orbTest->setDrawScale(_scale);
+    
+    _worldnode->addChild(_orbTest->getSceneNode());
     _worldnode->addChild(_player->getSceneNode());
-    _world->addObstacle(_player);
 }
 
 void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
     _playerController.readInput();
-    _world->update(timestep);
-    
+#ifndef CU_MOBILE
+    _player->setLinearVelocity(_playerController.getMov() * 3);
+#else
     Vec3 tilt = _playerController.getTiltVec();
     Vec2 moveVec(tilt.x, -tilt.y);
     _player->setForce(moveVec * 50);
     _player->applyForce();
+#endif
+    _world->update(timestep);
+    if(orbShouldMove){
+        std::random_device r;
+        std::default_random_engine e1(r());
+        std::uniform_int_distribution<int> rand_int(0, 10);
+        _orbTest->setPosition(rand_int(e1), rand_int(e1));
+    }
+
+    orbShouldMove = false;
+
 }
 
 /**
@@ -153,4 +173,25 @@ Size GameScene::computeActiveSize() const {
         dimen *= SCENE_HEIGHT/dimen.height;
     }
     return dimen;
+}
+
+void GameScene::beginContact(b2Contact* contact){
+    b2Fixture * fixA = contact->GetFixtureA();
+    b2Body * bodyA = fixA->GetBody();
+    b2Fixture * fixB = contact->GetFixtureB();
+    b2Body * bodyB = fixB->GetBody();
+    
+    cugl::physics2::Obstacle* bd1 = (cugl::physics2::Obstacle*) bodyA->GetUserData();
+    cugl::physics2::Obstacle* bd2 = (cugl::physics2::Obstacle*) bodyB->GetUserData();
+    
+    if(bd1->getName() == "orb" && bd2->getName() == "player"){
+//        ((Player *) bd2)->
+        orbShouldMove = true;
+    }else if(bd2->getName() == "orb" && bd1->getName() == "player"){
+        orbShouldMove = true;
+    }
+}
+
+void GameScene::beforeSolve(b2Contact* contact, const b2Manifold* oldManifold){
+    
 }

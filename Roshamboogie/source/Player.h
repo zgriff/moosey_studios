@@ -10,10 +10,7 @@
 #define __PLAYER_H__
 
 #include <cugl/cugl.h>
-
-enum class Element {
-    Grass, Water, Fire
-};
+#include "Element.h"
 
 class Player : public cugl::physics2::BoxObstacle{
 private:

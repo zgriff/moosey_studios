@@ -14,10 +14,12 @@
 class InputController {
 private:
     cugl::Vec3 _tiltVec;
-//    /** Did we press the fire button? */
-//    bool _didFire;
+
+    cugl::Vec2 mov;
+    
 
 public:
+    
     cugl::Vec3 getTiltVec(){
         return _tiltVec;
     }
@@ -72,6 +74,10 @@ public:
      * are more appropriate for menus and buttons (like the loading screen).
      */
     void readInput();
+    
+    cugl::Vec2 getMov(){
+        return mov;
+    }
 };
 
 #endif /* InputController_hpp */
