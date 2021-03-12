@@ -110,7 +110,6 @@ void PathInput::update(float dt) {
     _keyReset = false;
     _keyDebug = false;
 #endif
-
 }
 
 
@@ -129,7 +128,7 @@ void PathInput::touchBeganCB(const TouchEvent &event, bool focus) {
 }
 
 void PathInput::touchEndedCB(const TouchEvent &event, bool focus) {
-//    _dtouch = Vec2().ZERO;
+    _dtouch = Vec2().ZERO;
 //    CULog("x: %f , y: %f",_swingVec.x,_swingVec.y);
 }
 

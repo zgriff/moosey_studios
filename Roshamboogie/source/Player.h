@@ -46,6 +46,7 @@ private:
     
     /** The current directional movement of the character */
     bool _isMove;
+
     
     // Asset references.  These should be set by GameMode
     /** Reference to the node for the group of the ship and the aiming reticule */
@@ -80,6 +81,7 @@ public:
     void setMoving(bool value) {_isMove = value;}
     
     float getThrust() const { return DEFAULT_THRUST; }
+
             
     float getMaxSpeed() const { return PLAYER_MAX_SPEED;}
 
