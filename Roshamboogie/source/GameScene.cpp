@@ -143,7 +143,6 @@ void GameScene::reset() {
 void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
     _playerController.update(timestep);
-<<<<<<< HEAD
     if (_playerController.getPath() != Vec2().ZERO) {
         float touchScaleX = DEFAULT_WIDTH/getBounds().getMaxX();
         float touchScaleY = DEFAULT_HEIGHT/getBounds().getMaxY();
