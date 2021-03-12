@@ -174,22 +174,13 @@ void GameScene::update(float timestep) {
     if(orbShouldMove){
         std::random_device r;
         std::default_random_engine e1(r());
-        std::uniform_int_distribution<int> rand_int(0, 10);
-        _orbTest->setPosition(rand_int(e1), rand_int(e1));
+        std::uniform_int_distribution<int> rand_int(0, 32);
+        std::uniform_int_distribution<int> rand_int2(0, 18);
+        _orbTest->setPosition(rand_int(e1), rand_int2(e1));
     }
     
     orbShouldMove = false;
-//    // Move the photons forward, and add new ones if necessary.
-//    if (_redController.didPressFire() && firePhoton(_redShip)) {
-//        // The last argument is force=true.  It makes sure only one instance plays.
-//        AudioEngine::get()->play("redfire", _redSound, false, 1.0f, true);
-//    }
-//    if (_blueController.didPressFire() && firePhoton(_blueShip)) {
-//        // The last argument is force=true.  It makes sure only one instance plays.
-//        AudioEngine::get()->play("bluefire", _blueSound, false, 1.0f, true);
-//    }
 
-    // Move the ships and photons forward (ignoring collisions)
 }
 
 void GameScene::populate() {
