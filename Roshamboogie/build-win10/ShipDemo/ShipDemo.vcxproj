@@ -185,21 +185,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\source\App.h" />
+    <ClInclude Include="..\..\source\Element.h" />
+    <ClInclude Include="..\..\source\GameScene.h" />
     <ClInclude Include="..\..\source\HelloApp.h" />
-    <ClInclude Include="..\..\source\SDApp.h" />
-    <ClInclude Include="..\..\source\SDGameScene.h" />
-    <ClInclude Include="..\..\source\SDInput.h" />
-    <ClInclude Include="..\..\source\SDLoadingScene.h" />
-    <ClInclude Include="..\..\source\SDShipModel.h" />
+    <ClInclude Include="..\..\source\InputController.h" />
+    <ClInclude Include="..\..\source\LoadingScene.h" />
+    <ClInclude Include="..\..\source\Orb.h" />
+    <ClInclude Include="..\..\source\OrbManager.h" />
+    <ClInclude Include="..\..\source\Player.h" />
+    <ClInclude Include="..\..\source\SwapStation.h" />
+    <ClInclude Include="..\..\source\TapMoveInputController.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\source\App.cpp" />
+    <ClCompile Include="..\..\source\GameScene.cpp" />
+    <ClCompile Include="..\..\source\InputController.cpp" />
+    <ClCompile Include="..\..\source\LoadingScene.cpp" />
     <ClCompile Include="..\..\source\main.cpp" />
-    <ClCompile Include="..\..\source\SDApp.cpp" />
-    <ClCompile Include="..\..\source\SDGameScene.cpp" />
-    <ClCompile Include="..\..\source\SDInput.cpp" />
-    <ClCompile Include="..\..\source\SDLoadingScene.cpp" />
-    <ClCompile Include="..\..\source\SDShipModel.cpp" />
+    <ClCompile Include="..\..\source\Orb.cpp" />
+    <ClCompile Include="..\..\source\OrbManager.cpp" />
+    <ClCompile Include="..\..\source\Player.cpp" />
+    <ClCompile Include="..\..\source\SwapStation.cpp" />
+    <ClCompile Include="..\..\source\TapMoveInputController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ShipDemo.rc" />

@@ -175,6 +175,8 @@ public:
      * @param scale The ratio of the ship sprite to the physics body
      */
     void setDrawScale(float scale);
+
+    cugl::Vec2 getPixelPosition(cugl::Vec2 screenBounds, cugl::Vec2 box2dBounds);
     
     /**
      * Returns the ratio of the ship sprite to the physics body

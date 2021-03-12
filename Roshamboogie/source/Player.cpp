@@ -118,3 +118,7 @@ void Player::setDrawScale(float scale) {
         _sceneNode->setPosition(getPosition()*_drawscale);
     }
 }
+
+cugl::Vec2 Player::getPixelPosition(cugl::Vec2 screenBounds, cugl::Vec2 box2dBounds) {
+    return this->getPosition() / box2dBounds * screenBounds;
+}

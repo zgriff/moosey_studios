@@ -24,7 +24,7 @@ using namespace std;
 #pragma mark Level Layout
 
 /** Regardless of logo, lock the height to this */
-#define SCENE_WIDTH 1024
+#define SCENE_WIDTH 1280
 #define SCENE_HEIGHT 720
 
 /** Width of the game world in Box2d units */
@@ -60,13 +60,13 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Start up the input handler
     _assets = assets;
-    _playerController.init();
     
     // Acquire the scene built by the asset loader and resize it the scene
     std::shared_ptr<scene2::SceneNode> scene = _assets->get<scene2::SceneNode>("lab");
     scene->setContentSize(dimen);
     scene->doLayout(); // Repositions the HUD;
 
+    _playerController.init(getBounds());
     
     _world = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
     _world->activateCollisionCallbacks(true);
@@ -78,6 +78,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     };
     _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
     Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
+    CULog("offset");
+    CULog(offset.toString().c_str());
+    offset = Vec2(0, 0);
 
     // Create the scene graph
     _worldnode = scene2::SceneNode::alloc();
@@ -123,7 +126,7 @@ void GameScene::reset() {
     _player->setTextures(shipTexture);
     _player->setID(0);
     _player->setDrawScale(_scale);
-    _playerController.init();
+    _playerController.init(getBounds());
     
     _orbTest = Orb::alloc(Element::Fire);
     _world->addObstacle(_orbTest);
@@ -140,6 +143,19 @@ void GameScene::update(float timestep) {
 #ifndef CU_MOBILE
     _player->setLinearVelocity(_playerController.getMov() * 3);
 #endif
+    if (_playerController.getPressed()) {
+        Vec2 difference;
+        Vec2::subtract(_playerController.getMousePosition(), _player->getPixelPosition(Vec2(SCENE_WIDTH, SCENE_HEIGHT), 
+            Vec2(DEFAULT_WIDTH, DEFAULT_HEIGHT)), &difference);
+        _player->setLinearVelocity(difference.normalize() * 10);
+    }
+    CULog("MousePosition");
+    CULog(_playerController.getMousePosition().toString().c_str());
+    CULog("PlayerPosition");
+    /*CULog(_player->getPixelPosition(Vec2(SCENE_WIDTH, SCENE_HEIGHT),
+        Vec2(DEFAULT_WIDTH, DEFAULT_HEIGHT)).toString().c_str());*/
+    CULog(_player->getPosition().toString().c_str());
+
     _world->update(timestep);
     if(orbShouldMove){
         std::random_device r;
