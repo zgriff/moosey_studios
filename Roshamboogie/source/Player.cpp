@@ -105,7 +105,6 @@ void Player::applyForce() {
     
     if (getMovement() == Vec2(0.0f,0.0f)) {
         b2Vec2 force(-getDamping()*getVX(),-getDamping()*getVY());
-//        CULog("Damping by x: %f, y: %f", force.x,force.y);
         _force.x += force.x;
         _force.y += force.y;
 //        _body->ApplyForce(force,_body->GetPosition(),true);
