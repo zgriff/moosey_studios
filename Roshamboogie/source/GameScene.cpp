@@ -141,6 +141,7 @@ void GameScene::update(float timestep) {
 //    _playerController.readInput();
 //    _player->setMovement(_playerController.getSwing());
     _playerController.update(timestep);
+    
     _player->setForce(_playerController.getSwing()*_player->getThrust());
     _player->setMovement(_playerController.getSwing());
     _player->applyForce();
