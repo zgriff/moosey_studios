@@ -161,20 +161,41 @@ void GameScene::reset() {
 void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
     _playerController.readInput();
-#ifndef CU_MOBILE
     auto ang = _player->getAngle();
-    ang += _playerController.getMov().x * M_PI / -30.0f;
+    ang += _playerController.getMov().x * M_PI / -60.0f;
     _player->setAngle(ang);
-    _player->applyForce();
-#endif
+    
+    if (_playerController.getMov().x == 0) {
+        _player->applyForce();
+        
+    }
+    else if (_playerController.getMov().x < 0) {
+        auto vel = _player->getLinearVelocity().length();
+        auto forForce = _player->getForce();
+        auto turnForce = _player->getForce().getPerp().scale(vel / 1.5f);
+        _player->setForce(turnForce);
+        _player->applyForce();
+        _player->setForce(forForce);
+        _player->applyForce();
+    }
+    else {
+        auto vel = _player->getLinearVelocity().length();
+        auto forForce = _player->getForce();
+        auto turnForce = _player->getForce().getPerp().scale(vel / -1.5f);
+        _player->setForce(turnForce);
+        _player->applyForce();
+        _player->setForce(forForce);
+        _player->applyForce();
+    }
+
     _world->update(timestep);
-    if(orbShouldMove){
+    if (orbShouldMove) {
         std::random_device r;
         std::default_random_engine e1(r());
         std::uniform_int_distribution<int> rand_int(0, 10);
         _orbTest->setPosition(rand_int(e1), rand_int(e1));
     }
-    
+
     orbShouldMove = false;
 }
 
