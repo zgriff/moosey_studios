@@ -18,6 +18,8 @@ private:
 
     cugl::Vec2 mov;
     
+    bool _keydown;
+    cugl::Vec2 _dtouch;
 //    /** Did we press the fire button? */
 //    bool _didFire;
 
@@ -85,6 +87,25 @@ public:
     cugl::Vec2 getMov(){
         return mov;
     }
+
+#pragma mark -
+#pragma mark Touch Callbacks
+    /**
+     * Callback for the beginning of a touch event
+     *
+     * @param t     The touch information
+     * @param event The associated event
+     */
+    void touchBeganCB(const cugl::TouchEvent& event, bool focus);
+
+    /**
+     * Callback for the end of a touch event
+     *
+     * @param t     The touch information
+     * @param event The associated event
+     */
+    void touchEndedCB(const cugl::TouchEvent& event, bool focus);
+
 };
 
 #endif /* InputController_hpp */

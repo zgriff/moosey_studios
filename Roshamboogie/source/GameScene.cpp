@@ -15,6 +15,7 @@
 #include <cugl/cugl.h>
 #include <iostream>
 #include <sstream>
+#include <cmath>
 #include <random>
 
 using namespace cugl;
@@ -161,29 +162,45 @@ void GameScene::reset() {
 void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
     _playerController.readInput();
-#ifndef CU_MOBILE
-    _player->setLinearVelocity(_playerController.getMov() * 3);
-#endif
+    auto ang = _player->getAngle();
+    ang += _playerController.getMov().x * M_PI / -45.0f;
+    _player->setAngle(ang > M_PI/2.0f ? ang - 2.0f*M_PI : (ang < -1.5f*M_PI ? ang + 2.0f*M_PI : ang));
+    
+    if (_playerController.getMov().x == 0) {
+        auto vel = _player->getLinearVelocity();
+        auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
+        auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset)*.02);
+        _player->setLinearVelocity(vel.add(correction));
+        _player->applyForce();
+    }
+    else if (_playerController.getMov().x < 0) {
+        auto vel = _player->getLinearVelocity().length();
+        auto forForce = _player->getForce();
+        auto turnForce = _player->getForce().getPerp().scale(vel / 1.0f);
+        _player->setForce(turnForce);
+        _player->applyForce();
+        _player->setForce(forForce);
+        _player->applyForce();
+    }
+    else {
+        auto vel = _player->getLinearVelocity().length();
+        auto forForce = _player->getForce();
+        auto turnForce = _player->getForce().getPerp().scale(vel / -1.0f);
+        _player->setForce(turnForce);
+        _player->applyForce();
+        _player->setForce(forForce);
+        _player->applyForce();
+    }
+
     _world->update(timestep);
-    if(orbShouldMove){
+    if (orbShouldMove) {
         std::random_device r;
         std::default_random_engine e1(r());
         std::uniform_int_distribution<int> rand_int(0, 10);
         _orbTest->setPosition(rand_int(e1), rand_int(e1));
     }
-    
-    orbShouldMove = false;
-//    // Move the photons forward, and add new ones if necessary.
-//    if (_redController.didPressFire() && firePhoton(_redShip)) {
-//        // The last argument is force=true.  It makes sure only one instance plays.
-//        AudioEngine::get()->play("redfire", _redSound, false, 1.0f, true);
-//    }
-//    if (_blueController.didPressFire() && firePhoton(_blueShip)) {
-//        // The last argument is force=true.  It makes sure only one instance plays.
-//        AudioEngine::get()->play("bluefire", _blueSound, false, 1.0f, true);
-//    }
 
-    // Move the ships and photons forward (ignoring collisions)
+    orbShouldMove = false;
 }
 
 void GameScene::populate() {

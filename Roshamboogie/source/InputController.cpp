@@ -19,8 +19,7 @@ using namespace cugl;
  *
  * To use this controller, you will need to initialize it first
  */
-InputController::InputController() {
-}
+InputController::InputController() {}
 
 /**
  * Initializes a new input controller for the  player.
@@ -41,12 +40,12 @@ bool InputController::init() {
 #else
     success = Input::activate<Accelerometer>();
     Touchscreen* touch = Input::get<Touchscreen>();
-//    touch->addBeginListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
-//        this->touchBeganCB(event,focus);
-//    });
-//    touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
-//        this->touchEndedCB(event,focus);
-//    });
+    touch->addBeginListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+        this->touchBeganCB(event,focus);
+    });
+    touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+        this->touchEndedCB(event,focus);
+    });
 #endif
     return success;
 }
@@ -57,8 +56,8 @@ void InputController::dispose() {
 #else
         Input::deactivate<Accelerometer>();
         Touchscreen* touch = Input::get<Touchscreen>();
-//        touch->removeBeginListener(LISTENER_KEY);
-//        touch->removeEndListener(LISTENER_KEY);
+        touch->removeBeginListener(LISTENER_KEY);
+        touch->removeEndListener(LISTENER_KEY);
 #endif
 }
 
@@ -73,6 +72,17 @@ void InputController::dispose() {
 void InputController::readInput() {
 #ifdef CU_MOBILE
     // YOU NEED TO PUT SOME CODE HERE
+    if (_keydown) {
+        if (_dtouch.x < 640) {
+            mov.x = -1;
+        }
+        else {
+            mov.x = 1;
+        }
+    }
+    else {
+        mov.x = 0;
+    }
 #else
     // Figure out, based on which player we are, which keys
     // control our actions (depends on player).
@@ -81,7 +91,6 @@ void InputController::readInput() {
         down  = KeyCode::ARROW_DOWN;
         left  = KeyCode::ARROW_LEFT;
         right = KeyCode::ARROW_RIGHT;
-//        shoot = KeyCode::SPACE;
     
     // Convert keyboard state into game commands
 //    _didFire = false;
@@ -95,4 +104,31 @@ void InputController::readInput() {
     mov.x += keys->keyDown(right) ? 1 : 0;
 
 #endif
+}
+
+#pragma mark -
+#pragma mark Touch Callbacks
+/**
+ * Callback for the beginning of a touch event
+ *
+ * @param t     The touch information
+ * @param event The associated event
+ */
+void InputController::touchBeganCB(const cugl::TouchEvent& event, bool focus) {
+    // All touches correspond to key up
+    _keydown = true;
+
+    // Update the touch location for later gestures
+    _dtouch = event.position;
+}
+
+/**
+ * Callback for the end of a touch event
+ *
+ * @param t     The touch information
+ * @param event The associated event
+ */
+void InputController::touchEndedCB(const cugl::TouchEvent& event, bool focus) {
+    // Gesture has ended.  Give it meaning.
+    _keydown = false;
 }
