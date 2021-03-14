@@ -3,6 +3,7 @@
 # CUGL static library
 #
 ###########################
+APP_SHORT_COMMANDS := true
 LOCAL_PATH := $(call my-dir)
 CUGL_PATH  := $(LOCAL_PATH)/../../..
 include $(CLEAR_VARS)
