@@ -110,7 +110,7 @@ void Player::applyForce() {
 //        _body->ApplyForce(force,_body->GetPosition(),true);
     }
     
-    
+    CULog("force: x: %f , y: %f", _force.x,_force.y);
     // Orient the force with rotation.
     Vec4 netforce(_force.x,_force.y,0.0f,1.0f);
     Mat4::createRotationZ(getAngle(),&_affine);

@@ -169,7 +169,8 @@ public:
     
     
 
-    const cugl::Vec2 getSwing() const {return _swingVec;}
+    const cugl::Vec2& getSwing() const {return _playerSwing;}
+
 
     
     /**

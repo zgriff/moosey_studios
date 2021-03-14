@@ -109,7 +109,10 @@ void GolfInput::update(float dt) {
     _keyReset = false;
     _keyDebug = false;
 #endif
+
+    _playerSwing.set(Vec2(0.0f,0.0f));
     if (_swingVec != Vec2(0.0f,0.0f) && _swingStart) {
+        _playerSwing.set(_swingVec);
         _swingStart=false;
         _swingVec.set(Vec2(0.0f,0.0f));
     }
