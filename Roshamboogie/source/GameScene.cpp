@@ -167,7 +167,7 @@ void GameScene::update(float timestep) {
     
     if (_playerController.getMov().x == 0) {
         _player->applyForce();
-        
+        ang = _player->getLinearVelocity().getAngle() - _player->getAngle();
     }
     else if (_playerController.getMov().x < 0) {
         auto vel = _player->getLinearVelocity().length();
