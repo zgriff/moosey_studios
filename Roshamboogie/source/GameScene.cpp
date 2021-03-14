@@ -144,9 +144,7 @@ void GameScene::update(float timestep) {
     
     if (_playerController.getMov().x == 0) {
         auto vel = _player->getLinearVelocity();
-        auto velDir = vel.getAngle();
-        auto playDir = _player->getAngle() + M_PI/2.0f;
-        auto offset = velDir - playDir;
+        auto offset = vel.getAngle() -_player->getAngle() + M_PI / 2.0f;
         auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset)*.02);
         _player->setLinearVelocity(vel.add(correction));
         _player->applyForce();
