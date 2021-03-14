@@ -69,6 +69,7 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size) {
         setName(name);
         setDensity(DEFAULT_DENSITY);
         setFriction(DEFAULT_FRICTION);
+        setLinearDamping(0.3f);
         setRestitution(DEFAULT_RESTITUTION);
         setFixedRotation(true);
         _sceneNode = nullptr;
