@@ -35,6 +35,28 @@ using namespace std;
 /** The initial rocket position */
 float PLAYER_POS[] = {24,  4};
 
+#define WALL_VERTS  8
+#define WALL_COUNT  4
+
+float WALL[WALL_COUNT][WALL_VERTS] = {
+    {0.0f, 0.0f, 1.0f, 0.0f,  1.0f, 18.0f,
+    0.0f,  18.0f},
+    {1.0f, 0.0f, 31.0f,  0.0f, 31.0f,  1.0f,
+    1.0f, 1.0f},
+    {31.0f, 0.0f, 32.0f,  0.0f, 32.0f,  18.0f,
+    31.0f, 18.0f},
+    {1.0f, 17.0f, 31.0f,  17.0f, 31.0f,  18.0f,
+    1.0f, 18.0f}
+};
+
+#define BASIC_DENSITY   0.0f
+/** The density for a bullet */
+#define HEAVY_DENSITY   10.0f
+/** Friction of most platforms */
+#define BASIC_FRICTION  0.4f
+/** The restitution for all physics objects */
+#define BASIC_RESTITUTION   0.1f
+
 #pragma mark -
 #pragma mark Constructors
 /**
@@ -130,6 +152,8 @@ void GameScene::reset() {
     _orbTest->setTextures(orbTexture);
     _orbTest->setDrawScale(_scale);
     
+    populate();
+    
     _worldnode->addChild(_orbTest->getSceneNode());
     _worldnode->addChild(_player->getSceneNode());
 }
@@ -161,6 +185,65 @@ void GameScene::update(float timestep) {
 
     // Move the ships and photons forward (ignoring collisions)
 }
+
+void GameScene::populate() {
+    std::shared_ptr<Texture> image = _assets->get<Texture>("earth");
+    std::shared_ptr<scene2::PolygonNode> sprite;
+    std::shared_ptr<scene2::WireNode> draw;
+    std::string wname = "wall";
+    for (int ii = 0; ii<WALL_COUNT; ii++) {
+        std::shared_ptr<physics2::PolygonObstacle> wallobj;
+
+        Poly2 wall(WALL[ii],WALL_VERTS);
+        // Call this on a polygon to get a solid shape
+        SimpleTriangulator triangulator;
+        triangulator.set(wall);
+        triangulator.calculate();
+        wall.setIndices(triangulator.getTriangulation());
+        wall.setGeometry(Geometry::SOLID);
+
+        wallobj = physics2::PolygonObstacle::alloc(wall);
+        // You cannot add constant "".  Must stringify
+        wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
+        wallobj->setName(wname);
+
+        // Set the physics attributes
+        wallobj->setBodyType(b2_staticBody);
+        wallobj->setDensity(BASIC_DENSITY);
+        wallobj->setFriction(BASIC_FRICTION);
+        wallobj->setRestitution(BASIC_RESTITUTION);
+
+        wall *= _scale;
+        sprite = scene2::PolygonNode::allocWithTexture(image,wall);
+        addObstacle(wallobj,sprite,1);
+    }
+
+}
+
+
+void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj,
+                            const std::shared_ptr<cugl::scene2::SceneNode>& node,
+                            int zOrder,
+                            bool useObjPosition) {
+    _world->addObstacle(obj);
+//    obj->setDebugScene(_debugnode);
+
+    // Position the scene graph node (enough for static objects)
+      if (useObjPosition) {
+          node->setPosition(obj->getPosition()*_scale);
+      }
+      _worldnode->addChild(node, zOrder);
+
+    // Dynamic objects need constant updating
+    if (obj->getBodyType() == b2_dynamicBody) {
+        scene2::SceneNode* weak = node.get(); // No need for smart pointer in callback
+        obj->setListener([=](physics2::Obstacle* obs){
+            weak->setPosition(obs->getPosition()*_scale);
+            weak->setAngle(obs->getAngle());
+        });
+    }
+}
+
 
 /**
  * Returns the active screen size of this scene.
