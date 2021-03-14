@@ -178,8 +178,8 @@ void GameScene::update(float timestep) {
     if(orbShouldMove){
         std::random_device r;
         std::default_random_engine e1(r());
-        std::uniform_int_distribution<int> rand_int(0, 32);
-        std::uniform_int_distribution<int> rand_int2(0, 18);
+        std::uniform_int_distribution<int> rand_int(1, 31);
+        std::uniform_int_distribution<int> rand_int2(1, 17);
         _orbTest->setPosition(rand_int(e1), rand_int2(e1));
     }
     
