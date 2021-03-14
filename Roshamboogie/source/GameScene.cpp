@@ -176,7 +176,11 @@ void GameScene::update(float timestep) {
     else if (_playerController.getMov().x < 0) {
         auto vel = _player->getLinearVelocity().length();
         auto forForce = _player->getForce();
+<<<<<<< HEAD
         auto turnForce = _player->getForce().getPerp().scale(vel / 1.0f);
+=======
+        auto turnForce = _player->getForce().getPerp().scale(vel / 1.5f);
+>>>>>>> 6a960e66f30103b9c97062e58a12132c2fe01ca5
         _player->setForce(turnForce);
         _player->applyForce();
         _player->setForce(forForce);
@@ -185,7 +189,11 @@ void GameScene::update(float timestep) {
     else {
         auto vel = _player->getLinearVelocity().length();
         auto forForce = _player->getForce();
+<<<<<<< HEAD
         auto turnForce = _player->getForce().getPerp().scale(vel / -1.0f);
+=======
+        auto turnForce = _player->getForce().getPerp().scale(vel / -1.5f);
+>>>>>>> 6a960e66f30103b9c97062e58a12132c2fe01ca5
         _player->setForce(turnForce);
         _player->applyForce();
         _player->setForce(forForce);
