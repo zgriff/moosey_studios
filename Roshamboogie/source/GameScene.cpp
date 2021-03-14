@@ -199,7 +199,6 @@ void GameScene::update(float timestep) {
         std::uniform_int_distribution<int> rand_int(1, 31);
         std::uniform_int_distribution<int> rand_int2(1, 17);
         _orbTest->setPosition(rand_int(e1), rand_int2(e1));
-        _orbTest->setPosition(rand_int(e1), rand_int(e1));
     }
 
     orbShouldMove = false;
