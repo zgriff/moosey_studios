@@ -39,9 +39,7 @@ private:
     float _drawscale;
     
     /** The current directional movement of the character */
-
     cugl::Vec2  _movement;
-
 
     
     // Asset references.  These should be set by GameMode
@@ -172,6 +170,7 @@ public:
      * This method should be called after the force attribute is set.
      */
     void applyForce();
+    
 
     /**
      * Updates the object's physics state (NOT GAME LOGIC).

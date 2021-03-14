@@ -155,6 +155,7 @@ void GameScene::reset() {
     
     populate();
     
+    
     _worldnode->addChild(_orbTest->getSceneNode());
     _worldnode->addChild(_player->getSceneNode());
 }
