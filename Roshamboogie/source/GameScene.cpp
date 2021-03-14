@@ -15,6 +15,7 @@
 #include <cugl/cugl.h>
 #include <iostream>
 #include <sstream>
+#include <cmath>
 #include <random>
 
 using namespace cugl;
@@ -138,12 +139,17 @@ void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
     _playerController.readInput();
     auto ang = _player->getAngle();
-    ang += _playerController.getMov().x * M_PI / -60.0f;
-    _player->setAngle(ang);
+    ang += _playerController.getMov().x * M_PI / -45.0f;
+    _player->setAngle(ang > M_PI/2.0f ? ang - 2.0f*M_PI : (ang < -1.5f*M_PI ? ang + 2.0f*M_PI : ang));
     
     if (_playerController.getMov().x == 0) {
+        auto vel = _player->getLinearVelocity();
+        auto velDir = vel.getAngle();
+        auto playDir = _player->getAngle() + M_PI/2.0f;
+        auto offset = velDir - playDir;
+        auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset)*.02);
+        _player->setLinearVelocity(vel.add(correction));
         _player->applyForce();
-        ang = _player->getLinearVelocity().getAngle() - _player->getAngle();
     }
     else if (_playerController.getMov().x < 0) {
         auto vel = _player->getLinearVelocity().length();
