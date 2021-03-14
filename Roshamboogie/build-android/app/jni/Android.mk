@@ -3,6 +3,7 @@
 # Linker Makefile
 #
 ########################
+LOCAL_SHORT_COMMANDS := true
 CACHE_PATH := $(call my-dir)
 LOCAL_PATH := $(CACHE_PATH)
 PROJ_PATH  := $(CACHE_PATH)

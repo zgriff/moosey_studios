@@ -1,3 +1,4 @@
+APP_SHORT_COMMANDS := true
 APP_STL := c++_static 
 APP_PLATFORM := android-23
 APP_ABI := arm64-v8a armeabi-v7a x86 x86_64

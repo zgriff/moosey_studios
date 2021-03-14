@@ -3,6 +3,7 @@
 # Main Application Entry
 #
 ########################
+LOCAL_SHORT_COMMANDS := true
 LOCAL_PATH := $(call my-dir)
 PROJ_PATH  := $(LOCAL_PATH)/../../../..
 CUGL_PATH  := $(PROJ_PATH)/cugl
