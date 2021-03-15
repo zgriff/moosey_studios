@@ -19,7 +19,7 @@ using namespace cugl;
 /** The restitution of this rocket */
 #define DEFAULT_RESTITUTION 0.4f
 /** The constant force applied to this rocket */
-#define DEFAULT_FORCE Vec2(0.0f, 7.0f)
+#define DEFAULT_FORCE Vec2(0.0f, 8.3f)
 
 
 /**

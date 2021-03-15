@@ -162,35 +162,34 @@ void GameScene::reset() {
 void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
     _playerController.readInput();
-    auto ang = _player->getAngle();
-    ang += _playerController.getMov().x * M_PI / -45.0f;
-    _player->setAngle(ang > M_PI/2.0f ? ang - 2.0f*M_PI : (ang < -1.5f*M_PI ? ang + 2.0f*M_PI : ang));
+    auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
+    _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
     
+    auto vel = _player->getLinearVelocity();
+    auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
+    offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
+    auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .02f);
+    _player->setLinearVelocity(vel.add(correction));
     if (_playerController.getMov().x == 0) {
-        auto vel = _player->getLinearVelocity();
-        auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
-        auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset)*.02);
-        _player->setLinearVelocity(vel.add(correction));
+        //if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
         _player->applyForce();
-    }
-    else if (_playerController.getMov().x < 0) {
-        auto vel = _player->getLinearVelocity().length();
-        auto forForce = _player->getForce();
-        auto turnForce = _player->getForce().getPerp().scale(vel / 1.0f);
-        _player->setForce(turnForce);
-        _player->applyForce();
-        _player->setForce(forForce);
-        _player->applyForce();
+        //}
     }
     else {
-        auto vel = _player->getLinearVelocity().length();
         auto forForce = _player->getForce();
-        auto turnForce = _player->getForce().getPerp().scale(vel / -1.0f);
+        auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * -1.1f);
+        if (_playerController.getMov().x > 0) {
+            turnForce.scale(-1.0f);
+        }
+        if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) { 
+            turnForce.scale(-1.0f); 
+            _player->applyForce();
+        }
         _player->setForce(turnForce);
         _player->applyForce();
         _player->setForce(forForce);
-        _player->applyForce();
     }
+    
 
     _world->update(timestep);
     if (orbShouldMove) {
