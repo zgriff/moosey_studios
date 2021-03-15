@@ -163,27 +163,38 @@ void GameScene::reset() {
 void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
     _playerController.readInput();
+
+    //updates the player's angle based on their input
     auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -32.0f;
     _player->setAngle(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
 
     auto vel = _player->getLinearVelocity();
+
+    //calculate the angle between the player's direction and the player's velocity
     auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
     offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
-    auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .02f);
-    _player->setLinearVelocity(vel.add(correction));
+
     if (_playerController.getMov().x == 0) {
-        //if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
+        //player isn't turning
+        //damp's the players velocity horizontal to their direction
+        auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .02f);
+        _player->setLinearVelocity(vel.add(correction));
+        //accelerate the player forwards
         _player->applyForce();
-        //}
     }
     else {
+        //the player is turning
         auto forForce = _player->getForce();
-        auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * -1.1f);
+        //create a turnforce perpendicular to the player
+        //scales it by the forwards/backwards velocity so the player's turn radius scales linearly with their speed
+        auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * -1.16f);
+        
+        //reverse the direction of the turnforce if they're turning right
         if (_playerController.getMov().x > 0) {
             turnForce.scale(-1.0f);
         }
+        //helps the player pick up speed if they're going backwards
         if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
-            turnForce.scale(-1.0f);
             _player->applyForce();
         }
         _player->setForce(turnForce);
