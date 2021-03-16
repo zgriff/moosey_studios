@@ -310,7 +310,7 @@ void AudioScheduler::play(const std::shared_ptr<AudioNode>& node, Sint32 loop) {
     }
     _queue.push(node,loop);
     _qsize.exchange(_qsize.load(std::memory_order_relaxed)+1,std::memory_order_release);
-    _qskip.store(_qsize.load(std::memory_order_relaxed)-1,std::memory_order_release);
+    _qskip.store(_qsize.load(std::memory_order_relaxed),std::memory_order_release);
 
 }
 

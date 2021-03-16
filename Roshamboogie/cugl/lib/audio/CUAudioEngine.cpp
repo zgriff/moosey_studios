@@ -141,7 +141,6 @@ void AudioEngine::dispose() {
         _panPool.clear();
         _capacity = 0;
         
-		_output->detach();
 		_output = nullptr;
         _mixer = nullptr;
         

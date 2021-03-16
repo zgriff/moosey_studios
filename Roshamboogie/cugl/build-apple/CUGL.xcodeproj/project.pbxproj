@@ -645,6 +645,7 @@
 		EBA7BC48213B1A8C009EB72D /* cu_audio_graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cu_audio_graph.h; sourceTree = "<group>"; };
 		EBA7BC49213B1A8C009EB72D /* CUAudioOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUAudioOutput.h; sourceTree = "<group>"; };
 		EBA7BC4D213B1BD3009EB72D /* CUAudioOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUAudioOutput.cpp; sourceTree = "<group>"; };
+		EBB8379925E5E46C00401672 /* cu_render.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cu_render.h; sourceTree = "<group>"; };
 		EBB8FEF421E196B30039834E /* CUSoundLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUSoundLoader.h; sourceTree = "<group>"; };
 		EBB8FEFE21E198D60039834E /* CUSoundLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CUSoundLoader.cpp; sourceTree = "<group>"; };
 		EBB96D7B1D31EDB100C2CA07 /* CUMouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUMouse.cpp; sourceTree = "<group>"; };
@@ -695,7 +696,6 @@
 		EBC2F18D1D74AA27007EC7A6 /* cu_math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cu_math.h; sourceTree = "<group>"; };
 		EBC2F18E1D74AA33007EC7A6 /* cu_polygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cu_polygon.h; sourceTree = "<group>"; };
 		EBC2F18F1D74AA40007EC7A6 /* cu_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cu_util.h; sourceTree = "<group>"; };
-		EBC2F1901D74AA4B007EC7A6 /* cu_renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cu_renderer.h; sourceTree = "<group>"; };
 		EBC2F1911D74AA53007EC7A6 /* cu_assets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cu_assets.h; sourceTree = "<group>"; };
 		EBC2F1931D74AA68007EC7A6 /* cu_input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cu_input.h; sourceTree = "<group>"; };
 		EBC7E78B1D333886000A892F /* CUTouchscreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUTouchscreen.cpp; sourceTree = "<group>"; };
@@ -1360,7 +1360,7 @@
 		EBC2F1661D74A80C007EC7A6 /* render */ = {
 			isa = PBXGroup;
 			children = (
-				EBC2F1901D74AA4B007EC7A6 /* cu_renderer.h */,
+				EBB8379925E5E46C00401672 /* cu_render.h */,
 				EB45FD5F25B355AF00974097 /* CUFont.h */,
 				EBC2F1881D74A9AE007EC7A6 /* CUTexture.h */,
 				EB45FD5D25B355AF00974097 /* CUScissor.h */,

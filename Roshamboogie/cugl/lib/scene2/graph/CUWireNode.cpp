@@ -246,6 +246,7 @@ void WireNode::setTraversal(poly2::Traversal traversal) {
     if (!_source.vertices().empty()) {
         PolyFactory factory;
         _polygon = factory.makeTraversal(_source,traversal);
+        _mesh.command = _polygon.getGeometry().glCommand();
         TexturedNode::setPolygon(_polygon);
     }
 }
@@ -341,6 +342,7 @@ void WireNode::setPolygon(const Rect rect) {
             _polygon.indices().push_back(0);
             break;
     }
+    _polygon.setGeometry(Geometry::PATH);
     setContentSize(_polygon.getBounds().size);
     _mesh.command = _polygon.getGeometry().glCommand();
 }

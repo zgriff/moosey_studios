@@ -398,7 +398,7 @@ void SpriteBatch::setShader(const std::shared_ptr<Shader>& shader) {
  * @param perspective   The active perspective matrix for this sprite batch
  */
 void SpriteBatch::setPerspective(const Mat4& perspective) {
-    if (!_context->perspective->equals(perspective)) {
+    if (_context->perspective.get() != &perspective) {
         if (_inflight) { record(); }
         auto matrix = std::make_shared<Mat4>(perspective);
         _context->perspective = matrix;

@@ -10,33 +10,30 @@
 		925FC4F625F42B2800532483 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4F525F42B2800532483 /* main.cpp */; };
 		925FC4F725F42B2800532483 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4F525F42B2800532483 /* main.cpp */; };
 		925FC4F825F42B2800532483 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4F525F42B2800532483 /* main.cpp */; };
-		925FC50125F42B6F00532483 /* RPSApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4FF25F42B6F00532483 /* RPSApp.cpp */; };
-		925FC50225F42B6F00532483 /* RPSApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4FF25F42B6F00532483 /* RPSApp.cpp */; };
-		925FC50325F42B6F00532483 /* RPSApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4FF25F42B6F00532483 /* RPSApp.cpp */; };
-		925FC50C25F42CFC00532483 /* RPSLoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC50A25F42CFC00532483 /* RPSLoadingScene.cpp */; };
-		925FC50D25F42CFD00532483 /* RPSLoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC50A25F42CFC00532483 /* RPSLoadingScene.cpp */; };
-		925FC50E25F42CFD00532483 /* RPSLoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC50A25F42CFC00532483 /* RPSLoadingScene.cpp */; };
-		925FC51425F42D0800532483 /* RPSGameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC51225F42D0800532483 /* RPSGameScene.cpp */; };
-		925FC51525F42D0800532483 /* RPSGameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC51225F42D0800532483 /* RPSGameScene.cpp */; };
-		925FC51625F42D0800532483 /* RPSGameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC51225F42D0800532483 /* RPSGameScene.cpp */; };
-		925FC51C25F42D1800532483 /* RPSInputController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC51A25F42D1800532483 /* RPSInputController.cpp */; };
-		925FC51D25F42D1800532483 /* RPSInputController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC51A25F42D1800532483 /* RPSInputController.cpp */; };
-		925FC51E25F42D1800532483 /* RPSInputController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC51A25F42D1800532483 /* RPSInputController.cpp */; };
-		925FC52425F42D2600532483 /* RPSCollisionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC52225F42D2600532483 /* RPSCollisionController.cpp */; };
-		925FC52525F42D2600532483 /* RPSCollisionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC52225F42D2600532483 /* RPSCollisionController.cpp */; };
-		925FC52625F42D2600532483 /* RPSCollisionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC52225F42D2600532483 /* RPSCollisionController.cpp */; };
-		925FC52C25F42D3700532483 /* RPSShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC52A25F42D3700532483 /* RPSShip.cpp */; };
-		925FC52D25F42D3700532483 /* RPSShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC52A25F42D3700532483 /* RPSShip.cpp */; };
-		925FC52E25F42D3700532483 /* RPSShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC52A25F42D3700532483 /* RPSShip.cpp */; };
-		925FC53425F42D4D00532483 /* RPSOrb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53225F42D4D00532483 /* RPSOrb.cpp */; };
-		925FC53525F42D4D00532483 /* RPSOrb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53225F42D4D00532483 /* RPSOrb.cpp */; };
-		925FC53625F42D4D00532483 /* RPSOrb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53225F42D4D00532483 /* RPSOrb.cpp */; };
-		925FC53C25F42D5C00532483 /* RPSOrbManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53A25F42D5C00532483 /* RPSOrbManager.cpp */; };
-		925FC53D25F42D5C00532483 /* RPSOrbManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53A25F42D5C00532483 /* RPSOrbManager.cpp */; };
-		925FC53E25F42D5C00532483 /* RPSOrbManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53A25F42D5C00532483 /* RPSOrbManager.cpp */; };
-		925FC54425F42D6800532483 /* RPSSwapStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC54225F42D6800532483 /* RPSSwapStation.cpp */; };
-		925FC54525F42D6800532483 /* RPSSwapStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC54225F42D6800532483 /* RPSSwapStation.cpp */; };
-		925FC54625F42D6800532483 /* RPSSwapStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC54225F42D6800532483 /* RPSSwapStation.cpp */; };
+		925FC50125F42B6F00532483 /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4FF25F42B6F00532483 /* App.cpp */; };
+		925FC50225F42B6F00532483 /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4FF25F42B6F00532483 /* App.cpp */; };
+		925FC50325F42B6F00532483 /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4FF25F42B6F00532483 /* App.cpp */; };
+		925FC50C25F42CFC00532483 /* LoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC50A25F42CFC00532483 /* LoadingScene.cpp */; };
+		925FC50D25F42CFD00532483 /* LoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC50A25F42CFC00532483 /* LoadingScene.cpp */; };
+		925FC50E25F42CFD00532483 /* LoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC50A25F42CFC00532483 /* LoadingScene.cpp */; };
+		925FC51425F42D0800532483 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC51225F42D0800532483 /* GameScene.cpp */; };
+		925FC51525F42D0800532483 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC51225F42D0800532483 /* GameScene.cpp */; };
+		925FC51625F42D0800532483 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC51225F42D0800532483 /* GameScene.cpp */; };
+		925FC51C25F42D1800532483 /* InputController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC51A25F42D1800532483 /* InputController.cpp */; };
+		925FC51D25F42D1800532483 /* InputController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC51A25F42D1800532483 /* InputController.cpp */; };
+		925FC51E25F42D1800532483 /* InputController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC51A25F42D1800532483 /* InputController.cpp */; };
+		925FC52C25F42D3700532483 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC52A25F42D3700532483 /* Player.cpp */; };
+		925FC52D25F42D3700532483 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC52A25F42D3700532483 /* Player.cpp */; };
+		925FC52E25F42D3700532483 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC52A25F42D3700532483 /* Player.cpp */; };
+		925FC53425F42D4D00532483 /* Orb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53225F42D4D00532483 /* Orb.cpp */; };
+		925FC53525F42D4D00532483 /* Orb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53225F42D4D00532483 /* Orb.cpp */; };
+		925FC53625F42D4D00532483 /* Orb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53225F42D4D00532483 /* Orb.cpp */; };
+		925FC53C25F42D5C00532483 /* OrbManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53A25F42D5C00532483 /* OrbManager.cpp */; };
+		925FC53D25F42D5C00532483 /* OrbManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53A25F42D5C00532483 /* OrbManager.cpp */; };
+		925FC53E25F42D5C00532483 /* OrbManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53A25F42D5C00532483 /* OrbManager.cpp */; };
+		925FC54425F42D6800532483 /* SwapStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC54225F42D6800532483 /* SwapStation.cpp */; };
+		925FC54525F42D6800532483 /* SwapStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC54225F42D6800532483 /* SwapStation.cpp */; };
+		925FC54625F42D6800532483 /* SwapStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC54225F42D6800532483 /* SwapStation.cpp */; };
 		925FC58025F4489100532483 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 925FC57F25F4489100532483 /* sounds */; };
 		925FC58125F4489100532483 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 925FC57F25F4489100532483 /* sounds */; };
 		925FC58225F4489100532483 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 925FC57F25F4489100532483 /* sounds */; };
@@ -131,25 +128,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		28E6A53625F76E72004998CF /* Element.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Element.h; sourceTree = "<group>"; };
 		925FC4F525F42B2800532483 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		925FC4FF25F42B6F00532483 /* RPSApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RPSApp.cpp; sourceTree = "<group>"; };
-		925FC50025F42B6F00532483 /* RPSApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RPSApp.h; sourceTree = "<group>"; };
-		925FC50A25F42CFC00532483 /* RPSLoadingScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RPSLoadingScene.cpp; sourceTree = "<group>"; };
-		925FC50B25F42CFC00532483 /* RPSLoadingScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RPSLoadingScene.h; sourceTree = "<group>"; };
-		925FC51225F42D0800532483 /* RPSGameScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RPSGameScene.cpp; sourceTree = "<group>"; };
-		925FC51325F42D0800532483 /* RPSGameScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RPSGameScene.h; sourceTree = "<group>"; };
-		925FC51A25F42D1800532483 /* RPSInputController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RPSInputController.cpp; sourceTree = "<group>"; };
-		925FC51B25F42D1800532483 /* RPSInputController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RPSInputController.h; sourceTree = "<group>"; };
-		925FC52225F42D2600532483 /* RPSCollisionController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RPSCollisionController.cpp; sourceTree = "<group>"; };
-		925FC52325F42D2600532483 /* RPSCollisionController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RPSCollisionController.h; sourceTree = "<group>"; };
-		925FC52A25F42D3700532483 /* RPSShip.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RPSShip.cpp; sourceTree = "<group>"; };
-		925FC52B25F42D3700532483 /* RPSShip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RPSShip.h; sourceTree = "<group>"; };
-		925FC53225F42D4D00532483 /* RPSOrb.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RPSOrb.cpp; sourceTree = "<group>"; };
-		925FC53325F42D4D00532483 /* RPSOrb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RPSOrb.h; sourceTree = "<group>"; };
-		925FC53A25F42D5C00532483 /* RPSOrbManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RPSOrbManager.cpp; sourceTree = "<group>"; };
-		925FC53B25F42D5C00532483 /* RPSOrbManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RPSOrbManager.h; sourceTree = "<group>"; };
-		925FC54225F42D6800532483 /* RPSSwapStation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RPSSwapStation.cpp; sourceTree = "<group>"; };
-		925FC54325F42D6800532483 /* RPSSwapStation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RPSSwapStation.h; sourceTree = "<group>"; };
+		925FC4FF25F42B6F00532483 /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = App.cpp; sourceTree = "<group>"; };
+		925FC50025F42B6F00532483 /* App.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = App.h; sourceTree = "<group>"; };
+		925FC50A25F42CFC00532483 /* LoadingScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LoadingScene.cpp; sourceTree = "<group>"; };
+		925FC50B25F42CFC00532483 /* LoadingScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingScene.h; sourceTree = "<group>"; };
+		925FC51225F42D0800532483 /* GameScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameScene.cpp; sourceTree = "<group>"; };
+		925FC51325F42D0800532483 /* GameScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		925FC51A25F42D1800532483 /* InputController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InputController.cpp; sourceTree = "<group>"; };
+		925FC51B25F42D1800532483 /* InputController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InputController.h; sourceTree = "<group>"; };
+		925FC52A25F42D3700532483 /* Player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
+		925FC52B25F42D3700532483 /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		925FC53225F42D4D00532483 /* Orb.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Orb.cpp; sourceTree = "<group>"; };
+		925FC53325F42D4D00532483 /* Orb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Orb.h; sourceTree = "<group>"; };
+		925FC53A25F42D5C00532483 /* OrbManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OrbManager.cpp; sourceTree = "<group>"; };
+		925FC53B25F42D5C00532483 /* OrbManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrbManager.h; sourceTree = "<group>"; };
+		925FC54225F42D6800532483 /* SwapStation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SwapStation.cpp; sourceTree = "<group>"; };
+		925FC54325F42D6800532483 /* SwapStation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwapStation.h; sourceTree = "<group>"; };
 		925FC57F25F4489100532483 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		EB0FF5FC2016EF4F00517030 /* Roshamboogie (Sim).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Roshamboogie (Sim).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE9B81D7498C9002FE78B /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
@@ -379,24 +375,23 @@
 			isa = PBXGroup;
 			children = (
 				925FC4F525F42B2800532483 /* main.cpp */,
-				925FC50025F42B6F00532483 /* RPSApp.h */,
-				925FC4FF25F42B6F00532483 /* RPSApp.cpp */,
-				925FC50B25F42CFC00532483 /* RPSLoadingScene.h */,
-				925FC50A25F42CFC00532483 /* RPSLoadingScene.cpp */,
-				925FC51325F42D0800532483 /* RPSGameScene.h */,
-				925FC51225F42D0800532483 /* RPSGameScene.cpp */,
-				925FC51B25F42D1800532483 /* RPSInputController.h */,
-				925FC51A25F42D1800532483 /* RPSInputController.cpp */,
-				925FC52325F42D2600532483 /* RPSCollisionController.h */,
-				925FC52225F42D2600532483 /* RPSCollisionController.cpp */,
-				925FC52B25F42D3700532483 /* RPSShip.h */,
-				925FC52A25F42D3700532483 /* RPSShip.cpp */,
-				925FC53325F42D4D00532483 /* RPSOrb.h */,
-				925FC53225F42D4D00532483 /* RPSOrb.cpp */,
-				925FC53B25F42D5C00532483 /* RPSOrbManager.h */,
-				925FC53A25F42D5C00532483 /* RPSOrbManager.cpp */,
-				925FC54325F42D6800532483 /* RPSSwapStation.h */,
-				925FC54225F42D6800532483 /* RPSSwapStation.cpp */,
+				925FC50025F42B6F00532483 /* App.h */,
+				925FC4FF25F42B6F00532483 /* App.cpp */,
+				925FC50B25F42CFC00532483 /* LoadingScene.h */,
+				925FC50A25F42CFC00532483 /* LoadingScene.cpp */,
+				925FC51325F42D0800532483 /* GameScene.h */,
+				925FC51225F42D0800532483 /* GameScene.cpp */,
+				925FC51B25F42D1800532483 /* InputController.h */,
+				925FC51A25F42D1800532483 /* InputController.cpp */,
+				925FC52B25F42D3700532483 /* Player.h */,
+				925FC52A25F42D3700532483 /* Player.cpp */,
+				925FC53325F42D4D00532483 /* Orb.h */,
+				925FC53225F42D4D00532483 /* Orb.cpp */,
+				925FC53B25F42D5C00532483 /* OrbManager.h */,
+				925FC53A25F42D5C00532483 /* OrbManager.cpp */,
+				925FC54325F42D6800532483 /* SwapStation.h */,
+				925FC54225F42D6800532483 /* SwapStation.cpp */,
+				28E6A53625F76E72004998CF /* Element.h */,
 			);
 			name = Source;
 			path = ../source;
@@ -467,12 +462,12 @@
 				TargetAttributes = {
 					EB0FF5FB2016EF4F00517030 = {
 						CreatedOnToolsVersion = 9.2;
-						DevelopmentTeam = GHH4WN374H;
+						DevelopmentTeam = R8WZHX75X7;
 						ProvisioningStyle = Automatic;
 					};
 					EB74548B1D74D75C002FBAE6 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = GHH4WN374H;
+						DevelopmentTeam = R8WZHX75X7;
 					};
 					EBBF18901D74904A008E2001 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -580,15 +575,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				925FC4F825F42B2800532483 /* main.cpp in Sources */,
-				925FC53E25F42D5C00532483 /* RPSOrbManager.cpp in Sources */,
-				925FC51E25F42D1800532483 /* RPSInputController.cpp in Sources */,
-				925FC50E25F42CFD00532483 /* RPSLoadingScene.cpp in Sources */,
-				925FC53625F42D4D00532483 /* RPSOrb.cpp in Sources */,
-				925FC51625F42D0800532483 /* RPSGameScene.cpp in Sources */,
-				925FC52625F42D2600532483 /* RPSCollisionController.cpp in Sources */,
-				925FC54625F42D6800532483 /* RPSSwapStation.cpp in Sources */,
-				925FC50325F42B6F00532483 /* RPSApp.cpp in Sources */,
-				925FC52E25F42D3700532483 /* RPSShip.cpp in Sources */,
+				925FC53E25F42D5C00532483 /* OrbManager.cpp in Sources */,
+				925FC51E25F42D1800532483 /* InputController.cpp in Sources */,
+				925FC50E25F42CFD00532483 /* LoadingScene.cpp in Sources */,
+				925FC53625F42D4D00532483 /* Orb.cpp in Sources */,
+				925FC51625F42D0800532483 /* GameScene.cpp in Sources */,
+				925FC54625F42D6800532483 /* SwapStation.cpp in Sources */,
+				925FC50325F42B6F00532483 /* App.cpp in Sources */,
+				925FC52E25F42D3700532483 /* Player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -597,15 +591,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				925FC4F725F42B2800532483 /* main.cpp in Sources */,
-				925FC53D25F42D5C00532483 /* RPSOrbManager.cpp in Sources */,
-				925FC51D25F42D1800532483 /* RPSInputController.cpp in Sources */,
-				925FC50D25F42CFD00532483 /* RPSLoadingScene.cpp in Sources */,
-				925FC53525F42D4D00532483 /* RPSOrb.cpp in Sources */,
-				925FC51525F42D0800532483 /* RPSGameScene.cpp in Sources */,
-				925FC52525F42D2600532483 /* RPSCollisionController.cpp in Sources */,
-				925FC54525F42D6800532483 /* RPSSwapStation.cpp in Sources */,
-				925FC50225F42B6F00532483 /* RPSApp.cpp in Sources */,
-				925FC52D25F42D3700532483 /* RPSShip.cpp in Sources */,
+				925FC53D25F42D5C00532483 /* OrbManager.cpp in Sources */,
+				925FC51D25F42D1800532483 /* InputController.cpp in Sources */,
+				925FC50D25F42CFD00532483 /* LoadingScene.cpp in Sources */,
+				925FC53525F42D4D00532483 /* Orb.cpp in Sources */,
+				925FC51525F42D0800532483 /* GameScene.cpp in Sources */,
+				925FC54525F42D6800532483 /* SwapStation.cpp in Sources */,
+				925FC50225F42B6F00532483 /* App.cpp in Sources */,
+				925FC52D25F42D3700532483 /* Player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -614,15 +607,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				925FC4F625F42B2800532483 /* main.cpp in Sources */,
-				925FC53C25F42D5C00532483 /* RPSOrbManager.cpp in Sources */,
-				925FC51C25F42D1800532483 /* RPSInputController.cpp in Sources */,
-				925FC50C25F42CFC00532483 /* RPSLoadingScene.cpp in Sources */,
-				925FC53425F42D4D00532483 /* RPSOrb.cpp in Sources */,
-				925FC51425F42D0800532483 /* RPSGameScene.cpp in Sources */,
-				925FC52425F42D2600532483 /* RPSCollisionController.cpp in Sources */,
-				925FC54425F42D6800532483 /* RPSSwapStation.cpp in Sources */,
-				925FC50125F42B6F00532483 /* RPSApp.cpp in Sources */,
-				925FC52C25F42D3700532483 /* RPSShip.cpp in Sources */,
+				925FC53C25F42D5C00532483 /* OrbManager.cpp in Sources */,
+				925FC51C25F42D1800532483 /* InputController.cpp in Sources */,
+				925FC50C25F42CFC00532483 /* LoadingScene.cpp in Sources */,
+				925FC53425F42D4D00532483 /* Orb.cpp in Sources */,
+				925FC51425F42D0800532483 /* GameScene.cpp in Sources */,
+				925FC54425F42D6800532483 /* SwapStation.cpp in Sources */,
+				925FC50125F42B6F00532483 /* App.cpp in Sources */,
+				925FC52C25F42D3700532483 /* Player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -648,14 +640,14 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GHH4WN374H;
+				DEVELOPMENT_TEAM = R8WZHX75X7;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(STATIC_LIB)";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.roshamboogie;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.moosey.studios.roshamboogie;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -681,13 +673,13 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GHH4WN374H;
+				DEVELOPMENT_TEAM = R8WZHX75X7;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(STATIC_LIB)";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.roshamboogie;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.moosey.studios.roshamboogie;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -704,13 +696,13 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = GHH4WN374H;
+				DEVELOPMENT_TEAM = R8WZHX75X7;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.roshamboogie;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.moosey.studios.roshamboogie;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -725,13 +717,13 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = GHH4WN374H;
+				DEVELOPMENT_TEAM = R8WZHX75X7;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.roshamboogie;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.moosey.studios.roshamboogie;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -865,7 +857,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Mac-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.roshamboogie;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.moosey.studios.roshamboogie;
 			};
 			name = Debug;
 		};
@@ -878,7 +870,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Mac-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.roshamboogie;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.moosey.studios.roshamboogie;
 			};
 			name = Release;
 		};

@@ -70,6 +70,7 @@ _parent(nullptr),
 _graph(nullptr),
 _zOrder(0),
 _zDirty(false),
+_priority(0),
 _childOffset(-2) {}
 
 /**
@@ -191,6 +192,10 @@ bool SceneNode::initWithData(const Scene2Loader* loader, const std::shared_ptr<J
         _zOrder = data->getInt("z",0.0f);
     }
 
+    if (data->has("priority")) {
+        _priority = data->getFloat("priority",0.0f);
+    }
+
     if (data->has("color")) {
         JsonValue* col = data->get("color").get();
         CUAssertLog(col->size() >= 4, "'color' must be a four element number array");
@@ -231,6 +236,8 @@ bool SceneNode::initWithData(const Scene2Loader* loader, const std::shared_ptr<J
     
     if (transform && !_useTransform) updateTransform();
     
+    // Store the data for later
+    _json = data;
     return true;
 }
 
@@ -267,6 +274,7 @@ void SceneNode::dispose() {
     _hashOfName = 0;
     _zOrder = 0;
     _zDirty = false;
+    _json = nullptr;
 }
 
 /**
@@ -297,6 +305,7 @@ SceneNode* SceneNode::copy(SceneNode* dst) {
     dst->_hashOfName = _hashOfName;
     dst->_zOrder = _zOrder;
     dst->_zDirty = _zDirty;
+    dst->_json = _json;
     return dst;
 }
 
@@ -379,7 +388,7 @@ void SceneNode::setAnchor(const Vec2 anchor) {
  */
 std::string SceneNode::toString(bool verbose) const {
     std::stringstream ss;
-    ss << (verbose ? "cugl::Node(tag:" : "(tag:");
+    ss << (verbose ? "cugl::"+getClassName()+"(tag:" : "(tag:");
     ss <<  cugl::strtool::to_string(_tag);
     ss << ", name:" << _name;
     ss << ", children:" << cugl::strtool::to_string((Uint64)_children.size());

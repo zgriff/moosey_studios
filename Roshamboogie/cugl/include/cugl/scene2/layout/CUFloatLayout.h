@@ -41,7 +41,7 @@
 //      3. This notice may not be removed or altered from any source distribution.
 //
 //  Author: Walker White and Enze Zhou
-//  Version: 1/8/18
+//  Version: 2/20/21
 //
 #ifndef __CU_FLOAT_LAYOUT_H__
 #define __CU_FLOAT_LAYOUT_H__
@@ -198,10 +198,31 @@ public:
     };
     
 protected:
-    /** The child priority */
+    /**
+     * This inner class stores the layout information as a struct.
+     *
+     * All padding values are absolute. That means they are specified in
+     * terms of Node coordinates.
+     */
+    class Entry {
+    public:
+        /** The x offset from the anchor in absolute or relative units */
+        long priority;
+        /** The left side padding */
+        float pad_left;
+        /** The right side padding */
+        float pad_right;
+        /** The top padding */
+        float pad_top;
+        /** The bottom padding */
+        float pad_bottom;
+    };
+
+    /** The priority ordering of this layout */
     std::vector<std::string> _priority;
-    /** To ensure key uniqueness */
-    std::unordered_map<std::string,size_t> _keyset;
+    
+    /** The map of keys to layout information */
+    std::unordered_map<std::string,Entry> _entries;
     
     /** Whether the layout is horizontal or vertical */
     bool _horizontal;
@@ -230,6 +251,14 @@ protected:
      * @param node  The scene graph node to rearrange
      */
     void layoutVertical(SceneNode* node);
+    
+    /**
+     * Computes the priority of the layout elements.
+     *
+     * This method resorts the contents of the priority 
+     * queue to match the current layout values.
+     */
+    void prioritize();
 
     
 #pragma mark Constructors
@@ -270,7 +299,7 @@ public:
      *
      * A disposed layout manager can be safely reinitialized.
      */
-    virtual void dispose() override { _priority.clear(); _keyset.clear(); }
+    virtual void dispose() override;
     
     /**
      * Returns a newly allocated layout manager.
@@ -347,13 +376,15 @@ public:
     /**
      * Assigns layout information for a given key.
      *
-     * The JSON object may contain any of the following attribute value:
+     * The JSON object may contain any of the following attribute values:
      *
      *      "priority":     An int indicating placement priority.
      *                      Children with lower priority go first.
+     *      "padding" :     A four-element float array.
+     *                      It defines the padding on all sides between elements
      *
      * A child with no priority is put at the end. If there is already a child
-     * with the given priority, then this method will fail.
+     * with the given priority, the ordering of the two elements is undefined
      *
      * To look up the layout information of a scene graph node, we use the name
      * of the node.  This requires all nodes to have unique names. The
@@ -367,25 +398,6 @@ public:
      * @return true if the layout information was assigned to that key
      */
     virtual bool add(const std::string key, const std::shared_ptr<JsonValue>& data) override;
-    
-    /**
-     * Assigns the layout priority for a given key.
-     *
-     * In a float layout, children with lower priority go first. If there is
-     * already a child with the given priority, then this method will fail.
-     *
-     * To look up the layout information of a scene graph node, we use the name
-     * of the node.  This requires all nodes to have unique names. The
-     * {@link Scene2Loader} prefixes all child names by the parent name, so
-     * this is the case in any well-defined JSON file. If the key is already
-     * in use, this method will fail.
-     *
-     * @param key       The key identifying the layout information
-     * @param priority  The priority (lower is better) for this key
-     *
-     * @return true if the priority was assigned to that key
-     */
-    bool addPriority(const std::string key, size_t priority);
     
     /**
      * Removes the layout information for a given key.

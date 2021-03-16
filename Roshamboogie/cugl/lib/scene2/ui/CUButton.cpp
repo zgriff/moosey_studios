@@ -169,8 +169,9 @@ bool Button::init(const std::shared_ptr<SceneNode>& up, const std::shared_ptr<Sc
  * of the attribute values of its parent class.  In addition, it supports
  * the following additional attributes:
  *
- *      "up":       A JSON object defining a scene graph node
- *      "down":     A JSON object defining a scene graph node OR
+ *      "up":       A string referencing the name of a child node OR
+ *                  a 4-element integer array with values from 0..255
+ *      "down":     A string referencing the name of a child node OR
  *                  a 4-element integer array with values from 0..255
  *      "pushable": An even array of polygon vertices (numbers)
  *
@@ -614,7 +615,7 @@ void Button::doLayout() {
         // All of the code that follows can corrupt the position.
         Vec2 coord = getPosition();
         Size osize = getContentSize();
-        Size size;
+        Size size = osize;
         
         if (_upchild != "") {
             _upnode = getChildByName(_upchild);
@@ -623,34 +624,74 @@ void Button::doLayout() {
             _downnode = getChildByName(_downchild);
         }
         
+        // Compute the sizes first
         if (_upnode == nullptr) {
             _upnode  = PolygonNode::allocWithTexture(Texture::getBlank());
             // Color was set during the init
             Size curr = _upnode->getContentSize();
-            size.set(DEFAULT_SIZE, DEFAULT_SIZE);
-            _upnode->setScale(DEFAULT_SIZE/curr.width,DEFAULT_SIZE/curr.height);
+            if (_json == nullptr || !_json->has("size")) {
+                size.set(DEFAULT_SIZE, DEFAULT_SIZE);
+            }
+            _upnode->setScale(size.width/curr.width,size.height/curr.height);
         } else {
             _upcolor = _upnode->getColor();
-            size = _upnode->getSize();
+            if (_json == nullptr || !_json->has("size")) {
+                size = _upnode->getSize();
+            }
         }
-        osize = size;
-        _upnode->setAnchor(Vec2::ANCHOR_CENTER);
-        
         if (_downnode != nullptr) {
             _downcolor = _downnode->getColor();
-            _downnode->setAnchor(Vec2::ANCHOR_CENTER);
             _downnode->setVisible(_upnode == nullptr);
-            
             Size dsize  = _downnode->getSize();
-            size.width  = dsize.width  > size.width  ? dsize.width  : size.width;
-            size.height = dsize.height > size.height ? dsize.height : size.height;
-            _downnode->setPosition(size.width/2.0f,size.height/2.0f);
+            if (_json == nullptr || !_json->has("size")) {
+                size.width  = dsize.width  > size.width  ? dsize.width  : size.width;
+                size.height = dsize.height > size.height ? dsize.height : size.height;
+            }
         } else if (_downcolor == Color4::CLEAR) {
             _downcolor = _upcolor*Color4::GRAY;
         }
         
-        _upnode->setPosition(size.width/2.0f,size.height/2.0f);
+        osize = size;
         setContentSize(size);
+        
+        // Now position them
+        if (_upnode != nullptr) {
+            bool anchor = false;
+            bool position = false;
+            if (_json->has("children") && _json->get("children")->has(_upnode->getName())) {
+                std::shared_ptr<JsonValue> data = _json->get("children")->get(_upnode->getName());
+                if (data->has("data")) {
+                    data = data->get("data");
+                    anchor = data->has("anchor");
+                    position = data->has("position");
+                }
+            }
+            if (!anchor) {
+                _upnode->setAnchor(Vec2::ANCHOR_CENTER);
+            }
+            if (!position) {
+                _upnode->setPosition(size.width/2.0f,size.height/2.0f);
+            }
+        }
+        
+        if (_downnode != nullptr) {
+            bool anchor = false;
+            bool position = false;
+            if (_json->has("children") && _json->get("children")->has(_downnode->getName())) {
+                std::shared_ptr<JsonValue> data = _json->get("children")->get(_downnode->getName());
+                if (data->has("data")) {
+                    data = data->get("data");
+                    anchor = data->has("anchor");
+                    position = data->has("position");
+                }
+            }
+            if (!anchor) {
+                _downnode->setAnchor(Vec2::ANCHOR_CENTER);
+            }
+            if (!position) {
+                _downnode->setPosition(size.width/2.0f,size.height/2.0f);
+            }
+        }
         
         if (_bounds.getGeometry() == Geometry::SOLID) {
             Vec2 scale;

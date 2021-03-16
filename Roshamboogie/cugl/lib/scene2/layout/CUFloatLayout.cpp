@@ -114,15 +114,28 @@ bool FloatLayout::initWithData(const std::shared_ptr<JsonValue>& data) {
 }
 
 
+/**
+ * Deletes the layout resources and resets all attributes.
+ *
+ * A disposed layout manager can be safely reinitialized.
+ */
+void FloatLayout::dispose() {
+    _entries.clear();
+    _priority.clear();
+}
+
+
 #pragma mark -
 #pragma mark Layout
 /**
  * Assigns layout information for a given key.
  *
- * The JSON object may contain any of the following attribute value:
+ * The JSON object may contain any of the following attribute values:
  *
  *      "priority":     An int indicating placement priority.
  *                      Children with lower priority go first.
+ *      "padding" :     A four-element float array.
+ *                      It defines the padding on all sides between elements
  *
  * A child with no priority is put at the end. If there is already a child with
  * the given priority, then this method will fail.
@@ -139,44 +152,30 @@ bool FloatLayout::initWithData(const std::shared_ptr<JsonValue>& data) {
  * @return true if the layout information was assigned to that key
  */
 bool FloatLayout::add(const std::string key, const std::shared_ptr<JsonValue>& data) {
-    long priority = data->getLong("priority",0L);
-    CUAssertLog(priority >= 0, "'priority' may not be negative");
-    return addPriority(key, priority);
-}
-
-/**
- * Assigns the layout priority for a given key.
- *
- * In a float layout, children with lower priority go first. If there is
- * already a child with the given priority, then this method will fail.
- *
- * To look up the layout information of a scene graph node, we use the name
- * of the node.  This requires all nodes to have unique names. The
- * {@link SceneLoader} prefixes all child names by the parent name, so
- * this is the case in any well-defined JSON file. If the key is already
- * in use, this method will fail.
- *
- * @param key       The key identifying the layout information
- * @param priority  The priority (lower is better) for this key
- *
- * @return true if the priority was assigned to that key
- */
-bool FloatLayout::addPriority(const std::string key, size_t priority) {
-    while (priority+1 > _priority.size()) {
-        _priority.push_back("");
-    }
-    
-    if (_priority[priority] != "") {
+    auto search = _entries.find(key);
+    if (search != _entries.end()) {
+        CUAssertLog(false, "key '%s', is already in use", key.c_str());
         return false;
     }
     
-    auto it = _keyset.find(key);
-    if (it != _keyset.end()) {
-        return false;
+    Entry entry;
+    entry.priority = data->getLong("priority",-1L);
+    if (data->has("padding")) {
+        JsonValue* pad = data->get("padding").get();
+        CUAssertLog(pad->size() >= 2,
+                    "'padding' must be a four element number array");
+        entry.pad_left   = pad->get(0)->asFloat(0.0f);
+        entry.pad_right  = pad->get(2)->asFloat(0.0f);
+        entry.pad_top    = pad->get(3)->asFloat(0.0f);
+        entry.pad_bottom = pad->get(1)->asFloat(0.0f);
+    } else {
+        entry.pad_left   = 0;
+        entry.pad_right  = 0;
+        entry.pad_top    = 0;
+        entry.pad_bottom = 0;
     }
-    
-    _priority[priority] = key;
-    _keyset[key] = priority;
+    _entries[key] = entry;
+    _priority.push_back(key);
     return true;
 }
 
@@ -195,13 +194,15 @@ bool FloatLayout::addPriority(const std::string key, size_t priority) {
  * @return true if the layout information was removed for that key
  */
 bool FloatLayout::remove(const std::string key) {
-    auto it = _keyset.find(key);
-    if (it == _keyset.end()) {
+    auto it = _entries.find(key);
+    if (it == _entries.end()) {
         return false;
     }
-    
-    _priority[it->second] = "";
-    _keyset.erase(it);
+    _entries.erase(it);
+    auto position = std::find(_priority.begin(), _priority.end(), key);
+    if (position != _priority.end()) {
+        _priority.erase(position);
+    }
     return true;
 }
 
@@ -249,6 +250,7 @@ void FloatLayout::layout(SceneNode* node) {
  * @param node  The scene graph node to rearrange
  */
 void FloatLayout::layoutHorizontal(SceneNode* node) {
+    prioritize();
     Size size = node->getContentSize();
     Vec2 pos;
     Rect bounds;
@@ -265,12 +267,14 @@ void FloatLayout::layoutHorizontal(SceneNode* node) {
     bool stop = false;
 
     for(auto it = _priority.begin(); !stop && it != _priority.end(); ++it) {
-        std::shared_ptr<SceneNode> child;
-        if (*it != "") {
-            child = node->getChildByName(*it);
-        }
+        std::shared_ptr<SceneNode> child= node->getChildByName(*it);
         if (child) {
             Size extra = child->getSize();
+            auto en = _entries.find(*it);
+            if (en != _entries.end()) {
+                extra.width  += en->second.pad_left + en->second.pad_right;
+                extra.height += en->second.pad_top + en->second.pad_bottom;
+            }
             if (extra.width > size.width) {
                 stop = true;
             } else if (width.back()+extra.width > size.width) {
@@ -298,120 +302,116 @@ void FloatLayout::layoutHorizontal(SceneNode* node) {
     // Now do layout.
     switch(_alignment) {
         case Alignment::BOTTOM_LEFT:
-        bounds.origin = Vec2::ZERO;
-        break;
+            bounds.origin = Vec2::ZERO;
+            break;
         case Alignment::BOTTOM_CENTER:
-        bounds.origin = Vec2((size.width-bounds.size.width)/2,0);
-        break;
+            bounds.origin = Vec2((size.width-bounds.size.width)/2,0);
+            break;
         case Alignment::BOTTOM_RIGHT:
-        bounds.origin = Vec2(size.width-bounds.size.width/2,0);
-        break;
+            bounds.origin = Vec2(size.width-bounds.size.width/2,0);
+            break;
         case Alignment::MIDDLE_LEFT:
-        bounds.origin = Vec2(0,(size.height-bounds.size.height)/2);
-        break;
+            bounds.origin = Vec2(0,(size.height-bounds.size.height)/2);
+            break;
         case Alignment::CENTER:
-        bounds.origin = Vec2((size.width-bounds.size.width)/2,(size.height-bounds.size.height)/2);
-        break;
+            bounds.origin = Vec2((size.width-bounds.size.width)/2,
+                                 (size.height-bounds.size.height)/2);
+            break;
         case Alignment::MIDDLE_RIGHT:
-        bounds.origin = Vec2(size.width-bounds.size.width,(size.height-bounds.size.height)/2);
-        break;
+            bounds.origin = Vec2(size.width-bounds.size.width,
+                                 (size.height-bounds.size.height)/2);
+            break;
         case Alignment::TOP_LEFT:
-        bounds.origin = Vec2(0,size.height-bounds.size.height);
-        break;
+            bounds.origin = Vec2(0,size.height-bounds.size.height);
+            break;
         case Alignment::TOP_CENTER:
-        bounds.origin = Vec2((size.width-bounds.size.width)/2,size.height-bounds.size.height);
-        break;
+            bounds.origin = Vec2((size.width-bounds.size.width)/2,
+                                 size.height-bounds.size.height);
+            break;
         case Alignment::TOP_RIGHT:
-        bounds.origin = Vec2(size.width-bounds.size.width,size.height-bounds.size.height);
-        break;
+            bounds.origin = Vec2(size.width-bounds.size.width,
+                                 size.height-bounds.size.height);
+            break;
     }
     
     float ypos;
     switch(_alignment) {
-    case Alignment::BOTTOM_LEFT:
-    case Alignment::BOTTOM_CENTER:
-    case Alignment::BOTTOM_RIGHT:
-        ypos = bounds.size.height;
-        break;
-    case Alignment::MIDDLE_LEFT:
-    case Alignment::CENTER:
-    case Alignment::MIDDLE_RIGHT:
-        ypos = (size.height+bounds.size.height)/2;
-        break;
-    case Alignment::TOP_LEFT:
-    case Alignment::TOP_CENTER:
-    case Alignment::TOP_RIGHT:
-        ypos = size.height;
-        break;
+        case Alignment::BOTTOM_LEFT:
+        case Alignment::BOTTOM_CENTER:
+        case Alignment::BOTTOM_RIGHT:
+            ypos = bounds.size.height;
+            break;
+        case Alignment::MIDDLE_LEFT:
+        case Alignment::CENTER:
+        case Alignment::MIDDLE_RIGHT:
+            ypos = (size.height+bounds.size.height)/2;
+            break;
+        case Alignment::TOP_LEFT:
+        case Alignment::TOP_CENTER:
+        case Alignment::TOP_RIGHT:
+            ypos = size.height;
+            break;
     }
     
     auto jt = _priority.begin();
     for(size_t row = 0; row < count.size(); row++) {
         Vec2 pos; // Top LEFT corner of float.
         float xpos;
+        float rowh = height[row];
         switch(_alignment) {
-        case Alignment::BOTTOM_LEFT:
-        case Alignment::MIDDLE_LEFT:
-        case Alignment::TOP_LEFT:
-            xpos = 0;
-            break;
-        case Alignment::BOTTOM_CENTER:
-        case Alignment::CENTER:
-        case Alignment::TOP_CENTER:
-            xpos = (size.width-width[row])/2;
-            break;
-        case Alignment::BOTTOM_RIGHT:
-        case Alignment::MIDDLE_RIGHT:
-        case Alignment::TOP_RIGHT:
-            xpos = size.width-width[row];
-            break;
+            case Alignment::BOTTOM_LEFT:
+            case Alignment::MIDDLE_LEFT:
+            case Alignment::TOP_LEFT:
+                xpos = 0;
+                break;
+            case Alignment::BOTTOM_CENTER:
+            case Alignment::CENTER:
+            case Alignment::TOP_CENTER:
+                xpos = (size.width-width[row])/2;
+                break;
+            case Alignment::BOTTOM_RIGHT:
+            case Alignment::MIDDLE_RIGHT:
+            case Alignment::TOP_RIGHT:
+                xpos = size.width-width[row];
+                break;
         }
         for(size_t col = 0; col < count[row]; col++) {
-            std::shared_ptr<SceneNode> child;
-            if (*jt != "") {
-                child = node->getChildByName(*jt);
-            }
+            std::shared_ptr<SceneNode> child = node->getChildByName(*jt);
             if (child) {
                 Size tmp = child->getSize();
-                switch(_alignment) {
-                case Alignment::BOTTOM_LEFT:
-                    child->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
-                    child->setPosition(xpos, ypos-height[row]);
-                    break;
-                case Alignment::BOTTOM_CENTER:
-                    child->setAnchor(Vec2::ANCHOR_BOTTOM_CENTER);
-                    child->setPosition(xpos+tmp.width/2, ypos-height[row]);
-                    break;
-                case Alignment::BOTTOM_RIGHT:
-                    child->setAnchor(Vec2::ANCHOR_BOTTOM_RIGHT);
-                    child->setPosition(xpos+tmp.width, ypos-height[row]);
-                    break;
-                case Alignment::MIDDLE_LEFT:
-                    child->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-                    child->setPosition(xpos, ypos-height[row]/2);
-                    break;
-                case Alignment::CENTER:
-                    child->setAnchor(Vec2::ANCHOR_CENTER);
-                    child->setPosition(xpos+tmp.width/2, ypos-height[row]/2);
-                    break;
-                case Alignment::MIDDLE_RIGHT:
-                    child->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-                    child->setPosition(xpos+tmp.width, ypos-height[row]/2);
-                    break;
-                case Alignment::TOP_LEFT:
-                    child->setAnchor(Vec2::ANCHOR_TOP_LEFT);
-                    child->setPosition(xpos, ypos);
-                    break;
-                case Alignment::TOP_CENTER:
-                    child->setAnchor(Vec2::ANCHOR_TOP_CENTER);
-                    child->setPosition(xpos+tmp.width/2, ypos);
-                    break;
-                case Alignment::TOP_RIGHT:
-                    child->setAnchor(Vec2::ANCHOR_TOP_RIGHT);
-                    child->setPosition(xpos+tmp.width, ypos);
-                    break;
+                float padl = 0;
+                float padr = 0;
+                float padb = 0;
+                float padt = 0;
+                auto en = _entries.find(*jt);
+                if (en != _entries.end()) {
+                    padl = en->second.pad_left;
+                    padr = en->second.pad_right;
+                    padb = en->second.pad_bottom;
+                    padt = en->second.pad_top;
                 }
-                xpos += tmp.width;
+                switch(_alignment) {
+                    case Alignment::BOTTOM_LEFT:
+                    case Alignment::BOTTOM_CENTER:
+                    case Alignment::BOTTOM_RIGHT:
+                        child->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
+                        child->setPosition(xpos+padl, ypos-rowh+padb);
+                        break;
+                    case Alignment::MIDDLE_LEFT:
+                    case Alignment::CENTER:
+                    case Alignment::MIDDLE_RIGHT:
+                        child->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+                        child->setPosition(xpos+padl,
+                                           ypos-rowh/2+(padb-padt)/2);
+                        break;
+                    case Alignment::TOP_LEFT:
+                    case Alignment::TOP_CENTER:
+                    case Alignment::TOP_RIGHT:
+                        child->setAnchor(Vec2::ANCHOR_TOP_LEFT);
+                        child->setPosition(xpos+padl, ypos-padt);
+                        break;
+                }
+                xpos += tmp.width+padl+padr;
             }
             ++jt;
         }
@@ -429,6 +429,7 @@ void FloatLayout::layoutHorizontal(SceneNode* node) {
  * @param node  The scene graph node to rearrange
  */
 void FloatLayout::layoutVertical(SceneNode* node) {
+    prioritize();
     Size size = node->getContentSize();
     Vec2 pos;
     Rect bounds;
@@ -441,15 +442,18 @@ void FloatLayout::layoutVertical(SceneNode* node) {
     height.push_back(0.0f);
     count.push_back(0);
     
+    
     // Get the bounding box for the contents (ignoring alignment for now)
     bool stop = false;
     for(auto it = _priority.begin(); !stop && it != _priority.end(); ++it) {
-        std::shared_ptr<SceneNode> child;
-        if (*it != "") {
-            child = node->getChildByName(*it);
-        }
+        std::shared_ptr<SceneNode> child = node->getChildByName(*it);
         if (child) {
             Size extra = child->getSize();
+            auto en = _entries.find(*it);
+            if (en != _entries.end()) {
+                extra.width  += en->second.pad_left + en->second.pad_right;
+                extra.height += en->second.pad_top + en->second.pad_bottom;
+            }
             if (extra.height > size.height) {
                 stop = true;
             } else if (height.back()+extra.height > size.height) {
@@ -477,31 +481,35 @@ void FloatLayout::layoutVertical(SceneNode* node) {
     // Now do layout.
     switch(_alignment) {
         case Alignment::BOTTOM_LEFT:
-        bounds.origin = Vec2::ZERO;
-        break;
+            bounds.origin = Vec2::ZERO;
+            break;
         case Alignment::BOTTOM_CENTER:
-        bounds.origin = Vec2((size.width-bounds.size.width)/2,0);
-        break;
+            bounds.origin = Vec2((size.width-bounds.size.width)/2,0);
+            break;
         case Alignment::BOTTOM_RIGHT:
-        bounds.origin = Vec2(size.width-bounds.size.width/2,0);
-        break;
+            bounds.origin = Vec2(size.width-bounds.size.width/2,0);
+            break;
         case Alignment::MIDDLE_LEFT:
-        bounds.origin = Vec2(0,(size.height-bounds.size.height)/2);
-        break;
+            bounds.origin = Vec2(0,(size.height-bounds.size.height)/2);
+            break;
         case Alignment::CENTER:
-        bounds.origin = Vec2((size.width-bounds.size.width)/2,(size.height-bounds.size.height)/2);
-        break;
+            bounds.origin = Vec2((size.width-bounds.size.width)/2,
+                                 (size.height-bounds.size.height)/2);
+            break;
         case Alignment::MIDDLE_RIGHT:
-        bounds.origin = Vec2(size.width-bounds.size.width,(size.height-bounds.size.height)/2);
-        break;
+            bounds.origin = Vec2(size.width-bounds.size.width,
+                                 (size.height-bounds.size.height)/2);
+            break;
         case Alignment::TOP_LEFT:
-        bounds.origin = Vec2(0,size.height-bounds.size.height);
-        break;
+            bounds.origin = Vec2(0,size.height-bounds.size.height);
+            break;
         case Alignment::TOP_CENTER:
-        bounds.origin = Vec2((size.width-bounds.size.width)/2,size.height-bounds.size.height);
-        break;
+            bounds.origin = Vec2((size.width-bounds.size.width)/2,
+                                 size.height-bounds.size.height);
+            break;
         case Alignment::TOP_RIGHT:
-        bounds.origin = Vec2(size.width-bounds.size.width,size.height-bounds.size.height);
+            bounds.origin = Vec2(size.width-bounds.size.width,
+                                 size.height-bounds.size.height);
         break;
     }
     
@@ -510,90 +518,112 @@ void FloatLayout::layoutVertical(SceneNode* node) {
         case Alignment::BOTTOM_LEFT:
         case Alignment::MIDDLE_LEFT:
         case Alignment::TOP_LEFT:
-        xpos = 0;
-        break;
+            xpos = 0;
+            break;
         case Alignment::BOTTOM_CENTER:
         case Alignment::CENTER:
         case Alignment::TOP_CENTER:
-        xpos = (size.width-bounds.size.width)/2;
-        break;
+            xpos = (size.width-bounds.size.width)/2;
+            break;
         case Alignment::BOTTOM_RIGHT:
         case Alignment::MIDDLE_RIGHT:
         case Alignment::TOP_RIGHT:
-        xpos = size.width-bounds.size.width;
-        break;
+            xpos = size.width-bounds.size.width;
+            break;
     }
     
     auto jt = _priority.begin();
     for(size_t col = 0; col < count.size(); col++) {
         Vec2 pos; // Top LEFT corner of float.
         float ypos;
+        float colw = width[col];
         switch(_alignment) {
             case Alignment::BOTTOM_LEFT:
             case Alignment::BOTTOM_CENTER:
             case Alignment::BOTTOM_RIGHT:
-            ypos = height[col];
-            break;
+                ypos = height[col];
+                break;
             case Alignment::MIDDLE_LEFT:
             case Alignment::CENTER:
             case Alignment::MIDDLE_RIGHT:
-            ypos = (size.height+height[col])/2;
-            break;
+                ypos = (size.height+height[col])/2;
+                break;
             case Alignment::TOP_LEFT:
             case Alignment::TOP_CENTER:
             case Alignment::TOP_RIGHT:
-            ypos = size.height;
-            break;
+                ypos = size.height;
+                break;
         }
+        
         for(size_t row = 0; row < count[col]; row++) {
-            std::shared_ptr<SceneNode> child;
-            if (*jt != "") {
-                child = node->getChildByName(*jt);
-            }
+            std::shared_ptr<SceneNode> child = node->getChildByName(*jt);
             if (child) {
                 Size tmp = child->getSize();
+                float padl = 0;
+                float padr = 0;
+                float padb = 0;
+                float padt = 0;
+                auto en = _entries.find(*jt);
+                if (en != _entries.end()) {
+                    padl = en->second.pad_left;
+                    padr = en->second.pad_right;
+                    padb = en->second.pad_bottom;
+                    padt = en->second.pad_top;
+                }
                 switch(_alignment) {
                     case Alignment::BOTTOM_LEFT:
-                    child->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
-                    child->setPosition(xpos, ypos-tmp.height);
-                    break;
-                    case Alignment::BOTTOM_CENTER:
-                    child->setAnchor(Vec2::ANCHOR_BOTTOM_CENTER);
-                    child->setPosition(xpos+tmp.width/2, ypos-tmp.height);
-                    break;
-                    case Alignment::BOTTOM_RIGHT:
-                    child->setAnchor(Vec2::ANCHOR_BOTTOM_RIGHT);
-                    child->setPosition(xpos+tmp.width, ypos-tmp.height);
-                    break;
                     case Alignment::MIDDLE_LEFT:
-                    child->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-                    child->setPosition(xpos, ypos-tmp.height/2);
-                    break;
-                    case Alignment::CENTER:
-                    child->setAnchor(Vec2::ANCHOR_CENTER);
-                    child->setPosition(xpos+tmp.width/2, ypos-tmp.height/2);
-                    break;
-                    case Alignment::MIDDLE_RIGHT:
-                    child->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-                    child->setPosition(xpos+tmp.width, ypos-tmp.height/2);
-                    break;
                     case Alignment::TOP_LEFT:
-                    child->setAnchor(Vec2::ANCHOR_TOP_LEFT);
-                    child->setPosition(xpos, ypos);
-                    break;
+                        child->setAnchor(Vec2::ANCHOR_TOP_LEFT);
+                        child->setPosition(xpos+padl, ypos-padt);
+                        child->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
+                        break;
+                    case Alignment::BOTTOM_CENTER:
+                    case Alignment::CENTER:
                     case Alignment::TOP_CENTER:
-                    child->setAnchor(Vec2::ANCHOR_TOP_CENTER);
-                    child->setPosition(xpos+tmp.width/2, ypos);
-                    break;
+                        child->setAnchor(Vec2::ANCHOR_TOP_CENTER);
+                        child->setPosition(xpos+colw/2+(padl-padr)/2,
+                                           ypos-padt);
+                        break;
+                    case Alignment::BOTTOM_RIGHT:
+                    case Alignment::MIDDLE_RIGHT:
                     case Alignment::TOP_RIGHT:
-                    child->setAnchor(Vec2::ANCHOR_TOP_RIGHT);
-                    child->setPosition(xpos+tmp.width, ypos);
-                    break;
+                        child->setAnchor(Vec2::ANCHOR_TOP_RIGHT);
+                        child->setPosition(xpos+colw-padr, ypos-padt);
+                        break;
                 }
-                ypos -= tmp.height;
+
+                ypos -= (tmp.height+padt+padb);
             }
             ++jt;
         }
-        xpos += width[col];
+        xpos += colw;
     }
+}
+
+/**
+ * Computes the priority of the layout elements.
+ *
+ * This method resorts the contents of the priority
+ * queue to match the current layout values.
+ */
+void FloatLayout::prioritize() {
+    auto sortrule = [this] (const std::string& s1, const std::string& s2) -> bool {
+        auto a = _entries.find(s1);
+        auto b = _entries.find(s2);
+        if (a == _entries.end()) {
+            return (b == _entries.end() ? s1.compare(s2) < 0 : false);
+        } else if (b == _entries.end()) {
+            return true;
+        } else if (a->second.priority < 0) {
+            return (b->second.priority < 0 &&
+                    b->second.priority < a->second.priority);
+        } else if (b->second.priority < 0) {
+            return true;
+        } else {
+            return (a->second.priority < b->second.priority);
+        }
+    };
+    
+    std::sort(_priority.begin(),_priority.end(),sortrule);
 }

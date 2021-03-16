@@ -185,21 +185,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\source\App.h" />
+    <ClInclude Include="..\..\source\Element.h" />
+    <ClInclude Include="..\..\source\GameScene.h" />
     <ClInclude Include="..\..\source\HelloApp.h" />
-    <ClInclude Include="..\..\source\SDApp.h" />
-    <ClInclude Include="..\..\source\SDGameScene.h" />
-    <ClInclude Include="..\..\source\SDInput.h" />
-    <ClInclude Include="..\..\source\SDLoadingScene.h" />
-    <ClInclude Include="..\..\source\SDShipModel.h" />
+    <ClInclude Include="..\..\source\InputController.h" />
+    <ClInclude Include="..\..\source\LoadingScene.h" />
+    <ClInclude Include="..\..\source\Orb.h" />
+    <ClInclude Include="..\..\source\OrbManager.h" />
+    <ClInclude Include="..\..\source\Player.h" />
+    <ClInclude Include="..\..\source\SwapStation.h" />
     <ClInclude Include="resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\source\main.cpp" />
-    <ClCompile Include="..\..\source\SDApp.cpp" />
-    <ClCompile Include="..\..\source\SDGameScene.cpp" />
-    <ClCompile Include="..\..\source\SDInput.cpp" />
-    <ClCompile Include="..\..\source\SDLoadingScene.cpp" />
-    <ClCompile Include="..\..\source\SDShipModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ShipDemo.rc" />
@@ -211,6 +207,17 @@
     <ProjectReference Include="..\..\cugl\build-win10\CUGL\CUGL.vcxproj">
       <Project>{60c028a4-977f-44e9-a709-d79a153d6f69}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\App.cpp" />
+    <ClCompile Include="..\..\source\GameScene.cpp" />
+    <ClCompile Include="..\..\source\InputController.cpp" />
+    <ClCompile Include="..\..\source\LoadingScene.cpp" />
+    <ClCompile Include="..\..\source\main.cpp" />
+    <ClCompile Include="..\..\source\Orb.cpp" />
+    <ClCompile Include="..\..\source\OrbManager.cpp" />
+    <ClCompile Include="..\..\source\Player.cpp" />
+    <ClCompile Include="..\..\source\SwapStation.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

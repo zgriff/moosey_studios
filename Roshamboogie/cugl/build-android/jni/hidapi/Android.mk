@@ -3,7 +3,7 @@
 # hidapi Prebuilt library
 #
 ###########################
-
+APP_SHORT_COMMANDS := true
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 

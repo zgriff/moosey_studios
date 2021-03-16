@@ -9,8 +9,19 @@
         "ship": {
             "file":  "textures/ships.png"
         },
+        "rocket": {
+            "file": "textures/rocket.png"
+        },
         "target": {
             "file":  "textures/target.png"
+        },
+        "wall": {
+            "file":  "textures/barrier.png"
+        },
+        "earth": {
+            "file":     "textures/earthtile.png",
+            "wrapS":    "repeat",
+            "wrapT":    "repeat"
         }
 	},
     "sounds" : {

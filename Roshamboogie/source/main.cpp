@@ -7,7 +7,7 @@
 //
 
 #include <stdio.h>
-#include "RPSApp.h"
+#include "App.h"
 
 using namespace cugl;
 
@@ -22,11 +22,11 @@ using namespace cugl;
  */
 int main(int argc, char * argv[]) {
     // Change this to your application class
-    RPSApp app;
+    App app;
     
     // Set the properties of your application
     app.setName("Roshamboogie");
-    app.setOrganization("GDIAC");
+    app.setOrganization("Moosey Studios");
     app.setHighDPI(true);
     app.setFPS(60.0f);
 

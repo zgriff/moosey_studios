@@ -53,10 +53,12 @@
 #elif defined (__IPHONEOS__)
 /** The current platform being compiled */
     #define CU_TOUCH_SCREEN 1
+    #define CU_MOBILE       1
     #define CU_PLATFORM     2
 #elif defined (__ANDROID__)
 /** The current platform being compiled */
     #define CU_TOUCH_SCREEN 1
+    #define CU_MOBILE       1
     #define CU_PLATFORM     3
 #elif defined (__WINDOWS__)
 /** The current platform being compiled */

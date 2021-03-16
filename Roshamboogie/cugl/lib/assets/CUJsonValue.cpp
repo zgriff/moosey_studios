@@ -1092,6 +1092,24 @@ std::shared_ptr<JsonValue> JsonValue::removeChild(const std::string& key) {
     return nullptr;
 }
 
+/**
+ * Replaces this node with the contents of the given node.
+ *
+ * This method is used by {@link WidgetLoader} for variable
+ * replacement.  It requires that this node be part of a
+ * large JSON tree (i.e. it cannot be the root).
+ *
+ * @param node  The node to substitute
+ */
+void JsonValue::merge(std::shared_ptr<JsonValue>& node) {
+    CUAssertLog(_parent != nullptr, "You cannot merge with the root node");
+    node->_parent = _parent;
+    node->_key = _key;
+    _parent->removeChild(_key);
+    node->_parent->_children.push_back(node);
+}
+
+
 #pragma mark -
 #pragma mark Child Addition
 /**
@@ -1109,7 +1127,6 @@ std::shared_ptr<JsonValue> JsonValue::removeChild(const std::string& key) {
  * @param child The child node to add
  */
 void JsonValue::appendChild(const std::shared_ptr<JsonValue>& child) {
-    CUAssertLog(!child->_parent, "This child already has a parent");
     CUAssertLog(isArray() || isObject(), "This node is a value type");
     CUAssertLog(isArray() || !has(child->key()),
                 "The key %s is already in use", child->key().c_str());

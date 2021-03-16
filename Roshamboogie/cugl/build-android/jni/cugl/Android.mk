@@ -3,6 +3,7 @@
 # CUGL static library
 #
 ###########################
+APP_SHORT_COMMANDS := true
 LOCAL_PATH := $(call my-dir)
 CUGL_PATH  := $(LOCAL_PATH)/../../..
 include $(CLEAR_VARS)
@@ -38,13 +39,13 @@ LOCAL_SRC_FILES := \
 	$(wildcard $(CUGL_PATH)/external/poly2tri/common/*.cc) \
 	$(wildcard $(CUGL_PATH)/external/poly2tri/sweep/*.cc) \
 	$(wildcard $(CUGL_PATH)/external/clipper/*.cpp) \
-	$(wildcard $(CUGL_PATH)/external/box2d/lib/Box2D/Collision/*.cpp) \
-	$(wildcard $(CUGL_PATH)/external/box2d/lib/Box2D/Collision/Shapes/*.cpp) \
-	$(wildcard $(CUGL_PATH)/external/box2d/lib/Box2D/Common/*.cpp) \
-	$(wildcard $(CUGL_PATH)/external/box2d/lib/Box2D/Dynamics/*.cpp) \
-	$(wildcard $(CUGL_PATH)/external/box2d/lib/Box2D/Dynamics/Contacts/*.cpp) \
-	$(wildcard $(CUGL_PATH)/external/box2d/lib/Box2D/Dynamics/Joints/*.cpp) \
-	$(wildcard $(CUGL_PATH)/external/box2d/lib/Box2D/Rope/*.cpp))
+	$(wildcard $(CUGL_PATH)/external/Box2D/Collision/*.cpp) \
+	$(wildcard $(CUGL_PATH)/external/Box2D/Collision/Shapes/*.cpp) \
+	$(wildcard $(CUGL_PATH)/external/Box2D/Common/*.cpp) \
+	$(wildcard $(CUGL_PATH)/external/Box2D/Dynamics/*.cpp) \
+	$(wildcard $(CUGL_PATH)/external/Box2D/Dynamics/Contacts/*.cpp) \
+	$(wildcard $(CUGL_PATH)/external/Box2D/Dynamics/Joints/*.cpp) \
+	$(wildcard $(CUGL_PATH)/external/Box2D/Rope/*.cpp))
 
 LOCAL_CFLAGS += -DGL_GLEXT_PROTOTYPES
 

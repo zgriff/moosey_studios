@@ -364,9 +364,10 @@ bool AudioOutput::init(const std::string& device, Uint8 channels, Uint32 rate, U
  */
 void AudioOutput::dispose() {
     if (_booted) {
-        AudioNode::dispose();
         SDL_PauseAudioDevice(_device, 1);
         SDL_CloseAudioDevice(_device);
+        detach();
+        AudioNode::dispose();
         _active.store(false);
         std::atomic_store_explicit(&_input,{},std::memory_order_relaxed);
         if (_resampler != NULL) {
