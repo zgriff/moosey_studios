@@ -1,51 +1,45 @@
 //
-//  SwapStation.cpp
+//  Egg.cpp
 //  Roshamboogie
 //
-//  Created by Zach Griffin on 3/6/21.
+//  Created by Ikra Monjur on 3/17/21.
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-
+#include <stdio.h>
 #include <cugl/cugl.h>
-#include "SwapStation.h"
-#include "Element.h"
-
-
+#include "Egg.h"
 
 using namespace cugl;
 
-void SwapStation::setTextures(const std::shared_ptr<Texture>& swapText) {
+void Egg::setTextures(const std::shared_ptr<Texture>& eggText) {
 
-    _sceneNode = scene2::PolygonNode::allocWithTexture(swapText);
+    _sceneNode = scene2::PolygonNode::allocWithTexture(eggText);
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
-    _texture = swapText;
+    _texture = eggText;
     _body->SetUserData(this);
+    _hatched = false;
 
 }
 
-bool SwapStation::init(const cugl::Vec2 pos, const cugl::Size size) {
+bool Egg::init(const cugl::Vec2 pos, const cugl::Size size) {
     if(physics2::BoxObstacle::init(pos,size)){
         setSensor(true);
-        setName("swapstation");
+        setName("egg");
+        setInitPos(pos);
         return true;
     }
     return false;
 }
 
-void SwapStation::dispose(){
+void Egg::dispose(){
     _sceneNode = nullptr;
     _texture = nullptr;
 }
 
-void SwapStation::setDrawScale(float scale) {
+void Egg::setDrawScale(float scale) {
     _drawscale = scale;
     if (_sceneNode != nullptr) {
         _sceneNode->setPosition(getPosition()*_drawscale);
     }
 }
-
-
-
-
-

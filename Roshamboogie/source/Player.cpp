@@ -37,11 +37,49 @@ void Player::setTextures(const std::shared_ptr<Texture>& ship) {
     _sceneNode = scene2::PolygonNode::allocWithTexture(ship);
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
     _texture = ship;
+//    setElement(Element::Fire);
+    currElt = Element::Fire;
+    prevElt = Element::Fire;
     _body->SetUserData(this);
+//
 }
 
+
 void Player::setElement(Element e){
-    element = e;
+    prevElt = currElt;
+    currElt = e;
+    
+    switch(e){ //TODO: change to texture when assets made
+        case Element::Grass:
+            CULog("grass");
+            _sceneNode->setColor(Color4(0, 255, 0));
+            break;
+        case Element::Fire:
+            CULog("fire");
+            _sceneNode->setColor(Color4(255, 0, 0));
+            break;
+        case Element::Water:
+            CULog("water");
+            _sceneNode->setColor(Color4(0, 0, 255));
+            break;
+        case Element::None:
+            _sceneNode->setColor(Color4(0, 0, 0));
+            break;
+    }
+    
+}
+
+Element Player::getPreyElement() {
+    switch(currElt){
+        case Element::Grass:
+            return Element::Water;
+        case Element::Fire:
+            return Element::Grass;
+        case Element::Water:
+            return Element::Fire;
+        case Element::None:
+            return Element::None;
+    }
 }
 
 /**

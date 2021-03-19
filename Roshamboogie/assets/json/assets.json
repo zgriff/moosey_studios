@@ -15,6 +15,12 @@
         "target": {
             "file":  "textures/target.png"
         },
+        "grass": {
+            "file":  "textures/grass.png"
+        },
+        "swapstation": {
+            "file": "textures/swapst.png"
+        },
         "wall": {
             "file":  "textures/barrier.png"
         },
@@ -53,7 +59,26 @@
                         "y_anchor" : "fill"
                     }
                 }
+            },
+            "hud" : {
+                "type": "Label",
+                "data": {
+                    "font"       : "felt32",
+                    "text"       : "Score: 0",
+                    "foreground" : [255,255,255,255],
+                    "size"       : [500,70],
+                    "valign"     : "bottom",
+                    "halign"     : "left"
+                },
+                "layout" : {
+                    "x_anchor" : "left",
+                    "y_anchor" : "bottom",
+                    "x_offset" : 100,
+                    "y_offset" : 100,
+                    "absolute" : true
+                }
             }
         }
+        
     }
 }

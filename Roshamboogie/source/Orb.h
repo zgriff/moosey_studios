@@ -18,6 +18,7 @@ private:
     float _drawscale;
     std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
     std::shared_ptr<cugl::Texture> _texture;
+    bool _collected;
 public:
     Orb(void) : WheelObstacle(), _drawscale(1.0f) { }
     
@@ -39,6 +40,9 @@ public:
         return e;
     }
     
+    bool getCollected() { return _collected; }
+    
+    void setCollected(bool c) { _collected = c; }
     
     
     std::shared_ptr<cugl::scene2::SceneNode> getSceneNode(){

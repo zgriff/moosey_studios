@@ -17,10 +17,9 @@ private:
     CU_DISALLOW_COPY_AND_ASSIGN(Player);
     
     cugl::Vec2 _force;
-    
-    /** The ship identifier */
     int _id;
-    Element element;
+    Element currElt;
+    Element prevElt; //used when switching back to the element before collecting an egg
     
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
@@ -61,7 +60,11 @@ public:
     
     void setElement(Element e);
     
-    Element getElement() { return element; }
+    Element getCurrElement() { return currElt; }
+    
+    Element getPrevElement() { return prevElt; }
+    
+    Element getPreyElement();
 
     
 #pragma mark Graphics

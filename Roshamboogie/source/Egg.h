@@ -1,44 +1,44 @@
 //
-//  SwapStation.hpp
+//  Egg.h
 //  Roshamboogie
 //
-//  Created by Zach Griffin on 3/6/21.
+//  Created by Ikra Monjur on 3/17/21.
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#ifndef __SWAP_STATION_H__
-#define __SWAP_STATION_H__
+#ifndef Egg_h
+#define Egg_h
 
 #include <cugl/cugl.h>
 
-
 using namespace cugl;
 
-class SwapStation : public cugl::physics2::BoxObstacle{
+class Egg : public cugl::physics2::BoxObstacle{
 private:
     
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
     float _drawscale;
 
-    
     // Asset references.  These should be set by GameMode
-    /** Reference to the node for the swap station */
+    /** Reference to the node for the egg */
     std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
     
-    /** Reference to the swap station texture */
+    /** Reference to the egg texture */
     std::shared_ptr<cugl::Texture> _texture;
-    bool active;
-    float cooldown;
+    
+    bool _hatched;
+    bool _collected;
+    Vec2 _initPos;
     
 public:
     
     /**
-     * Sets the textures for this swap station.
+     * Sets the textures for this egg.
      *
-     * @param swapText      The texture for the ship filmstrip
+     * @param eggText      The texture for the egg
      */
-    void setTextures(const std::shared_ptr<cugl::Texture>& swapText);
+    void setTextures(const std::shared_ptr<cugl::Texture>& eggText);
     
     
     const std::shared_ptr<cugl::Texture> getTexture() const {
@@ -49,26 +49,33 @@ public:
         return _sceneNode;
     }
     
-    bool getActive() {return active; }
+    bool getHatched() { return _hatched; }
     
-    void setActive(bool a) override { active = a; }
+    void setHatched(bool h) { _hatched = h; }
     
-    float getCoolDown() { return cooldown; }
+    bool getCollected() { return _collected; }
+    
+    void setCollected(bool b) { _collected = b; }
+    
+    Vec2 getInitPos() { return _initPos; }
+    
+    void setInitPos(Vec2 pos) { _initPos = pos; }
+    
     
     
 #pragma mark Constructors
     /**
-     * Creates a swap station with the default values.
+     * Creates an egg with the default values.
      *
      * To properly initialize the swap station, you should call the init
      * method.
      */
-    SwapStation(void) : BoxObstacle(), _drawscale(1.0f) { }
+    Egg(void) : BoxObstacle(), _drawscale(1.0f) { }
     
     /**
      * Disposes the swap station, releasing all resources.
      */
-    virtual ~SwapStation(void) { dispose(); }
+    virtual ~Egg(void) { dispose(); }
 
     /**
      * Disposes the  swap station, releasing all resources.
@@ -88,8 +95,8 @@ public:
      *
      * @return a newly allocated  swap station
      */
-    static std::shared_ptr<SwapStation> alloc(const cugl::Vec2 pos, const cugl::Size size) {
-        std::shared_ptr<SwapStation> result = std::make_shared<SwapStation>();
+    static std::shared_ptr<Egg> alloc(const cugl::Vec2 pos, const cugl::Size size) {
+        std::shared_ptr<Egg> result = std::make_shared<Egg>();
         return (result->init(pos, size) ? result : nullptr);
     }
     
@@ -97,21 +104,21 @@ public:
 #pragma mark Physics
     
     /**
-     * Sets the ratio of the swap station sprite to the physics body
+     * Sets the ratio of the sprite to the physics body
      *
      *
-     * @param scale The ratio of the swap station sprite to the physics body
+     * @param scale The ratio of the  sprite to the physics body
      */
     void setDrawScale(float scale);
     
     /**
-     * Returns the ratio of the swap station sprite to the physics body
+     * Returns the ratio of the sprite to the physics body
      *
      *
-     * @return the ratio of the swap station sprite to the physics body
+     * @return the ratio of the sprite to the physics body
      */
     float getDrawScale() const { return _drawscale; }
     
 };
 
-#endif /* SwapStation_hpp */
+#endif /* Egg_h */
