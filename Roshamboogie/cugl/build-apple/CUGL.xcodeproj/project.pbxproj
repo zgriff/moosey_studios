@@ -453,6 +453,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		28AD610C26044C7100FFD4BB /* net */ = {isa = PBXFileReference; lastKnownFileType = folder; path = net; sourceTree = "<group>"; };
+		28AD611226044C9300FFD4BB /* net */ = {isa = PBXFileReference; lastKnownFileType = folder; path = net; sourceTree = "<group>"; };
+		28AD611426044D0200FFD4BB /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = slikenet/Source/src; sourceTree = "<group>"; };
+		28AD611526044D6C00FFD4BB /* slikenet */ = {isa = PBXFileReference; lastKnownFileType = folder; path = slikenet; sourceTree = "<group>"; };
 		EB035D7A20C0D0F80001EAE3 /* CUFIRFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUFIRFilter.h; sourceTree = "<group>"; };
 		EB035D8920C0D1590001EAE3 /* CUOneZeroFIR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUOneZeroFIR.h; sourceTree = "<group>"; };
 		EB035D8C20C0D34D0001EAE3 /* CUFIRFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CUFIRFilter.cpp; sourceTree = "<group>"; };
@@ -856,6 +860,7 @@
 		EB202C261DE3663000116616 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				28AD611426044D0200FFD4BB /* src */,
 				EB202C291DE3663800116616 /* cJSON */,
 				EBDC804225BA2BA0004DECAE /* clipper */,
 				EBDC800025B8ABFD004DECAE /* poly2tri */,
@@ -1252,6 +1257,7 @@
 		EBC2F15F1D74A67B007EC7A6 /* Include */ = {
 			isa = PBXGroup;
 			children = (
+				28AD610C26044C7100FFD4BB /* net */,
 				EBC2F18C1D74AA1D007EC7A6 /* cugl.h */,
 				EBC2F1601D74A685007EC7A6 /* base */,
 				EBC2F1611D74A6B6007EC7A6 /* util */,
@@ -1348,6 +1354,7 @@
 		EBC2F1651D74A7DF007EC7A6 /* external */ = {
 			isa = PBXGroup;
 			children = (
+				28AD611526044D6C00FFD4BB /* slikenet */,
 				EB839E031DCD82C8001039BC /* Box2D */,
 				EBC2F1681D74A85A007EC7A6 /* utf8 */,
 				EBDC803F25BA2B73004DECAE /* clipper */,
@@ -1635,6 +1642,7 @@
 		EBFFD70E1CFCA12A00E047D2 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				28AD611226044C9300FFD4BB /* net */,
 				EB4AEC011CFCB9C70090AF7F /* base */,
 				EB4AEC1B1CFDB98B0090AF7F /* util */,
 				EB4AEC081CFCC09E0090AF7F /* math */,
@@ -2195,7 +2203,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -2208,6 +2216,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/lib",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -2222,7 +2231,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -2235,6 +2244,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/lib",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2257,6 +2267,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/lib",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2277,6 +2288,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/lib",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2298,7 +2310,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_CFLAGS = (
 					"-mfma",
 					"-msse4.2",
@@ -2319,7 +2331,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_CFLAGS = (
 					"-mfma",
 					"-msse4.2",
