@@ -229,7 +229,12 @@ void GameScene::update(float timestep) {
 
     
     if (_egg->getCollected() && _egg->getHatched() == false) {
-        if (_player->getPosition() - _egg->getInitPos() >= Vec2(10, 10)) {
+        Vec2 diff = _player->getPosition() - _egg->getInitPos();
+        float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
+        _egg->incDistanceWalked(dist);
+//        CULog("%f", _egg->getDistanceWalked());
+        _egg->setInitPos(_player->getPosition());
+        if (_egg->getDistanceWalked() >= 80) {
             _egg->setHatched(true);
             CULog("hatched");
             _player->setElement(_player->getPrevElement());

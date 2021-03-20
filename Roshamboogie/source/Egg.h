@@ -30,6 +30,7 @@ private:
     bool _hatched;
     bool _collected;
     Vec2 _initPos;
+    float _distanceWalked;
     
 public:
     
@@ -61,6 +62,9 @@ public:
     
     void setInitPos(Vec2 pos) { _initPos = pos; }
     
+    float getDistanceWalked() { return _distanceWalked; }
+    
+    void incDistanceWalked(float dist) { _distanceWalked += dist; }
     
     
 #pragma mark Constructors
