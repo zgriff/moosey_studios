@@ -11,7 +11,7 @@ public:
 
 	void createGame();
 
-	void joinGame();
+	void joinGame(std::string roomId);
 };
 
 #endif

@@ -9,13 +9,15 @@ constexpr auto SERVER_ADDRESS = "34.74.68.73";
 constexpr uint16_t SERVER_PORT = 61111;
 
 void MatchmakingController::createGame() {
-	network = std::make_shared<cugl::CUNetworkConnection>(ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, 6, 0));
-	while (network->getRoomID() == null) {
+	std::shared_ptr<cugl::CUNetworkConnection> network = 
+		std::make_shared<cugl::CUNetworkConnection>(cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, 6, 0));
+	while (network->getRoomID() == "") {
 		
 	}
 	roomId = network->getRoomID();
 }
 
 void MatchmakingController::joinGame(std::string roomId) {
-	network = std::make_shared<cugl::CUNetworkConnection>(ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, 6, 0), roomId);
+	std::shared_ptr<cugl::CUNetworkConnection> network = 
+		std::make_shared<cugl::CUNetworkConnection>(cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, 6, 0), roomId);
 }
