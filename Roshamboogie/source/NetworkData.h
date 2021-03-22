@@ -50,6 +50,5 @@ struct NetworkData {
             int playerId;
         };
     };
-}
-;
+};
 #endif /* NetworkData_h */

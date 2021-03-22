@@ -7,3 +7,10 @@
 //
 
 #include "NetworkData.h"
+
+struct NetworkData * fromBytes(const std::vector<uint8_t>& bytes){
+    struct NetworkData * nd = new struct NetworkData();
+    
+    
+    return nd;
+}
