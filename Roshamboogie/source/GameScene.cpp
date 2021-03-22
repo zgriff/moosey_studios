@@ -145,7 +145,7 @@ void GameScene::reset() {
 
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size playerSize(shipTexture->getSize()/_scale);
-    _player = Player::alloc(playerPos, playerSize);
+    _player = Player::alloc(playerPos, playerSize, Element::Water);
     _world->addObstacle(_player);
     _player->setTextures(shipTexture);
     _player->setID(0);
@@ -216,32 +216,35 @@ void GameScene::update(float timestep) {
     }
     
 
-//    _scoreHUD->setText(positionText(_shipModel->getPosition()));
     _world->update(timestep);
+    
     if (_orbTest->getCollected()) {
         std::random_device r;
         std::default_random_engine e1(r());
         std::uniform_int_distribution<int> rand_int(1, 31);
         std::uniform_int_distribution<int> rand_int2(1, 17);
         _orbTest->setPosition(rand_int(e1), rand_int2(e1));
+        _score += 1;
     }
     
-
-    
+    //egg hatch logic
     if (_egg->getCollected() && _egg->getHatched() == false) {
         Vec2 diff = _player->getPosition() - _egg->getInitPos();
         float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
         _egg->incDistanceWalked(dist);
-//        CULog("%f", _egg->getDistanceWalked());
         _egg->setInitPos(_player->getPosition());
         if (_egg->getDistanceWalked() >= 80) {
             _egg->setHatched(true);
-            CULog("hatched");
+//            _egg->setCollected(false);
+            _score += 10;
             _player->setElement(_player->getPrevElement());
+            CULog("hatched");
         }
     }
     
+    
     _orbTest->setCollected(false);
+    _scoreHUD->setText(updateScoreText(_score));
     
     
 }
@@ -321,4 +324,10 @@ Size GameScene::computeActiveSize() const {
         dimen *= SCENE_HEIGHT/dimen.height;
     }
     return dimen;
+}
+
+std::string GameScene::updateScoreText(const int score) {
+    stringstream ss;
+    ss << "Score: " << score;
+    return ss.str();
 }

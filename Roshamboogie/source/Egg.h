@@ -77,27 +77,27 @@ public:
     Egg(void) : BoxObstacle(), _drawscale(1.0f) { }
     
     /**
-     * Disposes the swap station, releasing all resources.
+     * Disposes the egg, releasing all resources.
      */
     virtual ~Egg(void) { dispose(); }
 
     /**
-     * Disposes the  swap station, releasing all resources.
+     * Disposes the  egg, releasing all resources.
      */
     void dispose();
     
     /**
-     * Initializes a new  swap station
+     * Initializes a new  egg
      *     *
      * @return true if the initialization was successful
      */
     virtual bool init(const cugl::Vec2 pos, const cugl::Size size) override;
 
     /**
-     * Returns a newly allocated  swap station
+     * Returns a newly allocated  egg
      *
      *
-     * @return a newly allocated  swap station
+     * @return a newly allocated  egg
      */
     static std::shared_ptr<Egg> alloc(const cugl::Vec2 pos, const cugl::Size size) {
         std::shared_ptr<Egg> result = std::make_shared<Egg>();

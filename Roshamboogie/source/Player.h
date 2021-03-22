@@ -1,5 +1,5 @@
 //
-//  Ship.h
+//  player.h
 //  Roshamboogie
 //
 //  Created by Zach Griffin on 3/6/21.
@@ -27,11 +27,11 @@ private:
 
     
     // Asset references.  These should be set by GameMode
-    /** Reference to the node for the group of the ship and the aiming reticule */
+    /** Reference to the node for the player */
     std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
-    /** Reference to ship's sprite for drawing */
-//    std::shared_ptr<cugl::scene2::AnimationNode> _shipNode;
-    /** Reference to the ships texture */
+    /** Reference to player's sprite for drawing */
+//    std::shared_ptr<cugl::scene2::AnimationNode> _playerNode;
+    /** Reference to the player texture */
     std::shared_ptr<cugl::Texture> _texture;
 
 public:
@@ -69,30 +69,20 @@ public:
     
 #pragma mark Graphics
     /**
-     * Returns the scene graph node for this ship
+     * Returns the scene graph node for this player
      *
-     * The scene graph node contains the ship, its shadow, and the
-     * target. It is centered on the ship itself. This method
-     * returns the null pointer if the textures have not yet
-     * been set.
-     *
-     * @return the image texture for this ship
+     * @return the image texture for this player
      */
     const std::shared_ptr<cugl::scene2::SceneNode> getSceneNode() const {
         return _sceneNode;
     }
     
     /**
-     * Sets the textures for this ship.
+     * Sets the textures for this player.
      *
-     * The two textures are the ship texture and the target texture. The
-     * scene graph node associated with this ship is nullptr until these
-     * values are set.
-     *
-     * @param ship      The texture for the ship filmstrip
-     * @param target    The texture for the ship target
+     * @param player      The texture for the player filmstrip
      */
-    void setTextures(const std::shared_ptr<cugl::Texture>& ship);
+    void setTextures(const std::shared_ptr<cugl::Texture>& player);
     
     
     const std::shared_ptr<cugl::Texture> getTexture() const {
@@ -101,20 +91,20 @@ public:
     
 #pragma mark Constructors
     /**
-     * Creates a ship with the default values.
+     * Creates a player with the default values.
      *
-     * To properly initialize the ship, you should call the init
+     * To properly initialize the player, you should call the init
      * method.
      */
     Player(void) : BoxObstacle(), _drawscale(1.0f) { }
     
     /**
-     * Disposes the ship, releasing all resources.
+     * Disposes the player, releasing all resources.
      */
     virtual ~Player(void) { dispose(); }
 
     /**
-     * Disposes the ship, releasing all resources.
+     * Disposes the player, releasing all resources.
      */
     void dispose();
     
@@ -126,7 +116,7 @@ public:
      *
      * @return true if the initialization was successful
      */
-    virtual bool init(const cugl::Vec2 pos, const cugl::Size size) override;
+    virtual bool init(const cugl::Vec2 pos, const cugl::Size size, Element elt);
 
     /**
      * Returns a newly allocated player.
@@ -136,9 +126,9 @@ public:
      *
      * @return a newly allocated player
      */
-    static std::shared_ptr<Player> alloc(const cugl::Vec2 pos, const cugl::Size size) {
+    static std::shared_ptr<Player> alloc(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         std::shared_ptr<Player> result = std::make_shared<Player>();
-        return (result->init(pos, size) ? result : nullptr);
+        return (result->init(pos, size, elt) ? result : nullptr);
     }
     
 #pragma mark -
@@ -166,7 +156,7 @@ public:
     virtual void update(float delta) override;
     
     /**
-     * Sets the ratio of the ship sprite to the physics body
+     * Sets the ratio of the player sprite to the physics body
      *
      * The rocket needs this value to convert correctly between the physics
      * coordinates and the drawing screen coordinates.  Otherwise it will
@@ -175,12 +165,12 @@ public:
      * All physics scaling must be uniform.  Rotation does weird things when
      * attempting to scale physics by a non-uniform factor.
      *
-     * @param scale The ratio of the ship sprite to the physics body
+     * @param scale The ratio of the player sprite to the physics body
      */
     void setDrawScale(float scale);
     
     /**
-     * Returns the ratio of the ship sprite to the physics body
+     * Returns the ratio of the player sprite to the physics body
      *
      * The rocket needs this value to convert correctly between the physics
      * coordinates and the drawing screen coordinates.  Otherwise it will
@@ -189,7 +179,7 @@ public:
      * All physics scaling must be uniform.  Rotation does weird things when
      * attempting to scale physics by a non-uniform factor.
      *
-     * @return the ratio of the ship sprite to the physics body
+     * @return the ratio of the player sprite to the physics body
      */
     float getDrawScale() const { return _drawscale; }
     

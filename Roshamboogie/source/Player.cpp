@@ -1,5 +1,5 @@
 //
-//  Ship.cpp
+//  Player.cpp
 //  Roshamboogie
 //
 //  Created by Zach Griffin on 3/6/21.
@@ -23,23 +23,16 @@ using namespace cugl;
 
 
 /**
- * Sets the textures for this ship.
+ * Sets the textures for this player.
  *
- * The two textures are the ship texture and the target texture. The
- * scene graph node associated with this ship is nullptr until these
- * values are set.
- *
- * @param ship      The texture for the ship filmstrip
- * @param target    The texture for the ship target
+ * @param player      The texture for the player filmstrip
  */
-void Player::setTextures(const std::shared_ptr<Texture>& ship) {
+void Player::setTextures(const std::shared_ptr<Texture>& player) {
 
-    _sceneNode = scene2::PolygonNode::allocWithTexture(ship);
+    _sceneNode = scene2::PolygonNode::allocWithTexture(player);
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
-    _texture = ship;
-//    setElement(Element::Fire);
-    currElt = Element::Fire;
-    prevElt = Element::Fire;
+    _texture = player;
+    setElement(currElt);
     _body->SetUserData(this);
 //
 }
@@ -63,6 +56,7 @@ void Player::setElement(Element e){
             _sceneNode->setColor(Color4(0, 0, 255));
             break;
         case Element::None:
+            CULog("none");
             _sceneNode->setColor(Color4(0, 0, 0));
             break;
     }
@@ -83,7 +77,7 @@ Element Player::getPreyElement() {
 }
 
 /**
- * Disposes the ship, releasing all resources.
+ * Disposes the player, releasing all resources.
  */
 void Player::dispose() {
     // Garbage collect
@@ -92,9 +86,9 @@ void Player::dispose() {
 }
 
 /**
- * Initializes a new ship at the given location with the given facing.
+ * Initializes a new player at the given location with the given facing.
  *
- * This method does NOT create a scene graph node for this ship.  You
+ * This method does NOT create a scene graph node for this player.  You
  * must call setTextures for that.
  *
  * @param x The initial x-coordinate of the center
@@ -103,7 +97,7 @@ void Player::dispose() {
  *
  * @return true if the initialization was successful
  */
-bool Player::init(const cugl::Vec2 pos, const cugl::Size size) {
+bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
     if(physics2::BoxObstacle::init(pos,size)){
         std::string name("player");
         setName(name);
@@ -112,6 +106,8 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size) {
         setRestitution(DEFAULT_RESTITUTION);
         setFixedRotation(true);
         setForce(DEFAULT_FORCE);
+        currElt = elt;
+        prevElt = elt;
         _sceneNode = nullptr;
         return true;
     }

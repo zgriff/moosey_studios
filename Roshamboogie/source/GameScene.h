@@ -43,8 +43,6 @@ protected:
     // Attach input controllers directly to the scene (no pointers)
     /** Controller for the player */
     InputController _playerController;
-    
-//    CollisionController _collisionController;
 
     /** Location and animation information for player (MODEL CLASS) */
     std::shared_ptr<Player> _player;
@@ -57,10 +55,14 @@ protected:
     
     std::shared_ptr<cugl::scene2::Label> _scoreHUD;
     
+    int _score = 0;
+    
     
     /** The weapon fire sound for the blue player */
 //    std::shared_ptr<cugl::Sound> _blueSound;
     bool swap = false;
+    
+    std::string updateScoreText(const int score);
     
 public:
 #pragma mark -
@@ -164,13 +166,7 @@ public:
     cugl::Size computeActiveSize() const;
     
     void moveOrb(Orb* orb);
-    
-//#pragma mark -
-//#pragma mark Collision Handling
-//    void beginContact(b2Contact* contact);
-//
-//    void beforeSolve(b2Contact* contact, const b2Manifold* oldManifold);
-//
+
 };
 
 #endif /* GameScene_hpp */

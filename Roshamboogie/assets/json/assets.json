@@ -40,6 +40,12 @@
             "file": "sounds/laser.ogg"
         }
     },
+    "fonts": {
+        "retro": {
+            "file": "fonts/RetroGame.ttf",
+            "size": 32
+        }
+    },
     "scene2s" : {
         "lab" : {
             "comment"   : "We do not have an asset loader for filmstrips yet, so we do not add the ships",
@@ -58,24 +64,24 @@
                         "x_anchor" : "fill",
                         "y_anchor" : "fill"
                     }
-                }
-            },
-            "hud" : {
-                "type": "Label",
-                "data": {
-                    "font"       : "felt32",
-                    "text"       : "Score: 0",
-                    "foreground" : [255,255,255,255],
-                    "size"       : [500,70],
-                    "valign"     : "bottom",
-                    "halign"     : "left"
                 },
-                "layout" : {
-                    "x_anchor" : "left",
-                    "y_anchor" : "bottom",
-                    "x_offset" : 100,
-                    "y_offset" : 100,
-                    "absolute" : true
+                "hud" : {
+                    "type": "Label",
+                    "data": {
+                        "font"       : "retro",
+                        "text"       : "Score: 0",
+                        "foreground" : [255,255,255,255],
+                        "size"       : [500,70],
+                        "valign"     : "bottom",
+                        "halign"     : "left"
+                    },
+                    "layout" : {
+                        "x_anchor" : "left",
+                        "y_anchor" : "bottom",
+                        "x_offset" : 180,
+                        "y_offset" : 50,
+                        "absolute" : true
+                    }
                 }
             }
         }

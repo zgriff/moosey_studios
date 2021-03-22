@@ -46,27 +46,46 @@ void CollisionController::beginContact(b2Contact* contact){
     //swap station and player collision
     if (bd1->getName() == "swapstation" && bd2->getName() == "player") {
         Player* p = (Player*) bd2;
-        p->setElement(p->getPreyElement());
+        SwapStation* s = (SwapStation*) bd1;
+        if (p->getCurrElement() != Element::None) {
+            if (clock() - s->getLastUsed() >= s->getCoolDown()) {
+                s->setLastUsed(clock());
+                p->setElement(p->getPreyElement());
+    //            s->setActive(false);
+            }
+        }
     }
     else if(bd1->getName() == "player" && bd2->getName() == "swapstation") {
         Player* p = (Player*) bd1;
-        p->setElement(p->getPreyElement());
+        SwapStation* s = (SwapStation*) bd2;
+        if (p->getCurrElement() != Element::None) {
+            if (clock() - s->getLastUsed() >= s->getCoolDown()) {
+                s->setLastUsed(clock());
+                p->setElement(p->getPreyElement());
+    //            s->setActive(false);
+
+            }
+        }
     }
     
     //egg and player collision
     if (bd1->getName() == "egg" && bd2->getName() == "player") {
         Egg* e = (Egg*) bd1;
         Player* p = (Player*) bd2;
-        p->setElement(Element::None);
-        e->setCollected(true);
-        CULog("egg collected");
+        if (e->getCollected() == false) {
+            p->setElement(Element::None);
+            e->setCollected(true);
+            CULog("egg collected");
+        }
     }
     else if (bd2->getName() == "egg" && bd1->getName() == "player") {
         Egg* e = (Egg*) bd2;
         Player* p = (Player*) bd1;
-        p->setElement(Element::None);
-        e->setCollected(true);
-        CULog("egg collected");
+        if (e->getCollected() == false) {
+            p->setElement(Element::None);
+            e->setCollected(true);
+            CULog("egg collected");
+        }
     }
 }
 

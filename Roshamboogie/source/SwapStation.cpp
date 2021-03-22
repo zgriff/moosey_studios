@@ -11,8 +11,6 @@
 #include "SwapStation.h"
 #include "Element.h"
 
-
-
 using namespace cugl;
 
 void SwapStation::setTextures(const std::shared_ptr<Texture>& swapText) {

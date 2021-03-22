@@ -10,6 +10,7 @@
 #define __SWAP_STATION_H__
 
 #include <cugl/cugl.h>
+#include <time.h>
 
 
 using namespace cugl;
@@ -28,8 +29,9 @@ private:
     
     /** Reference to the swap station texture */
     std::shared_ptr<cugl::Texture> _texture;
-    bool active;
-    float cooldown;
+    bool _active;
+    clock_t _lastUsed;
+    clock_t _coolDownSecs = 2 * CLOCKS_PER_SEC;
     
 public:
     
@@ -49,11 +51,16 @@ public:
         return _sceneNode;
     }
     
-    bool getActive() {return active; }
+    bool getActive() {return _active; }
     
-    void setActive(bool a) override { active = a; }
+    void setActive(bool a) override { _active = a; }
     
-    float getCoolDown() { return cooldown; }
+    clock_t getLastUsed() { return _lastUsed; }
+    
+    void setLastUsed(clock_t time) { _lastUsed = time; }
+    
+    clock_t getCoolDown() { return _coolDownSecs; }
+
     
     
 #pragma mark Constructors
