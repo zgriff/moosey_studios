@@ -7,6 +7,345 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		92E462D82608FA8600C94A1A /* Router2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462632608FA8600C94A1A /* Router2.cpp */; };
+		92E462D92608FA8600C94A1A /* Router2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462632608FA8600C94A1A /* Router2.cpp */; };
+		92E462DA2608FA8600C94A1A /* Router2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462632608FA8600C94A1A /* Router2.cpp */; };
+		92E462DB2608FA8600C94A1A /* DS_Table.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462642608FA8600C94A1A /* DS_Table.cpp */; };
+		92E462DC2608FA8600C94A1A /* DS_Table.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462642608FA8600C94A1A /* DS_Table.cpp */; };
+		92E462DD2608FA8600C94A1A /* DS_Table.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462642608FA8600C94A1A /* DS_Table.cpp */; };
+		92E462DE2608FA8600C94A1A /* RakNetSocket2_Berkley_NativeClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462652608FA8600C94A1A /* RakNetSocket2_Berkley_NativeClient.cpp */; };
+		92E462DF2608FA8600C94A1A /* RakNetSocket2_Berkley_NativeClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462652608FA8600C94A1A /* RakNetSocket2_Berkley_NativeClient.cpp */; };
+		92E462E02608FA8600C94A1A /* RakNetSocket2_Berkley_NativeClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462652608FA8600C94A1A /* RakNetSocket2_Berkley_NativeClient.cpp */; };
+		92E462E12608FA8600C94A1A /* NatPunchthroughClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462662608FA8600C94A1A /* NatPunchthroughClient.cpp */; };
+		92E462E22608FA8600C94A1A /* NatPunchthroughClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462662608FA8600C94A1A /* NatPunchthroughClient.cpp */; };
+		92E462E32608FA8600C94A1A /* NatPunchthroughClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462662608FA8600C94A1A /* NatPunchthroughClient.cpp */; };
+		92E462E42608FA8600C94A1A /* ThreadsafePacketLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462672608FA8600C94A1A /* ThreadsafePacketLogger.cpp */; };
+		92E462E52608FA8600C94A1A /* ThreadsafePacketLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462672608FA8600C94A1A /* ThreadsafePacketLogger.cpp */; };
+		92E462E62608FA8600C94A1A /* ThreadsafePacketLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462672608FA8600C94A1A /* ThreadsafePacketLogger.cpp */; };
+		92E462E72608FA8600C94A1A /* RakPeer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462682608FA8600C94A1A /* RakPeer.cpp */; };
+		92E462E82608FA8600C94A1A /* RakPeer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462682608FA8600C94A1A /* RakPeer.cpp */; };
+		92E462E92608FA8600C94A1A /* RakPeer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462682608FA8600C94A1A /* RakPeer.cpp */; };
+		92E462F62608FA8600C94A1A /* ConnectionGraph2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4626E2608FA8600C94A1A /* ConnectionGraph2.cpp */; };
+		92E462F72608FA8600C94A1A /* ConnectionGraph2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4626E2608FA8600C94A1A /* ConnectionGraph2.cpp */; };
+		92E462F82608FA8600C94A1A /* ConnectionGraph2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4626E2608FA8600C94A1A /* ConnectionGraph2.cpp */; };
+		92E462F92608FA8600C94A1A /* DS_BytePool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4626F2608FA8600C94A1A /* DS_BytePool.cpp */; };
+		92E462FA2608FA8600C94A1A /* DS_BytePool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4626F2608FA8600C94A1A /* DS_BytePool.cpp */; };
+		92E462FB2608FA8600C94A1A /* DS_BytePool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4626F2608FA8600C94A1A /* DS_BytePool.cpp */; };
+		92E462FC2608FA8600C94A1A /* DS_HuffmanEncodingTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462702608FA8600C94A1A /* DS_HuffmanEncodingTree.cpp */; };
+		92E462FD2608FA8600C94A1A /* DS_HuffmanEncodingTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462702608FA8600C94A1A /* DS_HuffmanEncodingTree.cpp */; };
+		92E462FE2608FA8600C94A1A /* DS_HuffmanEncodingTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462702608FA8600C94A1A /* DS_HuffmanEncodingTree.cpp */; };
+		92E462FF2608FA8600C94A1A /* ReadyEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462712608FA8600C94A1A /* ReadyEvent.cpp */; };
+		92E463002608FA8600C94A1A /* ReadyEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462712608FA8600C94A1A /* ReadyEvent.cpp */; };
+		92E463012608FA8600C94A1A /* ReadyEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462712608FA8600C94A1A /* ReadyEvent.cpp */; };
+		92E463022608FA8600C94A1A /* Rackspace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462722608FA8600C94A1A /* Rackspace.cpp */; };
+		92E463032608FA8600C94A1A /* Rackspace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462722608FA8600C94A1A /* Rackspace.cpp */; };
+		92E463042608FA8600C94A1A /* Rackspace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462722608FA8600C94A1A /* Rackspace.cpp */; };
+		92E463052608FA8600C94A1A /* UDPProxyClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462732608FA8600C94A1A /* UDPProxyClient.cpp */; };
+		92E463062608FA8600C94A1A /* UDPProxyClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462732608FA8600C94A1A /* UDPProxyClient.cpp */; };
+		92E463072608FA8600C94A1A /* UDPProxyClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462732608FA8600C94A1A /* UDPProxyClient.cpp */; };
+		92E463082608FA8600C94A1A /* EpochTimeToString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462742608FA8600C94A1A /* EpochTimeToString.cpp */; };
+		92E463092608FA8600C94A1A /* EpochTimeToString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462742608FA8600C94A1A /* EpochTimeToString.cpp */; };
+		92E4630A2608FA8600C94A1A /* EpochTimeToString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462742608FA8600C94A1A /* EpochTimeToString.cpp */; };
+		92E4630B2608FA8600C94A1A /* SocketLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462752608FA8600C94A1A /* SocketLayer.cpp */; };
+		92E4630C2608FA8600C94A1A /* SocketLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462752608FA8600C94A1A /* SocketLayer.cpp */; };
+		92E4630D2608FA8600C94A1A /* SocketLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462752608FA8600C94A1A /* SocketLayer.cpp */; };
+		92E4630E2608FA8600C94A1A /* BitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462762608FA8600C94A1A /* BitStream.cpp */; };
+		92E4630F2608FA8600C94A1A /* BitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462762608FA8600C94A1A /* BitStream.cpp */; };
+		92E463102608FA8600C94A1A /* BitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462762608FA8600C94A1A /* BitStream.cpp */; };
+		92E463112608FA8600C94A1A /* HTTPConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462772608FA8600C94A1A /* HTTPConnection.cpp */; };
+		92E463122608FA8600C94A1A /* HTTPConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462772608FA8600C94A1A /* HTTPConnection.cpp */; };
+		92E463132608FA8600C94A1A /* HTTPConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462772608FA8600C94A1A /* HTTPConnection.cpp */; };
+		92E463142608FA8600C94A1A /* SecureHandshake.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462782608FA8600C94A1A /* SecureHandshake.cpp */; };
+		92E463152608FA8600C94A1A /* SecureHandshake.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462782608FA8600C94A1A /* SecureHandshake.cpp */; };
+		92E463162608FA8600C94A1A /* SecureHandshake.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462782608FA8600C94A1A /* SecureHandshake.cpp */; };
+		92E463172608FA8600C94A1A /* EmailSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462792608FA8600C94A1A /* EmailSender.cpp */; };
+		92E463182608FA8600C94A1A /* EmailSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462792608FA8600C94A1A /* EmailSender.cpp */; };
+		92E463192608FA8600C94A1A /* EmailSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462792608FA8600C94A1A /* EmailSender.cpp */; };
+		92E4631A2608FA8600C94A1A /* RakNetSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627A2608FA8600C94A1A /* RakNetSocket.cpp */; };
+		92E4631B2608FA8600C94A1A /* RakNetSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627A2608FA8600C94A1A /* RakNetSocket.cpp */; };
+		92E4631C2608FA8600C94A1A /* RakNetSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627A2608FA8600C94A1A /* RakNetSocket.cpp */; };
+		92E4631D2608FA8600C94A1A /* CheckSum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627B2608FA8600C94A1A /* CheckSum.cpp */; };
+		92E4631E2608FA8600C94A1A /* CheckSum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627B2608FA8600C94A1A /* CheckSum.cpp */; };
+		92E4631F2608FA8600C94A1A /* CheckSum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627B2608FA8600C94A1A /* CheckSum.cpp */; };
+		92E463202608FA8600C94A1A /* StringTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627C2608FA8600C94A1A /* StringTable.cpp */; };
+		92E463212608FA8600C94A1A /* StringTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627C2608FA8600C94A1A /* StringTable.cpp */; };
+		92E463222608FA8600C94A1A /* StringTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627C2608FA8600C94A1A /* StringTable.cpp */; };
+		92E463232608FA8600C94A1A /* Getche.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627D2608FA8600C94A1A /* Getche.cpp */; };
+		92E463242608FA8600C94A1A /* Getche.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627D2608FA8600C94A1A /* Getche.cpp */; };
+		92E463252608FA8600C94A1A /* Getche.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627D2608FA8600C94A1A /* Getche.cpp */; };
+		92E463262608FA8600C94A1A /* RelayPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627E2608FA8600C94A1A /* RelayPlugin.cpp */; };
+		92E463272608FA8600C94A1A /* RelayPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627E2608FA8600C94A1A /* RelayPlugin.cpp */; };
+		92E463282608FA8600C94A1A /* RelayPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627E2608FA8600C94A1A /* RelayPlugin.cpp */; };
+		92E463292608FA8600C94A1A /* CCRakNetSlidingWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627F2608FA8600C94A1A /* CCRakNetSlidingWindow.cpp */; };
+		92E4632A2608FA8600C94A1A /* CCRakNetSlidingWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627F2608FA8600C94A1A /* CCRakNetSlidingWindow.cpp */; };
+		92E4632B2608FA8600C94A1A /* CCRakNetSlidingWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4627F2608FA8600C94A1A /* CCRakNetSlidingWindow.cpp */; };
+		92E4632C2608FA8600C94A1A /* FormatString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462802608FA8600C94A1A /* FormatString.cpp */; };
+		92E4632D2608FA8600C94A1A /* FormatString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462802608FA8600C94A1A /* FormatString.cpp */; };
+		92E4632E2608FA8600C94A1A /* FormatString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462802608FA8600C94A1A /* FormatString.cpp */; };
+		92E4632F2608FA8600C94A1A /* LogCommandParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462812608FA8600C94A1A /* LogCommandParser.cpp */; };
+		92E463302608FA8600C94A1A /* LogCommandParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462812608FA8600C94A1A /* LogCommandParser.cpp */; };
+		92E463312608FA8600C94A1A /* LogCommandParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462812608FA8600C94A1A /* LogCommandParser.cpp */; };
+		92E463322608FA8600C94A1A /* PS4Includes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462822608FA8600C94A1A /* PS4Includes.cpp */; };
+		92E463332608FA8600C94A1A /* PS4Includes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462822608FA8600C94A1A /* PS4Includes.cpp */; };
+		92E463342608FA8600C94A1A /* PS4Includes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462822608FA8600C94A1A /* PS4Includes.cpp */; };
+		92E463352608FA8600C94A1A /* NatTypeDetectionCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462832608FA8600C94A1A /* NatTypeDetectionCommon.cpp */; };
+		92E463362608FA8600C94A1A /* NatTypeDetectionCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462832608FA8600C94A1A /* NatTypeDetectionCommon.cpp */; };
+		92E463372608FA8600C94A1A /* NatTypeDetectionCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462832608FA8600C94A1A /* NatTypeDetectionCommon.cpp */; };
+		92E463382608FA8600C94A1A /* PluginInterface2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462842608FA8600C94A1A /* PluginInterface2.cpp */; };
+		92E463392608FA8600C94A1A /* PluginInterface2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462842608FA8600C94A1A /* PluginInterface2.cpp */; };
+		92E4633A2608FA8600C94A1A /* PluginInterface2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462842608FA8600C94A1A /* PluginInterface2.cpp */; };
+		92E4633B2608FA8600C94A1A /* SendToThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462852608FA8600C94A1A /* SendToThread.cpp */; };
+		92E4633C2608FA8600C94A1A /* SendToThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462852608FA8600C94A1A /* SendToThread.cpp */; };
+		92E4633D2608FA8600C94A1A /* SendToThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462852608FA8600C94A1A /* SendToThread.cpp */; };
+		92E4633E2608FA8600C94A1A /* CCRakNetUDT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462862608FA8600C94A1A /* CCRakNetUDT.cpp */; };
+		92E4633F2608FA8600C94A1A /* CCRakNetUDT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462862608FA8600C94A1A /* CCRakNetUDT.cpp */; };
+		92E463402608FA8600C94A1A /* CCRakNetUDT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462862608FA8600C94A1A /* CCRakNetUDT.cpp */; };
+		92E463412608FA8600C94A1A /* DataCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462872608FA8600C94A1A /* DataCompressor.cpp */; };
+		92E463422608FA8600C94A1A /* DataCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462872608FA8600C94A1A /* DataCompressor.cpp */; };
+		92E463432608FA8600C94A1A /* DataCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462872608FA8600C94A1A /* DataCompressor.cpp */; };
+		92E463442608FA8600C94A1A /* LinuxStrings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462882608FA8600C94A1A /* LinuxStrings.cpp */; };
+		92E463452608FA8600C94A1A /* LinuxStrings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462882608FA8600C94A1A /* LinuxStrings.cpp */; };
+		92E463462608FA8600C94A1A /* LinuxStrings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462882608FA8600C94A1A /* LinuxStrings.cpp */; };
+		92E463472608FA8600C94A1A /* FullyConnectedMesh2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462892608FA8600C94A1A /* FullyConnectedMesh2.cpp */; };
+		92E463482608FA8600C94A1A /* FullyConnectedMesh2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462892608FA8600C94A1A /* FullyConnectedMesh2.cpp */; };
+		92E463492608FA8600C94A1A /* FullyConnectedMesh2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462892608FA8600C94A1A /* FullyConnectedMesh2.cpp */; };
+		92E4634A2608FA8600C94A1A /* NatTypeDetectionClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628A2608FA8600C94A1A /* NatTypeDetectionClient.cpp */; };
+		92E4634B2608FA8600C94A1A /* NatTypeDetectionClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628A2608FA8600C94A1A /* NatTypeDetectionClient.cpp */; };
+		92E4634C2608FA8600C94A1A /* NatTypeDetectionClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628A2608FA8600C94A1A /* NatTypeDetectionClient.cpp */; };
+		92E4634D2608FA8600C94A1A /* PacketLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628B2608FA8600C94A1A /* PacketLogger.cpp */; };
+		92E4634E2608FA8600C94A1A /* PacketLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628B2608FA8600C94A1A /* PacketLogger.cpp */; };
+		92E4634F2608FA8600C94A1A /* PacketLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628B2608FA8600C94A1A /* PacketLogger.cpp */; };
+		92E463502608FA8600C94A1A /* FileList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628C2608FA8600C94A1A /* FileList.cpp */; };
+		92E463512608FA8600C94A1A /* FileList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628C2608FA8600C94A1A /* FileList.cpp */; };
+		92E463522608FA8600C94A1A /* FileList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628C2608FA8600C94A1A /* FileList.cpp */; };
+		92E463532608FA8600C94A1A /* CommandParserInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628D2608FA8600C94A1A /* CommandParserInterface.cpp */; };
+		92E463542608FA8600C94A1A /* CommandParserInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628D2608FA8600C94A1A /* CommandParserInterface.cpp */; };
+		92E463552608FA8700C94A1A /* CommandParserInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628D2608FA8600C94A1A /* CommandParserInterface.cpp */; };
+		92E463562608FA8700C94A1A /* CloudServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628E2608FA8600C94A1A /* CloudServer.cpp */; };
+		92E463572608FA8700C94A1A /* CloudServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628E2608FA8600C94A1A /* CloudServer.cpp */; };
+		92E463582608FA8700C94A1A /* CloudServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628E2608FA8600C94A1A /* CloudServer.cpp */; };
+		92E463592608FA8700C94A1A /* FileOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628F2608FA8600C94A1A /* FileOperations.cpp */; };
+		92E4635A2608FA8700C94A1A /* FileOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628F2608FA8600C94A1A /* FileOperations.cpp */; };
+		92E4635B2608FA8700C94A1A /* FileOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4628F2608FA8600C94A1A /* FileOperations.cpp */; };
+		92E4635C2608FA8700C94A1A /* PacketConsoleLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462902608FA8600C94A1A /* PacketConsoleLogger.cpp */; };
+		92E4635D2608FA8700C94A1A /* PacketConsoleLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462902608FA8600C94A1A /* PacketConsoleLogger.cpp */; };
+		92E4635E2608FA8700C94A1A /* PacketConsoleLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462902608FA8600C94A1A /* PacketConsoleLogger.cpp */; };
+		92E4635F2608FA8700C94A1A /* VariadicSQLParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462912608FA8600C94A1A /* VariadicSQLParser.cpp */; };
+		92E463602608FA8700C94A1A /* VariadicSQLParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462912608FA8600C94A1A /* VariadicSQLParser.cpp */; };
+		92E463612608FA8700C94A1A /* VariadicSQLParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462912608FA8600C94A1A /* VariadicSQLParser.cpp */; };
+		92E463622608FA8700C94A1A /* GridSectorizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462922608FA8600C94A1A /* GridSectorizer.cpp */; };
+		92E463632608FA8700C94A1A /* GridSectorizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462922608FA8600C94A1A /* GridSectorizer.cpp */; };
+		92E463642608FA8700C94A1A /* GridSectorizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462922608FA8600C94A1A /* GridSectorizer.cpp */; };
+		92E463652608FA8700C94A1A /* SignaledEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462932608FA8600C94A1A /* SignaledEvent.cpp */; };
+		92E463662608FA8700C94A1A /* SignaledEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462932608FA8600C94A1A /* SignaledEvent.cpp */; };
+		92E463672608FA8700C94A1A /* SignaledEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462932608FA8600C94A1A /* SignaledEvent.cpp */; };
+		92E463682608FA8700C94A1A /* RakNetCommandParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462942608FA8600C94A1A /* RakNetCommandParser.cpp */; };
+		92E463692608FA8700C94A1A /* RakNetCommandParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462942608FA8600C94A1A /* RakNetCommandParser.cpp */; };
+		92E4636A2608FA8700C94A1A /* RakNetCommandParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462942608FA8600C94A1A /* RakNetCommandParser.cpp */; };
+		92E4636B2608FA8700C94A1A /* RakNetSocket2_Windows_Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462952608FA8600C94A1A /* RakNetSocket2_Windows_Linux.cpp */; };
+		92E4636C2608FA8700C94A1A /* RakNetSocket2_Windows_Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462952608FA8600C94A1A /* RakNetSocket2_Windows_Linux.cpp */; };
+		92E4636D2608FA8700C94A1A /* RakNetSocket2_Windows_Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462952608FA8600C94A1A /* RakNetSocket2_Windows_Linux.cpp */; };
+		92E4636E2608FA8700C94A1A /* MessageFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462962608FA8600C94A1A /* MessageFilter.cpp */; };
+		92E4636F2608FA8700C94A1A /* MessageFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462962608FA8600C94A1A /* MessageFilter.cpp */; };
+		92E463702608FA8700C94A1A /* MessageFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462962608FA8600C94A1A /* MessageFilter.cpp */; };
+		92E463712608FA8700C94A1A /* RakNetSocket2_Windows_Linux_360.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462972608FA8600C94A1A /* RakNetSocket2_Windows_Linux_360.cpp */; };
+		92E463722608FA8700C94A1A /* RakNetSocket2_Windows_Linux_360.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462972608FA8600C94A1A /* RakNetSocket2_Windows_Linux_360.cpp */; };
+		92E463732608FA8700C94A1A /* RakNetSocket2_Windows_Linux_360.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462972608FA8600C94A1A /* RakNetSocket2_Windows_Linux_360.cpp */; };
+		92E463742608FA8700C94A1A /* RakNetSocket2_PS4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462982608FA8600C94A1A /* RakNetSocket2_PS4.cpp */; };
+		92E463752608FA8700C94A1A /* RakNetSocket2_PS4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462982608FA8600C94A1A /* RakNetSocket2_PS4.cpp */; };
+		92E463762608FA8700C94A1A /* RakNetSocket2_PS4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462982608FA8600C94A1A /* RakNetSocket2_PS4.cpp */; };
+		92E463772608FA8700C94A1A /* UDPProxyCoordinator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462992608FA8600C94A1A /* UDPProxyCoordinator.cpp */; };
+		92E463782608FA8700C94A1A /* UDPProxyCoordinator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462992608FA8600C94A1A /* UDPProxyCoordinator.cpp */; };
+		92E463792608FA8700C94A1A /* UDPProxyCoordinator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462992608FA8600C94A1A /* UDPProxyCoordinator.cpp */; };
+		92E4637A2608FA8700C94A1A /* HTTPConnection2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629A2608FA8600C94A1A /* HTTPConnection2.cpp */; };
+		92E4637B2608FA8700C94A1A /* HTTPConnection2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629A2608FA8600C94A1A /* HTTPConnection2.cpp */; };
+		92E4637C2608FA8700C94A1A /* HTTPConnection2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629A2608FA8600C94A1A /* HTTPConnection2.cpp */; };
+		92E4637D2608FA8700C94A1A /* gettimeofday.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629B2608FA8600C94A1A /* gettimeofday.cpp */; };
+		92E4637E2608FA8700C94A1A /* gettimeofday.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629B2608FA8600C94A1A /* gettimeofday.cpp */; };
+		92E4637F2608FA8700C94A1A /* gettimeofday.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629B2608FA8600C94A1A /* gettimeofday.cpp */; };
+		92E463802608FA8700C94A1A /* RakNetSocket2_Berkley.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629C2608FA8600C94A1A /* RakNetSocket2_Berkley.cpp */; };
+		92E463812608FA8700C94A1A /* RakNetSocket2_Berkley.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629C2608FA8600C94A1A /* RakNetSocket2_Berkley.cpp */; };
+		92E463822608FA8700C94A1A /* RakNetSocket2_Berkley.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629C2608FA8600C94A1A /* RakNetSocket2_Berkley.cpp */; };
+		92E463832608FA8700C94A1A /* _FindFirst.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629D2608FA8600C94A1A /* _FindFirst.cpp */; };
+		92E463842608FA8700C94A1A /* _FindFirst.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629D2608FA8600C94A1A /* _FindFirst.cpp */; };
+		92E463852608FA8700C94A1A /* _FindFirst.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629D2608FA8600C94A1A /* _FindFirst.cpp */; };
+		92E463862608FA8700C94A1A /* PacketOutputWindowLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629E2608FA8600C94A1A /* PacketOutputWindowLogger.cpp */; };
+		92E463872608FA8700C94A1A /* PacketOutputWindowLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629E2608FA8600C94A1A /* PacketOutputWindowLogger.cpp */; };
+		92E463882608FA8700C94A1A /* PacketOutputWindowLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629E2608FA8600C94A1A /* PacketOutputWindowLogger.cpp */; };
+		92E463892608FA8700C94A1A /* NetworkIDManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629F2608FA8600C94A1A /* NetworkIDManager.cpp */; };
+		92E4638A2608FA8700C94A1A /* NetworkIDManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629F2608FA8600C94A1A /* NetworkIDManager.cpp */; };
+		92E4638B2608FA8700C94A1A /* NetworkIDManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E4629F2608FA8600C94A1A /* NetworkIDManager.cpp */; };
+		92E4638C2608FA8700C94A1A /* ReliabilityLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A02608FA8600C94A1A /* ReliabilityLayer.cpp */; };
+		92E4638D2608FA8700C94A1A /* ReliabilityLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A02608FA8600C94A1A /* ReliabilityLayer.cpp */; };
+		92E4638E2608FA8700C94A1A /* ReliabilityLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A02608FA8600C94A1A /* ReliabilityLayer.cpp */; };
+		92E4638F2608FA8700C94A1A /* RakThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A12608FA8600C94A1A /* RakThread.cpp */; };
+		92E463902608FA8700C94A1A /* RakThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A12608FA8600C94A1A /* RakThread.cpp */; };
+		92E463912608FA8700C94A1A /* RakThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A12608FA8600C94A1A /* RakThread.cpp */; };
+		92E463922608FA8700C94A1A /* GetTime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A22608FA8600C94A1A /* GetTime.cpp */; };
+		92E463932608FA8700C94A1A /* GetTime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A22608FA8600C94A1A /* GetTime.cpp */; };
+		92E463942608FA8700C94A1A /* GetTime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A22608FA8600C94A1A /* GetTime.cpp */; };
+		92E463952608FA8700C94A1A /* FileListTransfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A32608FA8600C94A1A /* FileListTransfer.cpp */; };
+		92E463962608FA8700C94A1A /* FileListTransfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A32608FA8600C94A1A /* FileListTransfer.cpp */; };
+		92E463972608FA8700C94A1A /* FileListTransfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A32608FA8600C94A1A /* FileListTransfer.cpp */; };
+		92E463982608FA8700C94A1A /* SuperFastHash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A42608FA8600C94A1A /* SuperFastHash.cpp */; };
+		92E463992608FA8700C94A1A /* SuperFastHash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A42608FA8600C94A1A /* SuperFastHash.cpp */; };
+		92E4639A2608FA8700C94A1A /* SuperFastHash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A42608FA8600C94A1A /* SuperFastHash.cpp */; };
+		92E4639B2608FA8700C94A1A /* ConsoleServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A52608FA8600C94A1A /* ConsoleServer.cpp */; };
+		92E4639C2608FA8700C94A1A /* ConsoleServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A52608FA8600C94A1A /* ConsoleServer.cpp */; };
+		92E4639D2608FA8700C94A1A /* ConsoleServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A52608FA8600C94A1A /* ConsoleServer.cpp */; };
+		92E4639E2608FA8700C94A1A /* Rand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A62608FA8600C94A1A /* Rand.cpp */; };
+		92E4639F2608FA8700C94A1A /* Rand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A62608FA8600C94A1A /* Rand.cpp */; };
+		92E463A02608FA8700C94A1A /* Rand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A62608FA8600C94A1A /* Rand.cpp */; };
+		92E463A12608FA8700C94A1A /* CloudCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A72608FA8600C94A1A /* CloudCommon.cpp */; };
+		92E463A22608FA8700C94A1A /* CloudCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A72608FA8600C94A1A /* CloudCommon.cpp */; };
+		92E463A32608FA8700C94A1A /* CloudCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A72608FA8600C94A1A /* CloudCommon.cpp */; };
+		92E463A42608FA8700C94A1A /* PacketFileLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A82608FA8600C94A1A /* PacketFileLogger.cpp */; };
+		92E463A52608FA8700C94A1A /* PacketFileLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A82608FA8600C94A1A /* PacketFileLogger.cpp */; };
+		92E463A62608FA8700C94A1A /* PacketFileLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A82608FA8600C94A1A /* PacketFileLogger.cpp */; };
+		92E463A72608FA8700C94A1A /* PacketizedTCP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A92608FA8600C94A1A /* PacketizedTCP.cpp */; };
+		92E463A82608FA8700C94A1A /* PacketizedTCP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A92608FA8600C94A1A /* PacketizedTCP.cpp */; };
+		92E463A92608FA8700C94A1A /* PacketizedTCP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462A92608FA8600C94A1A /* PacketizedTCP.cpp */; };
+		92E463AA2608FA8700C94A1A /* IncrementalReadInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AA2608FA8600C94A1A /* IncrementalReadInterface.cpp */; };
+		92E463AB2608FA8700C94A1A /* IncrementalReadInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AA2608FA8600C94A1A /* IncrementalReadInterface.cpp */; };
+		92E463AC2608FA8700C94A1A /* IncrementalReadInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AA2608FA8600C94A1A /* IncrementalReadInterface.cpp */; };
+		92E463AD2608FA8700C94A1A /* NetworkIDObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AB2608FA8600C94A1A /* NetworkIDObject.cpp */; };
+		92E463AE2608FA8700C94A1A /* NetworkIDObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AB2608FA8600C94A1A /* NetworkIDObject.cpp */; };
+		92E463AF2608FA8700C94A1A /* NetworkIDObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AB2608FA8600C94A1A /* NetworkIDObject.cpp */; };
+		92E463B02608FA8700C94A1A /* RakNetSocket2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AC2608FA8600C94A1A /* RakNetSocket2.cpp */; };
+		92E463B12608FA8700C94A1A /* RakNetSocket2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AC2608FA8600C94A1A /* RakNetSocket2.cpp */; };
+		92E463B22608FA8700C94A1A /* RakNetSocket2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AC2608FA8600C94A1A /* RakNetSocket2.cpp */; };
+		92E463B32608FA8700C94A1A /* CloudClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AD2608FA8600C94A1A /* CloudClient.cpp */; };
+		92E463B42608FA8700C94A1A /* CloudClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AD2608FA8600C94A1A /* CloudClient.cpp */; };
+		92E463B52608FA8700C94A1A /* CloudClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AD2608FA8600C94A1A /* CloudClient.cpp */; };
+		92E463B62608FA8700C94A1A /* DS_ByteQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AE2608FA8600C94A1A /* DS_ByteQueue.cpp */; };
+		92E463B72608FA8700C94A1A /* DS_ByteQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AE2608FA8600C94A1A /* DS_ByteQueue.cpp */; };
+		92E463B82608FA8700C94A1A /* DS_ByteQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AE2608FA8600C94A1A /* DS_ByteQueue.cpp */; };
+		92E463B92608FA8700C94A1A /* StringCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AF2608FA8600C94A1A /* StringCompressor.cpp */; };
+		92E463BA2608FA8700C94A1A /* StringCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AF2608FA8600C94A1A /* StringCompressor.cpp */; };
+		92E463BB2608FA8700C94A1A /* StringCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462AF2608FA8600C94A1A /* StringCompressor.cpp */; };
+		92E463BC2608FA8700C94A1A /* TeamBalancer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B02608FA8600C94A1A /* TeamBalancer.cpp */; };
+		92E463BD2608FA8700C94A1A /* TeamBalancer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B02608FA8600C94A1A /* TeamBalancer.cpp */; };
+		92E463BE2608FA8700C94A1A /* TeamBalancer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B02608FA8600C94A1A /* TeamBalancer.cpp */; };
+		92E463BF2608FA8700C94A1A /* VitaIncludes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B12608FA8600C94A1A /* VitaIncludes.cpp */; };
+		92E463C02608FA8700C94A1A /* VitaIncludes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B12608FA8600C94A1A /* VitaIncludes.cpp */; };
+		92E463C12608FA8700C94A1A /* VitaIncludes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B12608FA8600C94A1A /* VitaIncludes.cpp */; };
+		92E463C22608FA8700C94A1A /* RakWString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B22608FA8600C94A1A /* RakWString.cpp */; };
+		92E463C32608FA8700C94A1A /* RakWString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B22608FA8600C94A1A /* RakWString.cpp */; };
+		92E463C42608FA8700C94A1A /* RakWString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B22608FA8600C94A1A /* RakWString.cpp */; };
+		92E463C52608FA8700C94A1A /* VariableListDeltaTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B32608FA8600C94A1A /* VariableListDeltaTracker.cpp */; };
+		92E463C62608FA8700C94A1A /* VariableListDeltaTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B32608FA8600C94A1A /* VariableListDeltaTracker.cpp */; };
+		92E463C72608FA8700C94A1A /* VariableListDeltaTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B32608FA8600C94A1A /* VariableListDeltaTracker.cpp */; };
+		92E463C82608FA8700C94A1A /* TeamManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B42608FA8600C94A1A /* TeamManager.cpp */; };
+		92E463C92608FA8700C94A1A /* TeamManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B42608FA8600C94A1A /* TeamManager.cpp */; };
+		92E463CA2608FA8700C94A1A /* TeamManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B42608FA8600C94A1A /* TeamManager.cpp */; };
+		92E463CB2608FA8700C94A1A /* RakNetTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B52608FA8600C94A1A /* RakNetTypes.cpp */; };
+		92E463CC2608FA8700C94A1A /* RakNetTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B52608FA8600C94A1A /* RakNetTypes.cpp */; };
+		92E463CD2608FA8700C94A1A /* RakNetTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B52608FA8600C94A1A /* RakNetTypes.cpp */; };
+		92E463CE2608FA8700C94A1A /* RakNetSocket2_Vita.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B62608FA8600C94A1A /* RakNetSocket2_Vita.cpp */; };
+		92E463CF2608FA8700C94A1A /* RakNetSocket2_Vita.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B62608FA8600C94A1A /* RakNetSocket2_Vita.cpp */; };
+		92E463D02608FA8700C94A1A /* RakNetSocket2_Vita.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B62608FA8600C94A1A /* RakNetSocket2_Vita.cpp */; };
+		92E463D12608FA8700C94A1A /* TwoWayAuthentication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B72608FA8600C94A1A /* TwoWayAuthentication.cpp */; };
+		92E463D22608FA8700C94A1A /* TwoWayAuthentication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B72608FA8600C94A1A /* TwoWayAuthentication.cpp */; };
+		92E463D32608FA8700C94A1A /* TwoWayAuthentication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B72608FA8600C94A1A /* TwoWayAuthentication.cpp */; };
+		92E463D42608FA8700C94A1A /* NatTypeDetectionServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B82608FA8600C94A1A /* NatTypeDetectionServer.cpp */; };
+		92E463D52608FA8700C94A1A /* NatTypeDetectionServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B82608FA8600C94A1A /* NatTypeDetectionServer.cpp */; };
+		92E463D62608FA8700C94A1A /* NatTypeDetectionServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B82608FA8600C94A1A /* NatTypeDetectionServer.cpp */; };
+		92E463D72608FA8700C94A1A /* linux_adapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B92608FA8600C94A1A /* linux_adapter.cpp */; };
+		92E463D82608FA8700C94A1A /* linux_adapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B92608FA8600C94A1A /* linux_adapter.cpp */; };
+		92E463D92608FA8700C94A1A /* linux_adapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462B92608FA8600C94A1A /* linux_adapter.cpp */; };
+		92E463DA2608FA8700C94A1A /* RandSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BA2608FA8600C94A1A /* RandSync.cpp */; };
+		92E463DB2608FA8700C94A1A /* RandSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BA2608FA8600C94A1A /* RandSync.cpp */; };
+		92E463DC2608FA8700C94A1A /* RandSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BA2608FA8600C94A1A /* RandSync.cpp */; };
+		92E463DD2608FA8700C94A1A /* ReplicaManager3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BB2608FA8600C94A1A /* ReplicaManager3.cpp */; };
+		92E463DE2608FA8700C94A1A /* ReplicaManager3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BB2608FA8600C94A1A /* ReplicaManager3.cpp */; };
+		92E463DF2608FA8700C94A1A /* ReplicaManager3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BB2608FA8600C94A1A /* ReplicaManager3.cpp */; };
+		92E463E02608FA8700C94A1A /* RakNetSocket2_PS3_PS4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BC2608FA8600C94A1A /* RakNetSocket2_PS3_PS4.cpp */; };
+		92E463E12608FA8700C94A1A /* RakNetSocket2_PS3_PS4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BC2608FA8600C94A1A /* RakNetSocket2_PS3_PS4.cpp */; };
+		92E463E22608FA8700C94A1A /* RakNetSocket2_PS3_PS4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BC2608FA8600C94A1A /* RakNetSocket2_PS3_PS4.cpp */; };
+		92E463E32608FA8700C94A1A /* TCPInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BD2608FA8600C94A1A /* TCPInterface.cpp */; };
+		92E463E42608FA8700C94A1A /* TCPInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BD2608FA8600C94A1A /* TCPInterface.cpp */; };
+		92E463E52608FA8700C94A1A /* TCPInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BD2608FA8600C94A1A /* TCPInterface.cpp */; };
+		92E463E62608FA8700C94A1A /* NatPunchthroughServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BE2608FA8600C94A1A /* NatPunchthroughServer.cpp */; };
+		92E463E72608FA8700C94A1A /* NatPunchthroughServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BE2608FA8600C94A1A /* NatPunchthroughServer.cpp */; };
+		92E463E82608FA8700C94A1A /* NatPunchthroughServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BE2608FA8600C94A1A /* NatPunchthroughServer.cpp */; };
+		92E463E92608FA8700C94A1A /* VariableDeltaSerializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BF2608FA8600C94A1A /* VariableDeltaSerializer.cpp */; };
+		92E463EA2608FA8700C94A1A /* VariableDeltaSerializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BF2608FA8600C94A1A /* VariableDeltaSerializer.cpp */; };
+		92E463EB2608FA8700C94A1A /* VariableDeltaSerializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462BF2608FA8600C94A1A /* VariableDeltaSerializer.cpp */; };
+		92E463EC2608FA8700C94A1A /* osx_adapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C02608FA8600C94A1A /* osx_adapter.cpp */; };
+		92E463ED2608FA8700C94A1A /* osx_adapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C02608FA8600C94A1A /* osx_adapter.cpp */; };
+		92E463EE2608FA8700C94A1A /* osx_adapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C02608FA8600C94A1A /* osx_adapter.cpp */; };
+		92E463EF2608FA8700C94A1A /* UDPForwarder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C12608FA8600C94A1A /* UDPForwarder.cpp */; };
+		92E463F02608FA8700C94A1A /* UDPForwarder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C12608FA8600C94A1A /* UDPForwarder.cpp */; };
+		92E463F12608FA8700C94A1A /* UDPForwarder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C12608FA8600C94A1A /* UDPForwarder.cpp */; };
+		92E463F22608FA8700C94A1A /* LocklessTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C22608FA8600C94A1A /* LocklessTypes.cpp */; };
+		92E463F32608FA8700C94A1A /* LocklessTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C22608FA8600C94A1A /* LocklessTypes.cpp */; };
+		92E463F42608FA8700C94A1A /* LocklessTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C22608FA8600C94A1A /* LocklessTypes.cpp */; };
+		92E463F52608FA8700C94A1A /* WSAStartupSingleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C32608FA8600C94A1A /* WSAStartupSingleton.cpp */; };
+		92E463F62608FA8700C94A1A /* WSAStartupSingleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C32608FA8600C94A1A /* WSAStartupSingleton.cpp */; };
+		92E463F72608FA8700C94A1A /* WSAStartupSingleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C32608FA8600C94A1A /* WSAStartupSingleton.cpp */; };
+		92E463F82608FA8700C94A1A /* UDPProxyServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C42608FA8600C94A1A /* UDPProxyServer.cpp */; };
+		92E463F92608FA8700C94A1A /* UDPProxyServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C42608FA8600C94A1A /* UDPProxyServer.cpp */; };
+		92E463FA2608FA8700C94A1A /* UDPProxyServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C42608FA8600C94A1A /* UDPProxyServer.cpp */; };
+		92E463FB2608FA8700C94A1A /* DR_SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C52608FA8600C94A1A /* DR_SHA1.cpp */; };
+		92E463FC2608FA8700C94A1A /* DR_SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C52608FA8600C94A1A /* DR_SHA1.cpp */; };
+		92E463FD2608FA8700C94A1A /* DR_SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C52608FA8600C94A1A /* DR_SHA1.cpp */; };
+		92E463FE2608FA8700C94A1A /* RakNetStatistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C62608FA8600C94A1A /* RakNetStatistics.cpp */; };
+		92E463FF2608FA8700C94A1A /* RakNetStatistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C62608FA8600C94A1A /* RakNetStatistics.cpp */; };
+		92E464002608FA8700C94A1A /* RakNetStatistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C62608FA8600C94A1A /* RakNetStatistics.cpp */; };
+		92E464012608FA8700C94A1A /* Itoa.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C72608FA8600C94A1A /* Itoa.cpp */; };
+		92E464022608FA8700C94A1A /* Itoa.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C72608FA8600C94A1A /* Itoa.cpp */; };
+		92E464032608FA8700C94A1A /* Itoa.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C72608FA8600C94A1A /* Itoa.cpp */; };
+		92E464042608FA8700C94A1A /* RakNetTransport2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C82608FA8600C94A1A /* RakNetTransport2.cpp */; };
+		92E464052608FA8700C94A1A /* RakNetTransport2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C82608FA8600C94A1A /* RakNetTransport2.cpp */; };
+		92E464062608FA8700C94A1A /* RakNetTransport2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C82608FA8600C94A1A /* RakNetTransport2.cpp */; };
+		92E464072608FA8700C94A1A /* TelnetTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C92608FA8600C94A1A /* TelnetTransport.cpp */; };
+		92E464082608FA8700C94A1A /* TelnetTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C92608FA8600C94A1A /* TelnetTransport.cpp */; };
+		92E464092608FA8700C94A1A /* TelnetTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462C92608FA8600C94A1A /* TelnetTransport.cpp */; };
+		92E4640A2608FA8700C94A1A /* StatisticsHistory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CA2608FA8600C94A1A /* StatisticsHistory.cpp */; };
+		92E4640B2608FA8700C94A1A /* StatisticsHistory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CA2608FA8600C94A1A /* StatisticsHistory.cpp */; };
+		92E4640C2608FA8700C94A1A /* StatisticsHistory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CA2608FA8600C94A1A /* StatisticsHistory.cpp */; };
+		92E4640D2608FA8700C94A1A /* SimpleMutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CB2608FA8600C94A1A /* SimpleMutex.cpp */; };
+		92E4640E2608FA8700C94A1A /* SimpleMutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CB2608FA8600C94A1A /* SimpleMutex.cpp */; };
+		92E4640F2608FA8700C94A1A /* SimpleMutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CB2608FA8600C94A1A /* SimpleMutex.cpp */; };
+		92E464102608FA8700C94A1A /* Gets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CC2608FA8600C94A1A /* Gets.cpp */; };
+		92E464112608FA8700C94A1A /* Gets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CC2608FA8600C94A1A /* Gets.cpp */; };
+		92E464122608FA8700C94A1A /* Gets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CC2608FA8600C94A1A /* Gets.cpp */; };
+		92E464132608FA8700C94A1A /* TableSerializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CD2608FA8600C94A1A /* TableSerializer.cpp */; };
+		92E464142608FA8700C94A1A /* TableSerializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CD2608FA8600C94A1A /* TableSerializer.cpp */; };
+		92E464152608FA8700C94A1A /* TableSerializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CD2608FA8600C94A1A /* TableSerializer.cpp */; };
+		92E464162608FA8700C94A1A /* DirectoryDeltaTransfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CE2608FA8600C94A1A /* DirectoryDeltaTransfer.cpp */; };
+		92E464172608FA8700C94A1A /* DirectoryDeltaTransfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CE2608FA8600C94A1A /* DirectoryDeltaTransfer.cpp */; };
+		92E464182608FA8700C94A1A /* DirectoryDeltaTransfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CE2608FA8600C94A1A /* DirectoryDeltaTransfer.cpp */; };
+		92E464192608FA8700C94A1A /* Base64Encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CF2608FA8600C94A1A /* Base64Encoder.cpp */; };
+		92E4641A2608FA8700C94A1A /* Base64Encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CF2608FA8600C94A1A /* Base64Encoder.cpp */; };
+		92E4641B2608FA8700C94A1A /* Base64Encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462CF2608FA8600C94A1A /* Base64Encoder.cpp */; };
+		92E4641C2608FA8700C94A1A /* RakString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D02608FA8600C94A1A /* RakString.cpp */; };
+		92E4641D2608FA8700C94A1A /* RakString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D02608FA8600C94A1A /* RakString.cpp */; };
+		92E4641E2608FA8700C94A1A /* RakString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D02608FA8600C94A1A /* RakString.cpp */; };
+		92E4641F2608FA8700C94A1A /* RakNetSocket2_WindowsStore8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D12608FA8600C94A1A /* RakNetSocket2_WindowsStore8.cpp */; };
+		92E464202608FA8700C94A1A /* RakNetSocket2_WindowsStore8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D12608FA8600C94A1A /* RakNetSocket2_WindowsStore8.cpp */; };
+		92E464212608FA8700C94A1A /* RakNetSocket2_WindowsStore8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D12608FA8600C94A1A /* RakNetSocket2_WindowsStore8.cpp */; };
+		92E464222608FA8700C94A1A /* DynDNS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D22608FA8600C94A1A /* DynDNS.cpp */; };
+		92E464232608FA8700C94A1A /* DynDNS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D22608FA8600C94A1A /* DynDNS.cpp */; };
+		92E464242608FA8700C94A1A /* DynDNS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D22608FA8600C94A1A /* DynDNS.cpp */; };
+		92E464252608FA8700C94A1A /* RakSleep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D32608FA8600C94A1A /* RakSleep.cpp */; };
+		92E464262608FA8700C94A1A /* RakSleep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D32608FA8600C94A1A /* RakSleep.cpp */; };
+		92E464272608FA8700C94A1A /* RakSleep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D32608FA8600C94A1A /* RakSleep.cpp */; };
+		92E464282608FA8700C94A1A /* RakNetSocket2_360_720.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D42608FA8600C94A1A /* RakNetSocket2_360_720.cpp */; };
+		92E464292608FA8700C94A1A /* RakNetSocket2_360_720.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D42608FA8600C94A1A /* RakNetSocket2_360_720.cpp */; };
+		92E4642A2608FA8700C94A1A /* RakNetSocket2_360_720.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D42608FA8600C94A1A /* RakNetSocket2_360_720.cpp */; };
+		92E4642B2608FA8700C94A1A /* RakNetSocket2_NativeClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D52608FA8600C94A1A /* RakNetSocket2_NativeClient.cpp */; };
+		92E4642C2608FA8700C94A1A /* RakNetSocket2_NativeClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D52608FA8600C94A1A /* RakNetSocket2_NativeClient.cpp */; };
+		92E4642D2608FA8700C94A1A /* RakNetSocket2_NativeClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D52608FA8600C94A1A /* RakNetSocket2_NativeClient.cpp */; };
+		92E4642E2608FA8700C94A1A /* RPC4Plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D62608FA8600C94A1A /* RPC4Plugin.cpp */; };
+		92E4642F2608FA8700C94A1A /* RPC4Plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D62608FA8600C94A1A /* RPC4Plugin.cpp */; };
+		92E464302608FA8700C94A1A /* RPC4Plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D62608FA8600C94A1A /* RPC4Plugin.cpp */; };
+		92E464312608FA8700C94A1A /* RakMemoryOverride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D72608FA8600C94A1A /* RakMemoryOverride.cpp */; };
+		92E464322608FA8700C94A1A /* RakMemoryOverride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D72608FA8600C94A1A /* RakMemoryOverride.cpp */; };
+		92E464332608FA8700C94A1A /* RakMemoryOverride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E462D72608FA8600C94A1A /* RakMemoryOverride.cpp */; };
+		92E464392608FA9700C94A1A /* CUNetworkConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E464382608FA9700C94A1A /* CUNetworkConnection.cpp */; };
+		92E4643A2608FA9700C94A1A /* CUNetworkConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E464382608FA9700C94A1A /* CUNetworkConnection.cpp */; };
+		92E4643B2608FA9700C94A1A /* CUNetworkConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92E464382608FA9700C94A1A /* CUNetworkConnection.cpp */; };
 		EB035D8D20C0D34D0001EAE3 /* CUFIRFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EB035D8C20C0D34D0001EAE3 /* CUFIRFilter.cpp */; };
 		EB035D8E20C0D34D0001EAE3 /* CUFIRFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EB035D8C20C0D34D0001EAE3 /* CUFIRFilter.cpp */; };
 		EB035D9020C0D3B20001EAE3 /* CUOneZeroFIR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EB035D8F20C0D3B20001EAE3 /* CUOneZeroFIR.cpp */; };
@@ -453,10 +792,121 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		28AD610C26044C7100FFD4BB /* net */ = {isa = PBXFileReference; lastKnownFileType = folder; path = net; sourceTree = "<group>"; };
 		28AD611226044C9300FFD4BB /* net */ = {isa = PBXFileReference; lastKnownFileType = folder; path = net; sourceTree = "<group>"; };
-		28AD611426044D0200FFD4BB /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = slikenet/Source/src; sourceTree = "<group>"; };
 		28AD611526044D6C00FFD4BB /* slikenet */ = {isa = PBXFileReference; lastKnownFileType = folder; path = slikenet; sourceTree = "<group>"; };
+		92E462632608FA8600C94A1A /* Router2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Router2.cpp; sourceTree = "<group>"; };
+		92E462642608FA8600C94A1A /* DS_Table.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DS_Table.cpp; sourceTree = "<group>"; };
+		92E462652608FA8600C94A1A /* RakNetSocket2_Berkley_NativeClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetSocket2_Berkley_NativeClient.cpp; sourceTree = "<group>"; };
+		92E462662608FA8600C94A1A /* NatPunchthroughClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NatPunchthroughClient.cpp; sourceTree = "<group>"; };
+		92E462672608FA8600C94A1A /* ThreadsafePacketLogger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadsafePacketLogger.cpp; sourceTree = "<group>"; };
+		92E462682608FA8600C94A1A /* RakPeer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakPeer.cpp; sourceTree = "<group>"; };
+		92E4626E2608FA8600C94A1A /* ConnectionGraph2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConnectionGraph2.cpp; sourceTree = "<group>"; };
+		92E4626F2608FA8600C94A1A /* DS_BytePool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DS_BytePool.cpp; sourceTree = "<group>"; };
+		92E462702608FA8600C94A1A /* DS_HuffmanEncodingTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DS_HuffmanEncodingTree.cpp; sourceTree = "<group>"; };
+		92E462712608FA8600C94A1A /* ReadyEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReadyEvent.cpp; sourceTree = "<group>"; };
+		92E462722608FA8600C94A1A /* Rackspace.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rackspace.cpp; sourceTree = "<group>"; };
+		92E462732608FA8600C94A1A /* UDPProxyClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPProxyClient.cpp; sourceTree = "<group>"; };
+		92E462742608FA8600C94A1A /* EpochTimeToString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EpochTimeToString.cpp; sourceTree = "<group>"; };
+		92E462752608FA8600C94A1A /* SocketLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketLayer.cpp; sourceTree = "<group>"; };
+		92E462762608FA8600C94A1A /* BitStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitStream.cpp; sourceTree = "<group>"; };
+		92E462772608FA8600C94A1A /* HTTPConnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HTTPConnection.cpp; sourceTree = "<group>"; };
+		92E462782608FA8600C94A1A /* SecureHandshake.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SecureHandshake.cpp; sourceTree = "<group>"; };
+		92E462792608FA8600C94A1A /* EmailSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EmailSender.cpp; sourceTree = "<group>"; };
+		92E4627A2608FA8600C94A1A /* RakNetSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetSocket.cpp; sourceTree = "<group>"; };
+		92E4627B2608FA8600C94A1A /* CheckSum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CheckSum.cpp; sourceTree = "<group>"; };
+		92E4627C2608FA8600C94A1A /* StringTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringTable.cpp; sourceTree = "<group>"; };
+		92E4627D2608FA8600C94A1A /* Getche.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Getche.cpp; sourceTree = "<group>"; };
+		92E4627E2608FA8600C94A1A /* RelayPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RelayPlugin.cpp; sourceTree = "<group>"; };
+		92E4627F2608FA8600C94A1A /* CCRakNetSlidingWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCRakNetSlidingWindow.cpp; sourceTree = "<group>"; };
+		92E462802608FA8600C94A1A /* FormatString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FormatString.cpp; sourceTree = "<group>"; };
+		92E462812608FA8600C94A1A /* LogCommandParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LogCommandParser.cpp; sourceTree = "<group>"; };
+		92E462822608FA8600C94A1A /* PS4Includes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PS4Includes.cpp; sourceTree = "<group>"; };
+		92E462832608FA8600C94A1A /* NatTypeDetectionCommon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NatTypeDetectionCommon.cpp; sourceTree = "<group>"; };
+		92E462842608FA8600C94A1A /* PluginInterface2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PluginInterface2.cpp; sourceTree = "<group>"; };
+		92E462852608FA8600C94A1A /* SendToThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SendToThread.cpp; sourceTree = "<group>"; };
+		92E462862608FA8600C94A1A /* CCRakNetUDT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCRakNetUDT.cpp; sourceTree = "<group>"; };
+		92E462872608FA8600C94A1A /* DataCompressor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DataCompressor.cpp; sourceTree = "<group>"; };
+		92E462882608FA8600C94A1A /* LinuxStrings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxStrings.cpp; sourceTree = "<group>"; };
+		92E462892608FA8600C94A1A /* FullyConnectedMesh2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FullyConnectedMesh2.cpp; sourceTree = "<group>"; };
+		92E4628A2608FA8600C94A1A /* NatTypeDetectionClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NatTypeDetectionClient.cpp; sourceTree = "<group>"; };
+		92E4628B2608FA8600C94A1A /* PacketLogger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PacketLogger.cpp; sourceTree = "<group>"; };
+		92E4628C2608FA8600C94A1A /* FileList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileList.cpp; sourceTree = "<group>"; };
+		92E4628D2608FA8600C94A1A /* CommandParserInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandParserInterface.cpp; sourceTree = "<group>"; };
+		92E4628E2608FA8600C94A1A /* CloudServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CloudServer.cpp; sourceTree = "<group>"; };
+		92E4628F2608FA8600C94A1A /* FileOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileOperations.cpp; sourceTree = "<group>"; };
+		92E462902608FA8600C94A1A /* PacketConsoleLogger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PacketConsoleLogger.cpp; sourceTree = "<group>"; };
+		92E462912608FA8600C94A1A /* VariadicSQLParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VariadicSQLParser.cpp; sourceTree = "<group>"; };
+		92E462922608FA8600C94A1A /* GridSectorizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GridSectorizer.cpp; sourceTree = "<group>"; };
+		92E462932608FA8600C94A1A /* SignaledEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SignaledEvent.cpp; sourceTree = "<group>"; };
+		92E462942608FA8600C94A1A /* RakNetCommandParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetCommandParser.cpp; sourceTree = "<group>"; };
+		92E462952608FA8600C94A1A /* RakNetSocket2_Windows_Linux.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetSocket2_Windows_Linux.cpp; sourceTree = "<group>"; };
+		92E462962608FA8600C94A1A /* MessageFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFilter.cpp; sourceTree = "<group>"; };
+		92E462972608FA8600C94A1A /* RakNetSocket2_Windows_Linux_360.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetSocket2_Windows_Linux_360.cpp; sourceTree = "<group>"; };
+		92E462982608FA8600C94A1A /* RakNetSocket2_PS4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetSocket2_PS4.cpp; sourceTree = "<group>"; };
+		92E462992608FA8600C94A1A /* UDPProxyCoordinator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPProxyCoordinator.cpp; sourceTree = "<group>"; };
+		92E4629A2608FA8600C94A1A /* HTTPConnection2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HTTPConnection2.cpp; sourceTree = "<group>"; };
+		92E4629B2608FA8600C94A1A /* gettimeofday.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gettimeofday.cpp; sourceTree = "<group>"; };
+		92E4629C2608FA8600C94A1A /* RakNetSocket2_Berkley.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetSocket2_Berkley.cpp; sourceTree = "<group>"; };
+		92E4629D2608FA8600C94A1A /* _FindFirst.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _FindFirst.cpp; sourceTree = "<group>"; };
+		92E4629E2608FA8600C94A1A /* PacketOutputWindowLogger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PacketOutputWindowLogger.cpp; sourceTree = "<group>"; };
+		92E4629F2608FA8600C94A1A /* NetworkIDManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkIDManager.cpp; sourceTree = "<group>"; };
+		92E462A02608FA8600C94A1A /* ReliabilityLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReliabilityLayer.cpp; sourceTree = "<group>"; };
+		92E462A12608FA8600C94A1A /* RakThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakThread.cpp; sourceTree = "<group>"; };
+		92E462A22608FA8600C94A1A /* GetTime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GetTime.cpp; sourceTree = "<group>"; };
+		92E462A32608FA8600C94A1A /* FileListTransfer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileListTransfer.cpp; sourceTree = "<group>"; };
+		92E462A42608FA8600C94A1A /* SuperFastHash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SuperFastHash.cpp; sourceTree = "<group>"; };
+		92E462A52608FA8600C94A1A /* ConsoleServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleServer.cpp; sourceTree = "<group>"; };
+		92E462A62608FA8600C94A1A /* Rand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rand.cpp; sourceTree = "<group>"; };
+		92E462A72608FA8600C94A1A /* CloudCommon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CloudCommon.cpp; sourceTree = "<group>"; };
+		92E462A82608FA8600C94A1A /* PacketFileLogger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PacketFileLogger.cpp; sourceTree = "<group>"; };
+		92E462A92608FA8600C94A1A /* PacketizedTCP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PacketizedTCP.cpp; sourceTree = "<group>"; };
+		92E462AA2608FA8600C94A1A /* IncrementalReadInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IncrementalReadInterface.cpp; sourceTree = "<group>"; };
+		92E462AB2608FA8600C94A1A /* NetworkIDObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkIDObject.cpp; sourceTree = "<group>"; };
+		92E462AC2608FA8600C94A1A /* RakNetSocket2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetSocket2.cpp; sourceTree = "<group>"; };
+		92E462AD2608FA8600C94A1A /* CloudClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CloudClient.cpp; sourceTree = "<group>"; };
+		92E462AE2608FA8600C94A1A /* DS_ByteQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DS_ByteQueue.cpp; sourceTree = "<group>"; };
+		92E462AF2608FA8600C94A1A /* StringCompressor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringCompressor.cpp; sourceTree = "<group>"; };
+		92E462B02608FA8600C94A1A /* TeamBalancer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TeamBalancer.cpp; sourceTree = "<group>"; };
+		92E462B12608FA8600C94A1A /* VitaIncludes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VitaIncludes.cpp; sourceTree = "<group>"; };
+		92E462B22608FA8600C94A1A /* RakWString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakWString.cpp; sourceTree = "<group>"; };
+		92E462B32608FA8600C94A1A /* VariableListDeltaTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VariableListDeltaTracker.cpp; sourceTree = "<group>"; };
+		92E462B42608FA8600C94A1A /* TeamManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TeamManager.cpp; sourceTree = "<group>"; };
+		92E462B52608FA8600C94A1A /* RakNetTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetTypes.cpp; sourceTree = "<group>"; };
+		92E462B62608FA8600C94A1A /* RakNetSocket2_Vita.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetSocket2_Vita.cpp; sourceTree = "<group>"; };
+		92E462B72608FA8600C94A1A /* TwoWayAuthentication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwoWayAuthentication.cpp; sourceTree = "<group>"; };
+		92E462B82608FA8600C94A1A /* NatTypeDetectionServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NatTypeDetectionServer.cpp; sourceTree = "<group>"; };
+		92E462B92608FA8600C94A1A /* linux_adapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = linux_adapter.cpp; sourceTree = "<group>"; };
+		92E462BA2608FA8600C94A1A /* RandSync.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandSync.cpp; sourceTree = "<group>"; };
+		92E462BB2608FA8600C94A1A /* ReplicaManager3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicaManager3.cpp; sourceTree = "<group>"; };
+		92E462BC2608FA8600C94A1A /* RakNetSocket2_PS3_PS4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetSocket2_PS3_PS4.cpp; sourceTree = "<group>"; };
+		92E462BD2608FA8600C94A1A /* TCPInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TCPInterface.cpp; sourceTree = "<group>"; };
+		92E462BE2608FA8600C94A1A /* NatPunchthroughServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NatPunchthroughServer.cpp; sourceTree = "<group>"; };
+		92E462BF2608FA8600C94A1A /* VariableDeltaSerializer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VariableDeltaSerializer.cpp; sourceTree = "<group>"; };
+		92E462C02608FA8600C94A1A /* osx_adapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = osx_adapter.cpp; sourceTree = "<group>"; };
+		92E462C12608FA8600C94A1A /* UDPForwarder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPForwarder.cpp; sourceTree = "<group>"; };
+		92E462C22608FA8600C94A1A /* LocklessTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LocklessTypes.cpp; sourceTree = "<group>"; };
+		92E462C32608FA8600C94A1A /* WSAStartupSingleton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WSAStartupSingleton.cpp; sourceTree = "<group>"; };
+		92E462C42608FA8600C94A1A /* UDPProxyServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPProxyServer.cpp; sourceTree = "<group>"; };
+		92E462C52608FA8600C94A1A /* DR_SHA1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DR_SHA1.cpp; sourceTree = "<group>"; };
+		92E462C62608FA8600C94A1A /* RakNetStatistics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetStatistics.cpp; sourceTree = "<group>"; };
+		92E462C72608FA8600C94A1A /* Itoa.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Itoa.cpp; sourceTree = "<group>"; };
+		92E462C82608FA8600C94A1A /* RakNetTransport2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetTransport2.cpp; sourceTree = "<group>"; };
+		92E462C92608FA8600C94A1A /* TelnetTransport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TelnetTransport.cpp; sourceTree = "<group>"; };
+		92E462CA2608FA8600C94A1A /* StatisticsHistory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StatisticsHistory.cpp; sourceTree = "<group>"; };
+		92E462CB2608FA8600C94A1A /* SimpleMutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleMutex.cpp; sourceTree = "<group>"; };
+		92E462CC2608FA8600C94A1A /* Gets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Gets.cpp; sourceTree = "<group>"; };
+		92E462CD2608FA8600C94A1A /* TableSerializer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TableSerializer.cpp; sourceTree = "<group>"; };
+		92E462CE2608FA8600C94A1A /* DirectoryDeltaTransfer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DirectoryDeltaTransfer.cpp; sourceTree = "<group>"; };
+		92E462CF2608FA8600C94A1A /* Base64Encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Base64Encoder.cpp; sourceTree = "<group>"; };
+		92E462D02608FA8600C94A1A /* RakString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakString.cpp; sourceTree = "<group>"; };
+		92E462D12608FA8600C94A1A /* RakNetSocket2_WindowsStore8.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetSocket2_WindowsStore8.cpp; sourceTree = "<group>"; };
+		92E462D22608FA8600C94A1A /* DynDNS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynDNS.cpp; sourceTree = "<group>"; };
+		92E462D32608FA8600C94A1A /* RakSleep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakSleep.cpp; sourceTree = "<group>"; };
+		92E462D42608FA8600C94A1A /* RakNetSocket2_360_720.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetSocket2_360_720.cpp; sourceTree = "<group>"; };
+		92E462D52608FA8600C94A1A /* RakNetSocket2_NativeClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakNetSocket2_NativeClient.cpp; sourceTree = "<group>"; };
+		92E462D62608FA8600C94A1A /* RPC4Plugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RPC4Plugin.cpp; sourceTree = "<group>"; };
+		92E462D72608FA8600C94A1A /* RakMemoryOverride.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RakMemoryOverride.cpp; sourceTree = "<group>"; };
+		92E464382608FA9700C94A1A /* CUNetworkConnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUNetworkConnection.cpp; sourceTree = "<group>"; };
 		EB035D7A20C0D0F80001EAE3 /* CUFIRFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUFIRFilter.h; sourceTree = "<group>"; };
 		EB035D8920C0D1590001EAE3 /* CUOneZeroFIR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUOneZeroFIR.h; sourceTree = "<group>"; };
 		EB035D8C20C0D34D0001EAE3 /* CUFIRFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CUFIRFilter.cpp; sourceTree = "<group>"; };
@@ -843,6 +1293,135 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		92E462622608FA8600C94A1A /* src */ = {
+			isa = PBXGroup;
+			children = (
+				92E462632608FA8600C94A1A /* Router2.cpp */,
+				92E462642608FA8600C94A1A /* DS_Table.cpp */,
+				92E462652608FA8600C94A1A /* RakNetSocket2_Berkley_NativeClient.cpp */,
+				92E462662608FA8600C94A1A /* NatPunchthroughClient.cpp */,
+				92E462672608FA8600C94A1A /* ThreadsafePacketLogger.cpp */,
+				92E462682608FA8600C94A1A /* RakPeer.cpp */,
+				92E4626E2608FA8600C94A1A /* ConnectionGraph2.cpp */,
+				92E4626F2608FA8600C94A1A /* DS_BytePool.cpp */,
+				92E462702608FA8600C94A1A /* DS_HuffmanEncodingTree.cpp */,
+				92E462712608FA8600C94A1A /* ReadyEvent.cpp */,
+				92E462722608FA8600C94A1A /* Rackspace.cpp */,
+				92E462732608FA8600C94A1A /* UDPProxyClient.cpp */,
+				92E462742608FA8600C94A1A /* EpochTimeToString.cpp */,
+				92E462752608FA8600C94A1A /* SocketLayer.cpp */,
+				92E462762608FA8600C94A1A /* BitStream.cpp */,
+				92E462772608FA8600C94A1A /* HTTPConnection.cpp */,
+				92E462782608FA8600C94A1A /* SecureHandshake.cpp */,
+				92E462792608FA8600C94A1A /* EmailSender.cpp */,
+				92E4627A2608FA8600C94A1A /* RakNetSocket.cpp */,
+				92E4627B2608FA8600C94A1A /* CheckSum.cpp */,
+				92E4627C2608FA8600C94A1A /* StringTable.cpp */,
+				92E4627D2608FA8600C94A1A /* Getche.cpp */,
+				92E4627E2608FA8600C94A1A /* RelayPlugin.cpp */,
+				92E4627F2608FA8600C94A1A /* CCRakNetSlidingWindow.cpp */,
+				92E462802608FA8600C94A1A /* FormatString.cpp */,
+				92E462812608FA8600C94A1A /* LogCommandParser.cpp */,
+				92E462822608FA8600C94A1A /* PS4Includes.cpp */,
+				92E462832608FA8600C94A1A /* NatTypeDetectionCommon.cpp */,
+				92E462842608FA8600C94A1A /* PluginInterface2.cpp */,
+				92E462852608FA8600C94A1A /* SendToThread.cpp */,
+				92E462862608FA8600C94A1A /* CCRakNetUDT.cpp */,
+				92E462872608FA8600C94A1A /* DataCompressor.cpp */,
+				92E462882608FA8600C94A1A /* LinuxStrings.cpp */,
+				92E462892608FA8600C94A1A /* FullyConnectedMesh2.cpp */,
+				92E4628A2608FA8600C94A1A /* NatTypeDetectionClient.cpp */,
+				92E4628B2608FA8600C94A1A /* PacketLogger.cpp */,
+				92E4628C2608FA8600C94A1A /* FileList.cpp */,
+				92E4628D2608FA8600C94A1A /* CommandParserInterface.cpp */,
+				92E4628E2608FA8600C94A1A /* CloudServer.cpp */,
+				92E4628F2608FA8600C94A1A /* FileOperations.cpp */,
+				92E462902608FA8600C94A1A /* PacketConsoleLogger.cpp */,
+				92E462912608FA8600C94A1A /* VariadicSQLParser.cpp */,
+				92E462922608FA8600C94A1A /* GridSectorizer.cpp */,
+				92E462932608FA8600C94A1A /* SignaledEvent.cpp */,
+				92E462942608FA8600C94A1A /* RakNetCommandParser.cpp */,
+				92E462952608FA8600C94A1A /* RakNetSocket2_Windows_Linux.cpp */,
+				92E462962608FA8600C94A1A /* MessageFilter.cpp */,
+				92E462972608FA8600C94A1A /* RakNetSocket2_Windows_Linux_360.cpp */,
+				92E462982608FA8600C94A1A /* RakNetSocket2_PS4.cpp */,
+				92E462992608FA8600C94A1A /* UDPProxyCoordinator.cpp */,
+				92E4629A2608FA8600C94A1A /* HTTPConnection2.cpp */,
+				92E4629B2608FA8600C94A1A /* gettimeofday.cpp */,
+				92E4629C2608FA8600C94A1A /* RakNetSocket2_Berkley.cpp */,
+				92E4629D2608FA8600C94A1A /* _FindFirst.cpp */,
+				92E4629E2608FA8600C94A1A /* PacketOutputWindowLogger.cpp */,
+				92E4629F2608FA8600C94A1A /* NetworkIDManager.cpp */,
+				92E462A02608FA8600C94A1A /* ReliabilityLayer.cpp */,
+				92E462A12608FA8600C94A1A /* RakThread.cpp */,
+				92E462A22608FA8600C94A1A /* GetTime.cpp */,
+				92E462A32608FA8600C94A1A /* FileListTransfer.cpp */,
+				92E462A42608FA8600C94A1A /* SuperFastHash.cpp */,
+				92E462A52608FA8600C94A1A /* ConsoleServer.cpp */,
+				92E462A62608FA8600C94A1A /* Rand.cpp */,
+				92E462A72608FA8600C94A1A /* CloudCommon.cpp */,
+				92E462A82608FA8600C94A1A /* PacketFileLogger.cpp */,
+				92E462A92608FA8600C94A1A /* PacketizedTCP.cpp */,
+				92E462AA2608FA8600C94A1A /* IncrementalReadInterface.cpp */,
+				92E462AB2608FA8600C94A1A /* NetworkIDObject.cpp */,
+				92E462AC2608FA8600C94A1A /* RakNetSocket2.cpp */,
+				92E462AD2608FA8600C94A1A /* CloudClient.cpp */,
+				92E462AE2608FA8600C94A1A /* DS_ByteQueue.cpp */,
+				92E462AF2608FA8600C94A1A /* StringCompressor.cpp */,
+				92E462B02608FA8600C94A1A /* TeamBalancer.cpp */,
+				92E462B12608FA8600C94A1A /* VitaIncludes.cpp */,
+				92E462B22608FA8600C94A1A /* RakWString.cpp */,
+				92E462B32608FA8600C94A1A /* VariableListDeltaTracker.cpp */,
+				92E462B42608FA8600C94A1A /* TeamManager.cpp */,
+				92E462B52608FA8600C94A1A /* RakNetTypes.cpp */,
+				92E462B62608FA8600C94A1A /* RakNetSocket2_Vita.cpp */,
+				92E462B72608FA8600C94A1A /* TwoWayAuthentication.cpp */,
+				92E462B82608FA8600C94A1A /* NatTypeDetectionServer.cpp */,
+				92E462B92608FA8600C94A1A /* linux_adapter.cpp */,
+				92E462BA2608FA8600C94A1A /* RandSync.cpp */,
+				92E462BB2608FA8600C94A1A /* ReplicaManager3.cpp */,
+				92E462BC2608FA8600C94A1A /* RakNetSocket2_PS3_PS4.cpp */,
+				92E462BD2608FA8600C94A1A /* TCPInterface.cpp */,
+				92E462BE2608FA8600C94A1A /* NatPunchthroughServer.cpp */,
+				92E462BF2608FA8600C94A1A /* VariableDeltaSerializer.cpp */,
+				92E462C02608FA8600C94A1A /* osx_adapter.cpp */,
+				92E462C12608FA8600C94A1A /* UDPForwarder.cpp */,
+				92E462C22608FA8600C94A1A /* LocklessTypes.cpp */,
+				92E462C32608FA8600C94A1A /* WSAStartupSingleton.cpp */,
+				92E462C42608FA8600C94A1A /* UDPProxyServer.cpp */,
+				92E462C52608FA8600C94A1A /* DR_SHA1.cpp */,
+				92E462C62608FA8600C94A1A /* RakNetStatistics.cpp */,
+				92E462C72608FA8600C94A1A /* Itoa.cpp */,
+				92E462C82608FA8600C94A1A /* RakNetTransport2.cpp */,
+				92E462C92608FA8600C94A1A /* TelnetTransport.cpp */,
+				92E462CA2608FA8600C94A1A /* StatisticsHistory.cpp */,
+				92E462CB2608FA8600C94A1A /* SimpleMutex.cpp */,
+				92E462CC2608FA8600C94A1A /* Gets.cpp */,
+				92E462CD2608FA8600C94A1A /* TableSerializer.cpp */,
+				92E462CE2608FA8600C94A1A /* DirectoryDeltaTransfer.cpp */,
+				92E462CF2608FA8600C94A1A /* Base64Encoder.cpp */,
+				92E462D02608FA8600C94A1A /* RakString.cpp */,
+				92E462D12608FA8600C94A1A /* RakNetSocket2_WindowsStore8.cpp */,
+				92E462D22608FA8600C94A1A /* DynDNS.cpp */,
+				92E462D32608FA8600C94A1A /* RakSleep.cpp */,
+				92E462D42608FA8600C94A1A /* RakNetSocket2_360_720.cpp */,
+				92E462D52608FA8600C94A1A /* RakNetSocket2_NativeClient.cpp */,
+				92E462D62608FA8600C94A1A /* RPC4Plugin.cpp */,
+				92E462D72608FA8600C94A1A /* RakMemoryOverride.cpp */,
+			);
+			name = src;
+			path = "../../../../../../Downloads/cugl-net (1)/cugl-external/slikenet/Source/src";
+			sourceTree = "<group>";
+		};
+		92E464372608FA9700C94A1A /* net */ = {
+			isa = PBXGroup;
+			children = (
+				92E464382608FA9700C94A1A /* CUNetworkConnection.cpp */,
+			);
+			name = net;
+			path = "../../../../../../../Downloads/cugl-net (1)/cugl-lib/net";
+			sourceTree = "<group>";
+		};
 		EB0789511D302051000BFDF7 /* input */ = {
 			isa = PBXGroup;
 			children = (
@@ -860,7 +1439,7 @@
 		EB202C261DE3663000116616 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				28AD611426044D0200FFD4BB /* src */,
+				92E462622608FA8600C94A1A /* src */,
 				EB202C291DE3663800116616 /* cJSON */,
 				EBDC804225BA2BA0004DECAE /* clipper */,
 				EBDC800025B8ABFD004DECAE /* poly2tri */,
@@ -1257,7 +1836,7 @@
 		EBC2F15F1D74A67B007EC7A6 /* Include */ = {
 			isa = PBXGroup;
 			children = (
-				28AD610C26044C7100FFD4BB /* net */,
+				92E464372608FA9700C94A1A /* net */,
 				EBC2F18C1D74AA1D007EC7A6 /* cugl.h */,
 				EBC2F1601D74A685007EC7A6 /* base */,
 				EBC2F1611D74A6B6007EC7A6 /* util */,
@@ -1784,89 +2363,170 @@
 				EB22BEDF25D0E643002ACE41 /* CUJsonValue.cpp in Sources */,
 				EB22BEC025D0E62D002ACE41 /* CUSound.cpp in Sources */,
 				EB22BF0D25D0E666002ACE41 /* CUPolyFactory.cpp in Sources */,
+				92E4642A2608FA8700C94A1A /* RakNetSocket2_360_720.cpp in Sources */,
 				EB22BEC625D0E633002ACE41 /* CUAudioDecoder.cpp in Sources */,
 				EB22BF1925D0E66C002ACE41 /* CUPoly2.cpp in Sources */,
 				EB22BEB025D0E61C002ACE41 /* CUSlider.cpp in Sources */,
 				EB22BEA325D0E616002ACE41 /* CUSceneNode.cpp in Sources */,
+				92E463462608FA8600C94A1A /* LinuxStrings.cpp in Sources */,
 				EB22BEE925D0E64B002ACE41 /* CUTextReader.cpp in Sources */,
 				EB22BE9E25D0E610002ACE41 /* CUScene2.cpp in Sources */,
 				EB22BEAF25D0E61C002ACE41 /* CUNinePatch.cpp in Sources */,
+				92E463282608FA8600C94A1A /* RelayPlugin.cpp in Sources */,
 				EB22BEE825D0E64B002ACE41 /* CUJsonReader.cpp in Sources */,
+				92E463DC2608FA8700C94A1A /* RandSync.cpp in Sources */,
 				EB22BEEA25D0E64B002ACE41 /* CUJsonWriter.cpp in Sources */,
 				EB22BF3625D0E67E002ACE41 /* CUDisplay.cpp in Sources */,
+				92E463BB2608FA8700C94A1A /* StringCompressor.cpp in Sources */,
+				92E4640C2608FA8700C94A1A /* StatisticsHistory.cpp in Sources */,
 				EB22BE9725D0E603002ACE41 /* cdt.cc in Sources */,
+				92E463EE2608FA8700C94A1A /* osx_adapter.cpp in Sources */,
 				EB22BF2D25D0E674002ACE41 /* CUFiletools.cpp in Sources */,
 				EB22BE8C25D0E5ED002ACE41 /* CUBoxObstacle.cpp in Sources */,
+				92E4632E2608FA8600C94A1A /* FormatString.cpp in Sources */,
 				EB22BEDC25D0E643002ACE41 /* CUTextureLoader.cpp in Sources */,
+				92E4634C2608FA8600C94A1A /* NatTypeDetectionClient.cpp in Sources */,
+				92E4639A2608FA8700C94A1A /* SuperFastHash.cpp in Sources */,
 				EB22BEF025D0E652002ACE41 /* CUTouchscreen.cpp in Sources */,
+				92E4632B2608FA8600C94A1A /* CCRakNetSlidingWindow.cpp in Sources */,
+				92E4631F2608FA8600C94A1A /* CheckSum.cpp in Sources */,
+				92E463A92608FA8700C94A1A /* PacketizedTCP.cpp in Sources */,
 				EB22BF0F25D0E666002ACE41 /* CUPathSmoother.cpp in Sources */,
+				92E464032608FA8700C94A1A /* Itoa.cpp in Sources */,
 				EB22BF1B25D0E66C002ACE41 /* CUPolynomial.cpp in Sources */,
 				EB22BF4425D0E69B002ACE41 /* CUAudioPlayer.cpp in Sources */,
 				EB22BEDB25D0E643002ACE41 /* CUFontLoader.cpp in Sources */,
+				92E4630A2608FA8600C94A1A /* EpochTimeToString.cpp in Sources */,
 				EB22BEA725D0E616002ACE41 /* CUPathNode.cpp in Sources */,
+				92E463C42608FA8700C94A1A /* RakWString.cpp in Sources */,
 				EB22BF1D25D0E66C002ACE41 /* CUEasingFunction.cpp in Sources */,
 				EB22BF0425D0E660002ACE41 /* CUPoleZeroIIR.cpp in Sources */,
+				92E463732608FA8700C94A1A /* RakNetSocket2_Windows_Linux_360.cpp in Sources */,
+				92E464242608FA8700C94A1A /* DynDNS.cpp in Sources */,
 				EB22BED525D0E63D002ACE41 /* CUSpriteBatch.cpp in Sources */,
+				92E4633A2608FA8600C94A1A /* PluginInterface2.cpp in Sources */,
+				92E4630D2608FA8600C94A1A /* SocketLayer.cpp in Sources */,
+				92E463702608FA8700C94A1A /* MessageFilter.cpp in Sources */,
+				92E464182608FA8700C94A1A /* DirectoryDeltaTransfer.cpp in Sources */,
+				92E464002608FA8700C94A1A /* RakNetStatistics.cpp in Sources */,
 				EB22BF1F25D0E66C002ACE41 /* CUVec3.cpp in Sources */,
 				EB22BF2125D0E66C002ACE41 /* CUVec2.cpp in Sources */,
 				EB22BED325D0E63D002ACE41 /* CUGradient.cpp in Sources */,
 				EB22BEF825D0E658002ACE41 /* CUPinchInput.cpp in Sources */,
 				EB22BEE025D0E643002ACE41 /* CUAssetManager.cpp in Sources */,
 				EB22BF3525D0E67E002ACE41 /* CUApplication.cpp in Sources */,
+				92E4636D2608FA8700C94A1A /* RakNetSocket2_Windows_Linux.cpp in Sources */,
 				EB22BEA625D0E616002ACE41 /* CUPolygonNode.cpp in Sources */,
+				92E463E52608FA8700C94A1A /* TCPInterface.cpp in Sources */,
+				92E463912608FA8700C94A1A /* RakThread.cpp in Sources */,
+				92E4635E2608FA8700C94A1A /* PacketConsoleLogger.cpp in Sources */,
+				92E464272608FA8700C94A1A /* RakSleep.cpp in Sources */,
 				EB22BEA425D0E616002ACE41 /* CUWireNode.cpp in Sources */,
 				EB22BF0B25D0E666002ACE41 /* CUSimpleTriangulator.cpp in Sources */,
 				EB22BEF125D0E652002ACE41 /* CUTextInput.cpp in Sources */,
+				92E463102608FA8600C94A1A /* BitStream.cpp in Sources */,
+				92E463492608FA8600C94A1A /* FullyConnectedMesh2.cpp in Sources */,
 				EB22BF4125D0E69B002ACE41 /* CUAudioSynchronizer.cpp in Sources */,
 				EB22BED125D0E63D002ACE41 /* CUTexture.cpp in Sources */,
+				92E462F82608FA8600C94A1A /* ConnectionGraph2.cpp in Sources */,
+				92E462E32608FA8600C94A1A /* NatPunchthroughClient.cpp in Sources */,
 				EB22BEE225D0E643002ACE41 /* CUScene2Loader.cpp in Sources */,
+				92E464152608FA8700C94A1A /* TableSerializer.cpp in Sources */,
+				92E463312608FA8600C94A1A /* LogCommandParser.cpp in Sources */,
+				92E463E82608FA8700C94A1A /* NatPunchthroughServer.cpp in Sources */,
 				EB22BE9825D0E603002ACE41 /* sweep_context.cc in Sources */,
+				92E463EB2608FA8700C94A1A /* VariableDeltaSerializer.cpp in Sources */,
 				EB22BF1725D0E66C002ACE41 /* CURect.cpp in Sources */,
 				EB22BE8B25D0E5ED002ACE41 /* CUObstacleWorld.cpp in Sources */,
 				EB22BF3B25D0E69B002ACE41 /* CUAudioResampler.cpp in Sources */,
 				EB22BEB725D0E621002ACE41 /* CUAnchoredLayout.cpp in Sources */,
 				EB22BEFE25D0E660002ACE41 /* CUOneZeroFIR.cpp in Sources */,
+				92E463D32608FA8700C94A1A /* TwoWayAuthentication.cpp in Sources */,
 				EB22BF2B25D0E674002ACE41 /* CUDebug.cpp in Sources */,
 				EB22BF4325D0E69B002ACE41 /* CUAudioNode.cpp in Sources */,
+				92E463BE2608FA8700C94A1A /* TeamBalancer.cpp in Sources */,
 				EB22BECF25D0E63D002ACE41 /* CUCamera.cpp in Sources */,
 				EB22BEB425D0E621002ACE41 /* CUGridLayout.cpp in Sources */,
+				92E4638E2608FA8700C94A1A /* ReliabilityLayer.cpp in Sources */,
+				92E4635B2608FA8700C94A1A /* FileOperations.cpp in Sources */,
+				92E463822608FA8700C94A1A /* RakNetSocket2_Berkley.cpp in Sources */,
+				92E462DD2608FA8600C94A1A /* DS_Table.cpp in Sources */,
 				EB22BF3A25D0E69B002ACE41 /* CUAudioMixer.cpp in Sources */,
+				92E463072608FA8600C94A1A /* UDPProxyClient.cpp in Sources */,
 				EB22BEAB25D0E61C002ACE41 /* CUButton.cpp in Sources */,
 				EB22BEAD25D0E61C002ACE41 /* CUProgressBar.cpp in Sources */,
 				EB22BF4B25D0E730002ACE41 /* cJSON.c in Sources */,
+				92E463882608FA8700C94A1A /* PacketOutputWindowLogger.cpp in Sources */,
 				EB22BF3C25D0E69B002ACE41 /* CUAudioScheduler.cpp in Sources */,
+				92E4637C2608FA8700C94A1A /* HTTPConnection2.cpp in Sources */,
 				EB22BECD25D0E63D002ACE41 /* CUPerspectiveCamera.cpp in Sources */,
+				92E464122608FA8700C94A1A /* Gets.cpp in Sources */,
 				EB22BEB625D0E621002ACE41 /* CUFloatLayout.cpp in Sources */,
+				92E463F12608FA8700C94A1A /* UDPForwarder.cpp in Sources */,
 				EB22BE8D25D0E5ED002ACE41 /* CUObstacleSelector.cpp in Sources */,
 				EB22BE9125D0E5F6002ACE41 /* shapes.cc in Sources */,
 				EB22BF3F25D0E69B002ACE41 /* CUAudioInput.cpp in Sources */,
 				EB22BECE25D0E63D002ACE41 /* CUOrthographicCamera.cpp in Sources */,
+				92E463552608FA8700C94A1A /* CommandParserInterface.cpp in Sources */,
+				92E464302608FA8700C94A1A /* RPC4Plugin.cpp in Sources */,
+				92E463222608FA8600C94A1A /* StringTable.cpp in Sources */,
 				EB22BF2A25D0E674002ACE41 /* CUStrings.cpp in Sources */,
 				EB22BECC25D0E63D002ACE41 /* CUVertexBuffer.cpp in Sources */,
 				EB22BEC825D0E633002ACE41 /* CUOGGDecoder.cpp in Sources */,
 				EB22BEBB25D0E62D002ACE41 /* CUAudioEngine.cpp in Sources */,
+				92E463012608FA8600C94A1A /* ReadyEvent.cpp in Sources */,
 				EB22BEF925D0E658002ACE41 /* CUPanInput.cpp in Sources */,
+				92E463522608FA8600C94A1A /* FileList.cpp in Sources */,
 				EB22BE8A25D0E5ED002ACE41 /* CUObstacle.cpp in Sources */,
 				EB22BED725D0E63D002ACE41 /* CUUniformBuffer.cpp in Sources */,
 				EB22BEC525D0E633002ACE41 /* CUWAVDecoder.cpp in Sources */,
+				92E463F72608FA8700C94A1A /* WSAStartupSingleton.cpp in Sources */,
 				EB22BEDE25D0E643002ACE41 /* CUJsonLoader.cpp in Sources */,
 				EB22BF0525D0E660002ACE41 /* CUTwoZeroFIR.cpp in Sources */,
 				EB22BF0C25D0E666002ACE41 /* CUPolySplineFactory.cpp in Sources */,
 				EB22BF0A25D0E666002ACE41 /* CUSimpleExtruder.cpp in Sources */,
 				EB22BF0225D0E660002ACE41 /* CUBiquadIIR.cpp in Sources */,
+				92E4642D2608FA8700C94A1A /* RakNetSocket2_NativeClient.cpp in Sources */,
 				EB22BF2425D0E66C002ACE41 /* CUMathBase.cpp in Sources */,
+				92E463B22608FA8700C94A1A /* RakNetSocket2.cpp in Sources */,
+				92E463CD2608FA8700C94A1A /* RakNetTypes.cpp in Sources */,
+				92E463AF2608FA8700C94A1A /* NetworkIDObject.cpp in Sources */,
 				EB22BEAC25D0E61C002ACE41 /* CUTextField.cpp in Sources */,
+				92E4636A2608FA8700C94A1A /* RakNetCommandParser.cpp in Sources */,
 				EB22BF0325D0E660002ACE41 /* CUOnePoleIIR.cpp in Sources */,
+				92E4641E2608FA8700C94A1A /* RakString.cpp in Sources */,
+				92E464092608FA8700C94A1A /* TelnetTransport.cpp in Sources */,
+				92E463342608FA8600C94A1A /* PS4Includes.cpp in Sources */,
+				92E463402608FA8600C94A1A /* CCRakNetUDT.cpp in Sources */,
 				EB22BF1C25D0E66C002ACE41 /* CUGeometry.cpp in Sources */,
+				92E463D02608FA8700C94A1A /* RakNetSocket2_Vita.cpp in Sources */,
 				EB22BEC725D0E633002ACE41 /* CUMP3Decoder.cpp in Sources */,
 				EB22BEE125D0E643002ACE41 /* CUWidgetLoader.cpp in Sources */,
+				92E463C72608FA8700C94A1A /* VariableListDeltaTracker.cpp in Sources */,
+				92E462E02608FA8600C94A1A /* RakNetSocket2_Berkley_NativeClient.cpp in Sources */,
+				92E463162608FA8600C94A1A /* SecureHandshake.cpp in Sources */,
+				92E463252608FA8600C94A1A /* Getche.cpp in Sources */,
 				EB22BF0025D0E660002ACE41 /* CUTwoPoleIIR.cpp in Sources */,
+				92E462E62608FA8600C94A1A /* ThreadsafePacketLogger.cpp in Sources */,
 				EB22BF1A25D0E66C002ACE41 /* CUVec4.cpp in Sources */,
 				EB22BEA525D0E616002ACE41 /* CUTexturedNode.cpp in Sources */,
+				92E463C12608FA8700C94A1A /* VitaIncludes.cpp in Sources */,
 				EB22BF2C25D0E674002ACE41 /* CUThreadPool.cpp in Sources */,
+				92E463FA2608FA8700C94A1A /* UDPProxyServer.cpp in Sources */,
+				92E463DF2608FA8700C94A1A /* ReplicaManager3.cpp in Sources */,
+				92E463792608FA8700C94A1A /* UDPProxyCoordinator.cpp in Sources */,
+				92E463FD2608FA8700C94A1A /* DR_SHA1.cpp in Sources */,
+				92E464062608FA8700C94A1A /* RakNetTransport2.cpp in Sources */,
+				92E463642608FA8700C94A1A /* GridSectorizer.cpp in Sources */,
+				92E463762608FA8700C94A1A /* RakNetSocket2_PS4.cpp in Sources */,
 				EB22BEBC25D0E62D002ACE41 /* CUAudioDevices.cpp in Sources */,
 				EB22BF0E25D0E666002ACE41 /* CUComplexTriangulator.cpp in Sources */,
+				92E463132608FA8600C94A1A /* HTTPConnection.cpp in Sources */,
+				92E464212608FA8700C94A1A /* RakNetSocket2_WindowsStore8.cpp in Sources */,
+				92E463192608FA8600C94A1A /* EmailSender.cpp in Sources */,
+				92E464332608FA8700C94A1A /* RakMemoryOverride.cpp in Sources */,
 				EB22BEA225D0E616002ACE41 /* CUAnimationNode.cpp in Sources */,
+				92E4633D2608FA8600C94A1A /* SendToThread.cpp in Sources */,
 				EB22BF3D25D0E69B002ACE41 /* CUAudioFader.cpp in Sources */,
 				EB22BF1E25D0E66C002ACE41 /* CUQuaternion.cpp in Sources */,
 				EB22BED425D0E63D002ACE41 /* CUShader.cpp in Sources */,
@@ -1875,31 +2535,55 @@
 				EB22BEFF25D0E660002ACE41 /* CUFIRFilter.cpp in Sources */,
 				EB22BE9625D0E603002ACE41 /* advancing_front.cc in Sources */,
 				EB22BF1625D0E66C002ACE41 /* CUFrustum.cpp in Sources */,
+				92E4631C2608FA8600C94A1A /* RakNetSocket.cpp in Sources */,
 				EB22BED625D0E63D002ACE41 /* CURenderTarget.cpp in Sources */,
 				EB22BF0125D0E660002ACE41 /* CUDSPMath.cpp in Sources */,
+				92E462FE2608FA8600C94A1A /* DS_HuffmanEncodingTree.cpp in Sources */,
 				EB22BEEF25D0E652002ACE41 /* CUInput.cpp in Sources */,
 				EB22BED225D0E63D002ACE41 /* CUFont.cpp in Sources */,
 				EB22BE8825D0E5ED002ACE41 /* CUCapsuleObstacle.cpp in Sources */,
 				EB22BF1425D0E66C002ACE41 /* CUColor4.cpp in Sources */,
 				EB22BF3E25D0E69B002ACE41 /* CUAudioSpinner.cpp in Sources */,
+				92E4638B2608FA8700C94A1A /* NetworkIDManager.cpp in Sources */,
 				EB22BEF425D0E652002ACE41 /* CUKeyboard.cpp in Sources */,
 				EB22BE8625D0E5ED002ACE41 /* CUWheelObstacle.cpp in Sources */,
 				EB22BEBD25D0E62D002ACE41 /* CUAudioQueue.cpp in Sources */,
+				92E463B52608FA8700C94A1A /* CloudClient.cpp in Sources */,
+				92E463B82608FA8700C94A1A /* DS_ByteQueue.cpp in Sources */,
 				EB22BEC425D0E633002ACE41 /* CUFLACDecoder.cpp in Sources */,
 				EB22BEE625D0E64B002ACE41 /* CUTextWriter.cpp in Sources */,
+				92E462DA2608FA8600C94A1A /* Router2.cpp in Sources */,
 				EB22BE9225D0E5F6002ACE41 /* clipper.cpp in Sources */,
+				92E463942608FA8700C94A1A /* GetTime.cpp in Sources */,
+				92E4643B2608FA9700C94A1A /* CUNetworkConnection.cpp in Sources */,
 				EB22BEE725D0E64B002ACE41 /* CUBinaryWriter.cpp in Sources */,
 				EB22BF1825D0E66C002ACE41 /* CUSpline2.cpp in Sources */,
+				92E463AC2608FA8700C94A1A /* IncrementalReadInterface.cpp in Sources */,
+				92E463972608FA8700C94A1A /* FileListTransfer.cpp in Sources */,
 				EB22BF4225D0E69B002ACE41 /* CUAudioOutput.cpp in Sources */,
+				92E463672608FA8700C94A1A /* SignaledEvent.cpp in Sources */,
+				92E4639D2608FA8700C94A1A /* ConsoleServer.cpp in Sources */,
 				EB22BEDD25D0E643002ACE41 /* CUSoundLoader.cpp in Sources */,
+				92E4637F2608FA8700C94A1A /* gettimeofday.cpp in Sources */,
 				EB22BF0625D0E660002ACE41 /* CUIIRFilter.cpp in Sources */,
+				92E463F42608FA8700C94A1A /* LocklessTypes.cpp in Sources */,
+				92E4640F2608FA8700C94A1A /* SimpleMutex.cpp in Sources */,
 				EB22BF2625D0E66C002ACE41 /* CUAffine2.cpp in Sources */,
+				92E463D92608FA8700C94A1A /* linux_adapter.cpp in Sources */,
 				EB22BED025D0E63D002ACE41 /* CUScissor.cpp in Sources */,
+				92E463042608FA8600C94A1A /* Rackspace.cpp in Sources */,
+				92E4634F2608FA8600C94A1A /* PacketLogger.cpp in Sources */,
+				92E463A02608FA8700C94A1A /* Rand.cpp in Sources */,
+				92E463CA2608FA8700C94A1A /* TeamManager.cpp in Sources */,
+				92E462E92608FA8600C94A1A /* RakPeer.cpp in Sources */,
 				EB22BEBE25D0E62D002ACE41 /* CUAudioSample.cpp in Sources */,
 				EB22BEF225D0E652002ACE41 /* CUAccelerometer.cpp in Sources */,
+				92E463612608FA8700C94A1A /* VariadicSQLParser.cpp in Sources */,
 				EB22BF4025D0E69B002ACE41 /* CUAudioPanner.cpp in Sources */,
 				EB22BEBF25D0E62D002ACE41 /* CUAudioWaveform.cpp in Sources */,
+				92E463582608FA8700C94A1A /* CloudServer.cpp in Sources */,
 				EB22BF2525D0E66C002ACE41 /* CURay.cpp in Sources */,
+				92E463A62608FA8700C94A1A /* PacketFileLogger.cpp in Sources */,
 				EB22BF2225D0E66C002ACE41 /* CUPlane.cpp in Sources */,
 				EB22BEB525D0E621002ACE41 /* CULayout.cpp in Sources */,
 				EB22BF2025D0E66C002ACE41 /* CUSize.cpp in Sources */,
@@ -1908,9 +2592,17 @@
 				EB22BEFA25D0E658002ACE41 /* CURotationInput.cpp in Sources */,
 				EB22BE8725D0E5ED002ACE41 /* CUComplexObstacle.cpp in Sources */,
 				EB22BE9D25D0E610002ACE41 /* CUScene2Texture.cpp in Sources */,
+				92E463432608FA8600C94A1A /* DataCompressor.cpp in Sources */,
 				EB22BEF325D0E652002ACE41 /* CUMouse.cpp in Sources */,
 				EB22BEEB25D0E64B002ACE41 /* CUBinaryReader.cpp in Sources */,
 				EB22BE8525D0E5ED002ACE41 /* CUPolygonObstacle.cpp in Sources */,
+				92E463A32608FA8700C94A1A /* CloudCommon.cpp in Sources */,
+				92E462FB2608FA8600C94A1A /* DS_BytePool.cpp in Sources */,
+				92E463852608FA8700C94A1A /* _FindFirst.cpp in Sources */,
+				92E463D62608FA8700C94A1A /* NatTypeDetectionServer.cpp in Sources */,
+				92E463372608FA8600C94A1A /* NatTypeDetectionCommon.cpp in Sources */,
+				92E463E22608FA8700C94A1A /* RakNetSocket2_PS3_PS4.cpp in Sources */,
+				92E4641B2608FA8700C94A1A /* Base64Encoder.cpp in Sources */,
 				EB22BE8925D0E5ED002ACE41 /* CUSimpleObstacle.cpp in Sources */,
 				EB22BF2325D0E66C002ACE41 /* CUEasingBezier.cpp in Sources */,
 			);
@@ -1924,89 +2616,170 @@
 				EB7453F71D74D276002FBAE6 /* CUDisplay.cpp in Sources */,
 				EB7453F81D74D276002FBAE6 /* CUDisplay-iOS.mm in Sources */,
 				EB7453F91D74D276002FBAE6 /* CUMathBase.cpp in Sources */,
+				92E464292608FA8700C94A1A /* RakNetSocket2_360_720.cpp in Sources */,
 				EB44513F21E8F9E700C6DF32 /* CUAudioNode.cpp in Sources */,
 				EB839E241DCD8305001039BC /* CUObstacleWorld.cpp in Sources */,
 				EB44514621E8FA2200C6DF32 /* CUWAVDecoder.cpp in Sources */,
 				EB839E1A1DCD8305001039BC /* CUObstacle.cpp in Sources */,
+				92E463452608FA8600C94A1A /* LinuxStrings.cpp in Sources */,
 				EB7453FA1D74D276002FBAE6 /* CUVec2.cpp in Sources */,
 				EB7453FB1D74D276002FBAE6 /* CUVec3.cpp in Sources */,
 				EB789F32208AD69A00389383 /* CUTwoPoleIIR.cpp in Sources */,
+				92E463272608FA8600C94A1A /* RelayPlugin.cpp in Sources */,
 				EB7453FC1D74D276002FBAE6 /* CUVec4.cpp in Sources */,
+				92E463DB2608FA8700C94A1A /* RandSync.cpp in Sources */,
 				EBD3CE822004070100CFD1BC /* CUSlider.cpp in Sources */,
 				EBFE7C141E1B00CA001007C2 /* CUButton.cpp in Sources */,
+				92E463BA2608FA8700C94A1A /* StringCompressor.cpp in Sources */,
+				92E4640B2608FA8700C94A1A /* StatisticsHistory.cpp in Sources */,
 				EB202C931DEBDE9900116616 /* CUBinaryReader.cpp in Sources */,
+				92E463ED2608FA8700C94A1A /* osx_adapter.cpp in Sources */,
 				EB7453FD1D74D276002FBAE6 /* CUQuaternion.cpp in Sources */,
 				EBCE54731DED2EC5003B52FE /* CUThreadPool.cpp in Sources */,
+				92E4632D2608FA8600C94A1A /* FormatString.cpp in Sources */,
 				EBD3CE812004070100CFD1BC /* CUTextField.cpp in Sources */,
+				92E4634B2608FA8600C94A1A /* NatTypeDetectionClient.cpp in Sources */,
+				92E463992608FA8700C94A1A /* SuperFastHash.cpp in Sources */,
 				EB7453FE1D74D276002FBAE6 /* CUMat4.cpp in Sources */,
+				92E4632A2608FA8600C94A1A /* CCRakNetSlidingWindow.cpp in Sources */,
+				92E4631E2608FA8600C94A1A /* CheckSum.cpp in Sources */,
+				92E463A82608FA8700C94A1A /* PacketizedTCP.cpp in Sources */,
 				EB7453FF1D74D276002FBAE6 /* CUAffine2.cpp in Sources */,
+				92E464022608FA8700C94A1A /* Itoa.cpp in Sources */,
 				EB8D3DFD21A33419006617A6 /* CUAudioDevices.cpp in Sources */,
 				EB7454001D74D276002FBAE6 /* CUColor4.cpp in Sources */,
 				EB44514021E8F9EB00C6DF32 /* CUAudioOutput.cpp in Sources */,
+				92E463092608FA8600C94A1A /* EpochTimeToString.cpp in Sources */,
 				EB0F49191E79FE51002E50DB /* CUEasingBezier.cpp in Sources */,
+				92E463C32608FA8700C94A1A /* RakWString.cpp in Sources */,
 				EB77B915200FF15800713568 /* CUFloatLayout.cpp in Sources */,
 				EB9A8A471DE24C58007B4123 /* CUPolygonObstacle.cpp in Sources */,
+				92E463722608FA8700C94A1A /* RakNetSocket2_Windows_Linux_360.cpp in Sources */,
+				92E464232608FA8700C94A1A /* DynDNS.cpp in Sources */,
 				EB7454011D74D276002FBAE6 /* CUSize.cpp in Sources */,
+				92E463392608FA8600C94A1A /* PluginInterface2.cpp in Sources */,
+				92E4630C2608FA8600C94A1A /* SocketLayer.cpp in Sources */,
+				92E4636F2608FA8700C94A1A /* MessageFilter.cpp in Sources */,
+				92E464172608FA8700C94A1A /* DirectoryDeltaTransfer.cpp in Sources */,
+				92E463FF2608FA8700C94A1A /* RakNetStatistics.cpp in Sources */,
 				EB7454021D74D276002FBAE6 /* CURect.cpp in Sources */,
 				EB7454031D74D276002FBAE6 /* CUPolynomial.cpp in Sources */,
 				EB7454041D74D276002FBAE6 /* CUPoly2.cpp in Sources */,
 				EB7454051D74D276002FBAE6 /* CUSpline2.cpp in Sources */,
 				EBDD16E525C35F4200154533 /* CUGeometry.cpp in Sources */,
 				EB7454061D74D276002FBAE6 /* CURay.cpp in Sources */,
+				92E4636C2608FA8700C94A1A /* RakNetSocket2_Windows_Linux.cpp in Sources */,
 				EBDD16A025C35CB700154533 /* CUGradient.cpp in Sources */,
+				92E463E42608FA8700C94A1A /* TCPInterface.cpp in Sources */,
+				92E463902608FA8700C94A1A /* RakThread.cpp in Sources */,
+				92E4635D2608FA8700C94A1A /* PacketConsoleLogger.cpp in Sources */,
+				92E464262608FA8700C94A1A /* RakSleep.cpp in Sources */,
 				EB7454071D74D276002FBAE6 /* CUPlane.cpp in Sources */,
 				EB7454081D74D276002FBAE6 /* CUFrustum.cpp in Sources */,
 				EBDD165F25C35C1500154533 /* advancing_front.cc in Sources */,
+				92E4630F2608FA8600C94A1A /* BitStream.cpp in Sources */,
+				92E463482608FA8600C94A1A /* FullyConnectedMesh2.cpp in Sources */,
 				EB44514121E8F9FA00C6DF32 /* CUAudioPanner.cpp in Sources */,
 				EBDD16AA25C35CC900154533 /* CURenderTarget.cpp in Sources */,
+				92E462F72608FA8600C94A1A /* ConnectionGraph2.cpp in Sources */,
+				92E462E22608FA8600C94A1A /* NatPunchthroughClient.cpp in Sources */,
 				EB7454091D74D276002FBAE6 /* CUSimpleTriangulator.cpp in Sources */,
+				92E464142608FA8700C94A1A /* TableSerializer.cpp in Sources */,
+				92E463302608FA8600C94A1A /* LogCommandParser.cpp in Sources */,
+				92E463E72608FA8700C94A1A /* NatPunchthroughServer.cpp in Sources */,
 				EB202C4C1DE5F9B900116616 /* CUTextWriter.cpp in Sources */,
+				92E463EA2608FA8700C94A1A /* VariableDeltaSerializer.cpp in Sources */,
 				EBA6CF0F1DECCB8B00BC2146 /* CUBinaryWriter.cpp in Sources */,
 				EB1E963821A9CDDD008A0431 /* CUAudioInput.cpp in Sources */,
 				EB2A1F4B20BDFC4800E1B1F5 /* CUOnePoleIIR.cpp in Sources */,
 				EB74540B1D74D276002FBAE6 /* CUSimpleExtruder.cpp in Sources */,
 				EBDD165A25C35C0F00154533 /* sweep.cc in Sources */,
+				92E463D22608FA8700C94A1A /* TwoWayAuthentication.cpp in Sources */,
 				EB74540C1D74D276002FBAE6 /* CUPolySplineFactory.cpp in Sources */,
 				EB44514221E8FA1200C6DF32 /* CUAudioDecoder.cpp in Sources */,
+				92E463BD2608FA8700C94A1A /* TeamBalancer.cpp in Sources */,
 				EB74540D1D74D276002FBAE6 /* CUDebug.cpp in Sources */,
 				EBCD654121FD554300B3FEDE /* CUAudioResampler.cpp in Sources */,
+				92E4638D2608FA8700C94A1A /* ReliabilityLayer.cpp in Sources */,
+				92E4635A2608FA8700C94A1A /* FileOperations.cpp in Sources */,
+				92E463812608FA8700C94A1A /* RakNetSocket2_Berkley.cpp in Sources */,
+				92E462DC2608FA8600C94A1A /* DS_Table.cpp in Sources */,
 				EB74540E1D74D276002FBAE6 /* CUStrings.cpp in Sources */,
+				92E463062608FA8600C94A1A /* UDPProxyClient.cpp in Sources */,
 				EB74540F1D74D276002FBAE6 /* CUTexture.cpp in Sources */,
 				EB202C511DE68CCA00116616 /* CUJsonValue.cpp in Sources */,
 				EB9A8A3D1DE242DA007B4123 /* CUCapsuleObstacle.cpp in Sources */,
+				92E463872608FA8700C94A1A /* PacketOutputWindowLogger.cpp in Sources */,
 				EB7454101D74D276002FBAE6 /* CUShader.cpp in Sources */,
+				92E4637B2608FA8700C94A1A /* HTTPConnection2.cpp in Sources */,
 				EB202C421DE39BAA00116616 /* CUTextReader.cpp in Sources */,
+				92E464112608FA8700C94A1A /* Gets.cpp in Sources */,
 				EBDD170025C35F6E00154533 /* CUScene2.cpp in Sources */,
+				92E463F02608FA8700C94A1A /* UDPForwarder.cpp in Sources */,
 				EBDD165525C35C0A00154533 /* sweep_context.cc in Sources */,
 				EBCD654721FE423B00B3FEDE /* CUAudioSynchronizer.cpp in Sources */,
 				EBDD166925C35C4600154533 /* CUScene2Texture.cpp in Sources */,
 				EB2A1F4720BDD02700E1B1F5 /* CUTwoZeroFIR.cpp in Sources */,
+				92E463542608FA8600C94A1A /* CommandParserInterface.cpp in Sources */,
+				92E4642F2608FA8700C94A1A /* RPC4Plugin.cpp in Sources */,
+				92E463212608FA8600C94A1A /* StringTable.cpp in Sources */,
 				EB7454121D74D276002FBAE6 /* CUSpriteBatch.cpp in Sources */,
 				EBFE7BBF1E0CB211001007C2 /* CUPanInput.cpp in Sources */,
 				EB7454131D74D276002FBAE6 /* CUCamera.cpp in Sources */,
 				EB9A8A4D1DE2556A007B4123 /* CUComplexObstacle.cpp in Sources */,
+				92E463002608FA8600C94A1A /* ReadyEvent.cpp in Sources */,
 				EB0F491D1E7A10B7002E50DB /* CUEasingFunction.cpp in Sources */,
+				92E463512608FA8600C94A1A /* FileList.cpp in Sources */,
 				EBDD167D25C35C6100154533 /* CUWireNode.cpp in Sources */,
 				EBDD168225C35C6500154533 /* CUPathNode.cpp in Sources */,
 				EB7454141D74D276002FBAE6 /* CUOrthographicCamera.cpp in Sources */,
+				92E463F62608FA8700C94A1A /* WSAStartupSingleton.cpp in Sources */,
 				EB035D9120C0D3B20001EAE3 /* CUOneZeroFIR.cpp in Sources */,
 				EBE91E291DCFE7D300F80D62 /* CUSimpleObstacle.cpp in Sources */,
 				EBDD164B25C35BEF00154533 /* CUFiletools.cpp in Sources */,
 				EB035D8E20C0D34D0001EAE3 /* CUFIRFilter.cpp in Sources */,
 				EBDD169125C35C8C00154533 /* CUAudioEngine.cpp in Sources */,
+				92E4642C2608FA8700C94A1A /* RakNetSocket2_NativeClient.cpp in Sources */,
 				EB77B9222010FD0500713568 /* CUGridLayout.cpp in Sources */,
+				92E463B12608FA8700C94A1A /* RakNetSocket2.cpp in Sources */,
+				92E463CC2608FA8700C94A1A /* RakNetTypes.cpp in Sources */,
+				92E463AE2608FA8700C94A1A /* NetworkIDObject.cpp in Sources */,
 				EB7454151D74D276002FBAE6 /* CUPerspectiveCamera.cpp in Sources */,
+				92E463692608FA8700C94A1A /* RakNetCommandParser.cpp in Sources */,
 				EBDD16A525C35CC100154533 /* CUScissor.cpp in Sources */,
+				92E4641D2608FA8700C94A1A /* RakString.cpp in Sources */,
+				92E464082608FA8700C94A1A /* TelnetTransport.cpp in Sources */,
+				92E463332608FA8600C94A1A /* PS4Includes.cpp in Sources */,
+				92E4633F2608FA8600C94A1A /* CCRakNetUDT.cpp in Sources */,
 				EBD0383221E1563F00168DB2 /* CUAudioFader.cpp in Sources */,
+				92E463CF2608FA8700C94A1A /* RakNetSocket2_Vita.cpp in Sources */,
 				EBB8FF0021E198D60039834E /* CUSoundLoader.cpp in Sources */,
 				EBDD168C25C35C7400154533 /* CUNinePatch.cpp in Sources */,
+				92E463C62608FA8700C94A1A /* VariableListDeltaTracker.cpp in Sources */,
+				92E462DF2608FA8600C94A1A /* RakNetSocket2_Berkley_NativeClient.cpp in Sources */,
+				92E463152608FA8600C94A1A /* SecureHandshake.cpp in Sources */,
+				92E463242608FA8600C94A1A /* Getche.cpp in Sources */,
 				EBDB28D520CE740C00ADC9AB /* CUBiquadIIR.cpp in Sources */,
+				92E462E52608FA8600C94A1A /* ThreadsafePacketLogger.cpp in Sources */,
 				EBD3CEA42007260F00CFD1BC /* CUAnchoredLayout.cpp in Sources */,
 				EB74541D1D74D276002FBAE6 /* CULabel.cpp in Sources */,
+				92E463C02608FA8700C94A1A /* VitaIncludes.cpp in Sources */,
 				EBFE7C111E1AB140001007C2 /* CUProgressBar.cpp in Sources */,
+				92E463F92608FA8700C94A1A /* UDPProxyServer.cpp in Sources */,
+				92E463DE2608FA8700C94A1A /* ReplicaManager3.cpp in Sources */,
+				92E463782608FA8700C94A1A /* UDPProxyCoordinator.cpp in Sources */,
+				92E463FC2608FA8700C94A1A /* DR_SHA1.cpp in Sources */,
+				92E464052608FA8700C94A1A /* RakNetTransport2.cpp in Sources */,
+				92E463632608FA8700C94A1A /* GridSectorizer.cpp in Sources */,
+				92E463752608FA8700C94A1A /* RakNetSocket2_PS4.cpp in Sources */,
 				EBDD166E25C35C5000154533 /* CUSceneNode.cpp in Sources */,
 				EBDC802525B8AF96004DECAE /* shapes.cc in Sources */,
+				92E463122608FA8600C94A1A /* HTTPConnection.cpp in Sources */,
+				92E464202608FA8700C94A1A /* RakNetSocket2_WindowsStore8.cpp in Sources */,
+				92E463182608FA8600C94A1A /* EmailSender.cpp in Sources */,
+				92E464322608FA8700C94A1A /* RakMemoryOverride.cpp in Sources */,
 				EBD3CE9F2005DAFC00CFD1BC /* CUScene2Loader.cpp in Sources */,
+				92E4633C2608FA8600C94A1A /* SendToThread.cpp in Sources */,
 				EB74541E1D74D276002FBAE6 /* CUInput.cpp in Sources */,
 				EBDD168725C35C6A00154533 /* CUAnimationNode.cpp in Sources */,
 				EBDD16FB25C35F6000154533 /* CUPathSmoother.cpp in Sources */,
@@ -2015,31 +2788,55 @@
 				EB20EACF21AC9C4C00F804F6 /* CUAudioMixer.cpp in Sources */,
 				EBFE7BE01E15A9AD001007C2 /* CUTextureLoader.cpp in Sources */,
 				EBDD167825C35C5C00154533 /* CUPolygonNode.cpp in Sources */,
+				92E4631B2608FA8600C94A1A /* RakNetSocket.cpp in Sources */,
 				EB59D5211E251D1F00A93BB5 /* CUJsonLoader.cpp in Sources */,
 				EB7454201D74D276002FBAE6 /* CUMouse.cpp in Sources */,
+				92E462FD2608FA8600C94A1A /* DS_HuffmanEncodingTree.cpp in Sources */,
 				EBFE7BEE1E15CC75001007C2 /* CUFontLoader.cpp in Sources */,
 				EB7454211D74D276002FBAE6 /* CUTouchscreen.cpp in Sources */,
 				EBDD16EC25C35F4B00154533 /* CUPolyFactory.cpp in Sources */,
 				EB202C5D1DE9367C00116616 /* CUJsonWriter.cpp in Sources */,
 				EBDD16AF25C35CD000154533 /* CUUniformBuffer.cpp in Sources */,
+				92E4638A2608FA8700C94A1A /* NetworkIDManager.cpp in Sources */,
 				EBDD167325C35C5600154533 /* CUTexturedNode.cpp in Sources */,
 				EBDD169B25C35CB200154533 /* CUFont.cpp in Sources */,
 				EBDD169625C35C9100154533 /* CUAudioQueue.cpp in Sources */,
+				92E463B42608FA8700C94A1A /* CloudClient.cpp in Sources */,
+				92E463B72608FA8700C94A1A /* DS_ByteQueue.cpp in Sources */,
 				EBFE7BC21E0DAF5D001007C2 /* CURotationInput.cpp in Sources */,
 				EB44514521E8FA1F00C6DF32 /* CUOGGDecoder.cpp in Sources */,
+				92E462D92608FA8600C94A1A /* Router2.cpp in Sources */,
 				EB9A8A3E1DE242DA007B4123 /* CUWheelObstacle.cpp in Sources */,
+				92E463932608FA8700C94A1A /* GetTime.cpp in Sources */,
+				92E4643A2608FA9700C94A1A /* CUNetworkConnection.cpp in Sources */,
 				EB8D3E0821A3BB47006617A6 /* CUAudioSample.cpp in Sources */,
 				EB44514321E8FA1600C6DF32 /* CUFLACDecoder.cpp in Sources */,
+				92E463AB2608FA8700C94A1A /* IncrementalReadInterface.cpp in Sources */,
+				92E463962608FA8700C94A1A /* FileListTransfer.cpp in Sources */,
 				EBD0383921E182C600168DB2 /* CUSound.cpp in Sources */,
+				92E463662608FA8700C94A1A /* SignaledEvent.cpp in Sources */,
+				92E4639C2608FA8700C94A1A /* ConsoleServer.cpp in Sources */,
 				EBD0383621E1814500168DB2 /* CUAudioWaveform.cpp in Sources */,
+				92E4637E2608FA8700C94A1A /* gettimeofday.cpp in Sources */,
 				EBDD16F125C35F5200154533 /* CUComplexTriangulator.cpp in Sources */,
+				92E463F32608FA8700C94A1A /* LocklessTypes.cpp in Sources */,
+				92E4640E2608FA8700C94A1A /* SimpleMutex.cpp in Sources */,
 				EBFE7BB31E0C562B001007C2 /* CUPinchInput.cpp in Sources */,
+				92E463D82608FA8700C94A1A /* linux_adapter.cpp in Sources */,
 				EB6225A923DA9BD8007EA978 /* CUWidgetLoader.cpp in Sources */,
+				92E463032608FA8600C94A1A /* Rackspace.cpp in Sources */,
+				92E4634E2608FA8600C94A1A /* PacketLogger.cpp in Sources */,
+				92E4639F2608FA8700C94A1A /* Rand.cpp in Sources */,
+				92E463C92608FA8700C94A1A /* TeamManager.cpp in Sources */,
+				92E462E82608FA8600C94A1A /* RakPeer.cpp in Sources */,
 				EB7454221D74D276002FBAE6 /* CUTextInput.cpp in Sources */,
 				EBE91E281DCFE7D300F80D62 /* CUObstacleSelector.cpp in Sources */,
+				92E463602608FA8700C94A1A /* VariadicSQLParser.cpp in Sources */,
 				EB202C2C1DE3665600116616 /* cJSON.c in Sources */,
 				EBDD16F625C35F5C00154533 /* CUComplexExtruder.cpp in Sources */,
+				92E463572608FA8700C94A1A /* CloudServer.cpp in Sources */,
 				EB5D70F421E2A6B1003C78F6 /* CUAudioScheduler.cpp in Sources */,
+				92E463A52608FA8700C94A1A /* PacketFileLogger.cpp in Sources */,
 				EBDD16B425C35CD500154533 /* CUVertexBuffer.cpp in Sources */,
 				EB20EAD221AE362F00F804F6 /* CUAudioSpinner.cpp in Sources */,
 				EBDD166425C35C1A00154533 /* cdt.cc in Sources */,
@@ -2048,9 +2845,17 @@
 				EB77B91F2010FA3300713568 /* CULayout.cpp in Sources */,
 				EB202C5A1DE924AB00116616 /* CUJsonReader.cpp in Sources */,
 				EB8D3E0321A3BB37006617A6 /* CUAudioPlayer.cpp in Sources */,
+				92E463422608FA8600C94A1A /* DataCompressor.cpp in Sources */,
 				EBFE7C021E187321001007C2 /* CUAssetManager.cpp in Sources */,
 				EB75701620D2E55A00FC4C13 /* CUPoleZeroIIR.cpp in Sources */,
 				EBE91E271DCFE7D300F80D62 /* CUBoxObstacle.cpp in Sources */,
+				92E463A22608FA8700C94A1A /* CloudCommon.cpp in Sources */,
+				92E462FA2608FA8600C94A1A /* DS_BytePool.cpp in Sources */,
+				92E463842608FA8700C94A1A /* _FindFirst.cpp in Sources */,
+				92E463D52608FA8700C94A1A /* NatTypeDetectionServer.cpp in Sources */,
+				92E463362608FA8600C94A1A /* NatTypeDetectionCommon.cpp in Sources */,
+				92E463E12608FA8700C94A1A /* RakNetSocket2_PS3_PS4.cpp in Sources */,
+				92E4641A2608FA8700C94A1A /* Base64Encoder.cpp in Sources */,
 				EBA1EE4721D1422800A7AF81 /* CUDSPMath.cpp in Sources */,
 				EB44514421E8FA1A00C6DF32 /* CUMP3Decoder.cpp in Sources */,
 			);
@@ -2064,89 +2869,170 @@
 				EBD3CE96200408EB00CFD1BC /* CUTextField.cpp in Sources */,
 				EB9A8A411DE249C3007B4123 /* CUWheelObstacle.cpp in Sources */,
 				EB9A8A3F1DE245D9007B4123 /* CUCapsuleObstacle.cpp in Sources */,
+				92E464282608FA8700C94A1A /* RakNetSocket2_360_720.cpp in Sources */,
 				EBE91E2A1DCFF18D00F80D62 /* CUBoxObstacle.cpp in Sources */,
 				EBE91E2B1DCFF18D00F80D62 /* CUObstacleSelector.cpp in Sources */,
 				EBE91E2C1DCFF18D00F80D62 /* CUSimpleObstacle.cpp in Sources */,
 				EBA1EE4621D1422800A7AF81 /* CUDSPMath.cpp in Sources */,
+				92E463442608FA8600C94A1A /* LinuxStrings.cpp in Sources */,
 				EB789F31208AD69A00389383 /* CUTwoPoleIIR.cpp in Sources */,
 				EBBF18101D7486EA008E2001 /* CUApplication.cpp in Sources */,
 				EBBF18111D7486EA008E2001 /* CUDisplay.cpp in Sources */,
+				92E463262608FA8600C94A1A /* RelayPlugin.cpp in Sources */,
 				EBDC804E25BF3832004DECAE /* CUPolyFactory.cpp in Sources */,
+				92E463DA2608FA8700C94A1A /* RandSync.cpp in Sources */,
 				EBBF18121D7486EA008E2001 /* CUDIsplay-Mac.mm in Sources */,
 				EBFE7C151E1B00CA001007C2 /* CUButton.cpp in Sources */,
+				92E463B92608FA8700C94A1A /* StringCompressor.cpp in Sources */,
+				92E4640A2608FA8700C94A1A /* StatisticsHistory.cpp in Sources */,
 				EBBF18141D7486EA008E2001 /* CUDebug.cpp in Sources */,
+				92E463EC2608FA8700C94A1A /* osx_adapter.cpp in Sources */,
 				EB202C941DEBDE9900116616 /* CUBinaryReader.cpp in Sources */,
 				EB45FDBC25B3ADE600974097 /* CUWireNode.cpp in Sources */,
+				92E4632C2608FA8600C94A1A /* FormatString.cpp in Sources */,
 				EB839E251DCD8305001039BC /* CUObstacleWorld.cpp in Sources */,
+				92E4634A2608FA8600C94A1A /* NatTypeDetectionClient.cpp in Sources */,
+				92E463982608FA8700C94A1A /* SuperFastHash.cpp in Sources */,
 				EBCE54741DED2EC5003B52FE /* CUThreadPool.cpp in Sources */,
+				92E463292608FA8600C94A1A /* CCRakNetSlidingWindow.cpp in Sources */,
+				92E4631D2608FA8600C94A1A /* CheckSum.cpp in Sources */,
+				92E463A72608FA8700C94A1A /* PacketizedTCP.cpp in Sources */,
 				EB5D70F321E2A6B0003C78F6 /* CUAudioScheduler.cpp in Sources */,
+				92E464012608FA8700C94A1A /* Itoa.cpp in Sources */,
 				EBB8FEFF21E198D60039834E /* CUSoundLoader.cpp in Sources */,
 				EB839E1B1DCD8305001039BC /* CUObstacle.cpp in Sources */,
 				EBDC802225B8AF86004DECAE /* shapes.cc in Sources */,
+				92E463082608FA8600C94A1A /* EpochTimeToString.cpp in Sources */,
 				EBBF18151D7486EA008E2001 /* CUStrings.cpp in Sources */,
+				92E463C22608FA8700C94A1A /* RakWString.cpp in Sources */,
 				EB0F491A1E79FE51002E50DB /* CUEasingBezier.cpp in Sources */,
 				EB77B916200FF15800713568 /* CUFloatLayout.cpp in Sources */,
+				92E463712608FA8700C94A1A /* RakNetSocket2_Windows_Linux_360.cpp in Sources */,
+				92E464222608FA8700C94A1A /* DynDNS.cpp in Sources */,
 				EB45FDBE25B3ADE600974097 /* CUAnimationNode.cpp in Sources */,
+				92E463382608FA8600C94A1A /* PluginInterface2.cpp in Sources */,
+				92E4630B2608FA8600C94A1A /* SocketLayer.cpp in Sources */,
+				92E4636E2608FA8700C94A1A /* MessageFilter.cpp in Sources */,
+				92E464162608FA8700C94A1A /* DirectoryDeltaTransfer.cpp in Sources */,
+				92E463FE2608FA8700C94A1A /* RakNetStatistics.cpp in Sources */,
 				EBBF18161D7486EA008E2001 /* CUInput.cpp in Sources */,
 				EB9A8A481DE24C58007B4123 /* CUPolygonObstacle.cpp in Sources */,
 				EBBF18171D7486EA008E2001 /* CUKeyboard.cpp in Sources */,
 				EBD0383121E1563F00168DB2 /* CUAudioFader.cpp in Sources */,
 				EBDC802C25B8AFB1004DECAE /* sweep.cc in Sources */,
 				EBBF18181D7486EA008E2001 /* CUMouse.cpp in Sources */,
+				92E4636B2608FA8700C94A1A /* RakNetSocket2_Windows_Linux.cpp in Sources */,
 				EBBF18191D7486EA008E2001 /* CUTouchscreen.cpp in Sources */,
+				92E463E32608FA8700C94A1A /* TCPInterface.cpp in Sources */,
+				92E4638F2608FA8700C94A1A /* RakThread.cpp in Sources */,
+				92E4635C2608FA8700C94A1A /* PacketConsoleLogger.cpp in Sources */,
+				92E464252608FA8700C94A1A /* RakSleep.cpp in Sources */,
 				EBBF181A1D7486EA008E2001 /* CUTextInput.cpp in Sources */,
 				EBBF181B1D7486EA008E2001 /* CUAccelerometer.cpp in Sources */,
 				EB42D54721BE022F002B4F46 /* CUAudioWaveform.cpp in Sources */,
+				92E4630E2608FA8600C94A1A /* BitStream.cpp in Sources */,
+				92E463472608FA8600C94A1A /* FullyConnectedMesh2.cpp in Sources */,
 				EBC03F02213B459E00DF2965 /* CUOGGDecoder.cpp in Sources */,
 				EB202C4D1DE5F9B900116616 /* CUTextWriter.cpp in Sources */,
+				92E462F62608FA8600C94A1A /* ConnectionGraph2.cpp in Sources */,
+				92E462E12608FA8600C94A1A /* NatPunchthroughClient.cpp in Sources */,
 				EBA6CF101DECCB8B00BC2146 /* CUBinaryWriter.cpp in Sources */,
+				92E464132608FA8700C94A1A /* TableSerializer.cpp in Sources */,
+				92E4632F2608FA8600C94A1A /* LogCommandParser.cpp in Sources */,
+				92E463E62608FA8700C94A1A /* NatPunchthroughServer.cpp in Sources */,
 				EB2A1F4A20BDFC4800E1B1F5 /* CUOnePoleIIR.cpp in Sources */,
+				92E463E92608FA8700C94A1A /* VariableDeltaSerializer.cpp in Sources */,
 				EBCD654021FD554300B3FEDE /* CUAudioResampler.cpp in Sources */,
 				EBD0383821E182C600168DB2 /* CUSound.cpp in Sources */,
 				EBBF18221D7486EA008E2001 /* CULabel.cpp in Sources */,
 				EBDC807625C0AD7D004DECAE /* CUScene2Texture.cpp in Sources */,
 				EBC03EB1213B349200DF2965 /* CUAudioDecoder.cpp in Sources */,
+				92E463D12608FA8700C94A1A /* TwoWayAuthentication.cpp in Sources */,
 				EBBF18251D7486EA008E2001 /* CUCamera.cpp in Sources */,
 				EBCD654621FE423B00B3FEDE /* CUAudioSynchronizer.cpp in Sources */,
+				92E463BC2608FA8700C94A1A /* TeamBalancer.cpp in Sources */,
 				EBBF18261D7486EA008E2001 /* CUOrthographicCamera.cpp in Sources */,
 				EB202C521DE68CCA00116616 /* CUJsonValue.cpp in Sources */,
+				92E4638C2608FA8700C94A1A /* ReliabilityLayer.cpp in Sources */,
+				92E463592608FA8700C94A1A /* FileOperations.cpp in Sources */,
+				92E463802608FA8700C94A1A /* RakNetSocket2_Berkley.cpp in Sources */,
+				92E462DB2608FA8600C94A1A /* DS_Table.cpp in Sources */,
 				EBBF18271D7486EA008E2001 /* CUPerspectiveCamera.cpp in Sources */,
+				92E463052608FA8600C94A1A /* UDPProxyClient.cpp in Sources */,
 				EBBF18281D7486EA008E2001 /* CUTexture.cpp in Sources */,
 				EBC03EFA213B43F600DF2965 /* CUFLACDecoder.cpp in Sources */,
 				EB202C431DE39BAA00116616 /* CUTextReader.cpp in Sources */,
+				92E463862608FA8700C94A1A /* PacketOutputWindowLogger.cpp in Sources */,
 				EBBF18291D7486EA008E2001 /* CUShader.cpp in Sources */,
+				92E4637A2608FA8700C94A1A /* HTTPConnection2.cpp in Sources */,
 				EBDC804A25BB44B1004DECAE /* CUGeometry.cpp in Sources */,
+				92E464102608FA8700C94A1A /* Gets.cpp in Sources */,
 				EB2A1F4620BDD02700E1B1F5 /* CUTwoZeroFIR.cpp in Sources */,
+				92E463EF2608FA8700C94A1A /* UDPForwarder.cpp in Sources */,
 				EBFE7BC01E0CB211001007C2 /* CUPanInput.cpp in Sources */,
 				EB20EACE21AC9C4C00F804F6 /* CUAudioMixer.cpp in Sources */,
 				EBBF182B1D7486EA008E2001 /* CUSpriteBatch.cpp in Sources */,
 				EB45FD7825B3563D00974097 /* CUVertexBuffer.cpp in Sources */,
+				92E463532608FA8600C94A1A /* CommandParserInterface.cpp in Sources */,
+				92E4642E2608FA8700C94A1A /* RPC4Plugin.cpp in Sources */,
+				92E463202608FA8600C94A1A /* StringTable.cpp in Sources */,
 				EB9A8A4E1DE2556A007B4123 /* CUComplexObstacle.cpp in Sources */,
 				EB0F491E1E7A10B7002E50DB /* CUEasingFunction.cpp in Sources */,
 				EBBF182C1D7486EA008E2001 /* CUMathBase.cpp in Sources */,
 				EB035D9020C0D3B20001EAE3 /* CUOneZeroFIR.cpp in Sources */,
+				92E462FF2608FA8600C94A1A /* ReadyEvent.cpp in Sources */,
 				EBBF182D1D7486EA008E2001 /* CUVec2.cpp in Sources */,
+				92E463502608FA8600C94A1A /* FileList.cpp in Sources */,
 				EB035D8D20C0D34D0001EAE3 /* CUFIRFilter.cpp in Sources */,
 				EBDC802725B8AFA3004DECAE /* advancing_front.cc in Sources */,
 				EB77B9232010FD0500713568 /* CUGridLayout.cpp in Sources */,
+				92E463F52608FA8700C94A1A /* WSAStartupSingleton.cpp in Sources */,
 				EBBF182E1D7486EA008E2001 /* CUVec3.cpp in Sources */,
 				EBDB28D420CE740C00ADC9AB /* CUBiquadIIR.cpp in Sources */,
 				EBBF182F1D7486EA008E2001 /* CUVec4.cpp in Sources */,
 				EBBF18301D7486EA008E2001 /* CUQuaternion.cpp in Sources */,
 				EBD3CEA52007260F00CFD1BC /* CUAnchoredLayout.cpp in Sources */,
+				92E4642B2608FA8700C94A1A /* RakNetSocket2_NativeClient.cpp in Sources */,
 				EB45FD7A25B3563D00974097 /* CURenderTarget.cpp in Sources */,
+				92E463B02608FA8700C94A1A /* RakNetSocket2.cpp in Sources */,
+				92E463CB2608FA8700C94A1A /* RakNetTypes.cpp in Sources */,
+				92E463AD2608FA8700C94A1A /* NetworkIDObject.cpp in Sources */,
 				EB20EAD121AE362F00F804F6 /* CUAudioSpinner.cpp in Sources */,
+				92E463682608FA8700C94A1A /* RakNetCommandParser.cpp in Sources */,
 				EB45FDBD25B3ADE600974097 /* CUPolygonNode.cpp in Sources */,
+				92E4641C2608FA8700C94A1A /* RakString.cpp in Sources */,
+				92E464072608FA8700C94A1A /* TelnetTransport.cpp in Sources */,
+				92E463322608FA8600C94A1A /* PS4Includes.cpp in Sources */,
+				92E4633E2608FA8600C94A1A /* CCRakNetUDT.cpp in Sources */,
 				EBBF18311D7486EA008E2001 /* CUMat4.cpp in Sources */,
+				92E463CE2608FA8700C94A1A /* RakNetSocket2_Vita.cpp in Sources */,
 				EB45FD7E25B3671C00974097 /* CUFiletools.cpp in Sources */,
 				EB8D3DFC21A33419006617A6 /* CUAudioDevices.cpp in Sources */,
+				92E463C52608FA8700C94A1A /* VariableListDeltaTracker.cpp in Sources */,
+				92E462DE2608FA8600C94A1A /* RakNetSocket2_Berkley_NativeClient.cpp in Sources */,
+				92E463142608FA8600C94A1A /* SecureHandshake.cpp in Sources */,
+				92E463232608FA8600C94A1A /* Getche.cpp in Sources */,
 				EBBF18321D7486EA008E2001 /* CUAffine2.cpp in Sources */,
+				92E462E42608FA8600C94A1A /* ThreadsafePacketLogger.cpp in Sources */,
 				EB45FDC025B3ADE600974097 /* CUPathNode.cpp in Sources */,
 				EBBF18331D7486EA008E2001 /* CUColor4.cpp in Sources */,
+				92E463BF2608FA8700C94A1A /* VitaIncludes.cpp in Sources */,
 				EB45FD7625B3563D00974097 /* CUGradient.cpp in Sources */,
+				92E463F82608FA8700C94A1A /* UDPProxyServer.cpp in Sources */,
+				92E463DD2608FA8700C94A1A /* ReplicaManager3.cpp in Sources */,
+				92E463772608FA8700C94A1A /* UDPProxyCoordinator.cpp in Sources */,
+				92E463FB2608FA8700C94A1A /* DR_SHA1.cpp in Sources */,
+				92E464042608FA8700C94A1A /* RakNetTransport2.cpp in Sources */,
+				92E463622608FA8700C94A1A /* GridSectorizer.cpp in Sources */,
+				92E463742608FA8700C94A1A /* RakNetSocket2_PS4.cpp in Sources */,
 				EBBF18341D7486EA008E2001 /* CUSize.cpp in Sources */,
 				EBDC803425B8CB2D004DECAE /* CUComplexTriangulator.cpp in Sources */,
+				92E463112608FA8600C94A1A /* HTTPConnection.cpp in Sources */,
+				92E4641F2608FA8700C94A1A /* RakNetSocket2_WindowsStore8.cpp in Sources */,
+				92E463172608FA8600C94A1A /* EmailSender.cpp in Sources */,
+				92E464312608FA8700C94A1A /* RakMemoryOverride.cpp in Sources */,
 				EBBF18351D7486EA008E2001 /* CURect.cpp in Sources */,
+				92E4633B2608FA8600C94A1A /* SendToThread.cpp in Sources */,
 				EBBF18361D7486EA008E2001 /* CUPolynomial.cpp in Sources */,
 				EBD3CEA02005DAFC00CFD1BC /* CUScene2Loader.cpp in Sources */,
 				EBDC806125C08F7D004DECAE /* CUPathSmoother.cpp in Sources */,
@@ -2155,31 +3041,55 @@
 				EBBF18381D7486EA008E2001 /* CUSpline2.cpp in Sources */,
 				EB45FDC225B3AE3200974097 /* CUNinePatch.cpp in Sources */,
 				EB45FD7925B3563D00974097 /* CUFont.cpp in Sources */,
+				92E4631A2608FA8600C94A1A /* RakNetSocket.cpp in Sources */,
 				EBFE7BE11E15A9AD001007C2 /* CUTextureLoader.cpp in Sources */,
 				EB59D5221E251D1F00A93BB5 /* CUJsonLoader.cpp in Sources */,
+				92E462FC2608FA8600C94A1A /* DS_HuffmanEncodingTree.cpp in Sources */,
 				EBDC7F8C25B62C9E004DECAE /* CUAudioQueue.cpp in Sources */,
 				EB1E963721A9CDDD008A0431 /* CUAudioInput.cpp in Sources */,
 				EBBF18391D7486EA008E2001 /* CUPolySplineFactory.cpp in Sources */,
 				EBDC7F8E25B6482D004DECAE /* CUAudioEngine.cpp in Sources */,
 				EBFE7BEF1E15CC75001007C2 /* CUFontLoader.cpp in Sources */,
+				92E463892608FA8700C94A1A /* NetworkIDManager.cpp in Sources */,
 				EB45FDC425B3AE5500974097 /* CUScene2.cpp in Sources */,
 				EBA7BC46213B19BA009EB72D /* CUAudioNode.cpp in Sources */,
 				EB45FDBF25B3ADE600974097 /* CUTexturedNode.cpp in Sources */,
+				92E463B32608FA8700C94A1A /* CloudClient.cpp in Sources */,
+				92E463B62608FA8700C94A1A /* DS_ByteQueue.cpp in Sources */,
 				EBBF183A1D7486EB008E2001 /* CUSimpleTriangulator.cpp in Sources */,
 				EB202C5E1DE9367C00116616 /* CUJsonWriter.cpp in Sources */,
+				92E462D82608FA8600C94A1A /* Router2.cpp in Sources */,
 				EB950C9423DA3BF100E54B1A /* CUWidgetLoader.cpp in Sources */,
+				92E463922608FA8700C94A1A /* GetTime.cpp in Sources */,
+				92E464392608FA9700C94A1A /* CUNetworkConnection.cpp in Sources */,
 				EBDC802B25B8AFB1004DECAE /* sweep_context.cc in Sources */,
 				EB45FD7725B3563D00974097 /* CUUniformBuffer.cpp in Sources */,
+				92E463AA2608FA8700C94A1A /* IncrementalReadInterface.cpp in Sources */,
+				92E463952608FA8700C94A1A /* FileListTransfer.cpp in Sources */,
 				EBFE7BC31E0DAF5D001007C2 /* CURotationInput.cpp in Sources */,
+				92E463652608FA8700C94A1A /* SignaledEvent.cpp in Sources */,
+				92E4639B2608FA8700C94A1A /* ConsoleServer.cpp in Sources */,
 				EB90F30D21B8AD76003A50C1 /* CUAudioPanner.cpp in Sources */,
+				92E4637D2608FA8700C94A1A /* gettimeofday.cpp in Sources */,
 				EBDC804425BA2C1C004DECAE /* clipper.cpp in Sources */,
+				92E463F22608FA8700C94A1A /* LocklessTypes.cpp in Sources */,
+				92E4640D2608FA8700C94A1A /* SimpleMutex.cpp in Sources */,
 				EBFE7BB41E0C562B001007C2 /* CUPinchInput.cpp in Sources */,
+				92E463D72608FA8700C94A1A /* linux_adapter.cpp in Sources */,
 				EBBF183C1D7486EB008E2001 /* CUSimpleExtruder.cpp in Sources */,
+				92E463022608FA8600C94A1A /* Rackspace.cpp in Sources */,
+				92E4634D2608FA8600C94A1A /* PacketLogger.cpp in Sources */,
+				92E4639E2608FA8700C94A1A /* Rand.cpp in Sources */,
+				92E463C82608FA8700C94A1A /* TeamManager.cpp in Sources */,
+				92E462E72608FA8600C94A1A /* RakPeer.cpp in Sources */,
 				EBBF183D1D7486EB008E2001 /* CURay.cpp in Sources */,
 				EB202C2D1DE3665600116616 /* cJSON.c in Sources */,
+				92E4635F2608FA8700C94A1A /* VariadicSQLParser.cpp in Sources */,
 				EBDC802D25B8AFB1004DECAE /* cdt.cc in Sources */,
 				EBDC804725BA33D3004DECAE /* CUComplexExtruder.cpp in Sources */,
+				92E463562608FA8700C94A1A /* CloudServer.cpp in Sources */,
 				EBC03F01213B459E00DF2965 /* CUWAVDecoder.cpp in Sources */,
+				92E463A42608FA8700C94A1A /* PacketFileLogger.cpp in Sources */,
 				EB2A1F5020BE444A00E1B1F5 /* CUIIRFilter.cpp in Sources */,
 				EB45FDBA25B3ADE600974097 /* CUSceneNode.cpp in Sources */,
 				EBBF183E1D7486EB008E2001 /* CUPlane.cpp in Sources */,
@@ -2188,9 +3098,17 @@
 				EB202C5B1DE924AB00116616 /* CUJsonReader.cpp in Sources */,
 				EBC03EB0213B349200DF2965 /* CUMP3Decoder.cpp in Sources */,
 				EBFE7C031E187321001007C2 /* CUAssetManager.cpp in Sources */,
+				92E463412608FA8600C94A1A /* DataCompressor.cpp in Sources */,
 				EB8D3E0221A3BB37006617A6 /* CUAudioPlayer.cpp in Sources */,
 				EB45FD7525B3563D00974097 /* CUScissor.cpp in Sources */,
 				EB75701520D2E55A00FC4C13 /* CUPoleZeroIIR.cpp in Sources */,
+				92E463A12608FA8700C94A1A /* CloudCommon.cpp in Sources */,
+				92E462F92608FA8600C94A1A /* DS_BytePool.cpp in Sources */,
+				92E463832608FA8700C94A1A /* _FindFirst.cpp in Sources */,
+				92E463D42608FA8700C94A1A /* NatTypeDetectionServer.cpp in Sources */,
+				92E463352608FA8600C94A1A /* NatTypeDetectionCommon.cpp in Sources */,
+				92E463E02608FA8700C94A1A /* RakNetSocket2_PS3_PS4.cpp in Sources */,
+				92E464192608FA8700C94A1A /* Base64Encoder.cpp in Sources */,
 				EB8D3E0721A3BB47006617A6 /* CUAudioSample.cpp in Sources */,
 				EBBF183F1D7486EB008E2001 /* CUFrustum.cpp in Sources */,
 			);
