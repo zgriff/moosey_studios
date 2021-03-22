@@ -17,8 +17,6 @@
 #define MAX_SWAP_STATIONS 5
 
 struct PlayerData {
-    cugl::Vec2 playerPos;
-    cugl::Vec2 playerVelocity;
     Element e;
     int score;
     int playerId; //could get rid of this
@@ -40,6 +38,8 @@ struct NetworkData {
     bool type;
     union data {
         struct hostData {
+            cugl::Vec2 hostPos;
+            cugl::Vec2 hostVelocity;
             PlayerData players[MAX_PLAYERS];
             SwapStationData swapData[MAX_SWAP_STATIONS];
             OrbData orbData[MAX_ORBS];
