@@ -1,1 +1,5 @@
-#pragma once
+#ifndef GAME_NETWORK_CONTROLLER_H
+#define GAME_NETWORK_CONTROLLER_H
+
+
+#endif
