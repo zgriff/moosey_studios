@@ -11,6 +11,7 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
 #include "Element.h"
+#include "NetworkController.h"
 
 #include <cugl/cugl.h>
 #include <iostream>
@@ -160,7 +161,11 @@ void GameScene::reset() {
 }
 
 void GameScene::update(float timestep) {
+    //get data from network
+    //update state of game objects
     // Read the keyboard for each controller.
+    // do physics on players
+    //
     _playerController.readInput();
     auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
     _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));

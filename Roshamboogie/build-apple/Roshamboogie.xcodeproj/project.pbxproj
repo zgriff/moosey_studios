@@ -10,9 +10,9 @@
 		288216492605A7920073F7D4 /* GameNetworkingController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216422605A7910073F7D4 /* GameNetworkingController.cpp */; };
 		2882164A2605A7920073F7D4 /* GameNetworkingController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216422605A7910073F7D4 /* GameNetworkingController.cpp */; };
 		2882164B2605A7920073F7D4 /* GameNetworkingController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216422605A7910073F7D4 /* GameNetworkingController.cpp */; };
-		2882164C2605A7920073F7D4 /* MatchmakingController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* MatchmakingController.cpp */; };
-		2882164D2605A7920073F7D4 /* MatchmakingController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* MatchmakingController.cpp */; };
-		2882164E2605A7920073F7D4 /* MatchmakingController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* MatchmakingController.cpp */; };
+		2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
+		2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
+		2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
 		288216542605A90E0073F7D4 /* NetworkData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216522605A90E0073F7D4 /* NetworkData.cpp */; };
 		288216552605A90E0073F7D4 /* NetworkData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216522605A90E0073F7D4 /* NetworkData.cpp */; };
 		288216562605A90E0073F7D4 /* NetworkData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216522605A90E0073F7D4 /* NetworkData.cpp */; };
@@ -138,9 +138,9 @@
 
 /* Begin PBXFileReference section */
 		288216422605A7910073F7D4 /* GameNetworkingController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameNetworkingController.cpp; sourceTree = "<group>"; };
-		288216462605A7910073F7D4 /* MatchmakingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchmakingController.h; sourceTree = "<group>"; };
+		288216462605A7910073F7D4 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
 		288216472605A7910073F7D4 /* GameNetworkingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameNetworkingController.h; sourceTree = "<group>"; };
-		288216482605A7910073F7D4 /* MatchmakingController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MatchmakingController.cpp; sourceTree = "<group>"; };
+		288216482605A7910073F7D4 /* NetworkController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkController.cpp; sourceTree = "<group>"; };
 		288216522605A90E0073F7D4 /* NetworkData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkData.cpp; sourceTree = "<group>"; };
 		288216532605A90E0073F7D4 /* NetworkData.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = NetworkData.h; sourceTree = "<group>"; };
 		2882167626098AEE0073F7D4 /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
@@ -392,8 +392,8 @@
 			children = (
 				288216422605A7910073F7D4 /* GameNetworkingController.cpp */,
 				288216472605A7910073F7D4 /* GameNetworkingController.h */,
-				288216482605A7910073F7D4 /* MatchmakingController.cpp */,
-				288216462605A7910073F7D4 /* MatchmakingController.h */,
+				288216482605A7910073F7D4 /* NetworkController.cpp */,
+				288216462605A7910073F7D4 /* NetworkController.h */,
 				925FC4F525F42B2800532483 /* main.cpp */,
 				925FC50025F42B6F00532483 /* App.h */,
 				925FC4FF25F42B6F00532483 /* App.cpp */,
@@ -599,7 +599,7 @@
 			files = (
 				288216562605A90E0073F7D4 /* NetworkData.cpp in Sources */,
 				925FC4F825F42B2800532483 /* main.cpp in Sources */,
-				2882164E2605A7920073F7D4 /* MatchmakingController.cpp in Sources */,
+				2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */,
 				925FC53E25F42D5C00532483 /* OrbManager.cpp in Sources */,
 				925FC51E25F42D1800532483 /* InputController.cpp in Sources */,
 				2882164B2605A7920073F7D4 /* GameNetworkingController.cpp in Sources */,
@@ -618,7 +618,7 @@
 			files = (
 				288216552605A90E0073F7D4 /* NetworkData.cpp in Sources */,
 				925FC4F725F42B2800532483 /* main.cpp in Sources */,
-				2882164D2605A7920073F7D4 /* MatchmakingController.cpp in Sources */,
+				2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */,
 				925FC53D25F42D5C00532483 /* OrbManager.cpp in Sources */,
 				925FC51D25F42D1800532483 /* InputController.cpp in Sources */,
 				2882164A2605A7920073F7D4 /* GameNetworkingController.cpp in Sources */,
@@ -637,7 +637,7 @@
 			files = (
 				288216542605A90E0073F7D4 /* NetworkData.cpp in Sources */,
 				925FC4F625F42B2800532483 /* main.cpp in Sources */,
-				2882164C2605A7920073F7D4 /* MatchmakingController.cpp in Sources */,
+				2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */,
 				925FC53C25F42D5C00532483 /* OrbManager.cpp in Sources */,
 				925FC51C25F42D1800532483 /* InputController.cpp in Sources */,
 				288216492605A7920073F7D4 /* GameNetworkingController.cpp in Sources */,
