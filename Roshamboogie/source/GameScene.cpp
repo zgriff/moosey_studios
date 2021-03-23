@@ -26,7 +26,7 @@ using namespace std;
 #pragma mark Level Layout
 
 /** Regardless of logo, lock the height to this */
-#define SCENE_WIDTH 1024
+#define SCENE_WIDTH 1440
 #define SCENE_HEIGHT 720
 
 /** Width of the game world in Box2d units */
@@ -40,9 +40,9 @@ float PLAYER_POS[] = {24,  4};
 #define WALL_VERTS  8
 #define WALL_COUNT  4
 // Left/Right wall padding
-#define LR_PADDING  2.0f
+#define LR_PADDING  0.5f
 // Top/Bottom wall padding
-#define TB_PADDING  0.5f
+#define TB_PADDING  1.0f
 
 float WALL[WALL_COUNT][WALL_VERTS] = {
     {0.0f, 0.0f,
@@ -114,12 +114,12 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         CollisionController::beforeSolve(contact,oldManifold);
     };
     _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
-//    Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
+    Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
 
     // Create the scene graph
     _worldnode = scene2::SceneNode::alloc();
     _worldnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
-//    _worldnode->setPosition(offset);
+    _worldnode->setPosition(offset);
     addChild(scene);
     addChild(_worldnode);
     reset();
