@@ -13,9 +13,13 @@
 #define TYPE_BITS 2
 #define PLAYER_ID_BITS 3
 
+//writing
 uint64_t scratch;
 int scratch_bits;
-int offset;
+//reading
+int byte_arr_index;
+int byte_offset;
+
 
 //interpret uint32_t as uint8_t[4]
 union ui32_to_ui8 {
@@ -59,14 +63,41 @@ void flush(std::vector<uint8_t> & buffer){
     scratch_bits = 0;
 }
 
+readBits(const std::vector<uint8_t>& bytes, int numBits){
+    uint32_t read;
+//    bytes[byte_arr_index]
+}
+
+
+readVec2(const std::vector<uint8_t>& bytes){
+    readBits(bytes, 32);
+    readBits(bytes, 32);
+}
+
 
 
 //convert the bytes to a NetworkData struct, putting the result in dest
 //returns true on success, false on failure (if data is corrupted)
 bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
-//    dest.packetType = readBits(bytes, TYPE_BITS);
-    CULog("not implemented yet, sorry\n");
-    return false;
+    dest.packetType = readBits(bytes, TYPE_BITS);
+    switch(dest.packetType){
+        case NetworkData::WORLD_DATA:
+            CULog("not implemented yet, sorry\n");
+            //TODO
+            break;
+        case NetworkData::HOST_PACKET:
+            CULog("not implemented yet, sorry\n");
+            //TODO
+            break;
+        case NetworkData::CLIENT_PACKET:
+            dest.clientData.playerPos = readVec2(bytes);
+            dest.clientData.playerVelocity = readVec2(bytes);
+            dest.clientData.playerId = readBits(bytes, 8);
+            break
+        default:
+            return false;
+    }
+    return true;
 }
 
 //convert the NetworkData struct to bytes, putting the result in dest
