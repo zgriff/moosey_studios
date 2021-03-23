@@ -25,6 +25,7 @@ protected:
     std::shared_ptr<cugl::scene2::SceneNode>  _brand;
     /** The "play" button */
     std::shared_ptr<cugl::scene2::Button>    _button;
+    std::shared_ptr<cugl::scene2::Button>    _button2;
 
     // MODEL
     /** The progress displayed on the screen */

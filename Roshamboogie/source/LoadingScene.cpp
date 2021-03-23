@@ -56,6 +56,11 @@ bool LoadingScene::init(const std::shared_ptr<AssetManager>& assets) {
         this->_active = down;
     });
     
+    _button2 = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("load_logo"));
+    _button2->addListener([=](const std::string& name, bool down) {
+        this->_active = down;
+        });
+
     Application::get()->setClearColor(Color4(192,192,192,255));
     addChild(layer);
     return true;
@@ -95,6 +100,8 @@ void LoadingScene::update(float progress) {
             _brand->setVisible(false);
             _button->setVisible(true);
             _button->activate();
+            _button2->setVisible(true);
+            _button2->activate();
         }
         _bar->setProgress(_progress);
     }

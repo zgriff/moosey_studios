@@ -5,13 +5,23 @@
 
 class MatchmakingController {
 private:
-	std::string roomId;
+	std::shared_ptr<cugl::CUNetworkConnection> _network;
+	std::string _roomId;
+	bool _isHost;
+
+	MatchmakingController();
+	~MatchmakingController() { dispose(); }
 
 public:
+	//Singleton
+	static MatchmakingController* getInstance();
 
 	void createGame();
 
 	void joinGame(std::string roomId);
+
+	bool init();
+
 };
 
 #endif

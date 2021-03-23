@@ -13,6 +13,7 @@
 #include "InputController.h"
 #include "Player.h"
 #include "Orb.h"
+#include "MatchmakingController.h"
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>

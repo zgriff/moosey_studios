@@ -1,56 +1,62 @@
 {
-	"textures": {
-		"background": {
-            "file":  "textures/ice.png"
+    "textures": {
+        "background": {
+            "file": "textures/ice.png"
         },
         "photon": {
-            "file":  "textures/photon.png"
+            "file": "textures/photon.png"
         },
         "ship": {
-            "file":  "textures/ships.png"
+            "file": "textures/ships.png"
         },
         "rocket": {
             "file": "textures/rocket.png"
         },
         "target": {
-            "file":  "textures/target.png"
+            "file": "textures/target.png"
         },
         "wall": {
-            "file":  "textures/barrier.png"
+            "file": "textures/barrier.png"
         },
         "earth": {
-            "file":     "textures/earthtile.png",
-            "wrapS":    "repeat",
-            "wrapT":    "repeat"
+            "file": "textures/earthtile.png",
+            "wrapS": "repeat",
+            "wrapT": "repeat"
         }
-	},
-    "sounds" : {
-        "fusion" : {
+    },
+    "sounds": {
+        "fusion": {
             "type": "sample",
             "file": "sounds/fusion.ogg"
         },
-        "laser" : {
+        "laser": {
             "type": "sample",
             "file": "sounds/laser.ogg"
         }
     },
-    "scene2s" : {
-        "lab" : {
-            "comment"   : "We do not have an asset loader for filmstrips yet, so we do not add the ships",
-            "type"      : "Node",
-            "format"    : {
-                "type" : "Anchored"
+    "fonts": {
+        "retro": {
+            "file": "fonts/RetroGame.ttf",
+            "size": 32
+        }
+    },
+    "scene2s": {
+        "lab": {
+            "comment": "We do not have an asset loader for filmstrips yet, so we do not add the ships",
+            "type": "Node",
+            "format": {
+                "type": "Anchored"
             },
-            "children":  {
+            "children": {
                 "background": {
                     "type": "Image",
                     "data": {
-                        "texture":  "background",
-                        "anchor":   [0.0,0.5]
+                        "texture": "background",
+                        "anchor": [ 0.0, 0.5 ]
                     },
-                    "layout" : {
-                        "x_anchor" : "fill",
-                        "y_anchor" : "fill"
+                    "layout": {
+                        "x_anchor": "fill",
+                        "y_anchor": "fill"
                     }
                 }
             }
