@@ -102,6 +102,8 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     };
     _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
     Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
+    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("lab_roomId")); 
+
 
     // Create the scene graph
     _worldnode = scene2::SceneNode::alloc();
@@ -166,6 +168,16 @@ void GameScene::update(float timestep) {
     // Read the keyboard for each controller.
     // do physics on players
     //
+
+    /*std::string currRoomId = NetworkController::getRoomId();
+    _roomIdHUD->setText(currRoomId);*/
+    NetworkController::step();
+    if (_currRoomId == "") {
+        _currRoomId = NetworkController::getRoomId();
+        stringstream ss;
+        ss << "Room Id: " << _currRoomId;
+        _roomIdHUD->setText(ss.str());
+    }
     _playerController.readInput();
     auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
     _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));

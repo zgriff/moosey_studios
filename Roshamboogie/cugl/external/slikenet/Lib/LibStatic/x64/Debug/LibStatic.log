@@ -1,4 +1,12 @@
 ﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  osx_adapter.cpp
+  linux_adapter.cpp
+  gettimeofday.cpp
+  securestring.cpp
+  fileencrypter.cpp
+  factory.cpp
+  cryptomanager.cpp
+  _FindFirst.cpp
   WSAStartupSingleton.cpp
   VitaIncludes.cpp
   VariadicSQLParser.cpp
@@ -11,22 +19,21 @@
   TwoWayAuthentication.cpp
   ThreadsafePacketLogger.cpp
   TelnetTransport.cpp
+  Generating Code...
+  Compiling...
   TeamManager.cpp
   TeamBalancer.cpp
-  TCPInterface.cpp
   TableSerializer.cpp
+  TCPInterface.cpp
   SuperFastHash.cpp
   StringTable.cpp
   StringCompressor.cpp
   StatisticsHistory.cpp
-  Generating Code...
-  Compiling...
   SocketLayer.cpp
   SimpleMutex.cpp
   SignaledEvent.cpp
   SendToThread.cpp
   SecureHandshake.cpp
-  RPC4Plugin.cpp
   Router2.cpp
   ReplicaManager3.cpp
   ReliabilityLayer.cpp
@@ -34,6 +41,8 @@
   ReadyEvent.cpp
   RandSync.cpp
   Rand.cpp
+  Generating Code...
+  Compiling...
   RakWString.cpp
   RakThread.cpp
   RakString.cpp
@@ -41,12 +50,10 @@
   RakPeer.cpp
   RakNetTypes.cpp
   RakNetTransport2.cpp
-  Generating Code...
-  Compiling...
   RakNetStatistics.cpp
-  RakNetSocket2_WindowsStore8.cpp
   RakNetSocket2_Windows_Linux_360.cpp
   RakNetSocket2_Windows_Linux.cpp
+  RakNetSocket2_WindowsStore8.cpp
   RakNetSocket2_Vita.cpp
   RakNetSocket2_PS4.cpp
   RakNetSocket2_PS3_PS4.cpp
@@ -56,18 +63,19 @@
   RakNetSocket2_360_720.cpp
   RakNetSocket2.cpp
   RakNetSocket.cpp
+  Generating Code...
+  Compiling...
   RakNetCommandParser.cpp
   RakMemoryOverride.cpp
   Rackspace.cpp
-  PS4Includes.cpp
+  RPC4Plugin.cpp
   PluginInterface2.cpp
+  PacketizedTCP.cpp
   PacketOutputWindowLogger.cpp
   PacketLogger.cpp
-  Generating Code...
-  Compiling...
-  PacketizedTCP.cpp
   PacketFileLogger.cpp
   PacketConsoleLogger.cpp
+  PS4Includes.cpp
   NetworkIDObject.cpp
   NetworkIDManager.cpp
   NatTypeDetectionServer.cpp
@@ -77,6 +85,8 @@
   NatPunchthroughClient.cpp
   MessageFilter.cpp
   LogCommandParser.cpp
+  Generating Code...
+  Compiling...
   LocklessTypes.cpp
   LinuxStrings.cpp
   Itoa.cpp
@@ -84,12 +94,9 @@
   HTTPConnection2.cpp
   HTTPConnection.cpp
   GridSectorizer.cpp
-  gettimeofday.cpp
-  Generating Code...
-  Compiling...
-  GetTime.cpp
   Gets.cpp
   Getche.cpp
+  GetTime.cpp
   FullyConnectedMesh2.cpp
   FormatString.cpp
   FileOperations.cpp
@@ -98,17 +105,17 @@
   EpochTimeToString.cpp
   EmailSender.cpp
   DynDNS.cpp
+  DirectoryDeltaTransfer.cpp
+  DataCompressor.cpp
+  Generating Code...
+  Compiling...
   DS_Table.cpp
   DS_HuffmanEncodingTree.cpp
   DS_ByteQueue.cpp
   DS_BytePool.cpp
   DR_SHA1.cpp
-  DirectoryDeltaTransfer.cpp
-  DataCompressor.cpp
   ConsoleServer.cpp
   ConnectionGraph2.cpp
-  Generating Code...
-  Compiling...
   CommandParserInterface.cpp
   CloudServer.cpp
   CloudCommon.cpp
@@ -118,12 +125,5 @@
   CCRakNetSlidingWindow.cpp
   BitStream.cpp
   Base64Encoder.cpp
-  _FindFirst.cpp
-  osx_adapter.cpp
-  linux_adapter.cpp
-  securestring.cpp
-  fileencrypter.cpp
-  factory.cpp
-  cryptomanager.cpp
   Generating Code...
   LibStatic.vcxproj -> C:\Users\Thomas\Desktop\CS4152\moosey_studios\Roshamboogie\build-win10\Lib\SLikeNet_LibStatic_Debug_x64.lib

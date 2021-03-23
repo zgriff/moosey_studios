@@ -13,6 +13,7 @@
 #include "InputController.h"
 #include "Player.h"
 #include "Orb.h"
+#include "NetworkController.h"
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
@@ -28,6 +29,9 @@ protected:
     std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
     /** The scale between the physics world and the screen (MUST BE UNIFORM) */
     float _scale;
+
+    std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
+    std::string _currRoomId;
     
     /**
      * Activates the UI elements to make them interactive

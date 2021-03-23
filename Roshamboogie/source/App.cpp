@@ -7,6 +7,7 @@
 //
 
 #include "App.h"
+#include "NetworkController.h"
 
 using namespace cugl;
 
@@ -32,6 +33,7 @@ void App::onStartup() {
 
     _assets->attach<Texture>(TextureLoader::alloc()->getHook());
     _assets->attach<Sound>(SoundLoader::alloc()->getHook());
+    _assets->attach<Font>(FontLoader::alloc()->getHook());
     _assets->attach<scene2::SceneNode>(Scene2Loader::alloc()->getHook());
 
     // Create a "loading" screen
@@ -111,6 +113,9 @@ void App::update(float timestep) {
         _loading.update(0.01f);
     } else if (!_loaded) {
         _loading.dispose(); // Disables the input listeners in this mode
+        if (_loading.isHost() == true) {
+            /*NetworkController::createGame();*/
+        }
         _gameplay.init(_assets);
         _loaded = true;
     } else {
