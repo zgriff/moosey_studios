@@ -29,6 +29,11 @@ protected:
     std::shared_ptr<cugl::scene2::SceneNode> _worldnode;
     /** The Box2D world */
     std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
+    
+    std::shared_ptr<cugl::scene2::Label> _hatchnode;
+    
+    std::shared_ptr<cugl::scene2::ProgressBar>  _hatchbar;
+    
     /** The scale between the physics world and the screen (MUST BE UNIFORM) */
     float _scale;
     
