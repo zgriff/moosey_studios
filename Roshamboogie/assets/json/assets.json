@@ -58,6 +58,24 @@
                         "x_anchor": "fill",
                         "y_anchor": "fill"
                     }
+                },
+                "roomId": {
+                    "type": "Label",
+                    "data": {
+                        "font": "retro",
+                        "text": "RoomId: 0",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 500, 70 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "left",
+                        "y_anchor": "bottom",
+                        "x_offset": 180,
+                        "y_offset": 50,
+                        "absolute": true
+                    }
                 }
             }
         }

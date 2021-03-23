@@ -11,6 +11,10 @@ namespace NetworkController {
     
     /** isHost is true if the player is a host of a game and false otherwise */
     bool isHost();
+
+    std::string getRoomId();
+
+    void step();
 };
 
 #endif

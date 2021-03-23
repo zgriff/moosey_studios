@@ -29,6 +29,9 @@ protected:
     std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
     /** The scale between the physics world and the screen (MUST BE UNIFORM) */
     float _scale;
+
+    std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
+    std::string _currRoomId;
     
     /**
      * Activates the UI elements to make them interactive
