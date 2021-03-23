@@ -48,13 +48,10 @@
     <ClInclude Include="..\..\source\SwapStation.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\GameNetworkingController.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\MatchmakingController.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\source\NetworkData.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\NetworkController.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -96,13 +93,10 @@
     <ClCompile Include="..\..\source\SwapStation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\GameNetworkingController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\MatchmakingController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\NetworkData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\NetworkController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

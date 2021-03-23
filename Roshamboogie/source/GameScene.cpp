@@ -111,6 +111,8 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_worldnode);
     reset();
     return true;
+
+    NetworkController::createGame();
 }
 
 /**
