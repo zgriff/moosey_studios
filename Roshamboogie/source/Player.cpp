@@ -19,7 +19,7 @@ using namespace cugl;
 /** The restitution of this rocket */
 #define DEFAULT_RESTITUTION 0.4f
 /** The constant force applied to this rocket */
-#define DEFAULT_FORCE Vec2(0.0f, 8.3f)
+#define DEFAULT_PLAYER_FORCE Vec2(0.0f, 8.3f)
 
 
 /**
@@ -73,7 +73,7 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size) {
         setFriction(DEFAULT_FRICTION);
         setRestitution(DEFAULT_RESTITUTION);
         setFixedRotation(true);
-        setForce(DEFAULT_FORCE);
+        setForce(DEFAULT_PLAYER_FORCE);
         _sceneNode = nullptr;
         return true;
     }

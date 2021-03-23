@@ -11,10 +11,7 @@
 
 #include <cugl/cugl.h>
 #include "Element.h"
-
-#define MAX_PLAYERS 6
-#define MAX_ORBS 20
-#define MAX_SWAP_STATIONS 5
+#include "Globals.h"
 
 struct PlayerData {
     Element e;
@@ -35,21 +32,38 @@ struct OrbData {
 };
 
 struct NetworkData {
-    bool type;
-    union data {
-        struct hostData {
+    enum PacketType {WORLD_DATA, HOST_PACKET, CLIENT_PACKET};
+    uint8_t packetType;
+    union {
+        struct {
+            int map;
+            uint8_t num_players;
+            uint8_t num_swaps;
+            uint8_t num_eggs;
+        } worldData;
+        struct {
             cugl::Vec2 hostPos;
             cugl::Vec2 hostVelocity;
-            PlayerData players[MAX_PLAYERS];
-            SwapStationData swapData[MAX_SWAP_STATIONS];
-            OrbData orbData[MAX_ORBS];
-        };
-        struct clientData {
+            uint8_t num_players;
+            PlayerData players[globals::MAX_PLAYERS]; //TODO change to exact number of players if possible
+            SwapStationData swapData[globals::MAX_SWAP_STATIONS];
+            OrbData orbData[globals::MAX_ORBS];
+        } hostData;
+        struct {
             cugl::Vec2 playerPos;
             cugl::Vec2 playerVelocity;
-            int playerId;
-        };
+            uint8_t playerId;
+        } clientData;
     };
-}
-;
+    
+};
+
+//convert the bytes to a NetworkData struct, putting the result in dest
+//returns true on success, false on failure (if data is corrupted)
+bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src);
+
+//convert the NetworkData struct to bytes, putting the result in dest
+//returns true on success, false on failure (if the data is corrupted)
+bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& src);
+
 #endif /* NetworkData_h */
