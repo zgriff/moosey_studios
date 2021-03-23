@@ -105,6 +105,15 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("lab_hud"));
     
+    _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("lab_bar"));
+    _hatchbar->setVisible(false);
+    
+    _hatchnode = scene2::Label::alloc("Egg Hatched!", _assets->get<Font>("retro"));
+    _hatchnode->setAnchor(Vec2::ANCHOR_CENTER);
+    _hatchnode->setPosition(250,dimen.height - 50);
+    _hatchnode->setForeground(Color4::YELLOW);
+    _hatchnode->setVisible(false);
+    
     _world = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
     _world->activateCollisionCallbacks(true);
     _world->onBeginContact = [this](b2Contact* contact) {
@@ -122,6 +131,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 //    _worldnode->setPosition(offset);
     addChild(scene);
     addChild(_worldnode);
+    addChild(_hatchnode);
     reset();
     return true;
 }
@@ -134,6 +144,9 @@ void GameScene::dispose() {
         removeAllChildren();
         _world = nullptr;
         _worldnode = nullptr;
+        _scoreHUD = nullptr;
+        _hatchnode = nullptr;
+        _hatchbar = nullptr;
         _active = false;
         Scene2::dispose();
     }
@@ -241,19 +254,23 @@ void GameScene::update(float timestep) {
     
     //egg hatch logic
     if (_egg->getCollected() && _egg->getHatched() == false) {
+        _hatchbar->setVisible(true);
+        _hatchbar->setProgress(_egg->getDistanceWalked()/80);
         Vec2 diff = _player->getPosition() - _egg->getInitPos();
         float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
         _egg->incDistanceWalked(dist);
         _egg->setInitPos(_player->getPosition());
         if (_egg->getDistanceWalked() >= 80) {
+            _hatchbar->dispose();
             _egg->setHatched(true);
+            _egg->dispose();
 //            _egg->setCollected(false);
             _score += 10;
             _player->setElement(_player->getPrevElement());
+            _hatchnode->setVisible(true);
             CULog("hatched");
         }
     }
-    
     
     _orbTest->setCollected(false);
     _scoreHUD->setText(updateScoreText(_score));
