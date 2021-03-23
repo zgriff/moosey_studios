@@ -30,7 +30,7 @@ using namespace std;
 #define SCENE_HEIGHT 720
 
 /** Width of the game world in Box2d units */
-#define DEFAULT_WIDTH   32.0f
+#define DEFAULT_WIDTH   36.0f
 /** Height of the game world in Box2d units */
 #define DEFAULT_HEIGHT  18.0f
 
@@ -39,16 +39,28 @@ float PLAYER_POS[] = {24,  4};
 
 #define WALL_VERTS  8
 #define WALL_COUNT  4
+// Left/Right wall padding
+#define LR_PADDING  2.0f
+// Top/Bottom wall padding
+#define TB_PADDING  0.5f
 
 float WALL[WALL_COUNT][WALL_VERTS] = {
-    {0.0f, 0.0f, 1.0f, 0.0f,  1.0f, 18.0f,
-    0.0f,  18.0f},
-    {1.0f, 0.0f, 31.0f,  0.0f, 31.0f,  1.0f,
-    1.0f, 1.0f},
-    {31.0f, 0.0f, 32.0f,  0.0f, 32.0f,  18.0f,
-    31.0f, 18.0f},
-    {1.0f, 17.0f, 31.0f,  17.0f, 31.0f,  18.0f,
-    1.0f, 18.0f}
+    {0.0f, 0.0f,
+        LR_PADDING, 0.0f,
+        LR_PADDING, DEFAULT_HEIGHT,
+        0.0f,  DEFAULT_HEIGHT},
+    {LR_PADDING, 0.0f,
+        DEFAULT_WIDTH-LR_PADDING,  0.0f,
+        DEFAULT_WIDTH-LR_PADDING,  TB_PADDING,
+        LR_PADDING, TB_PADDING},
+    {DEFAULT_WIDTH-LR_PADDING, 0.0f,
+        DEFAULT_WIDTH,  0.0f,
+        DEFAULT_WIDTH,  DEFAULT_HEIGHT,
+        DEFAULT_WIDTH-LR_PADDING, DEFAULT_HEIGHT},
+    {LR_PADDING, DEFAULT_HEIGHT-TB_PADDING,
+        DEFAULT_WIDTH-LR_PADDING, DEFAULT_HEIGHT-TB_PADDING,
+        DEFAULT_WIDTH-LR_PADDING,  DEFAULT_HEIGHT,
+        LR_PADDING, DEFAULT_HEIGHT}
 };
 
 #define BASIC_DENSITY   0.0f
@@ -102,12 +114,12 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         CollisionController::beforeSolve(contact,oldManifold);
     };
     _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
-    Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
+//    Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
 
     // Create the scene graph
     _worldnode = scene2::SceneNode::alloc();
     _worldnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
-    _worldnode->setPosition(offset);
+//    _worldnode->setPosition(offset);
     addChild(scene);
     addChild(_worldnode);
     reset();
