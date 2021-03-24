@@ -41,7 +41,7 @@ void writeBits(std::vector<uint8_t> & buffer, uint8_t data, int numBits){
     scratch |= tmp << scratch_bits;
     scratch_bits += numBits;
     if(scratch_bits >= 8){
-        writeByte(buffer,scratch & 0x7);
+        writeByte(buffer,scratch & 0b11111111);
         scratch >>= 8;
         scratch_bits -= 8;
     }
@@ -72,7 +72,7 @@ void writeVec2(std::vector<uint8_t> & buffer, cugl::Vec2 data){
 
 //call at the end of writing data to make sure everything ends up in the buffer
 void flush(std::vector<uint8_t> & buffer){
-    writeByte(buffer,scratch & 0x7);
+    writeByte(buffer,scratch & 0b11111111);
     scratch = 0;
     scratch_bits = 0;
 }
@@ -92,7 +92,7 @@ uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
         }
         //grab bits
         if(numBits >= 8){
-            uint32_t tmp = scratch & 0x7;
+            uint32_t tmp = scratch & 0b11111111;
             read |= tmp << bits_read;
             scratch >>= 8;
             scratch_bits -= 8;
