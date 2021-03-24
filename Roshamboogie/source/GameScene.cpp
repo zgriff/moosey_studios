@@ -178,7 +178,6 @@ void GameScene::update(float timestep) {
         ND::fromBytes(nd, msg);
         if(nd.packetType == ND::NetworkData::CLIENT_PACKET){
             _player2->setPosition(nd.clientData.playerPos_x, nd.clientData.playerPos_y);
-            std::cout << _player2->getPosition().toString() << endl;
             _player2->setLinearVelocity(nd.clientData.playerVel_x, nd.clientData.playerVel_y);
         }
     });

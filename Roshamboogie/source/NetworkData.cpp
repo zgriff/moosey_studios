@@ -19,8 +19,6 @@ uint16_t scratch;
 int scratch_bits;
 //reading
 int byte_arr_index;
-//should always be between 0 and 7 inclusive
-int byte_offset;
 
 //interpret uint32_t as uint8_t[4]
 union ui32_to_ui8 {
@@ -80,6 +78,7 @@ uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
             uint8_t cur = bytes[byte_arr_index];
             scratch |= static_cast<uint16_t>(cur) << scratch_bits;
             scratch_bits += 8;
+            ++byte_arr_index;
         }
         //grab bits
         if(numBits >= 8){
@@ -100,7 +99,8 @@ uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
 
 float readFloat(const std::vector<uint8_t>& bytes){
     uint32_t _x = readBits(bytes, 32);
-    uint32_t marshalled = cugl::marshall(static_cast<uint32_t>(_x));
+    std::cout << _x << " read" << endl;
+    uint32_t marshalled = cugl::marshall(_x);
     float x = static_cast<float>(marshalled);
     return x;
 }
@@ -120,7 +120,6 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
     scratch = 0;
     scratch_bits = 0;
     byte_arr_index = 0;
-    byte_offset = 0;
     dest.packetType = readBits(bytes, TYPE_BITS);
     switch(dest.packetType){
         case NetworkData::WORLD_DATA:
