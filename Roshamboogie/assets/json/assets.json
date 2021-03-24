@@ -1,56 +1,148 @@
 {
-	"textures": {
-		"background": {
-            "file":  "textures/ice.png"
+    "textures": {
+        "background": {
+            "file": "textures/ice.png"
         },
         "photon": {
-            "file":  "textures/photon.png"
+            "file": "textures/photon.png"
         },
         "ship": {
-            "file":  "textures/ships.png"
+            "file": "textures/ships.png"
         },
         "rocket": {
             "file": "textures/rocket.png"
         },
         "target": {
-            "file":  "textures/target.png"
+            "file": "textures/target.png"
+        },
+        "grass": {
+            "file":  "textures/grass.png"
+        },
+        "swapstation": {
+            "file": "textures/swapst.png"
         },
         "wall": {
-            "file":  "textures/barrier.png"
+            "file": "textures/barrier.png"
         },
         "earth": {
-            "file":     "textures/earthtile.png",
-            "wrapS":    "repeat",
-            "wrapT":    "repeat"
+            "file": "textures/earthtile.png",
+            "wrapS": "repeat",
+            "wrapT": "repeat"
         }
-	},
-    "sounds" : {
-        "fusion" : {
+    },
+    "sounds": {
+        "fusion": {
             "type": "sample",
             "file": "sounds/fusion.ogg"
         },
-        "laser" : {
+        "laser": {
             "type": "sample",
             "file": "sounds/laser.ogg"
         }
     },
-    "scene2s" : {
-        "lab" : {
-            "comment"   : "We do not have an asset loader for filmstrips yet, so we do not add the ships",
-            "type"      : "Node",
-            "format"    : {
-                "type" : "Anchored"
+    "fonts": {
+        "retro": {
+            "file": "fonts/RetroGame.ttf",
+            "size": 32
+        }
+    },
+    "scene2s": {
+        "background": {
+            "comment": "Scene for all background elements",
+            "type": "Node",
+            "format": {
+                "type": "Anchored"
             },
-            "children":  {
+            "children": {
                 "background": {
                     "type": "Image",
                     "data": {
-                        "texture":  "background",
-                        "anchor":   [0.0,0.5]
+                        "texture": "background",
+                        "anchor": [ 0.0, 0.5 ]
+                    },
+                    "layout": {
+                        "x_anchor": "fill",
+                        "y_anchor": "fill"
+                    }
+                }
+            }
+        },
+        "ui":{
+            "comment": "Scene for all UI elements",
+            "type": "Node",
+            "format": {
+                "type": "Anchored"
+            },
+            "children": {
+                "roomId": {
+                    "type": "Label",
+                    "data": {
+                        "font": "retro",
+                        "text": "",
+                        "foreground": [ 0, 0, 0, 255 ],
+                        "size": [ 100, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "right",
+                        "y_anchor": "bottom",
+                        "x_offset": -725,
+                        "y_offset": 100,
+                        "absolute": true
+                    }
+                },
+                "hud" : {
+                    "type": "Label",
+                    "data": {
+                        "font"       : "retro",
+                        "text"       : "Score: 0",
+                        "foreground" : [255,255,255,255],
+                        "size"       : [500,70],
+                        "valign"     : "bottom",
+                        "halign"     : "left"
                     },
                     "layout" : {
-                        "x_anchor" : "fill",
-                        "y_anchor" : "fill"
+                        "x_anchor" : "left",
+                        "y_anchor" : "bottom",
+                        "x_offset" : 80,
+                        "y_offset" : 100,
+                        "absolute" : true
+                    }
+                },
+                "bar"  : {
+                    "type"   : "Progress",
+                    "data"   : {
+                        "anchor"     : [0.5,0.5],
+                        "background" : "progress_background",
+                        "foreground" : "progress_foreground",
+                        "left_cap"   : "progress_leftcap",
+                        "right_cap"  : "progress_rightcap"
+                    },
+                    "layout" : {
+                        "x_anchor" : "right",
+                        "y_anchor" : "top",
+                        "x_offset" : -300,
+                        "y_offset" : -150,
+                        "absolute" : true
+                    }
+                },
+                "hatched":{
+                    "type": "label",
+                    "data": {
+                        "font"       : "retro",
+                        "text"       : "Egg hatched!",
+                        "foreground" : [255,255,255,255],
+                        "size"       : [500,70],
+                        "valign"     : "bottom",
+                        "halign"     : "left"
+                    },
+                    "layout" : {
+                        "x_anchor" : "right",
+                        "y_anchor" : "top",
+                        "x_offset" : -650,
+                        "y_offset" : -200,
+                        "absolute" : true
                     }
                 }
             }

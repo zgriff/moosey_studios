@@ -123,6 +123,7 @@
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <DisableSpecificWarnings>4068;4018;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -186,11 +187,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\App.h" />
+    <ClInclude Include="..\..\source\CollisionController.h" />
+    <ClInclude Include="..\..\source\Egg.h" />
     <ClInclude Include="..\..\source\Element.h" />
     <ClInclude Include="..\..\source\GameScene.h" />
     <ClInclude Include="..\..\source\HelloApp.h" />
     <ClInclude Include="..\..\source\InputController.h" />
     <ClInclude Include="..\..\source\LoadingScene.h" />
+    <ClInclude Include="..\..\source\NetworkController.h" />
+    <ClInclude Include="..\..\source\NetworkData.h" />
     <ClInclude Include="..\..\source\Orb.h" />
     <ClInclude Include="..\..\source\OrbManager.h" />
     <ClInclude Include="..\..\source\Player.h" />
@@ -210,10 +215,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\App.cpp" />
+    <ClCompile Include="..\..\source\CollisionController.cpp" />
+    <ClCompile Include="..\..\source\Egg.cpp" />
     <ClCompile Include="..\..\source\GameScene.cpp" />
     <ClCompile Include="..\..\source\InputController.cpp" />
     <ClCompile Include="..\..\source\LoadingScene.cpp" />
     <ClCompile Include="..\..\source\main.cpp" />
+    <ClCompile Include="..\..\source\NetworkController.cpp" />
+    <ClCompile Include="..\..\source\NetworkData.cpp" />
     <ClCompile Include="..\..\source\Orb.cpp" />
     <ClCompile Include="..\..\source\OrbManager.cpp" />
     <ClCompile Include="..\..\source\Player.cpp" />
