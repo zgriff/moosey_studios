@@ -15,13 +15,12 @@ namespace ND{
 #define PLAYER_ID_BITS 3
 
 //writing
-uint64_t scratch;
+uint16_t scratch;
 int scratch_bits;
 //reading
 int byte_arr_index;
 //should always be between 0 and 7 inclusive
 int byte_offset;
-
 
 //interpret uint32_t as uint8_t[4]
 union ui32_to_ui8 {
@@ -29,28 +28,34 @@ union ui32_to_ui8 {
     uint8_t ui8[4];
 };
 
-void write32(std::vector<uint8_t> & buffer, uint32_t data){
-    uint32_t marshalled = cugl::marshall(data);
-    ui32_to_ui8 u;
-    u.ui32 = marshalled;
-    buffer.push_back(u.ui8[0]);
-    buffer.push_back(u.ui8[1]);
-    buffer.push_back(u.ui8[2]);
-    buffer.push_back(u.ui8[3]);
+void writeByte(std::vector<uint8_t> & buffer, uint8_t data){
+    buffer.push_back(data);
 }
 
-void writeBits(std::vector<uint8_t> & buffer, uint32_t data, int numBits){
-    scratch |= (data & ((1 << numBits) - 1)) << scratch_bits;
+//1 <= numBits <= 8
+void writeBits(std::vector<uint8_t> & buffer, uint8_t data, int numBits){
+    scratch |= static_cast<uint16_t>((data & ((1 << numBits) - 1))) << scratch_bits;
     scratch_bits += numBits;
-    if(scratch_bits >= 32){
-        write32(buffer,scratch & 0xFF);
-        scratch >>= 32;
-        scratch_bits -= 32;
+    if(scratch_bits >= 8){
+        writeByte(buffer,scratch & 0x7);
+        scratch >>= 8;
+        scratch_bits -= 8;
     }
 }
 
+void write32(std::vector<uint8_t> & buffer, uint32_t data){
+    ui32_to_ui8 u;
+    u.ui32 = data;
+    //TODO: Check that this is the right order
+    writeBits(buffer, u.ui8[0], 8);
+    writeBits(buffer, u.ui8[1], 8);
+    writeBits(buffer, u.ui8[2], 8);
+    writeBits(buffer, u.ui8[3], 8);
+}
+
 void writeFloat(std::vector<uint8_t> & buffer, float data){
-    writeBits(buffer, static_cast<uint32_t>(data), 32);
+    uint32_t marshalled = cugl::marshall(static_cast<uint32_t>(data));
+    write32(buffer, marshalled);
 }
 
 void writeVec2(std::vector<uint8_t> & buffer, cugl::Vec2 data){
@@ -60,7 +65,7 @@ void writeVec2(std::vector<uint8_t> & buffer, cugl::Vec2 data){
 
 //call at the end of writing data to make sure everything ends up in the buffer
 void flush(std::vector<uint8_t> & buffer){
-    write32(buffer,scratch & 0xFF);
+    writeByte(buffer,scratch & 0x7);
     scratch = 0;
     scratch_bits = 0;
 }
@@ -70,28 +75,34 @@ uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
     uint32_t read = 0;
     int bits_read = 0;
     while(numBits > 0){
-        read <<= bits_read;
-        uint8_t cur = bytes[byte_arr_index];
-        cur >>= byte_offset;
-        if(numBits >= (8 - byte_offset)){
-            read |= cur;
-            byte_offset = 0;
-            ++byte_arr_index;
-            numBits -= (8 - byte_offset);
-            bits_read += 8 - byte_offset;
+        //fill the scratch
+        while(scratch_bits < numBits){
+            uint8_t cur = bytes[byte_arr_index];
+            scratch |= static_cast<uint16_t>(cur) << scratch_bits;
+            scratch_bits += 8;
+        }
+        //grab bits
+        if(numBits >= 16){
+            read |= static_cast<uint32_t>(scratch) << bits_read;
+            scratch = 0;
+            scratch_bits = 0;
+            numBits -= 16;
+            bits_read += 16;
         }else{
-            uint8_t mask = 0; //TODO: fix
-            read |= (cur & mask);
-            byte_offset += numBits;
+            read |= (static_cast<uint32_t>(scratch) & ((1 << numBits) - 1)) << bits_read;
+            scratch >>= numBits;
+            scratch_bits -= numBits;
             numBits = 0;
         }
+        
     }
     return read;
 }
 
 float readFloat(const std::vector<uint8_t>& bytes){
     uint32_t _x = readBits(bytes, 32);
-    float x = static_cast<float>(_x);
+    uint32_t marshalled = cugl::marshall(static_cast<uint32_t>(_x));
+    float x = static_cast<float>(marshalled);
     return x;
 }
 
@@ -112,11 +123,9 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
     dest.packetType = readBits(bytes, TYPE_BITS);
     switch(dest.packetType){
         case NetworkData::WORLD_DATA:
-            CULog("not implemented yet, sorry\n");
             //TODO
             break;
         case NetworkData::HOST_PACKET:
-            CULog("not implemented yet, sorry\n");
             //TODO
             break;
         case NetworkData::CLIENT_PACKET:
@@ -142,7 +151,6 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
     writeBits(dest, src.packetType, TYPE_BITS);
     switch(src.packetType){
         case NetworkData::WORLD_DATA:
-            CULog("not implemented yet, sorry\n");
             //TODO
             break;
         case NetworkData::HOST_PACKET:
