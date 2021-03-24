@@ -118,6 +118,8 @@ cugl::Vec2 readVec2(const std::vector<uint8_t>& bytes){
 //convert the bytes to a NetworkData struct, putting the result in dest
 //returns true on success, false on failure (if data is corrupted)
 bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
+    scratch = 0;
+    scratch_bits = 0;
     byte_arr_index = 0;
     byte_offset = 0;
     dest.packetType = readBits(bytes, TYPE_BITS);
