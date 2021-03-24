@@ -10,6 +10,7 @@
 #define __GAME_SCENE_H__
 #include <cugl/cugl.h>
 #include <vector>
+#include <time.h>
 #include "InputController.h"
 #include "CollisionController.h"
 #include "Player.h"
@@ -40,6 +41,9 @@ protected:
 
     std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
     std::string _currRoomId;
+    
+    clock_t _hatchTextTimer = CLOCKS_PER_SEC;
+    clock_t _hatchedTime;
     
     /**
      * Activates the UI elements to make them interactive

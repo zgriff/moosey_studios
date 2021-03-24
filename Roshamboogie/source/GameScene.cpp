@@ -319,6 +319,7 @@ void GameScene::update(float timestep) {
         _egg->setInitPos(_player->getPosition());
         if (_egg->getDistanceWalked() >= 80) {
             _hatchbar->dispose();
+            _hatchedTime = clock();
             _egg->setHatched(true);
             _egg->dispose();
 //            _egg->setCollected(false);
@@ -327,6 +328,10 @@ void GameScene::update(float timestep) {
             _hatchnode->setVisible(true);
             CULog("hatched");
         }
+    }
+    
+    if (clock() - _hatchedTime >= _hatchTextTimer) {
+        _hatchnode->setVisible(false);
     }
     
     _fireOrb->setCollected(false);
