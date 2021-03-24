@@ -26,6 +26,11 @@ union ui32_to_ui8 {
     uint8_t ui8[4];
 };
 
+union float_to_ui32 {
+    uint32_t ui32;
+    float f;
+};
+
 void writeByte(std::vector<uint8_t> & buffer, uint8_t data){
     buffer.push_back(data);
 }
@@ -52,7 +57,10 @@ void write32(std::vector<uint8_t> & buffer, uint32_t data){
 }
 
 void writeFloat(std::vector<uint8_t> & buffer, float data){
-    uint32_t marshalled = cugl::marshall(static_cast<uint32_t>(data));
+    float_to_ui32 ftu;
+    ftu.f = data;
+    uint32_t marshalled = cugl::marshall(ftu.ui32);
+//    std::cout << marshalled << " write" << endl;
     write32(buffer, marshalled);
 }
 
@@ -99,10 +107,12 @@ uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
 
 float readFloat(const std::vector<uint8_t>& bytes){
     uint32_t _x = readBits(bytes, 32);
-    std::cout << _x << " read" << endl;
+//    std::cout << _x << " read" << endl;
     uint32_t marshalled = cugl::marshall(_x);
-    float x = static_cast<float>(marshalled);
-    return x;
+    float_to_ui32 ftu;
+    ftu.ui32 = marshalled;
+//    float x = static_cast<float>(marshalled);
+    return ftu.f;
 }
 
 
