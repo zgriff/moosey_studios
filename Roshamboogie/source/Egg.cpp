@@ -27,6 +27,7 @@ bool Egg::init(const cugl::Vec2 pos, const cugl::Size size) {
         setName("egg");
         setInitPos(pos);
         _collected = false;
+        _distanceWalked = 0;
         return true;
     }
     return false;
