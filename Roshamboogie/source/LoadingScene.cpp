@@ -63,7 +63,8 @@ bool LoadingScene::init(const std::shared_ptr<AssetManager>& assets) {
     _button2->addListener([=](const std::string& name, bool down) {
         _host = false;
         _field->setVisible(true);
-        _button->setVisible(false);
+        _field->activate();
+        _button->dispose();
         });
 
     _field = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("load_textfield_action"));
@@ -76,7 +77,6 @@ bool LoadingScene::init(const std::shared_ptr<AssetManager>& assets) {
         this->_active = false;
         });
     Input::activate<TextInput>();
-    _field->activate();
     _field->setVisible(false);
 
     Application::get()->setClearColor(Color4(192,192,192,255));

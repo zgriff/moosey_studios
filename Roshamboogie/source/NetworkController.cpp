@@ -35,7 +35,7 @@ namespace NetworkController {
 
     std::string getRoomId() {
         roomId = network->getRoomID();
-        CULog("Room ID %s", roomId.c_str());
+        CULog("Room ID is: %s", roomId.c_str());
         return roomId;
     }
 

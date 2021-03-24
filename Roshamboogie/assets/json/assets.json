@@ -63,17 +63,17 @@
                     "type": "Label",
                     "data": {
                         "font": "retro",
-                        "text": "RoomId: 0",
-                        "foreground": [ 255, 255, 255, 255 ],
-                        "size": [ 500, 70 ],
+                        "text": "",
+                        "foreground": [ 0, 0, 0, 255 ],
+                        "size": [ 100, 15 ],
                         "valign": "bottom",
                         "halign": "left"
                     },
                     "layout": {
                         "x_anchor": "left",
-                        "y_anchor": "bottom",
+                        "y_anchor": "top",
                         "x_offset": 180,
-                        "y_offset": 50,
+                        "y_offset": -100,
                         "absolute": true
                     }
                 }
