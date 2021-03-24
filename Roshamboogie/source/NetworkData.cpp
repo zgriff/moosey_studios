@@ -51,10 +51,10 @@ void write32(std::vector<uint8_t> & buffer, uint32_t data){
     ui32_to_ui8 u;
     u.ui32 = data;
     //TODO: Check that this is the right order
-    writeBits(buffer, u.ui8[3], 8);
-    writeBits(buffer, u.ui8[2], 8);
-    writeBits(buffer, u.ui8[1], 8);
     writeBits(buffer, u.ui8[0], 8);
+    writeBits(buffer, u.ui8[1], 8);
+    writeBits(buffer, u.ui8[2], 8);
+    writeBits(buffer, u.ui8[3], 8);
 }
 
 void writeFloat(std::vector<uint8_t> & buffer, float data){
@@ -85,19 +85,22 @@ uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
         //fill the scratch
         if(scratch_bits < numBits){
             uint8_t cur = bytes[byte_arr_index];
-            scratch |= static_cast<uint16_t>(cur) << scratch_bits;
+            uint16_t tmp = cur
+            scratch |= tmp << scratch_bits;
             scratch_bits += 8;
             ++byte_arr_index;
         }
         //grab bits
         if(numBits >= 8){
-            read |= static_cast<uint32_t>(scratch & 0x7) << bits_read;
+            uint32_t tmp = scratch & 0x7;
+            read |= tmp << bits_read;
             scratch >>= 8;
             scratch_bits -= 8;
             numBits -= 8;
             bits_read += 8;
         }else{
-            read |= (static_cast<uint32_t>(scratch) & ((1 << numBits) - 1)) << bits_read;
+            uint32_t tmp = scratch;
+            read |= (tmp & ((1 << numBits) - 1)) << bits_read;
             scratch >>= numBits;
             scratch_bits -= numBits;
             numBits = 0;
