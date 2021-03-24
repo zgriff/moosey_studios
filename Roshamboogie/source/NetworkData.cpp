@@ -94,7 +94,6 @@ uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
             scratch_bits -= numBits;
             numBits = 0;
         }
-        
     }
     return read;
 }
@@ -137,7 +136,7 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
             dest.clientData.playerPos_y = readFloat(bytes);
             dest.clientData.playerVel_x = readFloat(bytes);
             dest.clientData.playerVel_y = readFloat(bytes);
-            dest.clientData.playerId = readBits(bytes, 8);
+            dest.clientData.playerId = readBits(bytes, PLAYER_ID_BITS);
             break;
         default:
             return false;
