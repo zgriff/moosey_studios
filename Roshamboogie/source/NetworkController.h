@@ -18,6 +18,10 @@ namespace NetworkController {
 
     void step();
 
+    void send(const std::vector<uint8_t>& msg);
+
+    void receive(const std::function<void(const std::vector<uint8_t>&)>& dispatcher);
+
 };
 
 #endif

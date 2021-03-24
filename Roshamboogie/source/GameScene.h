@@ -47,7 +47,7 @@ protected:
 
     /** Location and animation information for player (MODEL CLASS) */
     std::shared_ptr<Player> _player;
-    
+    std::shared_ptr<Player> _player2;
     std::shared_ptr<Orb> _orbTest;
     
     /** The weapon fire sound for the blue player */

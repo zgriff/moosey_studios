@@ -10,6 +10,7 @@
 #include <vector>
 #include "Globals.h"
 
+namespace ND{
 #define TYPE_BITS 2
 #define PLAYER_ID_BITS 3
 
@@ -88,12 +89,16 @@ uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
     return read;
 }
 
+float readFloat(const std::vector<uint8_t>& bytes){
+    uint32_t _x = readBits(bytes, 32);
+    float x = static_cast<float>(_x);
+    return x;
+}
+
 
 cugl::Vec2 readVec2(const std::vector<uint8_t>& bytes){
-    uint32_t _x = readBits(bytes, 32);
-    uint32_t _y = readBits(bytes, 32);
-    float x = static_cast<float>(_x);
-    float y = static_cast<float>(_y);
+    float x = readFloat(bytes);
+    float y = readFloat(bytes);
     return cugl::Vec2(x, y);
 }
 
@@ -115,8 +120,12 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
             //TODO
             break;
         case NetworkData::CLIENT_PACKET:
-            dest.clientData.playerPos = readVec2(bytes);
-            dest.clientData.playerVelocity = readVec2(bytes);
+//            dest.clientData.playerPos = readVec2(bytes);
+//            dest.clientData.playerVelocity = readVec2(bytes);
+            dest.clientData.playerPos_x = readFloat(bytes);
+            dest.clientData.playerPos_y = readFloat(bytes);
+            dest.clientData.playerVel_x = readFloat(bytes);
+            dest.clientData.playerVel_y = readFloat(bytes);
             dest.clientData.playerId = readBits(bytes, 8);
             break;
         default:
@@ -137,14 +146,14 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
             //TODO
             break;
         case NetworkData::HOST_PACKET:
-            writeVec2(dest, src.hostData.hostPos);
-            writeVec2(dest, src.hostData.hostVelocity);
-            if(src.hostData.num_players <= globals::MAX_PLAYERS
-               && src.hostData.num_players >= globals::MIN_PLAYERS){
-                writeBits(dest, src.hostData.num_players, 8);
-            } else {
-                return false;
-            }
+//            writeVec2(dest, src.hostData.hostPos);
+//            writeVec2(dest, src.hostData.hostVelocity);
+//            if(src.hostData.num_players <= globals::MAX_PLAYERS
+//               && src.hostData.num_players >= globals::MIN_PLAYERS){
+//                writeBits(dest, src.hostData.num_players, 8);
+//            } else {
+//                return false;
+//            }
             break;
             //TODO: finish the rest of host data.
 //            uint8_t num_players;
@@ -152,8 +161,12 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
 //            SwapStationData swapData[MAX_SWAP_STATIONS];
 //            OrbData orbData[MAX_ORBS];
         case NetworkData::CLIENT_PACKET:
-            writeVec2(dest, src.clientData.playerPos);
-            writeVec2(dest, src.clientData.playerVelocity);
+//            writeVec2(dest, src.clientData.playerPos);
+//            writeVec2(dest, src.clientData.playerVelocity);
+            writeFloat(dest, src.clientData.playerPos_x);
+            writeFloat(dest, src.clientData.playerPos_y);
+            writeFloat(dest, src.clientData.playerVel_x);
+            writeFloat(dest, src.clientData.playerVel_y);
             writeBits(dest, src.clientData.playerId, PLAYER_ID_BITS);
             break;
         default:
@@ -161,4 +174,5 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
     }
     flush(dest);
     return true;
+}
 }

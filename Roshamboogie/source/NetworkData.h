@@ -13,8 +13,9 @@
 #include "Element.h"
 #include "Globals.h"
 
+namespace ND{
 struct PlayerData {
-    Element e;
+//    Element e;
     int score;
     int playerId; //could get rid of this
     bool isHoldingEgg;
@@ -41,17 +42,21 @@ struct NetworkData {
             uint8_t num_swaps;
             uint8_t num_eggs;
         } worldData;
+//        struct {
+//            cugl::Vec2 hostPos = cugl::Vec2();
+//            cugl::Vec2 hostVelocity = cugl::Vec2();
+//            uint8_t num_players;
+//            PlayerData players[globals::MAX_PLAYERS]; //TODO change to exact number of players if possible
+//            SwapStationData swapData[globals::MAX_SWAP_STATIONS];
+//            OrbData orbData[globals::MAX_ORBS];
+//        } hostData;
         struct {
-            cugl::Vec2 hostPos;
-            cugl::Vec2 hostVelocity;
-            uint8_t num_players;
-            PlayerData players[globals::MAX_PLAYERS]; //TODO change to exact number of players if possible
-            SwapStationData swapData[globals::MAX_SWAP_STATIONS];
-            OrbData orbData[globals::MAX_ORBS];
-        } hostData;
-        struct {
-            cugl::Vec2 playerPos;
-            cugl::Vec2 playerVelocity;
+//            cugl::Vec2 playerPos;
+//            cugl::Vec2 playerVelocity;
+            float playerPos_x;
+            float playerPos_y;
+            float playerVel_x;
+            float playerVel_y;
             uint8_t playerId;
         } clientData;
     };
@@ -65,5 +70,5 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src);
 //convert the NetworkData struct to bytes, putting the result in dest
 //returns true on success, false on failure (if the data is corrupted)
 bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& src);
-
+}
 #endif /* NetworkData_h */

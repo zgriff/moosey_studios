@@ -12,6 +12,7 @@
 #include <Box2D/Collision/b2Collision.h>
 #include "Element.h"
 #include "NetworkController.h"
+#include "NetworkData.h"
 
 #include <cugl/cugl.h>
 #include <iostream>
@@ -145,11 +146,16 @@ void GameScene::reset() {
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size playerSize(shipTexture->getSize()/_scale);
     _player = Player::alloc(playerPos, playerSize);
+    _player2 = Player::alloc(playerPos, playerSize);
     _world->addObstacle(_player);
     _player->setTextures(shipTexture);
     _player->setID(0);
     _player->setDrawScale(_scale);
     _playerController.init();
+    _world->addObstacle(_player2);
+    _player2->setTextures(shipTexture);
+    _player2->setID(1);
+    _player2->setDrawScale(_scale);
     
     _orbTest = Orb::alloc(Element::Fire);
     _world->addObstacle(_orbTest);
@@ -160,18 +166,21 @@ void GameScene::reset() {
     
     _worldnode->addChild(_orbTest->getSceneNode());
     _worldnode->addChild(_player->getSceneNode());
+    _worldnode->addChild(_player2->getSceneNode());
 }
 
 void GameScene::update(float timestep) {
-    //get data from network
-    //update state of game objects
-    // Read the keyboard for each controller.
-    // do physics on players
-    //
-
     /*std::string currRoomId = NetworkController::getRoomId();
     _roomIdHUD->setText(currRoomId);*/
-    NetworkController::step();
+//    NetworkController::step();
+    NetworkController::receive([&](const std::vector<uint8_t> msg) {
+        ND::NetworkData nd;
+        ND::fromBytes(nd, msg);
+        if(nd.packetType == ND::NetworkData::CLIENT_PACKET){
+            _player2->setPosition(nd.clientData.playerPos_x, nd.clientData.playerPos_y);
+            _player2->setLinearVelocity(nd.clientData.playerVel_x, nd.clientData.playerVel_y);
+        }
+    });
     if (_currRoomId == "") {
         _currRoomId = NetworkController::getRoomId();
         stringstream ss;
@@ -220,6 +229,17 @@ void GameScene::update(float timestep) {
 
         orbShouldMove = false;
     }
+    //send new position
+    ND::NetworkData nd;
+    nd.packetType = ND::NetworkData::PacketType::CLIENT_PACKET;
+    nd.clientData.playerPos_x = _player->getPosition().x;
+    nd.clientData.playerPos_y = _player->getPosition().y;
+    nd.clientData.playerVel_x = _player->getLinearVelocity().x;
+    nd.clientData.playerVel_y = _player->getLinearVelocity().y;
+    std::vector<uint8_t> bytes;
+    ND::toBytes(bytes, nd);
+    NetworkController::send(bytes);
+    
 }
 
 void GameScene::populate() {

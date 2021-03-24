@@ -51,6 +51,14 @@ namespace NetworkController {
         return network->getNumPlayers();
     }
 
+    void receive(const std::function<void(const std::vector<uint8_t>&)>& dispatcher){
+        network->receive(dispatcher);
+    }
+
+    void send(const std::vector<uint8_t>& msg){
+        network->send(msg);
+    }
+
     void step() {
         auto* k = cugl::Input::get<cugl::Keyboard>();
         if (k->keyPressed(cugl::KeyCode::SPACE)) {
