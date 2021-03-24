@@ -44,19 +44,15 @@ void Player::setElement(Element e){
     
     switch(e){ //TODO: change to texture when assets made
         case Element::Grass:
-            CULog("grass");
             _sceneNode->setColor(Color4(0, 255, 0));
             break;
         case Element::Fire:
-            CULog("fire");
             _sceneNode->setColor(Color4(255, 0, 0));
             break;
         case Element::Water:
-            CULog("water");
             _sceneNode->setColor(Color4(0, 0, 255));
             break;
         case Element::None:
-            CULog("none");
             _sceneNode->setColor(Color4(0, 0, 0));
             break;
     }

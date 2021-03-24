@@ -40,6 +40,9 @@ public:
         return e;
     }
     
+    //sets color based on element
+    void setElement();
+    
     bool getCollected() { return _collected; }
     
     void setCollected(bool c) { _collected = c; }
