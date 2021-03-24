@@ -47,8 +47,8 @@
         }
     },
     "scene2s": {
-        "lab": {
-            "comment": "We do not have an asset loader for filmstrips yet, so we do not add the ships",
+        "background": {
+            "comment": "Scene for all background elements",
             "type": "Node",
             "format": {
                 "type": "Anchored"
@@ -64,7 +64,16 @@
                         "x_anchor": "fill",
                         "y_anchor": "fill"
                     }
-                },
+                }
+            }
+        },
+        "ui":{
+            "comment": "Scene for all UI elements",
+            "type": "Node",
+            "format": {
+                "type": "Anchored"
+            },
+            "children": {
                 "roomId": {
                     "type": "Label",
                     "data": {
@@ -76,10 +85,10 @@
                         "halign": "left"
                     },
                     "layout": {
-                        "x_anchor": "left",
-                        "y_anchor": "top",
-                        "x_offset": 180,
-                        "y_offset": -100,
+                        "x_anchor": "right",
+                        "y_anchor": "bottom",
+                        "x_offset": -725,
+                        "y_offset": 100,
                         "absolute": true
                     }
                 },
@@ -111,15 +120,32 @@
                         "right_cap"  : "progress_rightcap"
                     },
                     "layout" : {
-                        "x_anchor" : "left",
+                        "x_anchor" : "right",
                         "y_anchor" : "top",
-                        "x_offset" : 250,
-                        "y_offset" : -110,
+                        "x_offset" : -300,
+                        "y_offset" : -150,
+                        "absolute" : true
+                    }
+                },
+                "hatched":{
+                    "type": "label",
+                    "data": {
+                        "font"       : "retro",
+                        "text"       : "Egg hatched!",
+                        "foreground" : [255,255,255,255],
+                        "size"       : [500,70],
+                        "valign"     : "bottom",
+                        "halign"     : "left"
+                    },
+                    "layout" : {
+                        "x_anchor" : "right",
+                        "y_anchor" : "top",
+                        "x_offset" : -650,
+                        "y_offset" : -200,
                         "absolute" : true
                     }
                 }
             }
         }
-        
     }
 }

@@ -100,20 +100,24 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _playerController.init();
     
     // Acquire the scene built by the asset loader and resize it the scene
-    std::shared_ptr<scene2::SceneNode> scene = _assets->get<scene2::SceneNode>("lab");
-    scene->setContentSize(dimen);
-    scene->doLayout(); // Repositions the HUD;
-
-    _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("lab_hud"));
+    auto scene_background = _assets->get<scene2::SceneNode>("background");
+    scene_background->setContentSize(dimen);
+    scene_background->doLayout(); // Repositions the HUD;
     
-    _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("lab_bar"));
+    auto scene_ui = _assets->get<scene2::SceneNode>("ui");
+    scene_ui->setContentSize(dimen);
+    scene_ui->doLayout(); // Repositions the HUD;
+
+    _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
+    
+    _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
+//    CULog("Hatchbar: %s", _hatchbar->get);
     _hatchbar->setVisible(false);
     
-    _hatchnode = scene2::Label::alloc("Egg Hatched!", _assets->get<Font>("retro"));
-    _hatchnode->setAnchor(Vec2::ANCHOR_CENTER);
-    _hatchnode->setPosition(250,dimen.height - 100);
-    _hatchnode->setForeground(Color4::YELLOW);
+    _hatchnode = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_hatched"));
     _hatchnode->setVisible(false);
+    
+    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
     
     _world = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
     _world->activateCollisionCallbacks(true);
@@ -125,16 +129,14 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     };
     _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
     Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
-    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("lab_roomId")); 
-
 
     // Create the scene graph
     _worldnode = scene2::SceneNode::alloc();
     _worldnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
     _worldnode->setPosition(offset);
-    addChild(scene);
+    addChild(scene_background);
     addChild(_worldnode);
-    addChild(_hatchnode);
+    addChild(scene_ui);
     reset();
     return true;
 }
@@ -379,7 +381,7 @@ void GameScene::populate() {
 
         wall *= _scale;
         sprite = scene2::PolygonNode::allocWithTexture(image,wall);
-        addObstacle(wallobj,sprite,1);
+        addObstacle(wallobj,sprite,2);
     }
 
 }
