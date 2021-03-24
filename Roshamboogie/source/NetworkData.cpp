@@ -107,11 +107,11 @@ uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
 
 float readFloat(const std::vector<uint8_t>& bytes){
     uint32_t _x = readBits(bytes, 32);
-//    std::cout << _x << " read" << endl;
     uint32_t marshalled = cugl::marshall(_x);
     float_to_ui32 ftu;
     ftu.ui32 = marshalled;
 //    float x = static_cast<float>(marshalled);
+    std::cout << ftu.f << " read" << endl;
     return ftu.f;
 }
 
