@@ -66,6 +66,8 @@ public:
     
     void incDistanceWalked(float dist) { _distanceWalked += dist; }
     
+    void update(float delta) override;
+    
     
 #pragma mark Constructors
     /**

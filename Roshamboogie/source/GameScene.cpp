@@ -254,6 +254,7 @@ void GameScene::update(float timestep) {
     
     //egg hatch logic
     if (_egg->getCollected() && _egg->getHatched() == false) {
+        _egg->setPosition(_player->getPosition());
         _hatchbar->setVisible(true);
         _hatchbar->setProgress(_egg->getDistanceWalked()/80);
         Vec2 diff = _player->getPosition() - _egg->getInitPos();
