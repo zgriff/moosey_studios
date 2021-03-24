@@ -85,7 +85,7 @@ uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
         //fill the scratch
         if(scratch_bits < numBits){
             uint8_t cur = bytes[byte_arr_index];
-            uint16_t tmp = cur
+            uint16_t tmp = cur;
             scratch |= tmp << scratch_bits;
             scratch_bits += 8;
             ++byte_arr_index;
