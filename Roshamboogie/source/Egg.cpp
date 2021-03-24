@@ -26,6 +26,7 @@ bool Egg::init(const cugl::Vec2 pos, const cugl::Size size) {
         setSensor(true);
         setName("egg");
         setInitPos(pos);
+        _collected = false;
         return true;
     }
     return false;

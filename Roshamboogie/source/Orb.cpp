@@ -29,6 +29,7 @@ bool Orb::init(Vec2 pos, Element el){
         setSensor(true);
         setBodyType(b2_staticBody);
         setName("orb");
+        _collected = false;
             
     }
     return success;

@@ -186,6 +186,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\App.h" />
+    <ClInclude Include="..\..\source\CollisionController.h" />
+    <ClInclude Include="..\..\source\Egg.h" />
     <ClInclude Include="..\..\source\Element.h" />
     <ClInclude Include="..\..\source\GameScene.h" />
     <ClInclude Include="..\..\source\HelloApp.h" />
@@ -210,6 +212,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\App.cpp" />
+    <ClCompile Include="..\..\source\CollisionController.cpp" />
+    <ClCompile Include="..\..\source\Egg.cpp" />
     <ClCompile Include="..\..\source\GameScene.cpp" />
     <ClCompile Include="..\..\source\InputController.cpp" />
     <ClCompile Include="..\..\source\LoadingScene.cpp" />
