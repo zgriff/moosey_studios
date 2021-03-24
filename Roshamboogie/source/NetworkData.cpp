@@ -76,18 +76,18 @@ uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
     int bits_read = 0;
     while(numBits > 0){
         //fill the scratch
-        while(scratch_bits < numBits){
+        if(scratch_bits < numBits){
             uint8_t cur = bytes[byte_arr_index];
             scratch |= static_cast<uint16_t>(cur) << scratch_bits;
             scratch_bits += 8;
         }
         //grab bits
-        if(numBits >= 16){
-            read |= static_cast<uint32_t>(scratch) << bits_read;
-            scratch = 0;
-            scratch_bits = 0;
-            numBits -= 16;
-            bits_read += 16;
+        if(numBits >= 8){
+            read |= static_cast<uint32_t>(scratch & 0x7) << bits_read;
+            scratch >>= 8;
+            scratch_bits -= 8;
+            numBits -= 8;
+            bits_read += 8;
         }else{
             read |= (static_cast<uint32_t>(scratch) & ((1 << numBits) - 1)) << bits_read;
             scratch >>= numBits;
