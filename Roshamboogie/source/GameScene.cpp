@@ -238,6 +238,12 @@ void GameScene::update(float timestep) {
     nd.clientData.playerVel_y = _player->getLinearVelocity().y;
     std::vector<uint8_t> bytes;
     ND::toBytes(bytes, nd);
+    for(int i=0; i < bytes.size(); i++){
+        int tmp = bytes.at(i);
+        std::cout << tmp << ' ';
+    }
+    std::cout << endl << "-----------------------" << endl;
+       
     NetworkController::send(bytes);
     
 }

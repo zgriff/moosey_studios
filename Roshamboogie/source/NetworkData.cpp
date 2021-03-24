@@ -37,7 +37,8 @@ void writeByte(std::vector<uint8_t> & buffer, uint8_t data){
 
 //1 <= numBits <= 8
 void writeBits(std::vector<uint8_t> & buffer, uint8_t data, int numBits){
-    scratch |= static_cast<uint16_t>((data & ((1 << numBits) - 1))) << scratch_bits;
+    uint16_t tmp = data & ((1 << numBits) - 1);
+    scratch |= tmp << scratch_bits;
     scratch_bits += numBits;
     if(scratch_bits >= 8){
         writeByte(buffer,scratch & 0x7);
@@ -111,7 +112,6 @@ float readFloat(const std::vector<uint8_t>& bytes){
     float_to_ui32 ftu;
     ftu.ui32 = marshalled;
 //    float x = static_cast<float>(marshalled);
-    std::cout << ftu.f << " read" << endl;
     return ftu.f;
 }
 
