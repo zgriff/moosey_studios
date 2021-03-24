@@ -52,7 +52,9 @@ protected:
     /** Location and animation information for player (MODEL CLASS) */
     std::shared_ptr<Player> _player;
     
-    std::shared_ptr<Orb> _orbTest;
+    std::shared_ptr<Orb> _fireOrb;
+    std::shared_ptr<Orb> _waterOrb;
+    std::shared_ptr<Orb> _grassOrb;
     
     std::shared_ptr<SwapStation> _swapStation;
     

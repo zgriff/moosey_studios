@@ -12,6 +12,7 @@
 #include <cugl/cugl.h>
 #include "Element.h"
 
+
 class Orb : public cugl::physics2::WheelObstacle{
 private:
     Element e;
@@ -19,6 +20,7 @@ private:
     std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
     std::shared_ptr<cugl::Texture> _texture;
     bool _collected;
+
 public:
     Orb(void) : WheelObstacle(), _drawscale(1.0f) { }
     
@@ -27,11 +29,11 @@ public:
     }
     void dispose();
     
-    virtual bool init(Element e);
+    virtual bool init(cugl::Vec2 pos, Element e);
     
-    static std::shared_ptr<Orb> alloc(const Element e) {
+    static std::shared_ptr<Orb> alloc(cugl::Vec2 pos, const Element e) {
         std::shared_ptr<Orb> result = std::make_shared<Orb>();
-        return (result->init(e) ? result : nullptr);
+        return (result->init(pos, e) ? result : nullptr);
     }
     
     void setTextures(const std::shared_ptr<cugl::Texture>& orb);
@@ -54,6 +56,8 @@ public:
     void setDrawScale(float scale);
     
     virtual void update(float delta) override;
+    
+    void respawn();
 };
 
 #endif /* Orb_hpp */

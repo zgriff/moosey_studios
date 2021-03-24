@@ -78,8 +78,8 @@
                     "layout" : {
                         "x_anchor" : "left",
                         "y_anchor" : "bottom",
-                        "x_offset" : 130,
-                        "y_offset" : 50,
+                        "x_offset" : 80,
+                        "y_offset" : 100,
                         "absolute" : true
                     }
                 },
@@ -96,7 +96,7 @@
                         "x_anchor" : "left",
                         "y_anchor" : "top",
                         "x_offset" : 250,
-                        "y_offset" : -50,
+                        "y_offset" : -110,
                         "absolute" : true
                     }
                 }

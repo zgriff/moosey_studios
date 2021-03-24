@@ -17,7 +17,6 @@
 #include <iostream>
 #include <sstream>
 #include <cmath>
-#include <random>
 
 using namespace cugl;
 using namespace std;
@@ -110,7 +109,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _hatchnode = scene2::Label::alloc("Egg Hatched!", _assets->get<Font>("retro"));
     _hatchnode->setAnchor(Vec2::ANCHOR_CENTER);
-    _hatchnode->setPosition(250,dimen.height - 50);
+    _hatchnode->setPosition(250,dimen.height - 100);
     _hatchnode->setForeground(Color4::YELLOW);
     _hatchnode->setVisible(false);
     
@@ -177,10 +176,22 @@ void GameScene::reset() {
     _player->setDrawScale(_scale);
     _playerController.init();
     
-    _orbTest = Orb::alloc(Element::Fire);
-    _world->addObstacle(_orbTest);
-    _orbTest->setTextures(orbTexture);
-    _orbTest->setDrawScale(_scale);
+    //creating the three orbs
+    _fireOrb = Orb::alloc(Vec2(4,4), Element::Fire);
+    _world->addObstacle(_fireOrb);
+    _fireOrb->setTextures(orbTexture);
+    _fireOrb->setDrawScale(_scale);
+    
+    _waterOrb = Orb::alloc(Vec2(20,8), Element::Water);
+    _world->addObstacle(_waterOrb);
+    _waterOrb->setTextures(orbTexture);
+    _waterOrb->setDrawScale(_scale);
+    
+    _grassOrb = Orb::alloc(Vec2(10,12), Element::Grass);
+    _world->addObstacle(_grassOrb);
+    _grassOrb->setTextures(orbTexture);
+    _grassOrb->setDrawScale(_scale);
+    
     
     Vec2 swapStPos = Vec2(8,8);
     Size swapStSize(swapStTexture->getSize() / _scale);
@@ -200,7 +211,9 @@ void GameScene::reset() {
     
     populate();
     
-    _worldnode->addChild(_orbTest->getSceneNode());
+    _worldnode->addChild(_fireOrb->getSceneNode());
+    _worldnode->addChild(_waterOrb->getSceneNode());
+    _worldnode->addChild(_grassOrb->getSceneNode());
     _worldnode->addChild(_player->getSceneNode());
     _worldnode->addChild(_swapStation->getSceneNode());
     _worldnode->addChild(_egg->getSceneNode());
@@ -243,12 +256,18 @@ void GameScene::update(float timestep) {
 
     _world->update(timestep);
     
-    if (_orbTest->getCollected()) {
-        std::random_device r;
-        std::default_random_engine e1(r());
-        std::uniform_int_distribution<int> rand_int(1, 31);
-        std::uniform_int_distribution<int> rand_int2(1, 17);
-        _orbTest->setPosition(rand_int(e1), rand_int2(e1));
+    if (_fireOrb->getCollected()) {
+        _fireOrb->respawn();
+        _score += 1;
+    }
+    
+    if (_waterOrb->getCollected()) {
+        _waterOrb->respawn();
+        _score += 1;
+    }
+    
+    if (_grassOrb->getCollected()) {
+        _grassOrb->respawn();
         _score += 1;
     }
     
@@ -273,7 +292,9 @@ void GameScene::update(float timestep) {
         }
     }
     
-    _orbTest->setCollected(false);
+    _fireOrb->setCollected(false);
+    _waterOrb->setCollected(false);
+    _grassOrb->setCollected(false);
     _scoreHUD->setText(updateScoreText(_score));
     
     
