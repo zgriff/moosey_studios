@@ -30,7 +30,7 @@ namespace NetworkController {
         _isHost = false;
         NetworkController::roomId = roomId;
         CULog("REACHED JOIN");
-        CULog(roomId.c_str());
+        CULog("%s", roomId.c_str());
         CULog("num players %d", network->getNumPlayers());
         CULog("total players %d", network->getTotalPlayers());
     }
