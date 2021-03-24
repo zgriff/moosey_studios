@@ -50,10 +50,10 @@ void write32(std::vector<uint8_t> & buffer, uint32_t data){
     ui32_to_ui8 u;
     u.ui32 = data;
     //TODO: Check that this is the right order
-    writeBits(buffer, u.ui8[0], 8);
-    writeBits(buffer, u.ui8[1], 8);
-    writeBits(buffer, u.ui8[2], 8);
     writeBits(buffer, u.ui8[3], 8);
+    writeBits(buffer, u.ui8[2], 8);
+    writeBits(buffer, u.ui8[1], 8);
+    writeBits(buffer, u.ui8[0], 8);
 }
 
 void writeFloat(std::vector<uint8_t> & buffer, float data){
