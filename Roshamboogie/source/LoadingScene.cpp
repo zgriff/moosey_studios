@@ -8,6 +8,7 @@
 
 #include "LoadingScene.h"
 #include "NetworkController.h"
+#include <time.h>
 
 using namespace cugl;
 
@@ -73,8 +74,15 @@ bool LoadingScene::init(const std::shared_ptr<AssetManager>& assets) {
         });
     _field->addExitListener([=](const std::string& name, const std::string& value) {
         CULog("Finish to %s", value.c_str());
-        NetworkController::joinGame(value.c_str());
-        this->_active = false;
+        NetworkController::joinGame(value);
+        //this->_active = false;
+        clock_t oldTime = clock();
+        while (clock() - oldTime < 2 * CLOCKS_PER_SEC) {
+            NetworkController::step();
+        }
+        if (NetworkController::getNumPlayers() > 1) {
+            this->_active = false;
+        }
         });
     Input::activate<TextInput>();
     _field->setVisible(false);
