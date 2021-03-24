@@ -14,7 +14,10 @@ namespace NetworkController {
 
     std::string getRoomId();
 
+    uint8_t getNumPlayers();
+
     void step();
+
 };
 
 #endif

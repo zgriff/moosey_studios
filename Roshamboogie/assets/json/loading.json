@@ -145,7 +145,7 @@
                             "type": "TextField",
                             "data": {
                                 "font": "retro",
-                                "text": "Edit me",
+                                "text": "",
                                 "foreground": [ 255, 255, 255, 255 ],
                                 "background": [ 0, 0, 0, 255 ],
                                 "size": [ 600, 80 ],
@@ -155,7 +155,7 @@
                                 "x_anchor": "center",
                                 "y_anchor": "top",
                                 "y_offset": -0.8,
-                                "x_offset":  -0.1
+                                "x_offset": -0.1
                             }
                         }
                     }

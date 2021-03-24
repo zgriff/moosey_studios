@@ -20,6 +20,7 @@ namespace NetworkController {
         network =
             std::make_shared<cugl::CUNetworkConnection>(
                 cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, 6, 0));
+        CULog("REACHED CREATE");
         _isHost = true;
     }
 
@@ -27,6 +28,11 @@ namespace NetworkController {
         network =
             std::make_shared<cugl::CUNetworkConnection>(cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, 6, 0), roomId);
         _isHost = false;
+        NetworkController::roomId = roomId;
+        CULog("REACHED JOIN");
+        CULog(roomId.c_str());
+        CULog("num players %d", network->getNumPlayers());
+        CULog("total players %d", network->getTotalPlayers());
     }
 
     bool isHost(){
@@ -34,9 +40,15 @@ namespace NetworkController {
     }
 
     std::string getRoomId() {
-        roomId = network->getRoomID();
-        CULog("Room ID %s", roomId.c_str());
+        if (roomId == "") {
+            roomId = network->getRoomID();
+        }
+        //CULog("Room ID is: %s", roomId.c_str());
         return roomId;
+    }
+
+    uint8_t getNumPlayers() {
+        return network->getNumPlayers();
     }
 
     void step() {

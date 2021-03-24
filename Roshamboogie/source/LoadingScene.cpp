@@ -8,6 +8,7 @@
 
 #include "LoadingScene.h"
 #include "NetworkController.h"
+#include <time.h>
 
 using namespace cugl;
 
@@ -63,7 +64,8 @@ bool LoadingScene::init(const std::shared_ptr<AssetManager>& assets) {
     _button2->addListener([=](const std::string& name, bool down) {
         _host = false;
         _field->setVisible(true);
-        _button->setVisible(false);
+        _field->activate();
+        _button->dispose();
         });
 
     _field = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("load_textfield_action"));
@@ -72,11 +74,17 @@ bool LoadingScene::init(const std::shared_ptr<AssetManager>& assets) {
         });
     _field->addExitListener([=](const std::string& name, const std::string& value) {
         CULog("Finish to %s", value.c_str());
-        NetworkController::joinGame(value.c_str());
-        this->_active = false;
+        NetworkController::joinGame(value);
+        //this->_active = false;
+        clock_t oldTime = clock();
+        while (clock() - oldTime < 2 * CLOCKS_PER_SEC) {
+            NetworkController::step();
+        }
+        if (NetworkController::getNumPlayers() > 1) {
+            this->_active = false;
+        }
         });
     Input::activate<TextInput>();
-    _field->activate();
     _field->setVisible(false);
 
     Application::get()->setClearColor(Color4(192,192,192,255));
