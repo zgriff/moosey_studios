@@ -13,12 +13,12 @@
 #include "Element.h"
 #include "NetworkController.h"
 #include "NetworkData.h"
+#include "CollisionController.h"
 
 #include <cugl/cugl.h>
 #include <iostream>
 #include <sstream>
 #include <cmath>
-#include <random>
 
 using namespace cugl;
 using namespace std;
@@ -27,11 +27,11 @@ using namespace std;
 #pragma mark Level Layout
 
 /** Regardless of logo, lock the height to this */
-#define SCENE_WIDTH 1024
+#define SCENE_WIDTH 1440
 #define SCENE_HEIGHT 720
 
 /** Width of the game world in Box2d units */
-#define DEFAULT_WIDTH   32.0f
+#define DEFAULT_WIDTH   36.0f
 /** Height of the game world in Box2d units */
 #define DEFAULT_HEIGHT  18.0f
 
@@ -40,16 +40,28 @@ float PLAYER_POS[] = {24,  4};
 
 #define WALL_VERTS  8
 #define WALL_COUNT  4
+// Left/Right wall padding
+#define LR_PADDING  0.5f
+// Top/Bottom wall padding
+#define TB_PADDING  1.0f
 
 float WALL[WALL_COUNT][WALL_VERTS] = {
-    {0.0f, 0.0f, 1.0f, 0.0f,  1.0f, 18.0f,
-    0.0f,  18.0f},
-    {1.0f, 0.0f, 31.0f,  0.0f, 31.0f,  1.0f,
-    1.0f, 1.0f},
-    {31.0f, 0.0f, 32.0f,  0.0f, 32.0f,  18.0f,
-    31.0f, 18.0f},
-    {1.0f, 17.0f, 31.0f,  17.0f, 31.0f,  18.0f,
-    1.0f, 18.0f}
+    {0.0f, 0.0f,
+        LR_PADDING, 0.0f,
+        LR_PADDING, DEFAULT_HEIGHT,
+        0.0f,  DEFAULT_HEIGHT},
+    {LR_PADDING, 0.0f,
+        DEFAULT_WIDTH-LR_PADDING,  0.0f,
+        DEFAULT_WIDTH-LR_PADDING,  TB_PADDING,
+        LR_PADDING, TB_PADDING},
+    {DEFAULT_WIDTH-LR_PADDING, 0.0f,
+        DEFAULT_WIDTH,  0.0f,
+        DEFAULT_WIDTH,  DEFAULT_HEIGHT,
+        DEFAULT_WIDTH-LR_PADDING, DEFAULT_HEIGHT},
+    {LR_PADDING, DEFAULT_HEIGHT-TB_PADDING,
+        DEFAULT_WIDTH-LR_PADDING, DEFAULT_HEIGHT-TB_PADDING,
+        DEFAULT_WIDTH-LR_PADDING,  DEFAULT_HEIGHT,
+        LR_PADDING, DEFAULT_HEIGHT}
 };
 
 #define BASIC_DENSITY   0.0f
@@ -92,14 +104,24 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     scene->setContentSize(dimen);
     scene->doLayout(); // Repositions the HUD;
 
+    _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("lab_hud"));
+    
+    _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("lab_bar"));
+    _hatchbar->setVisible(false);
+    
+    _hatchnode = scene2::Label::alloc("Egg Hatched!", _assets->get<Font>("retro"));
+    _hatchnode->setAnchor(Vec2::ANCHOR_CENTER);
+    _hatchnode->setPosition(250,dimen.height - 100);
+    _hatchnode->setForeground(Color4::YELLOW);
+    _hatchnode->setVisible(false);
     
     _world = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
     _world->activateCollisionCallbacks(true);
     _world->onBeginContact = [this](b2Contact* contact) {
-        beginContact(contact);
+        CollisionController::beginContact(contact);
     };
     _world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
-        beforeSolve(contact,oldManifold);
+        CollisionController::beforeSolve(contact,oldManifold);
     };
     _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
     Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
@@ -112,6 +134,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _worldnode->setPosition(offset);
     addChild(scene);
     addChild(_worldnode);
+    addChild(_hatchnode);
     reset();
     return true;
 }
@@ -124,6 +147,9 @@ void GameScene::dispose() {
         removeAllChildren();
         _world = nullptr;
         _worldnode = nullptr;
+        _scoreHUD = nullptr;
+        _hatchnode = nullptr;
+        _hatchbar = nullptr;
         _active = false;
         Scene2::dispose();
     }
@@ -142,11 +168,13 @@ void GameScene::reset() {
     
     auto shipTexture = _assets->get<Texture>("rocket");
     auto orbTexture = _assets->get<Texture>("photon");
+    auto swapStTexture = _assets->get<Texture>("swapstation");
+    auto eggTexture = _assets->get<Texture>("target");
 
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size playerSize(shipTexture->getSize()/_scale);
-    _player = Player::alloc(playerPos, playerSize);
-    _player2 = Player::alloc(playerPos, playerSize);
+    _player = Player::alloc(playerPos, playerSize, Element::Water);
+    _player2 = Player::alloc(playerPos, playerSize, Element::Water);
     _world->addObstacle(_player);
     _player->setTextures(shipTexture);
     _player->setID(0);
@@ -157,16 +185,48 @@ void GameScene::reset() {
     _player2->setID(1);
     _player2->setDrawScale(_scale);
     
-    _orbTest = Orb::alloc(Element::Fire);
-    _world->addObstacle(_orbTest);
-    _orbTest->setTextures(orbTexture);
-    _orbTest->setDrawScale(_scale);
+    //creating the three orbs
+    _fireOrb = Orb::alloc(Vec2(4,4), Element::Fire);
+    _world->addObstacle(_fireOrb);
+    _fireOrb->setTextures(orbTexture);
+    _fireOrb->setDrawScale(_scale);
+    
+    _waterOrb = Orb::alloc(Vec2(20,8), Element::Water);
+    _world->addObstacle(_waterOrb);
+    _waterOrb->setTextures(orbTexture);
+    _waterOrb->setDrawScale(_scale);
+    
+    _grassOrb = Orb::alloc(Vec2(10,12), Element::Grass);
+    _world->addObstacle(_grassOrb);
+    _grassOrb->setTextures(orbTexture);
+    _grassOrb->setDrawScale(_scale);
+    
+    
+    Vec2 swapStPos = Vec2(8,8);
+    Size swapStSize(swapStTexture->getSize() / _scale);
+    _swapStation = SwapStation::alloc(swapStPos, swapStSize);
+    _world->addObstacle(_swapStation);
+    _swapStation->setTextures(swapStTexture);
+    _swapStation->setDrawScale(_scale);
+    _swapStation->setActive(true);
+    
+    Vec2 eggPos = Vec2(14,14);
+    Size eggSize(eggTexture->getSize() / _scale);
+    _egg = Egg::alloc(eggPos, eggSize);
+    _world->addObstacle(_egg);
+    _egg->setTextures(eggTexture);
+    _egg->setDrawScale(_scale);
+    _egg->setActive(true);
     
     populate();
     
-    _worldnode->addChild(_orbTest->getSceneNode());
+    _worldnode->addChild(_fireOrb->getSceneNode());
+    _worldnode->addChild(_waterOrb->getSceneNode());
+    _worldnode->addChild(_grassOrb->getSceneNode());
     _worldnode->addChild(_player->getSceneNode());
     _worldnode->addChild(_player2->getSceneNode());
+    _worldnode->addChild(_swapStation->getSceneNode());
+    _worldnode->addChild(_egg->getSceneNode());
 }
 
 void GameScene::update(float timestep) {
@@ -218,17 +278,60 @@ void GameScene::update(float timestep) {
     
 
     _world->update(timestep);
-    if(NetworkController::isHost()){
-        if (orbShouldMove) {
-            std::random_device r;
-            std::default_random_engine e1(r());
-            std::uniform_int_distribution<int> rand_int(1, 31);
-            std::uniform_int_distribution<int> rand_int2(1, 17);
-            _orbTest->setPosition(rand_int(e1), rand_int2(e1));
-        }
+//    if(NetworkController::isHost()){
+//        if (orbShouldMove) {
+//            std::random_device r;
+//            std::default_random_engine e1(r());
+//            std::uniform_int_distribution<int> rand_int(1, 31);
+//            std::uniform_int_distribution<int> rand_int2(1, 17);
+//            _orbTest->setPosition(rand_int(e1), rand_int2(e1));
+//        }
+//
+//        orbShouldMove = false;
+//    }
 
-        orbShouldMove = false;
+    
+    if (_fireOrb->getCollected()) {
+        _fireOrb->respawn();
+        _score += 1;
     }
+    
+    if (_waterOrb->getCollected()) {
+        _waterOrb->respawn();
+        _score += 1;
+    }
+    
+    if (_grassOrb->getCollected()) {
+        _grassOrb->respawn();
+        _score += 1;
+    }
+    
+    //egg hatch logic
+    if (_egg->getCollected() && _egg->getHatched() == false) {
+        _egg->setPosition(_player->getPosition());
+        _hatchbar->setVisible(true);
+        _hatchbar->setProgress(_egg->getDistanceWalked()/80);
+        Vec2 diff = _player->getPosition() - _egg->getInitPos();
+        float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
+        _egg->incDistanceWalked(dist);
+        _egg->setInitPos(_player->getPosition());
+        if (_egg->getDistanceWalked() >= 80) {
+            _hatchbar->dispose();
+            _egg->setHatched(true);
+            _egg->dispose();
+//            _egg->setCollected(false);
+            _score += 10;
+            _player->setElement(_player->getPrevElement());
+            _hatchnode->setVisible(true);
+            CULog("hatched");
+        }
+    }
+    
+    _fireOrb->setCollected(false);
+    _waterOrb->setCollected(false);
+    _grassOrb->setCollected(false);
+    _scoreHUD->setText(updateScoreText(_score));
+    
     //send new position
     ND::NetworkData nd;
     nd.packetType = ND::NetworkData::PacketType::CLIENT_PACKET;
@@ -245,7 +348,6 @@ void GameScene::update(float timestep) {
 //    std::cout << endl << "-----------------------" << endl;
        
     NetworkController::send(bytes);
-    
 }
 
 void GameScene::populate() {
@@ -325,23 +427,8 @@ Size GameScene::computeActiveSize() const {
     return dimen;
 }
 
-void GameScene::beginContact(b2Contact* contact){
-    b2Fixture * fixA = contact->GetFixtureA();
-    b2Body * bodyA = fixA->GetBody();
-    b2Fixture * fixB = contact->GetFixtureB();
-    b2Body * bodyB = fixB->GetBody();
-    
-    cugl::physics2::Obstacle* bd1 = (cugl::physics2::Obstacle*) bodyA->GetUserData();
-    cugl::physics2::Obstacle* bd2 = (cugl::physics2::Obstacle*) bodyB->GetUserData();
-    
-    if(bd1->getName() == "orb" && bd2->getName() == "player"){
-//        ((Player *) bd2)->
-        orbShouldMove = true;
-    }else if(bd2->getName() == "orb" && bd1->getName() == "player"){
-        orbShouldMove = true;
-    }
-}
-
-void GameScene::beforeSolve(b2Contact* contact, const b2Manifold* oldManifold){
-    
+std::string GameScene::updateScoreText(const int score) {
+    stringstream ss;
+    ss << "Score: " << score;
+    return ss.str();
 }

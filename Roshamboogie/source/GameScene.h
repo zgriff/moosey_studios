@@ -11,9 +11,12 @@
 #include <cugl/cugl.h>
 #include <vector>
 #include "InputController.h"
+#include "CollisionController.h"
 #include "Player.h"
 #include "Orb.h"
 #include "NetworkController.h"
+#include "SwapStation.h"
+#include "Egg.h"
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
@@ -27,6 +30,11 @@ protected:
     std::shared_ptr<cugl::scene2::SceneNode> _worldnode;
     /** The Box2D world */
     std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
+    
+    std::shared_ptr<cugl::scene2::Label> _hatchnode;
+    
+    std::shared_ptr<cugl::scene2::ProgressBar>  _hatchbar;
+    
     /** The scale between the physics world and the screen (MUST BE UNIFORM) */
     float _scale;
 
@@ -48,11 +56,25 @@ protected:
     /** Location and animation information for player (MODEL CLASS) */
     std::shared_ptr<Player> _player;
     std::shared_ptr<Player> _player2;
-    std::shared_ptr<Orb> _orbTest;
+    
+    std::shared_ptr<Orb> _fireOrb;
+    std::shared_ptr<Orb> _waterOrb;
+    std::shared_ptr<Orb> _grassOrb;
+    
+    std::shared_ptr<SwapStation> _swapStation;
+    
+    std::shared_ptr<Egg> _egg;
+    
+    std::shared_ptr<cugl::scene2::Label> _scoreHUD;
+    
+    int _score = 0;
+    
     
     /** The weapon fire sound for the blue player */
 //    std::shared_ptr<cugl::Sound> _blueSound;
-    bool orbShouldMove = false;
+    bool swap = false;
+    
+    std::string updateScoreText(const int score);
     
 public:
 #pragma mark -
@@ -156,12 +178,6 @@ public:
     cugl::Size computeActiveSize() const;
     
     void moveOrb(Orb* orb);
-    
-#pragma mark -
-#pragma mark Collision Handling
-    void beginContact(b2Contact* contact);
-
-    void beforeSolve(b2Contact* contact, const b2Manifold* oldManifold);
 
 };
 
