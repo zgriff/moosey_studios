@@ -18,6 +18,7 @@ uint64_t scratch;
 int scratch_bits;
 //reading
 int byte_arr_index;
+//should always be between 0 and 7 inclusive
 int byte_offset;
 
 
@@ -63,15 +64,37 @@ void flush(std::vector<uint8_t> & buffer){
     scratch_bits = 0;
 }
 
-readBits(const std::vector<uint8_t>& bytes, int numBits){
-    uint32_t read;
-//    bytes[byte_arr_index]
+//numBits must be between 1 and 32 inclusive
+uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
+    uint32_t read = 0;
+    int bits_read = 0;
+    while(numBits > 0){
+        read <<= bits_read;
+        uint8_t cur = bytes[byte_arr_index];
+        cur >>= byte_offset;
+        if(numBits >= (8 - byte_offset)){
+            read |= cur;
+            byte_offset = 0;
+            ++byte_arr_index;
+            numBits -= (8 - byte_offset);
+            bits_read += 8 - byte_offset;
+        }else{
+            uint8_t mask = 0; //TODO: fix
+            read |= (cur & mask);
+            byte_offset += numBits;
+            numBits = 0;
+        }
+    }
+    return read;
 }
 
 
-readVec2(const std::vector<uint8_t>& bytes){
-    readBits(bytes, 32);
-    readBits(bytes, 32);
+cugl::Vec2 readVec2(const std::vector<uint8_t>& bytes){
+    uint32_t _x = readBits(bytes, 32);
+    uint32_t _y = readBits(bytes, 32);
+    float x = static_cast<float>(_x);
+    float y = static_cast<float>(_y);
+    return cugl::Vec2(x, y);
 }
 
 
@@ -79,6 +102,8 @@ readVec2(const std::vector<uint8_t>& bytes){
 //convert the bytes to a NetworkData struct, putting the result in dest
 //returns true on success, false on failure (if data is corrupted)
 bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
+    byte_arr_index = 0;
+    byte_offset = 0;
     dest.packetType = readBits(bytes, TYPE_BITS);
     switch(dest.packetType){
         case NetworkData::WORLD_DATA:
@@ -93,7 +118,7 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
             dest.clientData.playerPos = readVec2(bytes);
             dest.clientData.playerVelocity = readVec2(bytes);
             dest.clientData.playerId = readBits(bytes, 8);
-            break
+            break;
         default:
             return false;
     }
