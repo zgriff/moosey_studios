@@ -236,11 +236,11 @@ void GameScene::update(float timestep) {
     _roomIdHUD->setText(currRoomId);*/
 //    NetworkController::step();
     NetworkController::receive([&](const std::vector<uint8_t> msg) {
-        ND::NetworkData nd;
+        ND::NetworkData nd{};
         ND::fromBytes(nd, msg);
-        if(nd.packetType == ND::NetworkData::CLIENT_PACKET){
-            _player2->setPosition(nd.clientData.playerPos_x, nd.clientData.playerPos_y);
-            _player2->setLinearVelocity(nd.clientData.playerVel_x, nd.clientData.playerVel_y);
+        if(nd.packetType == ND::NetworkData::POSITION_PACKET){
+            _player2->setPosition(nd.positionData.playerPos);
+            _player2->setLinearVelocity(nd.positionData.playerVelocity);
         }
     });
     if (_currRoomId == "") {
@@ -340,20 +340,13 @@ void GameScene::update(float timestep) {
     _scoreHUD->setText(updateScoreText(_score));
     
     //send new position
-    ND::NetworkData nd;
-    nd.packetType = ND::NetworkData::PacketType::CLIENT_PACKET;
-    nd.clientData.playerPos_x = _player->getPosition().x;
-    nd.clientData.playerPos_y = _player->getPosition().y;
-    nd.clientData.playerVel_x = _player->getLinearVelocity().x;
-    nd.clientData.playerVel_y = _player->getLinearVelocity().y;
+    ND::NetworkData nd{};
+    nd.packetType = ND::NetworkData::PacketType::POSITION_PACKET;
+    nd.positionData.playerPos = _player->getPosition();
+    nd.positionData.playerVelocity = _player->getLinearVelocity();
+    nd.positionData.playerId = 0; //TODO: change
     std::vector<uint8_t> bytes;
     ND::toBytes(bytes, nd);
-//    for(int i=0; i < bytes.size(); i++){
-//        int tmp = bytes.at(i);
-//        std::cout << tmp << ' ';
-//    }
-//    std::cout << endl << "-----------------------" << endl;
-       
     NetworkController::send(bytes);
 }
 

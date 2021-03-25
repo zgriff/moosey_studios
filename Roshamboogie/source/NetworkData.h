@@ -14,51 +14,33 @@
 #include "Globals.h"
 
 namespace ND{
-struct PlayerData {
-//    Element e;
-    int score;
-    int playerId; //could get rid of this
-    bool isHoldingEgg;
-    int powerLevel;
-    bool wasTagged;
-};
-
-struct SwapStationData {
-    int id;
-    int cooldown;
-};
-
-struct OrbData {
-    cugl::Vec2 orbPos;
-};
 
 struct NetworkData {
-    enum PacketType {WORLD_DATA, HOST_PACKET, CLIENT_PACKET};
+    enum PacketType {PLAYER_PACKET, ORB_PACKET, SWAP_PACKET, POSITION_PACKET};
     uint8_t packetType;
     union {
         struct {
-            int map;
-            uint8_t num_players;
-            uint8_t num_swaps;
-            uint8_t num_eggs;
-        } worldData;
-//        struct {
-//            cugl::Vec2 hostPos = cugl::Vec2();
-//            cugl::Vec2 hostVelocity = cugl::Vec2();
-//            uint8_t num_players;
-//            PlayerData players[globals::MAX_PLAYERS]; //TODO change to exact number of players if possible
-//            SwapStationData swapData[globals::MAX_SWAP_STATIONS];
-//            OrbData orbData[globals::MAX_ORBS];
-//        } hostData;
+            int playerId;
+            Element e;
+//            int score;
+            bool isHoldingEgg;
+//            int powerLevel;
+//            bool wasTagged;
+        } playerData;
         struct {
-//            cugl::Vec2 playerPos;
-//            cugl::Vec2 playerVelocity;
-            float playerPos_x;
-            float playerPos_y;
-            float playerVel_x;
-            float playerVel_y;
+            int id;
+            bool isCaptured;
+            cugl::Vec2 orbPos;
+        } orbData;
+        struct {
+            int id;
+            bool isOnCooldown;
+        } swapData;
+        struct {
+            cugl::Vec2 playerPos;
+            cugl::Vec2 playerVelocity;
             uint8_t playerId;
-        } clientData;
+        } positionData;
     };
     
 };

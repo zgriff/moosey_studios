@@ -46,6 +46,9 @@ void Orb::setElement() {
         case Element::Water:
             _sceneNode->setColor(Color4(0, 0, 255));
             break;
+        case Element::None:
+            _sceneNode->setColor(Color4(255,255,255));
+            break;
     }
 }
 
