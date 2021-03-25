@@ -36,6 +36,9 @@ protected:
     
     std::shared_ptr<cugl::scene2::ProgressBar>  _hatchbar;
     
+    /** Reference to the debug root of the scene graph */
+    std::shared_ptr<cugl::scene2::SceneNode> _debugnode;
+    
     /** The scale between the physics world and the screen (MUST BE UNIFORM) */
     float _scale;
 
@@ -45,6 +48,8 @@ protected:
     clock_t _hatchTextTimer = CLOCKS_PER_SEC;
     clock_t _hatchedTime;
     
+    /** Whether or not debug mode is active */
+    bool _debug;
     /**
      * Activates the UI elements to make them interactive
      *
@@ -79,6 +84,18 @@ protected:
     bool swap = false;
     
     std::string updateScoreText(const int score);
+    
+    bool isDebug( ) const { return _debug; }
+    
+    /**
+     * Sets whether debug mode is active.
+     *
+     * If true, all objects will display their physics bodies.
+     *
+     * @param value whether debug mode is active.
+     */
+    void setDebug(bool value) { _debug = value; _debugnode->setVisible(value); }
+
     
 public:
 #pragma mark -

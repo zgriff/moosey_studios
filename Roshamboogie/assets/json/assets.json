@@ -9,6 +9,9 @@
         "ship": {
             "file": "textures/ships.png"
         },
+        "player": {
+            "file": "textures/player.png"
+        },
         "rocket": {
             "file": "textures/rocket.png"
         },
