@@ -103,6 +103,8 @@ void LoadingScene::dispose() {
         _button->deactivate();
     }
     _button = nullptr;
+    _button2 = nullptr;
+    _field = nullptr;
     _brand = nullptr;
     _bar = nullptr;
     _assets = nullptr;
