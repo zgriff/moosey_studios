@@ -13,6 +13,9 @@
 		288216542605A90E0073F7D4 /* NetworkData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216522605A90E0073F7D4 /* NetworkData.cpp */; };
 		288216552605A90E0073F7D4 /* NetworkData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216522605A90E0073F7D4 /* NetworkData.cpp */; };
 		288216562605A90E0073F7D4 /* NetworkData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216522605A90E0073F7D4 /* NetworkData.cpp */; };
+		28D048A725F59412005AB6CC /* CollisionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D048A525F59412005AB6CC /* CollisionController.cpp */; };
+		28D048A825F59412005AB6CC /* CollisionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D048A525F59412005AB6CC /* CollisionController.cpp */; };
+		28D048A925F59412005AB6CC /* CollisionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D048A525F59412005AB6CC /* CollisionController.cpp */; };
 		925FC4F625F42B2800532483 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4F525F42B2800532483 /* main.cpp */; };
 		925FC4F725F42B2800532483 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4F525F42B2800532483 /* main.cpp */; };
 		925FC4F825F42B2800532483 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC4F525F42B2800532483 /* main.cpp */; };
@@ -610,6 +613,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				288216562605A90E0073F7D4 /* NetworkData.cpp in Sources */,
+				28D048A925F59412005AB6CC /* CollisionController.cpp in Sources */,
 				925FC4F825F42B2800532483 /* main.cpp in Sources */,
 				2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */,
 				925FC53E25F42D5C00532483 /* OrbManager.cpp in Sources */,
@@ -630,6 +634,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				288216552605A90E0073F7D4 /* NetworkData.cpp in Sources */,
+				28D048A825F59412005AB6CC /* CollisionController.cpp in Sources */,
 				925FC4F725F42B2800532483 /* main.cpp in Sources */,
 				2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */,
 				925FC53D25F42D5C00532483 /* OrbManager.cpp in Sources */,
@@ -650,6 +655,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				288216542605A90E0073F7D4 /* NetworkData.cpp in Sources */,
+				28D048A725F59412005AB6CC /* CollisionController.cpp in Sources */,
 				925FC4F625F42B2800532483 /* main.cpp in Sources */,
 				2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */,
 				925FC53C25F42D5C00532483 /* OrbManager.cpp in Sources */,

@@ -16,6 +16,7 @@ using namespace cugl;
 #define DEFAULT_DENSITY 1.0f
 /** The friction of this rocket */
 #define DEFAULT_FRICTION 0.5f
+
 /** The restitution of this rocket */
 #define DEFAULT_RESTITUTION 0.4f
 /** The constant force applied to this rocket */

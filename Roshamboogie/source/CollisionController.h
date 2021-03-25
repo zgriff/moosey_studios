@@ -25,4 +25,5 @@ namespace CollisionController {
     void beforeSolve(b2Contact* contact, const b2Manifold* oldManifold);
 };
 
+
 #endif /* CollisionController_h */

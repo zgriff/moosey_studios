@@ -32,6 +32,13 @@ private:
     Movement _moveStyle;
 
 public:
+    cugl::Vec3 _tiltVec;
+        
+    cugl::Vec3 getTiltVec(){
+        return _tiltVec;
+    }
+
+
     /**
      * Creates a new input controller with the default settings
      *

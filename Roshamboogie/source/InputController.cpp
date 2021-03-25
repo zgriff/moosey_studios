@@ -38,12 +38,13 @@ _debugPressed(false) {
  */
 bool InputController::init() {
     bool success = true;
-    _moveStyle = Movement::SwipeForce;
+    _moveStyle = Movement::TiltMove;
         
         // Only process keyboard on desktop
 #ifndef CU_MOBILE
     success = Input::activate<Keyboard>();
 #else
+    success = Input::activate<Accelerometer>();
     Touchscreen* touch = Input::get<Touchscreen>();
     touch->addBeginListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
         this->touchBeganCB(event,focus);
@@ -59,6 +60,7 @@ void InputController::dispose() {
 #ifndef CU_MOBILE
         Input::deactivate<Keyboard>();
 #else
+        Input::deactivate<Accelerometer>();
         Touchscreen* touch = Input::get<Touchscreen>();
         touch->removeBeginListener(LISTENER_KEY);
         touch->removeEndListener(LISTENER_KEY);
@@ -84,6 +86,8 @@ void InputController::readInput() {
                 moveVec = Vec2::ZERO;
             }
             break;
+        case Movement::TiltMove:
+            _tiltVec = Input::get<Accelerometer>()->getAcceleration();
         default:
             if (_keydown) {
                 if (_dtouch.x < 640) {
@@ -98,7 +102,6 @@ void InputController::readInput() {
             }
             break;
     }
-
 #else
     // Figure out, based on which player we are, which keys
     // control our actions (depends on player).

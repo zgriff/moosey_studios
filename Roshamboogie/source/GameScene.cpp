@@ -323,6 +323,16 @@ void GameScene::update(float timestep) {
             #endif
             break;
         }
+        case Movement::TiltMove:{
+            #ifndef CU_MOBILE
+                _player->setLinearVelocity(_playerController.getMov() * 3);
+            #else
+                Vec3 tilt = _playerController.getTiltVec();
+                Vec2 moveVec(tilt.x, -tilt.y);
+                _player->setForce(moveVec * 50);
+                _player->applyForce();
+            #endif
+        }
         default:
             break;
     }

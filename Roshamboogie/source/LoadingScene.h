@@ -9,7 +9,6 @@
 #ifndef __LOADING_SCENE_H__
 #define __LOADING_SCENE_H__
 #include <cugl/cugl.h>
-#include <stdio.h>
 
 class LoadingScene : public cugl::Scene2 {
 protected:
