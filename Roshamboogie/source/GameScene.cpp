@@ -281,16 +281,15 @@ void GameScene::update(float timestep) {
     if (_playerController.didDebug()) { setDebug(!isDebug()); }
     
     _playerController.readInput();
-    auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
-    auto vel = _player->getLinearVelocity();
-    auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
-    auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .02f);
-    Vec2 moveVec = _playerController.getMoveVec();
     switch (_playerController.getMoveStyle()) {
-        case Movement::AlwaysForward:
+        case Movement::AlwaysForward: {
+            auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
             _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
             
+            auto vel = _player->getLinearVelocity();
+            auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
+            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .02f);
             _player->setLinearVelocity(vel.add(correction));
             if (_playerController.getMov().x == 0) {
                 //if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
@@ -312,14 +311,18 @@ void GameScene::update(float timestep) {
                 _player->setForce(forForce);
             }
             break;
-        case Movement::SwipeForce:
+        }
+        case Movement::SwipeForce:{
             #ifndef CU_MOBILE
                 _player->setLinearVelocity(_playerController.getMov() * 3);
             #else
-                _player->setForce(Vec2(moveVec.x,-moveVec.y) * 30);
+                Vec2 moveVec = _playerController.getMoveVec();
+                Vec2 _moveVec(moveVec.x, -moveVec.y);
+                _player->setForce(_moveVec * 30);
                 _player->applyForce();
             #endif
             break;
+        }
         default:
             break;
     }

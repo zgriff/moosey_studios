@@ -147,15 +147,14 @@ void InputController::touchBeganCB(const cugl::TouchEvent& event, bool focus) {
  */
 void InputController::touchEndedCB(const cugl::TouchEvent& event, bool focus) {
     // Gesture has ended.  Give it meaning.
-    Vec2 diff;
-    Uint64 t;
     switch (_moveStyle) {
-        case Movement::SwipeForce:
-            diff = event.position-_dtouch;
-            t = event.timestamp.ellapsedMillis(_timestamp);
+        case Movement::SwipeForce:{
+            Vec2 diff = event.position-_dtouch;
+            Uint64 t = event.timestamp.ellapsedMillis(_timestamp);
             moveVec = diff.normalize() * (1000.0/t);
             processed = false;
             break;
+        }
         default:
             _keydown = false;
             break;
