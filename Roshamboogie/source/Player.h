@@ -30,7 +30,7 @@ private:
     /** Reference to the node for the player */
     std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
     /** Reference to player's sprite for drawing */
-//    std::shared_ptr<cugl::scene2::AnimationNode> _playerNode;
+    std::shared_ptr<cugl::scene2::AnimationNode> _animationNode;
     /** Reference to the player texture */
     std::shared_ptr<cugl::Texture> _texture;
 

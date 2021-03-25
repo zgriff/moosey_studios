@@ -7,6 +7,8 @@
 //
 
 #include "LoadingScene.h"
+#include "NetworkController.h"
+#include <time.h>
 
 using namespace cugl;
 
@@ -53,9 +55,40 @@ bool LoadingScene::init(const std::shared_ptr<AssetManager>& assets) {
     _brand = assets->get<scene2::SceneNode>("load_name");
     _button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("load_play"));
     _button->addListener([=](const std::string& name, bool down) {
+        _host = true;
+        NetworkController::createGame();
+        _button2->dispose();
         this->_active = down;
     });
     
+    _button2 = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("load_logo"));
+    _button2->addListener([=](const std::string& name, bool down) {
+        _host = false;
+        _field->setVisible(true);
+        _field->activate();
+        _button->dispose();
+        });
+
+    _field = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("load_textfield_action"));
+    _field->addTypeListener([=](const std::string& name, const std::string& value) {
+        CULog("Change to %s", value.c_str());
+        });
+    _field->addExitListener([=](const std::string& name, const std::string& value) {
+        CULog("Finish to %s", value.c_str());
+        NetworkController::joinGame(value);
+        //this->_active = false;
+        clock_t oldTime = clock();
+        while (clock() - oldTime < 2 * CLOCKS_PER_SEC) {
+            NetworkController::step();
+        }
+        if (NetworkController::getNumPlayers() > 1) {
+            _button2->dispose();
+            this->_active = false;
+        }
+        });
+    Input::activate<TextInput>();
+    _field->setVisible(false);
+
     Application::get()->setClearColor(Color4(192,192,192,255));
     addChild(layer);
     return true;
@@ -95,6 +128,8 @@ void LoadingScene::update(float progress) {
             _brand->setVisible(false);
             _button->setVisible(true);
             _button->activate();
+            _button2->setVisible(true);
+            _button2->activate();
         }
         _bar->setProgress(_progress);
     }

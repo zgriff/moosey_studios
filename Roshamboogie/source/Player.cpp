@@ -19,8 +19,13 @@ using namespace cugl;
 /** The restitution of this rocket */
 #define DEFAULT_RESTITUTION 0.4f
 /** The constant force applied to this rocket */
-#define DEFAULT_FORCE Vec2(0.0f, 8.3f)
-
+#define DEFAULT_PLAYER_FORCE Vec2(0.0f, 8.3f)
+/** Number of rows in the player image filmstrip */
+#define PLAYER_ROWS       3
+/** Number of columns in this player image filmstrip */
+#define PLAYER_COLS       1
+/** Number of elements in this player image filmstrip */
+#define PLAYER_FRAMES     3
 
 /**
  * Sets the textures for this player.
@@ -29,12 +34,17 @@ using namespace cugl;
  */
 void Player::setTextures(const std::shared_ptr<Texture>& player) {
 
-    _sceneNode = scene2::PolygonNode::allocWithTexture(player);
+    _sceneNode = scene2::PolygonNode::alloc();
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _animationNode = scene2::AnimationNode::alloc(player, PLAYER_ROWS, PLAYER_COLS, PLAYER_FRAMES);
+    _animationNode->setAnchor(Vec2::ANCHOR_CENTER);
+//    _animationNode->setFrame(0);
+    _animationNode->setPosition(0,0);
+    _sceneNode->addChild(_animationNode);
     _texture = player;
     setElement(currElt);
     _body->SetUserData(this);
-//
+
 }
 
 
@@ -42,15 +52,18 @@ void Player::setElement(Element e){
     prevElt = currElt;
     currElt = e;
     
-    switch(e){ //TODO: change to texture when assets made
+    switch(e){ 
         case Element::Grass:
-            _sceneNode->setColor(Color4(0, 255, 0));
+            _animationNode->setFrame(2);
+            _sceneNode->setColor(Color4(255, 255, 255));
             break;
         case Element::Fire:
-            _sceneNode->setColor(Color4(255, 0, 0));
+            _animationNode->setFrame(0);
+            _sceneNode->setColor(Color4(255, 255, 255));
             break;
         case Element::Water:
-            _sceneNode->setColor(Color4(0, 0, 255));
+            _animationNode->setFrame(1);
+            _sceneNode->setColor(Color4(255, 255, 255));
             break;
         case Element::None:
             _sceneNode->setColor(Color4(0, 0, 0));
@@ -78,6 +91,7 @@ Element Player::getPreyElement() {
 void Player::dispose() {
     // Garbage collect
     _sceneNode = nullptr;
+    _animationNode = nullptr;
     _texture = nullptr;
 }
 
@@ -94,14 +108,14 @@ void Player::dispose() {
  * @return true if the initialization was successful
  */
 bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
-    if(physics2::BoxObstacle::init(pos,size)){
+    if(physics2::BoxObstacle::init(pos,size*2)){
         std::string name("player");
         setName(name);
         setDensity(DEFAULT_DENSITY);
         setFriction(DEFAULT_FRICTION);
         setRestitution(DEFAULT_RESTITUTION);
         setFixedRotation(true);
-        setForce(DEFAULT_FORCE);
+        setForce(DEFAULT_PLAYER_FORCE);
         currElt = elt;
         prevElt = elt;
         _sceneNode = nullptr;

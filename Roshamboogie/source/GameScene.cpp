@@ -11,6 +11,8 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
 #include "Element.h"
+#include "NetworkController.h"
+#include "NetworkData.h"
 #include "CollisionController.h"
 
 #include <cugl/cugl.h>
@@ -34,7 +36,7 @@ using namespace std;
 #define DEFAULT_HEIGHT  18.0f
 
 /** The initial rocket position */
-float PLAYER_POS[] = {24,  4};
+float PLAYER_POS[] = {10,  4};
 
 #define WALL_VERTS  8
 #define WALL_COUNT  4
@@ -98,20 +100,24 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _playerController.init();
     
     // Acquire the scene built by the asset loader and resize it the scene
-    std::shared_ptr<scene2::SceneNode> scene = _assets->get<scene2::SceneNode>("lab");
-    scene->setContentSize(dimen);
-    scene->doLayout(); // Repositions the HUD;
-
-    _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("lab_hud"));
+    auto scene_background = _assets->get<scene2::SceneNode>("background");
+    scene_background->setContentSize(dimen);
+    scene_background->doLayout(); // Repositions the HUD;
     
-    _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("lab_bar"));
+    auto scene_ui = _assets->get<scene2::SceneNode>("ui");
+    scene_ui->setContentSize(dimen);
+    scene_ui->doLayout(); // Repositions the HUD;
+
+    _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
+    
+    _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
+//    CULog("Hatchbar: %s", _hatchbar->get);
     _hatchbar->setVisible(false);
     
-    _hatchnode = scene2::Label::alloc("Egg Hatched!", _assets->get<Font>("retro"));
-    _hatchnode->setAnchor(Vec2::ANCHOR_CENTER);
-    _hatchnode->setPosition(250,dimen.height - 100);
-    _hatchnode->setForeground(Color4::YELLOW);
+    _hatchnode = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_hatched"));
     _hatchnode->setVisible(false);
+    
+    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
     
     _world = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
     _world->activateCollisionCallbacks(true);
@@ -128,9 +134,16 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _worldnode = scene2::SceneNode::alloc();
     _worldnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
     _worldnode->setPosition(offset);
-    addChild(scene);
+    
+    _debugnode = scene2::SceneNode::alloc();
+    _debugnode->setScale(_scale); // Debug node draws in PHYSICS coordinates
+    _debugnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
+    _debugnode->setPosition(offset);
+    
+    addChild(scene_background);
     addChild(_worldnode);
-    addChild(_hatchnode);
+    addChild(_debugnode);
+    addChild(scene_ui);
     reset();
     return true;
 }
@@ -143,10 +156,12 @@ void GameScene::dispose() {
         removeAllChildren();
         _world = nullptr;
         _worldnode = nullptr;
+        _debugnode = nullptr;
         _scoreHUD = nullptr;
         _hatchnode = nullptr;
         _hatchbar = nullptr;
         _active = false;
+        _debug = false;
         Scene2::dispose();
     }
 }
@@ -160,37 +175,55 @@ void GameScene::dispose() {
 void GameScene::reset() {
     _world->clear();
     _worldnode->removeAllChildren();
+    _debugnode->removeAllChildren();
 //    auto root = getChild(0);
     
-    auto shipTexture = _assets->get<Texture>("rocket");
+    auto playerTexture = _assets->get<Texture>("player");
     auto orbTexture = _assets->get<Texture>("photon");
     auto swapStTexture = _assets->get<Texture>("swapstation");
     auto eggTexture = _assets->get<Texture>("target");
 
     Vec2 playerPos = ((Vec2)PLAYER_POS);
-    Size playerSize(shipTexture->getSize()/_scale);
+    Size textureSize = playerTexture->getSize();
+//    Size playerSize((textureSize.getIHeight())/_scale, (textureSize.getIWidth())/_scale);
+    Size playerSize(0.5,1); //TODO: manually setting the collision box but fix
     _player = Player::alloc(playerPos, playerSize, Element::Water);
+    _player2 = Player::alloc(playerPos, playerSize, Element::Water);
     _world->addObstacle(_player);
-    _player->setTextures(shipTexture);
+    _player->setTextures(playerTexture);
+    _player->setDebugColor(Color4::YELLOW);
+    _player->setDebugScene(_debugnode);
     _player->setID(0);
     _player->setDrawScale(_scale);
     _playerController.init();
+    _world->addObstacle(_player2);
+    _player2->setTextures(playerTexture);
+    _player2->setID(1);
+    _player2->setDrawScale(_scale);
+    _player2->setDebugColor(Color4::YELLOW);
+    _player2->setDebugScene(_debugnode);
     
     //creating the three orbs
     _fireOrb = Orb::alloc(Vec2(4,4), Element::Fire);
     _world->addObstacle(_fireOrb);
     _fireOrb->setTextures(orbTexture);
     _fireOrb->setDrawScale(_scale);
+    _fireOrb->setDebugColor(Color4::YELLOW);
+    _fireOrb->setDebugScene(_debugnode);
     
     _waterOrb = Orb::alloc(Vec2(20,8), Element::Water);
     _world->addObstacle(_waterOrb);
     _waterOrb->setTextures(orbTexture);
     _waterOrb->setDrawScale(_scale);
+    _waterOrb->setDebugColor(Color4::YELLOW);
+    _waterOrb->setDebugScene(_debugnode);
     
     _grassOrb = Orb::alloc(Vec2(10,12), Element::Grass);
     _world->addObstacle(_grassOrb);
     _grassOrb->setTextures(orbTexture);
     _grassOrb->setDrawScale(_scale);
+    _grassOrb->setDebugColor(Color4::YELLOW);
+    _grassOrb->setDebugScene(_debugnode);
     
     
     Vec2 swapStPos = Vec2(8,8);
@@ -200,6 +233,8 @@ void GameScene::reset() {
     _swapStation->setTextures(swapStTexture);
     _swapStation->setDrawScale(_scale);
     _swapStation->setActive(true);
+    _swapStation->setDebugColor(Color4::YELLOW);
+    _swapStation->setDebugScene(_debugnode);
     
     Vec2 eggPos = Vec2(14,14);
     Size eggSize(eggTexture->getSize() / _scale);
@@ -208,6 +243,8 @@ void GameScene::reset() {
     _egg->setTextures(eggTexture);
     _egg->setDrawScale(_scale);
     _egg->setActive(true);
+    _egg->setDebugColor(Color4::YELLOW);
+    _egg->setDebugScene(_debugnode);
     
     populate();
     
@@ -215,15 +252,34 @@ void GameScene::reset() {
     _worldnode->addChild(_waterOrb->getSceneNode());
     _worldnode->addChild(_grassOrb->getSceneNode());
     _worldnode->addChild(_player->getSceneNode());
+    _worldnode->addChild(_player2->getSceneNode());
     _worldnode->addChild(_swapStation->getSceneNode());
     _worldnode->addChild(_egg->getSceneNode());
     
-    
-    
+    setDebug(false);
 }
 
 void GameScene::update(float timestep) {
-    // Read the keyboard for each controller.
+    /*std::string currRoomId = NetworkController::getRoomId();
+    _roomIdHUD->setText(currRoomId);*/
+//    NetworkController::step();
+    NetworkController::receive([&](const std::vector<uint8_t> msg) {
+        ND::NetworkData nd;
+        ND::fromBytes(nd, msg);
+        if(nd.packetType == ND::NetworkData::CLIENT_PACKET){
+            _player2->setPosition(nd.clientData.playerPos_x, nd.clientData.playerPos_y);
+            _player2->setLinearVelocity(nd.clientData.playerVel_x, nd.clientData.playerVel_y);
+        }
+    });
+    if (_currRoomId == "") {
+        _currRoomId = NetworkController::getRoomId();
+        stringstream ss;
+        ss << "Room Id: " << _currRoomId;
+        _roomIdHUD->setText(ss.str());
+    }
+    
+    if (_playerController.didDebug()) { setDebug(!isDebug()); }
+    
     _playerController.readInput();
     auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
     _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
@@ -255,6 +311,18 @@ void GameScene::update(float timestep) {
     
 
     _world->update(timestep);
+//    if(NetworkController::isHost()){
+//        if (orbShouldMove) {
+//            std::random_device r;
+//            std::default_random_engine e1(r());
+//            std::uniform_int_distribution<int> rand_int(1, 31);
+//            std::uniform_int_distribution<int> rand_int2(1, 17);
+//            _orbTest->setPosition(rand_int(e1), rand_int2(e1));
+//        }
+//
+//        orbShouldMove = false;
+//    }
+
     
     if (_fireOrb->getCollected()) {
         _fireOrb->respawn();
@@ -282,6 +350,7 @@ void GameScene::update(float timestep) {
         _egg->setInitPos(_player->getPosition());
         if (_egg->getDistanceWalked() >= 80) {
             _hatchbar->dispose();
+            _hatchedTime = clock();
             _egg->setHatched(true);
             _egg->dispose();
 //            _egg->setCollected(false);
@@ -292,12 +361,31 @@ void GameScene::update(float timestep) {
         }
     }
     
+    if (clock() - _hatchedTime >= _hatchTextTimer) {
+        _hatchnode->setVisible(false);
+    }
+    
     _fireOrb->setCollected(false);
     _waterOrb->setCollected(false);
     _grassOrb->setCollected(false);
     _scoreHUD->setText(updateScoreText(_score));
     
-    
+    //send new position
+    ND::NetworkData nd;
+    nd.packetType = ND::NetworkData::PacketType::CLIENT_PACKET;
+    nd.clientData.playerPos_x = _player->getPosition().x;
+    nd.clientData.playerPos_y = _player->getPosition().y;
+    nd.clientData.playerVel_x = _player->getLinearVelocity().x;
+    nd.clientData.playerVel_y = _player->getLinearVelocity().y;
+    std::vector<uint8_t> bytes;
+    ND::toBytes(bytes, nd);
+//    for(int i=0; i < bytes.size(); i++){
+//        int tmp = bytes.at(i);
+//        std::cout << tmp << ' ';
+//    }
+//    std::cout << endl << "-----------------------" << endl;
+       
+    NetworkController::send(bytes);
 }
 
 void GameScene::populate() {
@@ -317,6 +405,7 @@ void GameScene::populate() {
         wall.setGeometry(Geometry::SOLID);
 
         wallobj = physics2::PolygonObstacle::alloc(wall);
+        wallobj->setDebugColor(Color4::WHITE);
         // You cannot add constant "".  Must stringify
         wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
         wallobj->setName(wname);
@@ -329,7 +418,7 @@ void GameScene::populate() {
 
         wall *= _scale;
         sprite = scene2::PolygonNode::allocWithTexture(image,wall);
-        addObstacle(wallobj,sprite,1);
+        addObstacle(wallobj,sprite,2);
     }
 
 }
@@ -340,7 +429,7 @@ void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj
                             int zOrder,
                             bool useObjPosition) {
     _world->addObstacle(obj);
-//    obj->setDebugScene(_debugnode);
+    obj->setDebugScene(_debugnode);
 
     // Position the scene graph node (enough for static objects)
       if (useObjPosition) {
