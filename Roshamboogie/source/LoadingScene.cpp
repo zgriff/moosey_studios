@@ -57,6 +57,7 @@ bool LoadingScene::init(const std::shared_ptr<AssetManager>& assets) {
     _button->addListener([=](const std::string& name, bool down) {
         _host = true;
         NetworkController::createGame();
+        _button2->dispose();
         this->_active = down;
     });
     
@@ -81,6 +82,7 @@ bool LoadingScene::init(const std::shared_ptr<AssetManager>& assets) {
             NetworkController::step();
         }
         if (NetworkController::getNumPlayers() > 1) {
+            _button2->dispose();
             this->_active = false;
         }
         });
