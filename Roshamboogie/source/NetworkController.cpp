@@ -7,7 +7,6 @@ namespace NetworkController {
     namespace {
         std::shared_ptr<cugl::CUNetworkConnection> network;
         std::string roomId;
-        bool _isHost;
         int lastNum = 999;
     }
 
@@ -21,13 +20,11 @@ namespace NetworkController {
             std::make_shared<cugl::CUNetworkConnection>(
                 cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, 6, 0));
         CULog("REACHED CREATE");
-        _isHost = true;
     }
 
     void joinGame(std::string roomId) {
         network =
             std::make_shared<cugl::CUNetworkConnection>(cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, 6, 0), roomId);
-        _isHost = false;
         NetworkController::roomId = roomId;
         CULog("REACHED JOIN");
         CULog("%s", roomId.c_str());
@@ -36,7 +33,11 @@ namespace NetworkController {
     }
 
     bool isHost(){
-        return _isHost;
+        return network->getPlayerID().value_or(-1) == 0;
+    }
+
+    std::optional<uint8_t> getPlayerId(){
+        return network->getPlayerID();
     }
 
     std::string getRoomId() {

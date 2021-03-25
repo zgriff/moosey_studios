@@ -344,7 +344,7 @@ void GameScene::update(float timestep) {
     nd.packetType = ND::NetworkData::PacketType::POSITION_PACKET;
     nd.positionData.playerPos = _player->getPosition();
     nd.positionData.playerVelocity = _player->getLinearVelocity();
-    nd.positionData.playerId = 0; //TODO: change
+    nd.positionData.playerId = NetworkController::getPlayerId().value_or(-1);
     std::vector<uint8_t> bytes;
     ND::toBytes(bytes, nd);
     NetworkController::send(bytes);
