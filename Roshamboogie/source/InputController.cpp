@@ -38,12 +38,12 @@ _debugPressed(false) {
  */
 bool InputController::init() {
     bool success = true;
+    _moveStyle = Movement::SwipeForce;
         
         // Only process keyboard on desktop
 #ifndef CU_MOBILE
     success = Input::activate<Keyboard>();
 #else
-    success = Input::activate<Accelerometer>();
     Touchscreen* touch = Input::get<Touchscreen>();
     touch->addBeginListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
         this->touchBeganCB(event,focus);
@@ -59,7 +59,6 @@ void InputController::dispose() {
 #ifndef CU_MOBILE
         Input::deactivate<Keyboard>();
 #else
-        Input::deactivate<Accelerometer>();
         Touchscreen* touch = Input::get<Touchscreen>();
         touch->removeBeginListener(LISTENER_KEY);
         touch->removeEndListener(LISTENER_KEY);
@@ -77,17 +76,29 @@ void InputController::dispose() {
 void InputController::readInput() {
 #ifdef CU_MOBILE
     // YOU NEED TO PUT SOME CODE HERE
-    if (_keydown) {
-        if (_dtouch.x < 640) {
-            mov.x = -1;
-        }
-        else {
-            mov.x = 1;
-        }
+    switch (_moveStyle) {
+        case Movement::SwipeForce:
+            if(!processed){
+                processed = true;
+            }else{
+                moveVec = Vec2::ZERO;
+            }
+            break;
+        default:
+            if (_keydown) {
+                if (_dtouch.x < 640) {
+                    mov.x = -1;
+                }
+                else {
+                    mov.x = 1;
+                }
+            }
+            else {
+                mov.x = 0;
+            }
+            break;
     }
-    else {
-        mov.x = 0;
-    }
+
 #else
     // Figure out, based on which player we are, which keys
     // control our actions (depends on player).
@@ -109,7 +120,6 @@ void InputController::readInput() {
     mov.x += keys->keyDown(right) ? 1 : 0;
     _keyDebug  = keys->keyPressed(DEBUG_KEY);
     _debugPressed = _keyDebug;
-
 #endif
 }
 
@@ -124,7 +134,7 @@ void InputController::readInput() {
 void InputController::touchBeganCB(const cugl::TouchEvent& event, bool focus) {
     // All touches correspond to key up
     _keydown = true;
-
+    _timestamp = event.timestamp;
     // Update the touch location for later gestures
     _dtouch = event.position;
 }
@@ -137,5 +147,18 @@ void InputController::touchBeganCB(const cugl::TouchEvent& event, bool focus) {
  */
 void InputController::touchEndedCB(const cugl::TouchEvent& event, bool focus) {
     // Gesture has ended.  Give it meaning.
-    _keydown = false;
+    Vec2 diff;
+    Uint64 t;
+    switch (_moveStyle) {
+        case Movement::SwipeForce:
+            diff = event.position-_dtouch;
+            t = event.timestamp.ellapsedMillis(_timestamp);
+            moveVec = diff.normalize() * (1000.0/t);
+            processed = false;
+            break;
+        default:
+            _keydown = false;
+            break;
+    }
 }
+

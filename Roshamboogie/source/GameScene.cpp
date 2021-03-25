@@ -282,31 +282,46 @@ void GameScene::update(float timestep) {
     
     _playerController.readInput();
     auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
-    _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
-    
     auto vel = _player->getLinearVelocity();
     auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
-    offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
     auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .02f);
-    _player->setLinearVelocity(vel.add(correction));
-    if (_playerController.getMov().x == 0) {
-        //if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
-        _player->applyForce();
-        //}
-    }
-    else {
-        auto forForce = _player->getForce();
-        auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * -1.1f);
-        if (_playerController.getMov().x > 0) {
-            turnForce.scale(-1.0f);
-        }
-        if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) { 
-            turnForce.scale(-1.0f); 
-            _player->applyForce();
-        }
-        _player->setForce(turnForce);
-        _player->applyForce();
-        _player->setForce(forForce);
+    Vec2 moveVec = _playerController.getMoveVec();
+    switch (_playerController.getMoveStyle()) {
+        case Movement::AlwaysForward:
+            _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
+            
+            offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
+            _player->setLinearVelocity(vel.add(correction));
+            if (_playerController.getMov().x == 0) {
+                //if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
+                _player->applyForce();
+                //}
+            }
+            else {
+                auto forForce = _player->getForce();
+                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * -1.1f);
+                if (_playerController.getMov().x > 0) {
+                    turnForce.scale(-1.0f);
+                }
+                if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
+                    turnForce.scale(-1.0f);
+                    _player->applyForce();
+                }
+                _player->setForce(turnForce);
+                _player->applyForce();
+                _player->setForce(forForce);
+            }
+            break;
+        case Movement::SwipeForce:
+            #ifndef CU_MOBILE
+                _player->setLinearVelocity(_playerController.getMov() * 3);
+            #else
+                _player->setForce(Vec2(moveVec.x,-moveVec.y) * 30);
+                _player->applyForce();
+            #endif
+            break;
+        default:
+            break;
     }
     
 
@@ -445,6 +460,7 @@ void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj
             weak->setAngle(obs->getAngle());
         });
     }
+
 }
 
 
