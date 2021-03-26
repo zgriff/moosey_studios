@@ -118,6 +118,8 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         setForce(DEFAULT_PLAYER_FORCE);
         _currElt = elt;
         _prevElt = elt;
+        _isTagged = false;
+        _didTag = false;
         _sceneNode = nullptr;
         return true;
     }
