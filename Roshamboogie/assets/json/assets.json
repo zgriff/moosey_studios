@@ -31,6 +31,20 @@
             "file": "textures/earthtile.png",
             "wrapS": "repeat",
             "wrapT": "repeat"
+        },
+        "host": {
+            "file": "textures/host.png",
+            "wrapS": "clamp",
+            "wrapT": "clamp",
+            "minfilter": "linear",
+            "magfilter": "linear"
+        },
+        "join": {
+            "file": "textures/join.png",
+            "wrapS": "clamp",
+            "wrapT": "clamp",
+            "minfilter": "linear",
+            "magfilter": "linear"
         }
     },
     "sounds": {
@@ -50,11 +64,186 @@
         },
         "username": {
             "file": "fonts/MarkerFelt.ttf",
-            "size": 16
+            "size": 24
         }
 
     },
     "scene2s": {
+        "menu" : {
+            "type"      : "Solid",
+            "format"    : {
+                "type" : "Anchored"
+            },
+            "data" : {
+                "color": [239,61,49,255]
+            },
+            "children": {
+                "join": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                        "visible": true,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 0.8
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "join"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": 115,
+                        "absolute": true
+                    }
+                },
+                "host": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                        "visible": true,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 0.8
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "host"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -115,
+                        "absolute": true
+                    }
+                },
+                "joincode": {
+                    "comment": "The scene graph definition for the text field demo",
+                    "type": "Node",
+                    "format": {
+                        "type": "Anchored"
+                    },
+                    "children": {
+                        "action": {
+                            "type": "TextField",
+                            "data": {
+                                "font": "retro",
+                                "text": "",
+                                "foreground": [ 255, 255, 255, 255 ],
+                                "background": [ 0, 0, 0, 255 ],
+                                "size": [ 600, 80 ],
+                                "anchor": [ 0.5, 0.5 ]
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "top",
+                                "y_offset": -0.5,
+                                "x_offset": -0.1
+                            }
+                        }
+                    }
+                },
+                "slider" : {
+                    "comment"   : "The scene graph definition for the slider demo",
+                    "type"      : "Node",
+                    "format"    : {
+                        "type" : "Anchored"
+                    },
+                    "children"  : {
+                        "action"  : {
+                            "type"   : "Slider",
+                            "data"   : {
+                                "bounds" : [0,10,0,200],
+                                "range"  : [0,2],
+                                "value"  : 0,
+                                "tick"   : 1,
+                                "snap"   : true,
+                                "anchor" : [0.5,0.5]
+                            },
+                            "layout" : {
+                                "x_anchor" : "left",
+                                "y_anchor" : "middle",
+                                "x_offset" : 0.2,
+                                "y_offset" : -0.1
+                            }
+                        },
+                        "label" : {
+                            "type"   : "Label",
+                            "data"   : {
+                                "font"       : "username",
+                                "text"       : "Slider value is 0.0",
+                                "foreground" : [255,255,255,255],
+                                "size"       : [600,70],
+                                "valign"     : "middle",
+                                "halign"     : "center",
+                                "anchor"     : [0.5,0.5]
+                            },
+                            "layout" : {
+                                "x_anchor" : "left",
+                                "y_anchor" : "bottom",
+                                "x_offset" : 0.15,
+                                "y_offset" : 0.2
+                            }
+                        }
+                    }
+                },
+                "username": {
+                    "comment": "The scene graph definition for the text field demo",
+                    "type": "Node",
+                    "format": {
+                        "type": "Anchored"
+                    },
+                    "children": {
+                        "action": {
+                            "type": "TextField",
+                            "data": {
+                                "font": "felt",
+                                "text": "",
+                                "foreground": [ 255, 255, 255, 255 ],
+                                "background": [ 0, 0, 0, 255 ],
+                                "size": [ 300, 40 ],
+                                "anchor": [ 0.5, 0.5 ],
+                                "visible":false
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "top",
+                                "y_offset": -0.3,
+                                "x_offset": -0.05
+                            }
+                        },
+                        "result": {
+                            "type": "Label",
+                            "data": {
+                                "font": "felt",
+                                "text": "Username:",
+                                "foreground": [ 0, 0, 0, 255 ],
+                                "size": [ 350, 40 ],
+                                "anchor": [ 0.5, 0.5 ],
+                                "visible": false
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "top",
+                                "y_offset": -0.3,
+                                "x_offset": -0.2
+                            }
+                        }
+                    }
+                }
+            }
+        }, 
         "background": {
             "comment": "Scene for all background elements",
             "type": "Node",

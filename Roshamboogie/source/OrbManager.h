@@ -9,6 +9,5 @@
 #ifndef __ORB_MANAGER_H__
 #define __ORB_MANAGER_H__
 
-#include <stdio.h>
 
 #endif /* OrbManager_hpp */

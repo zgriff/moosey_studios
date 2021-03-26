@@ -6,7 +6,6 @@
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#include <stdio.h>
 #include "App.h"
 
 using namespace cugl;

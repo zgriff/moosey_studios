@@ -16,25 +16,25 @@
 namespace ND{
 
 struct NetworkData {
-    enum PacketType {PLAYER_PACKET, ORB_PACKET, SWAP_PACKET, POSITION_PACKET};
+    enum PacketType {ORB_RESPAWN, ORB_CAPTURED, EGG_CAPTURED, SWAP_PACKET, POSITION_PACKET};
     uint8_t packetType;
     union {
         struct {
-            int playerId;
-            Element e;
-//            int score;
-            bool isHoldingEgg;
-//            int powerLevel;
-//            bool wasTagged;
-        } playerData;
+            uint8_t orbId;
+            cugl::Vec2 position;
+        } orbRespawnData;
         struct {
-            int id;
-            bool isCaptured;
-            cugl::Vec2 orbPos;
-        } orbData;
+            uint8_t playerId;
+            uint8_t eggId;
+        } eggCapData;
         struct {
-            int id;
-            bool isOnCooldown;
+            uint8_t orbId;
+            uint8_t playerId;
+        } orbCapData;
+        struct {
+            uint8_t swapId;
+            uint8_t playerId;
+            Element newElement;
         } swapData;
         struct {
             cugl::Vec2 playerPos;

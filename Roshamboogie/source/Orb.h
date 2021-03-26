@@ -20,6 +20,7 @@ private:
     std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
     std::shared_ptr<cugl::Texture> _texture;
     bool _collected;
+    int _id;
 
 public:
     Orb(void) : WheelObstacle(), _drawscale(1.0f) { }
@@ -58,6 +59,13 @@ public:
     virtual void update(float delta) override;
     
     void respawn();
+    
+    int getID(){
+        return _id;
+    }
+    void setID(int i){
+        _id = i;
+    }
 };
 
 #endif /* Orb_hpp */

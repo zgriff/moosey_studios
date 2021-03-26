@@ -11,10 +11,12 @@
 #include "Globals.h"
 
 namespace ND{
-#define TYPE_BITS 2
+//TODO: generate these from global maximums
+#define TYPE_BITS 3
 #define PLAYER_ID_BITS 3
 #define SWAP_ID_BITS 4
 #define ORB_ID_BITS 5
+#define EGG_ID_BITS 3
 
 //writing
 uint16_t scratch;
@@ -158,25 +160,27 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
     byte_arr_index = 0;
     dest.packetType = readBits(bytes, TYPE_BITS);
     switch(dest.packetType){
-        case NetworkData::PLAYER_PACKET:
-            dest.playerData.playerId = readBits(bytes, PLAYER_ID_BITS);
-            dest.playerData.e = readElement(bytes);
-            dest.playerData.isHoldingEgg = readBool(bytes);
+        case NetworkData::ORB_CAPTURED:
+            dest.orbCapData.orbId = readBits(bytes, ORB_ID_BITS);
+            dest.orbCapData.playerId = readBits(bytes, PLAYER_ID_BITS);
             break;
-        case NetworkData::ORB_PACKET:
-            dest.orbData.id = readBits(bytes, ORB_ID_BITS);
-            dest.orbData.isCaptured = readBool(bytes);
-            dest.orbData.orbPos = readVec2(bytes);
+        case NetworkData::EGG_CAPTURED:
+            dest.eggCapData.playerId = readBits(bytes, PLAYER_ID_BITS);
+            dest.eggCapData.eggId = readBits(bytes, EGG_ID_BITS);
             break;
         case NetworkData::SWAP_PACKET:
-            dest.swapData.id = readBits(bytes, SWAP_ID_BITS);
-            dest.swapData.isOnCooldown = readBool(bytes);
+            dest.swapData.swapId = readBits(bytes, SWAP_ID_BITS);
+            dest.swapData.playerId = readBits(bytes, PLAYER_ID_BITS);
+            dest.swapData.newElement = readElement(bytes);
             break;
         case NetworkData::POSITION_PACKET:
             dest.positionData.playerPos = readVec2(bytes);
             dest.positionData.playerVelocity = readVec2(bytes);
             dest.positionData.playerId = readBits(bytes, PLAYER_ID_BITS);
             break;
+        case NetworkData::ORB_RESPAWN:
+            dest.orbRespawnData.orbId = readBits(bytes, ORB_ID_BITS);
+            dest.orbRespawnData.position = readVec2(bytes);
     }
     return true;
 }
@@ -188,25 +192,28 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
     scratch_bits = 0;
     writeBits(dest, src.packetType, TYPE_BITS);
     switch(src.packetType){
-        case NetworkData::PLAYER_PACKET:
-            writeBits(dest, src.playerData.playerId, PLAYER_ID_BITS);
-            writeElement(dest, src.playerData.e);
-            writeBool(dest, src.playerData.isHoldingEgg);
+        case NetworkData::ORB_CAPTURED:
+            writeBits(dest, src.orbCapData.orbId, ORB_ID_BITS);
+            writeBits(dest, src.orbCapData.playerId, PLAYER_ID_BITS);
             break;
-        case NetworkData::ORB_PACKET:
-            writeBits(dest, src.orbData.id, ORB_ID_BITS);
-            writeBool(dest, src.orbData.isCaptured);
-            writeVec2(dest, src.orbData.orbPos);
+        case NetworkData::EGG_CAPTURED:
+            writeBits(dest, src.eggCapData.playerId, PLAYER_ID_BITS);
+            writeBits(dest, src.eggCapData.eggId, EGG_ID_BITS);
+            
             break;
         case NetworkData::SWAP_PACKET:
-            writeBits(dest, src.swapData.id, SWAP_ID_BITS);
-            writeBool(dest, src.swapData.isOnCooldown);
+            writeBits(dest, src.swapData.swapId, SWAP_ID_BITS);
+            writeBits(dest, src.swapData.playerId, PLAYER_ID_BITS);
+            writeElement(dest, src.swapData.newElement);
             break;
         case NetworkData::POSITION_PACKET:
             writeVec2(dest, src.positionData.playerPos);
             writeVec2(dest, src.positionData.playerVelocity);
             writeBits(dest, src.positionData.playerId, PLAYER_ID_BITS);
             break;
+        case NetworkData::ORB_RESPAWN:
+            writeBits(dest, src.orbRespawnData.orbId, ORB_ID_BITS);
+            writeVec2(dest, src.orbRespawnData.position);
     }
     flush(dest);
     return true;

@@ -114,12 +114,28 @@ namespace NetworkController {
                         p->setLinearVelocity(nd.positionData.playerVelocity);
                     }
                     break;
-                default:
+                case ND::NetworkData::ORB_CAPTURED:
+                    world->getOrb(nd.orbCapData.orbId)->setCollected(true);
+                    break;
+                case ND::NetworkData::SWAP_PACKET:
+                    world->getPlayer(nd.swapData.playerId)->setElement(nd.swapData.newElement);
+                    world->getSwapStation(nd.swapData.swapId)->setLastUsed(clock());
+                    break;
+                case ND::NetworkData::EGG_CAPTURED:
+                    world->getPlayer(nd.eggCapData.playerId)->setElement(Element::None);
+                    world->getEgg(nd.eggCapData.eggId)->setCollected(true);
+                    break;
+                case ND::NetworkData::ORB_RESPAWN:
+                {
+                    auto orb = world->getOrb(nd.orbRespawnData.orbId);
+                    orb->setPosition(nd.orbRespawnData.position);
+                    orb->setCollected(false);
+                }
                     break;
             }
         });
     }
-
+    //send current player's position
     void sendPosition(){
         if(! getPlayerId().has_value()) return;
         auto p = world->getPlayer(getPlayerId().value());
@@ -128,6 +144,50 @@ namespace NetworkController {
         nd.positionData.playerPos = p->getPosition();
         nd.positionData.playerVelocity = p->getLinearVelocity();
         nd.positionData.playerId = NetworkController::getPlayerId().value();
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    //send when a player captures an orb
+    void sendOrbCaptured(int orbId, int playerId){
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::ORB_CAPTURED;
+        nd.orbCapData.orbId = orbId;
+        nd.orbCapData.playerId = playerId;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    //send when a player swaps colors at a swap station
+    void sendPlayerColorSwap(int playerId, Element newElement, int swapId){
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::SWAP_PACKET;
+        nd.swapData.newElement = newElement;
+        nd.swapData.playerId = playerId;
+        nd.swapData.swapId = swapId;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    //send when a player collects an egg
+    void sendEggCollected(int playerId, int eggId){
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::EGG_CAPTURED;
+        nd.eggCapData.eggId = eggId;
+        nd.eggCapData.playerId = playerId;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void sendOrbRespawn(int orbId, Vec2 orbPosition){
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::ORB_RESPAWN;
+        nd.orbRespawnData.orbId = orbId;
+        nd.orbRespawnData.position = orbPosition;
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
         network->send(bytes);

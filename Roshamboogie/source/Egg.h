@@ -31,6 +31,7 @@ private:
     bool _collected;
     Vec2 _initPos;
     float _distanceWalked;
+    int _id;
     
 public:
     
@@ -57,6 +58,9 @@ public:
     bool getCollected() { return _collected; }
     
     void setCollected(bool b) { _collected = b; }
+    
+    int getID(){ return _id; }
+    void setID(int i){ _id = i; }
     
     Vec2 getInitPos() { return _initPos; }
     

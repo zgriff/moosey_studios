@@ -62,6 +62,7 @@ void World::reset(){
     fireOrb->setDrawScale(_scale);
     fireOrb->setDebugColor(Color4::YELLOW);
     fireOrb->setDebugScene(_debugNode);
+    fireOrb->setID(0);
     _orbs.push_back(fireOrb);
 
     auto waterOrb = Orb::alloc(Vec2(20,8), Element::Water);
@@ -70,6 +71,7 @@ void World::reset(){
     waterOrb->setDrawScale(_scale);
     waterOrb->setDebugColor(Color4::YELLOW);
     waterOrb->setDebugScene(_debugNode);
+    waterOrb->setID(1);
     _orbs.push_back(waterOrb);
     
     auto grassOrb = Orb::alloc(Vec2(10,12), Element::Grass);
@@ -78,6 +80,7 @@ void World::reset(){
     grassOrb->setDrawScale(_scale);
     grassOrb->setDebugColor(Color4::YELLOW);
     grassOrb->setDebugScene(_debugNode);
+    grassOrb->setID(2);
     _orbs.push_back(grassOrb);
     
     
@@ -90,6 +93,7 @@ void World::reset(){
     swapStation->setActive(true);
     swapStation->setDebugColor(Color4::YELLOW);
     swapStation->setDebugScene(_debugNode);
+    swapStation->setID(0);
     _swapStations.push_back(swapStation);
     
     Vec2 eggPos = Vec2(14,14);
@@ -101,6 +105,7 @@ void World::reset(){
     egg->setActive(true);
     egg->setDebugColor(Color4::YELLOW);
     egg->setDebugScene(_debugNode);
+    egg->setID(0);
     _eggs.push_back(egg);
     
     _worldNode->addChild(fireOrb->getSceneNode());

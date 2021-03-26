@@ -201,6 +201,8 @@ public:
      */
     cugl::Size computeActiveSize() const;
     
+    void setMovementStyle(int m);
+    
     void moveOrb(Orb* orb);
 
 };

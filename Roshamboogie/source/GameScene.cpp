@@ -125,12 +125,14 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     auto _world = world->getPhysicsWorld();
     _world->activateCollisionCallbacks(true);
-    _world->onBeginContact = [this](b2Contact* contact) {
-        CollisionController::beginContact(contact);
-    };
-    _world->onEndContact = [this](b2Contact* contact) {
-        CollisionController::endContact(contact);
-    };
+    if(NetworkController::isHost()){
+        _world->onBeginContact = [this](b2Contact* contact) {
+            CollisionController::beginContact(contact);
+        };
+        _world->onEndContact = [this](b2Contact* contact) {
+            CollisionController::endContact(contact);
+        };
+    }
     _world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
         CollisionController::beforeSolve(contact,oldManifold);
     };
@@ -214,38 +216,66 @@ void GameScene::update(float timestep) {
     
     // BEGIN PLAYER MOVEMENT //
     
-    _playerController.readInput();
     auto playerId_option = NetworkController::getPlayerId();
     if(! playerId_option.has_value()) return;
     uint8_t playerId = playerId_option.value();
     auto _player = world->getPlayer(playerId);
     
-    auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
-    _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
-    
-    auto vel = _player->getLinearVelocity();
-    auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
-    offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
-    auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .02f);
-    _player->setLinearVelocity(vel.add(correction));
-    if (_playerController.getMov().x == 0) {
-        //if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
-        _player->applyForce();
-        //}
-    }
-    else {
-        auto forForce = _player->getForce();
-        auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * -1.1f);
-        if (_playerController.getMov().x > 0) {
-            turnForce.scale(-1.0f);
+    _playerController.readInput();
+    switch (_playerController.getMoveStyle()) {
+        case Movement::AlwaysForward: {
+            auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
+            _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
+            
+            auto vel = _player->getLinearVelocity();
+            auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
+            offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
+            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .02f);
+            _player->setLinearVelocity(vel.add(correction));
+            if (_playerController.getMov().x == 0) {
+                //if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
+                _player->applyForce();
+                //}
+            }
+            else {
+                auto forForce = _player->getForce();
+                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * -1.1f);
+                if (_playerController.getMov().x > 0) {
+                    turnForce.scale(-1.0f);
+                }
+                if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
+                    turnForce.scale(-1.0f);
+                    _player->applyForce();
+                }
+                _player->setForce(turnForce);
+                _player->applyForce();
+                _player->setForce(forForce);
+            }
+            break;
         }
-        if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) { 
-            turnForce.scale(-1.0f); 
-            _player->applyForce();
+        case Movement::SwipeForce:{
+            #ifndef CU_MOBILE
+                _player->setLinearVelocity(_playerController.getMov() * 3);
+            #else
+                Vec2 moveVec = _playerController.getMoveVec();
+                Vec2 _moveVec(moveVec.x, -moveVec.y);
+                _player->setForce(_moveVec * 30);
+                _player->applyForce();
+            #endif
+            break;
         }
-        _player->setForce(turnForce);
-        _player->applyForce();
-        _player->setForce(forForce);
+        case Movement::TiltMove:{
+            #ifndef CU_MOBILE
+                _player->setLinearVelocity(_playerController.getMov() * 3);
+            #else
+                Vec3 tilt = _playerController.getTiltVec();
+                Vec2 moveVec(tilt.x, -tilt.y);
+                _player->setForce(moveVec * 50);
+                _player->applyForce();
+            #endif
+        }
+        default:
+            break;
     }
     
     //END PLAYER MOVEMENT //
@@ -263,44 +293,47 @@ void GameScene::update(float timestep) {
 //
 //        orbShouldMove = false;
 //    }
+    
+    if(NetworkController::isHost()){
+        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
+            auto orb = world->getOrb(i);
+            if(orb->getCollected()) {
+                orb->respawn();
+                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
+                _score += 1;
+            }
+            orb->setCollected(false);
 
-    for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
-        auto orb = world->getOrb(i);
-        if(orb->getCollected()) {
-            orb->respawn();
-            _score += 1;
         }
-        orb->setCollected(false);
-
     }
     
     
     //egg hatch logic
-    auto _egg = world->getEgg(0);
-    if (_egg->getCollected() && _egg->getHatched() == false) {
-        _egg->setPosition(_player->getPosition());
-        _hatchbar->setVisible(true);
-        _hatchbar->setProgress(_egg->getDistanceWalked()/80);
-        Vec2 diff = _player->getPosition() - _egg->getInitPos();
-        float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
-        _egg->incDistanceWalked(dist);
-        _egg->setInitPos(_player->getPosition());
-        if (_egg->getDistanceWalked() >= 80) {
-            _hatchbar->dispose();
-            _hatchedTime = clock();
-            _egg->setHatched(true);
-            _egg->dispose();
-//            _egg->setCollected(false);
-            _score += 10;
-            _player->setElement(_player->getPrevElement());
-            _hatchnode->setVisible(true);
-            CULog("hatched");
-        }
-    }
+//    auto _egg = world->getEgg(0);
+//    if (_egg->getCollected() && _egg->getHatched() == false) {
+//        _egg->setPosition(_player->getPosition());
+//        _hatchbar->setVisible(true);
+//        _hatchbar->setProgress(_egg->getDistanceWalked()/80);
+//        Vec2 diff = _player->getPosition() - _egg->getInitPos();
+//        float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
+//        _egg->incDistanceWalked(dist);
+//        _egg->setInitPos(_player->getPosition());
+//        if (_egg->getDistanceWalked() >= 80) {
+//            _hatchbar->dispose();
+//            _hatchedTime = clock();
+//            _egg->setHatched(true);
+//            _egg->dispose();
+////            _egg->setCollected(false);
+//            _score += 10;
+//            _player->setElement(_player->getPrevElement());
+//            _hatchnode->setVisible(true);
+//            CULog("hatched");
+//        }
+//    }
     
-    if (clock() - _hatchedTime >= _hatchTextTimer) {
-        _hatchnode->setVisible(false);
-    }
+//    if (clock() - _hatchedTime >= _hatchTextTimer) {
+//        _hatchnode->setVisible(false);
+//    }
 
     
     // player tagging
@@ -378,6 +411,12 @@ void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj
             weak->setAngle(obs->getAngle());
         });
     }
+
+}
+
+
+void GameScene::setMovementStyle(int m) {
+    _playerController.setMoveStyle(static_cast<Movement>(m));
 }
 
 
