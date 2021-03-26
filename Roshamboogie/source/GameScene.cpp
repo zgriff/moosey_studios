@@ -477,6 +477,11 @@ void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj
 }
 
 
+void GameScene::setMovementStyle(int m) {
+    _playerController.setMoveStyle(static_cast<Movement>(m));
+}
+
+
 /**
  * Returns the active screen size of this scene.
  *

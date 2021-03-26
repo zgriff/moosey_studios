@@ -128,9 +128,9 @@ void App::update(float timestep) {
 //                _menu.update(0.01f);
             } else {
                 _menu.setActive(false);
-                _menu.dispose();
                 _gameplay.init(_assets);
-                
+                _gameplay.setMovementStyle(_menu.getMovement());
+                _menu.dispose();
                 _currentScene = SceneSelect::Game;
             }
             break;

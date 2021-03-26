@@ -13,7 +13,7 @@
 #include <cugl/cugl.h>
 
 #include "NetworkController.h"
-
+#include "InputController.h"
 
 /**
  * This class is a simple loading screen for asychronous asset loading.
@@ -38,8 +38,12 @@ protected:
     std::shared_ptr<cugl::scene2::Button> _joinButton;
     /**join code text field*/
     std::shared_ptr<cugl::scene2::TextField> _codeField;
+    std::shared_ptr<cugl::scene2::Slider> _slider;
+    std::shared_ptr<cugl::scene2::Label> _label;
+    float _sliderValue;
     /**true host false client*/
     bool _host;
+    int _movement;
         
 
 public:
@@ -99,6 +103,8 @@ public:
     virtual void setActive(bool value) override;
     
     bool isHost() {return _host;};
+        
+    int getMovement() {return _movement;};
 
 };
 

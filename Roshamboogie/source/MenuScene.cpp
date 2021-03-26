@@ -55,6 +55,9 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _host = true;
         NetworkController::createGame();
         _joinButton->deactivate();
+        _slider->setVisible(false);
+        _slider->deactivate();
+        _label->setVisible(false);
 //        _joinButton->dispose();
         this->_active = down;
     });
@@ -62,14 +65,25 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     _joinButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_join"));
     _joinButton->addListener([=](const std::string& name, bool down) {
         _host = false;
-        _codeField->setVisible(true);
-        _codeField->activate();
+        _slider->setVisible(false);
+        _slider->deactivate();
+        _label->setVisible(false);
         _hostButton->setVisible(false);
         _hostButton->deactivate();
         _joinButton->setVisible(false);
-//        this->_active = false;
-//        _hostButton->dispose();
     });
+    
+    _slider = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("menu_slider_action"));
+    _label  = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_slider_label"));
+    _label->setText("Slider value is "+cugl::strtool::to_string(_sliderValue,1));
+    _slider->addListener([=](const std::string& name, float value) {
+        if (value != _sliderValue) {
+            _sliderValue = value;
+            _movement = static_cast<int>(value);
+            _label->setText("Slider value is "+cugl::strtool::to_string(_sliderValue,1));
+        }
+    });
+    
 
     _codeField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_joincode_action"));
     _codeField->addTypeListener([=](const std::string& name, const std::string& value) {
@@ -84,12 +98,19 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
             NetworkController::step();
         }
         if (NetworkController::getNumPlayers() > 1) {
-//            _joinButton->dispose();
-            this->_active = false;
+////            _joinButton->dispose();
+        this->_active = false;
         }
         });
+    
+    
+    
+    
     Input::activate<TextInput>();
     _codeField->setVisible(false);
+    if(_active) {
+        _slider->activate();
+    }
 
     Application::get()->setClearColor(Color4(192,192,192,255));
     return true;
@@ -103,6 +124,7 @@ void MenuScene::dispose() {
     _joinButton = nullptr;
     Input::deactivate<TextInput>();
     _codeField = nullptr;
+    _slider = nullptr;
     _assets = nullptr;
 }
 
