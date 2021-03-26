@@ -124,6 +124,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _world->onBeginContact = [this](b2Contact* contact) {
         CollisionController::beginContact(contact);
     };
+    _world->onEndContact = [this](b2Contact* contact) {
+        CollisionController::endContact(contact);
+    };
     _world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
         CollisionController::beforeSolve(contact,oldManifold);
     };
@@ -186,7 +189,7 @@ void GameScene::reset() {
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size textureSize = playerTexture->getSize();
 //    Size playerSize((textureSize.getIHeight())/_scale, (textureSize.getIWidth())/_scale);
-    Size playerSize(0.5,1); //TODO: manually setting the collision box but fix
+    Size playerSize(1,2); //TODO: manually setting the collision box but fix
     _player = Player::alloc(playerPos, playerSize, Element::Water);
     _player2 = Player::alloc(playerPos, playerSize, Element::Water);
     _world->addObstacle(_player);
@@ -260,6 +263,11 @@ void GameScene::reset() {
 }
 
 void GameScene::update(float timestep) {
+    
+    if (_playerController.didDebug()) { setDebug(!isDebug()); }
+    
+    // NETWORK //
+    
     /*std::string currRoomId = NetworkController::getRoomId();
     _roomIdHUD->setText(currRoomId);*/
 //    NetworkController::step();
@@ -278,7 +286,9 @@ void GameScene::update(float timestep) {
         _roomIdHUD->setText(ss.str());
     }
     
-    if (_playerController.didDebug()) { setDebug(!isDebug()); }
+    
+    
+    // BEGIN PLAYER MOVEMENT //
     
     _playerController.readInput();
     auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
@@ -309,6 +319,8 @@ void GameScene::update(float timestep) {
         _player->setForce(forForce);
     }
     
+    //END PLAYER MOVEMENT //
+    
 
     _world->update(timestep);
 //    if(NetworkController::isHost()){
@@ -323,7 +335,7 @@ void GameScene::update(float timestep) {
 //        orbShouldMove = false;
 //    }
 
-    
+    //orb updates
     if (_fireOrb->getCollected()) {
         _fireOrb->respawn();
         _score += 1;
@@ -338,6 +350,10 @@ void GameScene::update(float timestep) {
         _grassOrb->respawn();
         _score += 1;
     }
+    
+    _fireOrb->setCollected(false);
+    _waterOrb->setCollected(false);
+    _grassOrb->setCollected(false);
     
     //egg hatch logic
     if (_egg->getCollected() && _egg->getHatched() == false) {
@@ -365,9 +381,18 @@ void GameScene::update(float timestep) {
         _hatchnode->setVisible(false);
     }
     
-    _fireOrb->setCollected(false);
-    _waterOrb->setCollected(false);
-    _grassOrb->setCollected(false);
+    // player tagging
+    if (_player->getDidTag()) {
+        _score += 15;
+    }
+    if (_player->getIsTagged()) {
+        _player->setPosition(Vec2(20,10));
+    }
+    if (_player2->getIsTagged()) {
+        _player2->setPosition(Vec2(20,10));
+    }
+    
+
     _scoreHUD->setText(updateScoreText(_score));
     
     //send new position

@@ -18,8 +18,10 @@ private:
     
     cugl::Vec2 _force;
     int _id;
-    Element currElt;
-    Element prevElt; //used when switching back to the element before collecting an egg
+    Element _currElt;
+    Element _prevElt; //used when switching back to the element before collecting an egg
+    bool _isTagged; //if this player is tagged
+    bool _didTag; //if this player tagged someone else -- earn points
     
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
@@ -60,11 +62,19 @@ public:
     
     void setElement(Element e);
     
-    Element getCurrElement() { return currElt; }
+    Element getCurrElement() { return _currElt; }
     
-    Element getPrevElement() { return prevElt; }
+    Element getPrevElement() { return _prevElt; }
     
     Element getPreyElement();
+    
+    bool getIsTagged() { return _isTagged; }
+    
+    void setIsTagged(bool t) { _isTagged = t; }
+    
+    bool getDidTag() { return _didTag; }
+    
+    void setDidTag(bool t) { _didTag = t; }
 
     
 #pragma mark Graphics
