@@ -125,12 +125,14 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     auto _world = world->getPhysicsWorld();
     _world->activateCollisionCallbacks(true);
-    _world->onBeginContact = [this](b2Contact* contact) {
-        CollisionController::beginContact(contact);
-    };
-    _world->onEndContact = [this](b2Contact* contact) {
-        CollisionController::endContact(contact);
-    };
+    if(NetworkController::isHost()){
+        _world->onBeginContact = [this](b2Contact* contact) {
+            CollisionController::beginContact(contact);
+        };
+        _world->onEndContact = [this](b2Contact* contact) {
+            CollisionController::endContact(contact);
+        };
+    }
     _world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
         CollisionController::beforeSolve(contact,oldManifold);
     };
@@ -291,44 +293,47 @@ void GameScene::update(float timestep) {
 //
 //        orbShouldMove = false;
 //    }
+    
+    if(NetworkController::isHost()){
+        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
+            auto orb = world->getOrb(i);
+            if(orb->getCollected()) {
+                orb->respawn();
+                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
+                _score += 1;
+            }
+            orb->setCollected(false);
 
-    for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
-        auto orb = world->getOrb(i);
-        if(orb->getCollected()) {
-            orb->respawn();
-            _score += 1;
         }
-        orb->setCollected(false);
-
     }
     
     
     //egg hatch logic
-    auto _egg = world->getEgg(0);
-    if (_egg->getCollected() && _egg->getHatched() == false) {
-        _egg->setPosition(_player->getPosition());
-        _hatchbar->setVisible(true);
-        _hatchbar->setProgress(_egg->getDistanceWalked()/80);
-        Vec2 diff = _player->getPosition() - _egg->getInitPos();
-        float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
-        _egg->incDistanceWalked(dist);
-        _egg->setInitPos(_player->getPosition());
-        if (_egg->getDistanceWalked() >= 80) {
-            _hatchbar->dispose();
-            _hatchedTime = clock();
-            _egg->setHatched(true);
-            _egg->dispose();
-//            _egg->setCollected(false);
-            _score += 10;
-            _player->setElement(_player->getPrevElement());
-            _hatchnode->setVisible(true);
-            CULog("hatched");
-        }
-    }
+//    auto _egg = world->getEgg(0);
+//    if (_egg->getCollected() && _egg->getHatched() == false) {
+//        _egg->setPosition(_player->getPosition());
+//        _hatchbar->setVisible(true);
+//        _hatchbar->setProgress(_egg->getDistanceWalked()/80);
+//        Vec2 diff = _player->getPosition() - _egg->getInitPos();
+//        float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
+//        _egg->incDistanceWalked(dist);
+//        _egg->setInitPos(_player->getPosition());
+//        if (_egg->getDistanceWalked() >= 80) {
+//            _hatchbar->dispose();
+//            _hatchedTime = clock();
+//            _egg->setHatched(true);
+//            _egg->dispose();
+////            _egg->setCollected(false);
+//            _score += 10;
+//            _player->setElement(_player->getPrevElement());
+//            _hatchnode->setVisible(true);
+//            CULog("hatched");
+//        }
+//    }
     
-    if (clock() - _hatchedTime >= _hatchTextTimer) {
-        _hatchnode->setVisible(false);
-    }
+//    if (clock() - _hatchedTime >= _hatchTextTimer) {
+//        _hatchnode->setVisible(false);
+//    }
 
     
     // player tagging
