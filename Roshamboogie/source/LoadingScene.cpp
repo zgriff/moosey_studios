@@ -69,6 +69,7 @@ void LoadingScene::dispose() {
     _button = nullptr;
     _bar = nullptr;
     _assets = nullptr;
+//    _username = nullptr;
     _progress = 0.0f;
 }
 

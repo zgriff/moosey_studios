@@ -35,6 +35,16 @@
             }
         }
     },
+    "fonts": {
+        "retro": {
+            "file": "fonts/RetroGame.ttf",
+            "size": 64
+        },
+        "felt": {
+            "file": "fonts/MarkerFelt.ttf",
+            "size": 32
+        }
+    },
     "scene2s" : {
         "load" : {
             "type"      : "Solid",

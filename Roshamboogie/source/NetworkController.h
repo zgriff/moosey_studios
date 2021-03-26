@@ -22,6 +22,10 @@ namespace NetworkController {
 
     void receive(const std::function<void(const std::vector<uint8_t>&)>& dispatcher);
 
+    std::string getUsername();
+
+    void setUsername(std::string name);
+
 };
 
 #endif
