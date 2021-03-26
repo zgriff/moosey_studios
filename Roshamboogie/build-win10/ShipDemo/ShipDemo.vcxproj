@@ -98,6 +98,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <DisableSpecificWarnings>4068;4018;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -186,29 +187,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\source\App.h" />
-    <ClInclude Include="..\..\source\CollisionController.h" />
-    <ClInclude Include="..\..\source\Egg.h" />
-    <ClInclude Include="..\..\source\Element.h" />
-    <ClInclude Include="..\..\source\GameScene.h" />
-    <ClInclude Include="..\..\source\HelloApp.h" />
-    <ClInclude Include="..\..\source\InputController.h" />
-    <ClInclude Include="..\..\source\LoadingScene.h" />
-    <ClInclude Include="..\..\source\NetworkController.h" />
-    <ClInclude Include="..\..\source\NetworkData.h" />
-    <ClInclude Include="..\..\source\Orb.h" />
-    <ClInclude Include="..\..\source\OrbManager.h" />
-    <ClInclude Include="..\..\source\Player.h" />
-    <ClInclude Include="..\..\source\SwapStation.h" />
-    <ClInclude Include="resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="ShipDemo.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="icon1.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\cugl\build-win10\CUGL\CUGL.vcxproj">
       <Project>{60c028a4-977f-44e9-a709-d79a153d6f69}</Project>
     </ProjectReference>
@@ -227,6 +205,23 @@
     <ClCompile Include="..\..\source\OrbManager.cpp" />
     <ClCompile Include="..\..\source\Player.cpp" />
     <ClCompile Include="..\..\source\SwapStation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\App.h" />
+    <ClInclude Include="..\..\source\CollisionController.h" />
+    <ClInclude Include="..\..\source\Egg.h" />
+    <ClInclude Include="..\..\source\Element.h" />
+    <ClInclude Include="..\..\source\GameScene.h" />
+    <ClInclude Include="..\..\source\Globals.h" />
+    <ClInclude Include="..\..\source\InputController.h" />
+    <ClInclude Include="..\..\source\LoadingScene.h" />
+    <ClInclude Include="..\..\source\NetworkController.h" />
+    <ClInclude Include="..\..\source\NetworkData.h" />
+    <ClInclude Include="..\..\source\Orb.h" />
+    <ClInclude Include="..\..\source\OrbManager.h" />
+    <ClInclude Include="..\..\source\Player.h" />
+    <ClInclude Include="..\..\source\SwapStation.h" />
+    <ClInclude Include="..\..\source\World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
