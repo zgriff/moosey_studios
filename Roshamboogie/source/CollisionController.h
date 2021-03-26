@@ -21,6 +21,8 @@ using namespace cugl;
 namespace CollisionController {
 
     void beginContact(b2Contact* contact);
+
+    void endContact(b2Contact* contact);
     
     void beforeSolve(b2Contact* contact, const b2Manifold* oldManifold);
 };
