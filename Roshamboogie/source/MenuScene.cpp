@@ -75,7 +75,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     
     _slider = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("menu_slider_action"));
     _label  = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_slider_label"));
-    _label->setText("Movement style: Always Forward");
+    _label->setText("Always Forward");
     _movement = 1;
     _slider->addListener([=](const std::string& name, float value) {
         if (value != _sliderValue) {
@@ -83,13 +83,13 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
             _movement = static_cast<int>(value);
             switch (_movement) {
                 case 0:
-                    _label->setText("Movement style: Always Forward");
+                    _label->setText("Always Forward");
                     break;
                 case 1:
-                    _label->setText("Movement style: Swipe Force");
+                    _label->setText("Swipe Force");
                     break;
                 default:
-                    _label->setText("Movement style: Tilt to Move");
+                    _label->setText("Tilt to Move");
                     break;
             }
         }

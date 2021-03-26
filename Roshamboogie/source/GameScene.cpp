@@ -281,10 +281,8 @@ void GameScene::update(float timestep) {
     if (_playerController.didDebug()) { setDebug(!isDebug()); }
     
     _playerController.readInput();
-//    CULog("Movestyle: %i", static_cast<int>(_playerController.getMoveStyle()));
     switch (_playerController.getMoveStyle()) {
         case Movement::AlwaysForward: {
-//            CULog("Movestyle: %i", static_cast<int>(_playerController.getMoveStyle()));
             auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
             _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
             
@@ -315,7 +313,6 @@ void GameScene::update(float timestep) {
             break;
         }
         case Movement::SwipeForce:{
-            CULog("Movestyle: %i", static_cast<int>(_playerController.getMoveStyle()));
             #ifndef CU_MOBILE
                 _player->setLinearVelocity(_playerController.getMov() * 3);
             #else
@@ -327,7 +324,6 @@ void GameScene::update(float timestep) {
             break;
         }
         case Movement::TiltMove:{
-//            CULog("Movestyle: %i", static_cast<int>(_playerController.getMoveStyle()));
             #ifndef CU_MOBILE
                 _player->setLinearVelocity(_playerController.getMov() * 3);
             #else
@@ -482,7 +478,6 @@ void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj
 
 
 void GameScene::setMovementStyle(int m) {
-    CULog("Setting movement to: %i", m);
     _playerController.setMoveStyle(static_cast<Movement>(m));
 }
 
