@@ -128,6 +128,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _world->onBeginContact = [this](b2Contact* contact) {
         CollisionController::beginContact(contact);
     };
+    _world->onEndContact = [this](b2Contact* contact) {
+        CollisionController::endContact(contact);
+    };
     _world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
         CollisionController::beforeSolve(contact,oldManifold);
     };
@@ -136,8 +139,17 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     auto _worldnode = world->getSceneNode();
     _worldnode->setPosition(offset);
+    
+    _debugnode = scene2::SceneNode::alloc();
+    _debugnode->setScale(_scale); // Debug node draws in PHYSICS coordinates
+    _debugnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
+    _debugnode->setPosition(offset);
+    
+    world->setDebugNode(_debugnode);
+    
     addChild(scene_background);
     addChild(_worldnode);
+    addChild(_debugnode);
     addChild(scene_ui);
     reset();
     return true;
@@ -149,10 +161,12 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 void GameScene::dispose() {
     if (_active) {
         removeAllChildren();
+        _debugnode = nullptr;
         _scoreHUD = nullptr;
         _hatchnode = nullptr;
         _hatchbar = nullptr;
         _active = false;
+        _debug = false;
         Scene2::dispose();
         world = nullptr;
     }
@@ -165,15 +179,26 @@ void GameScene::dispose() {
  * Resets the status of the game so that we can play again.
  */
 void GameScene::reset() {
+    _debugnode->removeAllChildren();
     world->reset();
-//    auto root = getChild(0);
     
+    auto idopt = NetworkController::getPlayerId();
+    if(idopt.has_value()){
+        world->getPlayer(idopt.value())->setUsername(NetworkController::getUsername());
+    }
     _playerController.init();
         
     populate();
+    
+    setDebug(false);
 }
 
 void GameScene::update(float timestep) {
+    
+    if (_playerController.didDebug()) { setDebug(!isDebug()); }
+    
+    // NETWORK //
+    
     /*std::string currRoomId = NetworkController::getRoomId();
     _roomIdHUD->setText(currRoomId);*/
 //    NetworkController::step();
@@ -184,6 +209,11 @@ void GameScene::update(float timestep) {
         ss << "Room Id: " << _currRoomId;
         _roomIdHUD->setText(ss.str());
     }
+    
+    
+    
+    // BEGIN PLAYER MOVEMENT //
+    
     _playerController.readInput();
     auto playerId_option = NetworkController::getPlayerId();
     if(! playerId_option.has_value()) return;
@@ -218,6 +248,8 @@ void GameScene::update(float timestep) {
         _player->setForce(forForce);
     }
     
+    //END PLAYER MOVEMENT //
+    
 
     world->getPhysicsWorld()->update(timestep);
 //    if(NetworkController::isHost()){
@@ -239,6 +271,7 @@ void GameScene::update(float timestep) {
             _score += 1;
         }
         orb->setCollected(false);
+
     }
     
     
@@ -269,6 +302,18 @@ void GameScene::update(float timestep) {
         _hatchnode->setVisible(false);
     }
 
+    
+    // player tagging
+//    if (_player->getDidTag()) {
+//        _score += 15;
+//    }
+//    if (_player->getIsTagged()) {
+//        _player->setPosition(Vec2(20,10));
+//    }
+//    if (_player2->getIsTagged()) {
+//        _player2->setPosition(Vec2(20,10));
+//    }
+
     _scoreHUD->setText(updateScoreText(_score));
     
     //send new position
@@ -292,6 +337,7 @@ void GameScene::populate() {
         wall.setGeometry(Geometry::SOLID);
 
         wallobj = physics2::PolygonObstacle::alloc(wall);
+        wallobj->setDebugColor(Color4::WHITE);
         // You cannot add constant "".  Must stringify
         wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
         wallobj->setName(wname);
@@ -316,6 +362,7 @@ void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj
                             bool useObjPosition) {
     world->getPhysicsWorld()->addObstacle(obj);
 //    obj->setDebugScene(_debugnode);
+    obj->setDebugScene(_debugnode);
 
     // Position the scene graph node (enough for static objects)
       if (useObjPosition) {

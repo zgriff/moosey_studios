@@ -8,6 +8,7 @@
 
 #include "Player.h"
 #include "Element.h"
+#include "NetworkController.h"
 
 using namespace cugl;
 
@@ -20,7 +21,12 @@ using namespace cugl;
 #define DEFAULT_RESTITUTION 0.4f
 /** The constant force applied to this rocket */
 #define DEFAULT_PLAYER_FORCE Vec2(0.0f, 8.3f)
-
+/** Number of rows in the player image filmstrip */
+#define PLAYER_ROWS       3
+/** Number of columns in this player image filmstrip */
+#define PLAYER_COLS       1
+/** Number of elements in this player image filmstrip */
+#define PLAYER_FRAMES     3
 
 /**
  * Sets the textures for this player.
@@ -29,28 +35,37 @@ using namespace cugl;
  */
 void Player::setTextures(const std::shared_ptr<Texture>& player) {
 
-    _sceneNode = scene2::PolygonNode::allocWithTexture(player);
+    _sceneNode = scene2::PolygonNode::alloc();
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _animationNode = scene2::AnimationNode::alloc(player, PLAYER_ROWS, PLAYER_COLS, PLAYER_FRAMES);
+    _animationNode->setAnchor(Vec2::ANCHOR_CENTER);
+//    _animationNode->setFrame(0);
+    _animationNode->setPosition(0,0);
+    _sceneNode->addChild(_animationNode);
+    
     _texture = player;
-    setElement(currElt);
+    setElement(_currElt);
     _body->SetUserData(this);
-//
+
 }
 
 
 void Player::setElement(Element e){
-    prevElt = currElt;
-    currElt = e;
+    _prevElt = _currElt;
+    _currElt = e;
     
-    switch(e){ //TODO: change to texture when assets made
+    switch(e){ 
         case Element::Grass:
-            _sceneNode->setColor(Color4(0, 255, 0));
+            _animationNode->setFrame(2);
+            _sceneNode->setColor(Color4(255, 255, 255));
             break;
         case Element::Fire:
-            _sceneNode->setColor(Color4(255, 0, 0));
+            _animationNode->setFrame(0);
+            _sceneNode->setColor(Color4(255, 255, 255));
             break;
         case Element::Water:
-            _sceneNode->setColor(Color4(0, 0, 255));
+            _animationNode->setFrame(1);
+            _sceneNode->setColor(Color4(255, 255, 255));
             break;
         case Element::None:
             _sceneNode->setColor(Color4(0, 0, 0));
@@ -60,7 +75,7 @@ void Player::setElement(Element e){
 }
 
 Element Player::getPreyElement() {
-    switch(currElt){
+    switch(_currElt){
         case Element::Grass:
             return Element::Water;
         case Element::Fire:
@@ -72,12 +87,23 @@ Element Player::getPreyElement() {
     }
 }
 
+void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
+    _usernameNode = scene2::Label::alloc(_username, font);
+    _usernameNode->setPosition(-1*_usernameNode->getContentWidth()/2, 40);
+    /*Hardcoded height because not sure how to get dimensions of the Player
+    CULog("this width %d", this->getWidth());
+    CULog("sceneNode width %d", _sceneNode->getContentWidth());
+    CULog("animationNode width %d", _animationNode->getContentWidth());*/
+    _sceneNode->addChild(_usernameNode);
+}
+
 /**
  * Disposes the player, releasing all resources.
  */
 void Player::dispose() {
     // Garbage collect
     _sceneNode = nullptr;
+    _animationNode = nullptr;
     _texture = nullptr;
 }
 
@@ -102,8 +128,10 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         setRestitution(DEFAULT_RESTITUTION);
         setFixedRotation(true);
         setForce(DEFAULT_PLAYER_FORCE);
-        currElt = elt;
-        prevElt = elt;
+        _currElt = elt;
+        _prevElt = elt;
+        _isTagged = false;
+        _didTag = false;
         _sceneNode = nullptr;
         return true;
     }

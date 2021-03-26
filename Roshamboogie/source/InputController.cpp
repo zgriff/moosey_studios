@@ -13,13 +13,18 @@
 using namespace cugl;
 /** The key for the event handlers */
 #define LISTENER_KEY        1
+/** The key for toggling the debug display */
+#define DEBUG_KEY KeyCode::D
 
 /**
  * Creates a new input controller with the default settings
  *
  * To use this controller, you will need to initialize it first
  */
-InputController::InputController() {}
+InputController::InputController() :
+_keyDebug(false),
+_debugPressed(false) {
+}
 
 /**
  * Initializes a new input controller for the  player.
@@ -102,6 +107,8 @@ void InputController::readInput() {
     mov.y += keys->keyDown(down) ? -1 : 0;
     mov.x += keys->keyDown(left) ? -1 : 0;
     mov.x += keys->keyDown(right) ? 1 : 0;
+    _keyDebug  = keys->keyPressed(DEBUG_KEY);
+    _debugPressed = _keyDebug;
 
 #endif
 }

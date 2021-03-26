@@ -30,19 +30,18 @@ void CollisionController::beginContact(b2Contact* contact){
     if(bd1->getName() == "orb" && bd2->getName() == "player") {
         Orb* o = (Orb*) bd1;
         Player* p = (Player*) bd2;
-        if (o->getElement() == p->getCurrElement()) {
+        if (p->getCurrElement() != Element::None) {
             o->setCollected(true);
         }
     }
     else if (bd2->getName() == "orb" && bd1->getName() == "player") {
         Orb* o = (Orb*) bd2;
         Player* p = (Player*) bd1;
-        if (o->getElement() == p->getCurrElement()) {
+        if (p->getCurrElement() != Element::None) {
             o->setCollected(true);
         }
     }
        
-    
     //swap station and player collision
     if (bd1->getName() == "swapstation" && bd2->getName() == "player") {
         Player* p = (Player*) bd2;
@@ -87,9 +86,60 @@ void CollisionController::beginContact(b2Contact* contact){
             CULog("egg collected");
         }
     }
+    
+    //player and player collision (tagging)
+    if ((bd1->getName() == "player" && bd2->getName() == "player") || (bd2->getName() == "player" && bd1->getName() == "player")) {
+        Player* p1 = (Player*) bd1;
+        Player* p2 = (Player*) bd2;
+
+        //p2 tags p1
+        if (p1->getCurrElement() == p2->getPreyElement()) {
+            CULog("tagged");
+            p1->setIsTagged(true);
+            p2->setDidTag(true);
+        }
+        //p1 tags p2
+        else if (p2->getCurrElement() == p1->getPreyElement()) {
+            CULog("tagged");
+            p2->setIsTagged(true);
+            p1->setDidTag(true);
+        }
+    }
+}
+
+
+void CollisionController::endContact(b2Contact* contact) {
+    b2Fixture * fixA = contact->GetFixtureA();
+    b2Body * bodyA = fixA->GetBody();
+    b2Fixture * fixB = contact->GetFixtureB();
+    b2Body * bodyB = fixB->GetBody();
+    
+    cugl::physics2::Obstacle* bd1 = (cugl::physics2::Obstacle*) bodyA->GetUserData();
+    cugl::physics2::Obstacle* bd2 = (cugl::physics2::Obstacle*) bodyB->GetUserData();
+    
+    if ((bd1->getName() == "player" && bd2->getName() == "player") || (bd2->getName() == "player" && bd1->getName() == "player")) {
+        Player* p1 = (Player*) bd1;
+        Player* p2 = (Player*) bd2;
+        p1->setIsTagged(false);
+        p2->setIsTagged(false);
+        p1->setDidTag(false);
+        p2->setDidTag(false);
+    }
 }
 
 void CollisionController::beforeSolve(b2Contact* contact, const b2Manifold* oldManifold){
-    
+
+    b2Fixture * fixA = contact->GetFixtureA();
+    b2Fixture * fixB = contact->GetFixtureB();
+    b2Body * bodyA = fixA->GetBody();
+    b2Body * bodyB = fixB->GetBody();
+
+    cugl::physics2::Obstacle* bd1 = (cugl::physics2::Obstacle*) bodyA->GetUserData();
+    cugl::physics2::Obstacle* bd2 = (cugl::physics2::Obstacle*) bodyB->GetUserData();
+
+    //disable two player collision (pass through each other)
+    if ((bd1->getName() == "player" && bd2->getName() == "player") || (bd2->getName() == "player" && bd1->getName() == "player")) {
+        contact->SetEnabled(false);
+    }
 }
 

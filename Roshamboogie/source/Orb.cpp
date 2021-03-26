@@ -20,7 +20,7 @@ void Orb::setTextures(const std::shared_ptr<Texture>& orb) {
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
     _texture = orb;
     _body->SetUserData(this);
-    setElement();
+//    setElement();
 }
 bool Orb::init(Vec2 pos, Element el){
     bool success = physics2::WheelObstacle::init(pos, ORB_RADIUS);

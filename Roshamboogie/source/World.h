@@ -24,6 +24,7 @@ private:
     
     /** Reference to the physics root of the scene graph */
     std::shared_ptr<cugl::scene2::SceneNode> _worldNode;
+    std::shared_ptr<cugl::scene2::SceneNode> _debugNode;
     
     std::vector<std::shared_ptr<Player>> _players;
     
@@ -58,7 +59,7 @@ public:
     void reset();
     
 #pragma mark -
-#pragma mark Getters
+#pragma mark Getters and setters
     std::shared_ptr<Player> getPlayer(int id){
         return _players[id];
     }
@@ -81,6 +82,10 @@ public:
     
     std::shared_ptr<cugl::physics2::ObstacleWorld> getPhysicsWorld(){
         return _physicsWorld;
+    }
+    
+    void setDebugNode(const std::shared_ptr<cugl::scene2::SceneNode> & debugNode){
+        _debugNode = debugNode;
     }
 };
 

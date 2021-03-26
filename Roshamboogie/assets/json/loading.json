@@ -39,6 +39,10 @@
         "retro": {
             "file": "fonts/RetroGame.ttf",
             "size": 64
+        },
+        "felt": {
+            "file": "fonts/MarkerFelt.ttf",
+            "size": 32
         }
     },
     "scene2s" : {
@@ -76,7 +80,7 @@
                         "visible": false,
                         "pushsize": true,
                         "anchor": [ 0.5, 0.5 ],
-                        "scale": 0.8
+                        "scale": 0.7
                     },
                     "children": {
                         "up": {
@@ -89,7 +93,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": 115,
+                        "y_offset": 65,
                         "absolute": true
                     }
                 },
@@ -101,7 +105,7 @@
                         "visible": false,
                         "pushsize": true,
                         "anchor": [ 0.5, 0.5 ],
-                        "scale": 0.8
+                        "scale": 0.7
                     },
                     "children": {
                         "up": {
@@ -114,7 +118,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": -115,
+                        "y_offset": -165,
                         "absolute": true
                     }
                 },
@@ -156,6 +160,48 @@
                                 "y_anchor": "top",
                                 "y_offset": -0.8,
                                 "x_offset": -0.1
+                            }
+                        }
+                    }
+                },
+                "username": {
+                    "comment": "The scene graph definition for the text field demo",
+                    "type": "Node",
+                    "format": {
+                        "type": "Anchored"
+                    },
+                    "children": {
+                        "action": {
+                            "type": "TextField",
+                            "data": {
+                                "font": "felt",
+                                "text": "",
+                                "foreground": [ 255, 255, 255, 255 ],
+                                "background": [ 0, 0, 0, 255 ],
+                                "size": [ 300, 40 ],
+                                "anchor": [ 0.5, 0.5 ]
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "top",
+                                "y_offset": -0.3,
+                                "x_offset": -0.05
+                            }
+                        },
+                        "result": {
+                            "type": "Label",
+                            "data": {
+                                "font": "felt",
+                                "text": "Username:",
+                                "foreground": [ 0, 0, 0, 255 ],
+                                "size": [ 350, 40 ],
+                                "anchor": [ 0.5, 0.5 ]
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "top",
+                                "y_offset": -0.3,
+                                "x_offset": -0.2
                             }
                         }
                     }

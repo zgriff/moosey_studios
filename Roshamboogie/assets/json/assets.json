@@ -9,6 +9,9 @@
         "ship": {
             "file": "textures/ships.png"
         },
+        "player": {
+            "file": "textures/player.png"
+        },
         "rocket": {
             "file": "textures/rocket.png"
         },
@@ -44,7 +47,12 @@
         "retro": {
             "file": "fonts/RetroGame.ttf",
             "size": 32
+        },
+        "username": {
+            "file": "fonts/MarkerFelt.ttf",
+            "size": 16
         }
+
     },
     "scene2s": {
         "background": {

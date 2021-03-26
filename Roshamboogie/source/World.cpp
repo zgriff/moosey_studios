@@ -17,6 +17,7 @@ void World::dispose(){
     _orbs.clear();
     _swapStations.clear();
     _worldNode = nullptr;
+    _debugNode = nullptr;
     _physicsWorld = nullptr;
     _assets = nullptr;
 }
@@ -40,13 +41,16 @@ void World::reset(){
     auto eggTexture = _assets->get<Texture>("target");
 
     Vec2 playerPos = ((Vec2)PLAYER_POS);
-    Size playerSize(shipTexture->getSize()/_scale);
+    Size playerSize(1, 2);
     for(int i = 0; i < 3; ++i){ //TODO: Change to _numPlayers once that's locked in
         auto player = Player::alloc(playerPos, playerSize, Element::Water);
         _physicsWorld->addObstacle(player);
         player->setTextures(shipTexture);
         player->setID(i);
         player->setDrawScale(_scale);
+        player->setDebugColor(Color4::YELLOW);
+        player->setDebugScene(_debugNode);
+        player->allocUsernameNode(_assets->get<Font>("username"));
         _players.push_back(player);
         _worldNode->addChild(player->getSceneNode());
     }
@@ -56,18 +60,24 @@ void World::reset(){
     _physicsWorld->addObstacle(fireOrb);
     fireOrb->setTextures(orbTexture);
     fireOrb->setDrawScale(_scale);
+    fireOrb->setDebugColor(Color4::YELLOW);
+    fireOrb->setDebugScene(_debugNode);
     _orbs.push_back(fireOrb);
 
     auto waterOrb = Orb::alloc(Vec2(20,8), Element::Water);
     _physicsWorld->addObstacle(waterOrb);
     waterOrb->setTextures(orbTexture);
     waterOrb->setDrawScale(_scale);
+    waterOrb->setDebugColor(Color4::YELLOW);
+    waterOrb->setDebugScene(_debugNode);
     _orbs.push_back(waterOrb);
     
     auto grassOrb = Orb::alloc(Vec2(10,12), Element::Grass);
     _physicsWorld->addObstacle(grassOrb);
     grassOrb->setTextures(orbTexture);
     grassOrb->setDrawScale(_scale);
+    grassOrb->setDebugColor(Color4::YELLOW);
+    grassOrb->setDebugScene(_debugNode);
     _orbs.push_back(grassOrb);
     
     
@@ -78,6 +88,8 @@ void World::reset(){
     swapStation->setTextures(swapStTexture);
     swapStation->setDrawScale(_scale);
     swapStation->setActive(true);
+    swapStation->setDebugColor(Color4::YELLOW);
+    swapStation->setDebugScene(_debugNode);
     _swapStations.push_back(swapStation);
     
     Vec2 eggPos = Vec2(14,14);
@@ -87,6 +99,8 @@ void World::reset(){
     egg->setTextures(eggTexture);
     egg->setDrawScale(_scale);
     egg->setActive(true);
+    egg->setDebugColor(Color4::YELLOW);
+    egg->setDebugScene(_debugNode);
     _eggs.push_back(egg);
     
     _worldNode->addChild(fireOrb->getSceneNode());

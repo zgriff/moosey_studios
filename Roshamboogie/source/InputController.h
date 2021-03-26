@@ -22,6 +22,10 @@ private:
     cugl::Vec2 _dtouch;
 //    /** Did we press the fire button? */
 //    bool _didFire;
+    /** Whether the debug key is down */
+    bool  _keyDebug;
+    /** Whether the debug toggle was chosen. */
+    bool _debugPressed;
 
 public:
     /**
@@ -83,6 +87,13 @@ public:
      * are more appropriate for menus and buttons (like the loading screen).
      */
     void readInput();
+    
+    /**
+     * Returns true if the player wants to go toggle the debug mode.
+     *
+     * @return true if the player wants to go toggle the debug mode.
+     */
+    bool didDebug() const { return _debugPressed; }
     
     cugl::Vec2 getMov(){
         return mov;

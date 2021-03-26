@@ -29,6 +29,11 @@ namespace NetworkController {
 
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);
+
+    std::string getUsername();
+
+    void setUsername(std::string name);
+
 };
 
 #endif

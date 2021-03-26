@@ -27,6 +27,8 @@ protected:
     std::shared_ptr<cugl::scene2::Button>    _button;
     std::shared_ptr<cugl::scene2::Button>    _button2;
     std::shared_ptr<cugl::scene2::TextField> _field;
+    std::shared_ptr<cugl::scene2::TextField> _username;
+
     bool _host;
 
     // MODEL
@@ -91,6 +93,7 @@ public:
     bool isPending( ) const;
 
     bool isHost() { return _host; };
+
 };
 
 #endif /* LoadingScene_hpp */
