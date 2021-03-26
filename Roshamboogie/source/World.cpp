@@ -35,7 +35,7 @@ void World::reset(){
     _physicsWorld->clear();
     _worldNode->removeAllChildren();
     
-    auto shipTexture = _assets->get<Texture>("rocket");
+    auto playerTexture = _assets->get<Texture>("player");
     auto orbTexture = _assets->get<Texture>("photon");
     auto swapStTexture = _assets->get<Texture>("swapstation");
     auto eggTexture = _assets->get<Texture>("target");
@@ -45,7 +45,7 @@ void World::reset(){
     for(int i = 0; i < 3; ++i){ //TODO: Change to _numPlayers once that's locked in
         auto player = Player::alloc(playerPos, playerSize, Element::Water);
         _physicsWorld->addObstacle(player);
-        player->setTextures(shipTexture);
+        player->setTextures(playerTexture);
         player->setID(i);
         player->setDrawScale(_scale);
         player->setDebugColor(Color4::YELLOW);
