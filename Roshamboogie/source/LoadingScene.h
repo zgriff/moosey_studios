@@ -24,10 +24,6 @@ protected:
     std::shared_ptr<cugl::scene2::SceneNode>  _brand;
     /** The "play" button */
     std::shared_ptr<cugl::scene2::Button>    _button;
-    std::shared_ptr<cugl::scene2::Button>    _button2;
-    std::shared_ptr<cugl::scene2::TextField> _field;
-    bool _host;
-
     // MODEL
     /** The progress displayed on the screen */
     float _progress;
@@ -89,7 +85,6 @@ public:
      */
     bool isPending( ) const;
 
-    bool isHost() { return _host; };
 };
 
 #endif /* LoadingScene_hpp */
