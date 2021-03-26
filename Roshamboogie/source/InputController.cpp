@@ -88,7 +88,7 @@ void InputController::readInput() {
             break;
         case Movement::TiltMove:
             _tiltVec = Input::get<Accelerometer>()->getAcceleration();
-            break
+            break;
         default:
             if (_keydown) {
                 if (_dtouch.x < 640) {
