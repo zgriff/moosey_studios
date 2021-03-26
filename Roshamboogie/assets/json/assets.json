@@ -148,7 +148,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "top",
-                                "y_offset": -0.8,
+                                "y_offset": -0.5,
                                 "x_offset": -0.1
                             }
                         }
