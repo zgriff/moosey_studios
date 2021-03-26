@@ -22,14 +22,6 @@
     <ClInclude Include="..\..\source\Element.h" />
     <ClInclude Include="..\..\source\GameScene.h" />
     <ClInclude Include="..\..\source\Globals.h" />
-    <ClInclude Include="..\..\source\InputController.h" />
-    <ClInclude Include="..\..\source\LoadingScene.h" />
-    <ClInclude Include="..\..\source\NetworkController.h" />
-    <ClInclude Include="..\..\source\NetworkData.h" />
-    <ClInclude Include="..\..\source\Orb.h" />
-    <ClInclude Include="..\..\source\OrbManager.h" />
-    <ClInclude Include="..\..\source\Player.h" />
-    <ClInclude Include="..\..\source\SwapStation.h" />
     <ClInclude Include="..\..\source\World.h" />
   </ItemGroup>
 </Project>
