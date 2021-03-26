@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28297956260CEE99002EC000 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28297955260CEE99002EC000 /* World.cpp */; };
+		28297957260CEE99002EC000 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28297955260CEE99002EC000 /* World.cpp */; };
+		28297958260CEE99002EC000 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28297955260CEE99002EC000 /* World.cpp */; };
 		2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
 		2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
 		2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
@@ -140,6 +143,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		28297955260CEE99002EC000 /* World.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		288216462605A7910073F7D4 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
 		288216482605A7910073F7D4 /* NetworkController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkController.cpp; sourceTree = "<group>"; };
 		288216522605A90E0073F7D4 /* NetworkData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkData.cpp; sourceTree = "<group>"; };
@@ -420,6 +424,7 @@
 				288216532605A90E0073F7D4 /* NetworkData.h */,
 				2882167626098AEE0073F7D4 /* Globals.h */,
 				28821696260A545C0073F7D4 /* World.h */,
+				28297955260CEE99002EC000 /* World.cpp */,
 				ECA583EF2603006C00DF6791 /* Egg.h */,
 				ECA583F32603008700DF6791 /* Egg.cpp */,
 				ECFA78E82605149B009D7949 /* CollisionController.h */,
@@ -614,6 +619,7 @@
 				925FC50E25F42CFD00532483 /* LoadingScene.cpp in Sources */,
 				925FC53625F42D4D00532483 /* Orb.cpp in Sources */,
 				ECA583F62603008700DF6791 /* Egg.cpp in Sources */,
+				28297958260CEE99002EC000 /* World.cpp in Sources */,
 				925FC51625F42D0800532483 /* GameScene.cpp in Sources */,
 				925FC54625F42D6800532483 /* SwapStation.cpp in Sources */,
 				ECFA78EF260514B1009D7949 /* CollisionController.cpp in Sources */,
@@ -634,6 +640,7 @@
 				925FC50D25F42CFD00532483 /* LoadingScene.cpp in Sources */,
 				925FC53525F42D4D00532483 /* Orb.cpp in Sources */,
 				ECA583F52603008700DF6791 /* Egg.cpp in Sources */,
+				28297957260CEE99002EC000 /* World.cpp in Sources */,
 				925FC51525F42D0800532483 /* GameScene.cpp in Sources */,
 				925FC54525F42D6800532483 /* SwapStation.cpp in Sources */,
 				ECFA78EE260514B1009D7949 /* CollisionController.cpp in Sources */,
@@ -654,6 +661,7 @@
 				925FC50C25F42CFC00532483 /* LoadingScene.cpp in Sources */,
 				925FC53425F42D4D00532483 /* Orb.cpp in Sources */,
 				ECA583F42603008700DF6791 /* Egg.cpp in Sources */,
+				28297956260CEE99002EC000 /* World.cpp in Sources */,
 				925FC51425F42D0800532483 /* GameScene.cpp in Sources */,
 				925FC54425F42D6800532483 /* SwapStation.cpp in Sources */,
 				ECFA78ED260514B1009D7949 /* CollisionController.cpp in Sources */,

@@ -1,5 +1,9 @@
 
 #include "NetworkController.h"
+#include "NetworkData.h"
+#include "Player.h"
+#include "Orb.h"
+#include "Egg.h"
 #include <cugl/cugl.h>
 
 
@@ -8,6 +12,7 @@ namespace NetworkController {
         std::shared_ptr<cugl::CUNetworkConnection> network;
         std::string roomId;
         int lastNum = 999;
+        std::shared_ptr<World> world;
     }
 
     /** IP of the NAT punchthrough server */
@@ -32,6 +37,10 @@ namespace NetworkController {
         CULog("total players %d", network->getTotalPlayers());
     }
 
+    void setWorld(std::shared_ptr<World> w){
+        world = w;
+    }
+
     bool isHost(){
         return network->getPlayerID().value_or(-1) == 0;
     }
@@ -50,14 +59,6 @@ namespace NetworkController {
 
     uint8_t getNumPlayers() {
         return network->getNumPlayers();
-    }
-
-    void receive(const std::function<void(const std::vector<uint8_t>&)>& dispatcher){
-        network->receive(dispatcher);
-    }
-
-    void send(const std::vector<uint8_t>& msg){
-        network->send(msg);
     }
 
     void step() {
@@ -81,6 +82,37 @@ namespace NetworkController {
                 CULog("Player ID %d", *network->getPlayerID());
             }
         }
+    }
+
+    void update(float timestep){
+        network->receive([&](const std::vector<uint8_t> msg) {
+            ND::NetworkData nd{};
+            ND::fromBytes(nd, msg);
+            switch(nd.packetType){
+                case ND::NetworkData::POSITION_PACKET:
+                    {
+                        auto p = world->getPlayer(nd.positionData.playerId);
+                        p->setPosition(nd.positionData.playerPos);
+                        p->setLinearVelocity(nd.positionData.playerVelocity);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    void sendPosition(){
+        if(! getPlayerId().has_value()) return;
+        auto p = world->getPlayer(getPlayerId().value());
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::POSITION_PACKET;
+        nd.positionData.playerPos = p->getPosition();
+        nd.positionData.playerVelocity = p->getLinearVelocity();
+        nd.positionData.playerId = NetworkController::getPlayerId().value();
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
     }
 
 }

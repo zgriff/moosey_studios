@@ -73,7 +73,7 @@ void Orb::update(float delta) {
 }
 
 void Orb::respawn() {
-    std::random_device r;
+    std::random_device r; //TODO: move to only initialize once
     std::default_random_engine e1(r());
     std::uniform_int_distribution<int> rand_int(1, 31);
     std::uniform_int_distribution<int> rand_int2(1, 17);
