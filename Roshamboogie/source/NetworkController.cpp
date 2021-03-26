@@ -9,6 +9,7 @@ namespace NetworkController {
         std::string roomId;
         bool _isHost;
         int lastNum = 999;
+        std::string username;
     }
 
     /** IP of the NAT punchthrough server */
@@ -49,6 +50,14 @@ namespace NetworkController {
 
     uint8_t getNumPlayers() {
         return network->getNumPlayers();
+    }
+
+    std::string getUsername() {
+        return username;
+    }
+
+    void setUsername(std::string name) {
+        username = name;
     }
 
     void receive(const std::function<void(const std::vector<uint8_t>&)>& dispatcher){

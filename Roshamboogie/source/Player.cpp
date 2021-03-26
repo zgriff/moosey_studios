@@ -8,6 +8,7 @@
 
 #include "Player.h"
 #include "Element.h"
+#include "NetworkController.h"
 
 using namespace cugl;
 
@@ -41,6 +42,7 @@ void Player::setTextures(const std::shared_ptr<Texture>& player) {
 //    _animationNode->setFrame(0);
     _animationNode->setPosition(0,0);
     _sceneNode->addChild(_animationNode);
+    
     _texture = player;
     setElement(currElt);
     _body->SetUserData(this);
@@ -83,6 +85,16 @@ Element Player::getPreyElement() {
         case Element::None:
             return Element::None;
     }
+}
+
+void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
+    _usernameNode = scene2::Label::alloc(NetworkController::getUsername(), font);
+    _usernameNode->setPosition(-1*_usernameNode->getContentWidth()/2, 40);
+    /*Hardcoded height because not sure how to get dimensions of the Player
+    CULog("this width %d", this->getWidth());
+    CULog("sceneNode width %d", _sceneNode->getContentWidth());
+    CULog("animationNode width %d", _animationNode->getContentWidth());*/
+    _sceneNode->addChild(_usernameNode);
 }
 
 /**

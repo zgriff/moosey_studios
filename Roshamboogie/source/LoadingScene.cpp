@@ -65,8 +65,11 @@ bool LoadingScene::init(const std::shared_ptr<AssetManager>& assets) {
     _button2->addListener([=](const std::string& name, bool down) {
         _host = false;
         _field->setVisible(true);
+        /*_username->setVisible(false);
+        _username->deactivate();*/
+        _button->deactivate();
+        _button->setVisible(false);
         _field->activate();
-        _button->dispose();
         });
 
     _field = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("load_textfield_action"));
@@ -82,12 +85,21 @@ bool LoadingScene::init(const std::shared_ptr<AssetManager>& assets) {
             NetworkController::step();
         }
         if (NetworkController::getNumPlayers() > 1) {
-            _button2->dispose();
             this->_active = false;
         }
         });
     Input::activate<TextInput>();
     _field->setVisible(false);
+
+    _username = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("load_username_action"));
+    _username->addTypeListener([=](const std::string& name, const std::string& value) {
+        CULog("Change to %s", value.c_str());
+        });
+    _username->addExitListener([=](const std::string& name, const std::string& value) {
+        CULog("Finish to %s", value.c_str());
+        NetworkController::setUsername(value);
+        });
+    _username->activate();
 
     Application::get()->setClearColor(Color4(192,192,192,255));
     addChild(layer);
@@ -103,9 +115,12 @@ void LoadingScene::dispose() {
         _button->deactivate();
     }
     _button = nullptr;
+    _button2 = nullptr;
+    _field = nullptr;
     _brand = nullptr;
     _bar = nullptr;
     _assets = nullptr;
+    _username = nullptr;
     _progress = 0.0f;
 }
 

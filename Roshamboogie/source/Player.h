@@ -24,13 +24,16 @@ private:
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
     float _drawscale;
-
     
     // Asset references.  These should be set by GameMode
     /** Reference to the node for the player */
     std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
     /** Reference to player's sprite for drawing */
     std::shared_ptr<cugl::scene2::AnimationNode> _animationNode;
+
+    std::string _username;
+    std::shared_ptr<cugl::scene2::Label> _usernameNode;
+
     /** Reference to the player texture */
     std::shared_ptr<cugl::Texture> _texture;
 
@@ -65,6 +68,12 @@ public:
     Element getPrevElement() { return prevElt; }
     
     Element getPreyElement();
+
+    /**
+    * Creates the username Label node with the font
+    *
+    */
+    void allocUsernameNode(const std::shared_ptr<cugl::Font>& font);
 
     
 #pragma mark Graphics

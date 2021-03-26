@@ -191,7 +191,6 @@
     <ClInclude Include="..\..\source\Egg.h" />
     <ClInclude Include="..\..\source\Element.h" />
     <ClInclude Include="..\..\source\GameScene.h" />
-    <ClInclude Include="..\..\source\HelloApp.h" />
     <ClInclude Include="..\..\source\InputController.h" />
     <ClInclude Include="..\..\source\LoadingScene.h" />
     <ClInclude Include="..\..\source\NetworkController.h" />
@@ -201,12 +200,6 @@
     <ClInclude Include="..\..\source\Player.h" />
     <ClInclude Include="..\..\source\SwapStation.h" />
     <ClInclude Include="resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="ShipDemo.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="icon1.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\cugl\build-win10\CUGL\CUGL.vcxproj">

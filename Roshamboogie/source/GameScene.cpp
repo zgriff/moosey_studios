@@ -195,6 +195,7 @@ void GameScene::reset() {
     _player->setDebugScene(_debugnode);
     _player->setID(0);
     _player->setDrawScale(_scale);
+    _player->allocUsernameNode(_assets->get<Font>("username"));
     _playerController.init();
     _world->addObstacle(_player2);
     _player2->setTextures(playerTexture);
@@ -202,6 +203,7 @@ void GameScene::reset() {
     _player2->setDrawScale(_scale);
     _player2->setDebugColor(Color4::YELLOW);
     _player2->setDebugScene(_debugnode);
+    _player2->allocUsernameNode(_assets->get<Font>("username"));
     
     //creating the three orbs
     _fireOrb = Orb::alloc(Vec2(4,4), Element::Fire);
