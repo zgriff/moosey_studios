@@ -1,5 +1,9 @@
 
 #include "NetworkController.h"
+#include "NetworkData.h"
+#include "Player.h"
+#include "Orb.h"
+#include "Egg.h"
 #include <cugl/cugl.h>
 
 
@@ -7,8 +11,8 @@ namespace NetworkController {
     namespace {
         std::shared_ptr<cugl::CUNetworkConnection> network;
         std::string roomId;
-        bool _isHost;
         int lastNum = 999;
+        std::shared_ptr<World> world;
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username;
     }
@@ -23,13 +27,11 @@ namespace NetworkController {
             std::make_shared<cugl::CUNetworkConnection>(
                 cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, 6, 0));
         CULog("REACHED CREATE");
-        _isHost = true;
     }
 
     void joinGame(std::string roomId) {
         network =
             std::make_shared<cugl::CUNetworkConnection>(cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, 6, 0), roomId);
-        _isHost = false;
         NetworkController::roomId = roomId;
         CULog("REACHED JOIN");
         CULog("%s", roomId.c_str());
@@ -37,8 +39,16 @@ namespace NetworkController {
         CULog("total players %d", network->getTotalPlayers());
     }
 
+    void setWorld(std::shared_ptr<World> w){
+        world = w;
+    }
+
     bool isHost(){
-        return _isHost;
+        return network->getPlayerID().value_or(-1) == 0;
+    }
+
+    std::optional<uint8_t> getPlayerId(){
+        return network->getPlayerID();
     }
 
     std::string getRoomId() {
@@ -90,6 +100,37 @@ namespace NetworkController {
                 CULog("Player ID %d", *network->getPlayerID());
             }
         }
+    }
+
+    void update(float timestep){
+        network->receive([&](const std::vector<uint8_t> msg) {
+            ND::NetworkData nd{};
+            ND::fromBytes(nd, msg);
+            switch(nd.packetType){
+                case ND::NetworkData::POSITION_PACKET:
+                    {
+                        auto p = world->getPlayer(nd.positionData.playerId);
+                        p->setPosition(nd.positionData.playerPos);
+                        p->setLinearVelocity(nd.positionData.playerVelocity);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    void sendPosition(){
+        if(! getPlayerId().has_value()) return;
+        auto p = world->getPlayer(getPlayerId().value());
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::POSITION_PACKET;
+        nd.positionData.playerPos = p->getPosition();
+        nd.positionData.playerVelocity = p->getLinearVelocity();
+        nd.positionData.playerId = NetworkController::getPlayerId().value();
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
     }
 
 }

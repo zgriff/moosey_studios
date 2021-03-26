@@ -9,7 +9,7 @@
 #ifndef Element_h
 #define Element_h
 
-enum class Element {
+enum Element {
     Grass, Water, Fire, None
 };
 

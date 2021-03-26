@@ -21,6 +21,7 @@
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
+#include "World.h"
 
 class GameScene : public cugl::Scene2 {
 protected:
@@ -28,9 +29,11 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
 
     /** Reference to the physics root of the scene graph */
-    std::shared_ptr<cugl::scene2::SceneNode> _worldnode;
+//    std::shared_ptr<cugl::scene2::SceneNode> _worldnode;
     /** The Box2D world */
-    std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
+//    std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
+    
+    std::shared_ptr<World> world;
     
     std::shared_ptr<cugl::scene2::Label> _hatchnode;
     
@@ -63,16 +66,16 @@ protected:
     InputController _playerController;
 
     /** Location and animation information for player (MODEL CLASS) */
-    std::shared_ptr<Player> _player;
-    std::shared_ptr<Player> _player2;
-    
-    std::shared_ptr<Orb> _fireOrb;
-    std::shared_ptr<Orb> _waterOrb;
-    std::shared_ptr<Orb> _grassOrb;
-    
-    std::shared_ptr<SwapStation> _swapStation;
-    
-    std::shared_ptr<Egg> _egg;
+//    std::shared_ptr<Player> _player;
+//    std::shared_ptr<Player> _player2;
+//
+//    std::shared_ptr<Orb> _fireOrb;
+//    std::shared_ptr<Orb> _waterOrb;
+//    std::shared_ptr<Orb> _grassOrb;
+//
+//    std::shared_ptr<SwapStation> _swapStation;
+//
+//    std::shared_ptr<Egg> _egg;
     
     std::shared_ptr<cugl::scene2::Label> _scoreHUD;
     

@@ -118,7 +118,6 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     
     
     
-    Input::activate<Keyboard>();
     Input::activate<TextInput>();
     _codeField->setVisible(false);
     if(_active) {
@@ -135,7 +134,6 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
 void MenuScene::dispose() {
     _hostButton = nullptr;
     _joinButton = nullptr;
-    Input::deactivate<Keyboard>();
     Input::deactivate<TextInput>();
     _codeField = nullptr;
     _slider = nullptr;

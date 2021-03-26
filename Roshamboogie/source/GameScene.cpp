@@ -35,8 +35,6 @@ using namespace std;
 /** Height of the game world in Box2d units */
 #define DEFAULT_HEIGHT  18.0f
 
-/** The initial rocket position */
-float PLAYER_POS[] = {10,  4};
 
 #define WALL_VERTS  8
 #define WALL_COUNT  4
@@ -95,6 +93,12 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         return false;
     }
     
+    _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
+    
+    //create world
+    world = World::alloc(assets, DEFAULT_WIDTH, DEFAULT_HEIGHT, _scale, NetworkController::getNumPlayers());
+    NetworkController::setWorld(world);
+    
     // Start up the input handler
     _assets = assets;
     _playerController.init();
@@ -119,7 +123,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
     
-    _world = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
+    auto _world = world->getPhysicsWorld();
     _world->activateCollisionCallbacks(true);
     _world->onBeginContact = [this](b2Contact* contact) {
         CollisionController::beginContact(contact);
@@ -130,18 +134,18 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
         CollisionController::beforeSolve(contact,oldManifold);
     };
-    _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
+    
     Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
 
-    // Create the scene graph
-    _worldnode = scene2::SceneNode::alloc();
-    _worldnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
+    auto _worldnode = world->getSceneNode();
     _worldnode->setPosition(offset);
     
     _debugnode = scene2::SceneNode::alloc();
     _debugnode->setScale(_scale); // Debug node draws in PHYSICS coordinates
     _debugnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
     _debugnode->setPosition(offset);
+    
+    world->setDebugNode(_debugnode);
     
     addChild(scene_background);
     addChild(_worldnode);
@@ -157,8 +161,6 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 void GameScene::dispose() {
     if (_active) {
         removeAllChildren();
-        _world = nullptr;
-        _worldnode = nullptr;
         _debugnode = nullptr;
         _scoreHUD = nullptr;
         _hatchnode = nullptr;
@@ -166,6 +168,7 @@ void GameScene::dispose() {
         _active = false;
         _debug = false;
         Scene2::dispose();
+        world = nullptr;
     }
 }
 
@@ -176,91 +179,16 @@ void GameScene::dispose() {
  * Resets the status of the game so that we can play again.
  */
 void GameScene::reset() {
-    _world->clear();
-    _worldnode->removeAllChildren();
     _debugnode->removeAllChildren();
-//    auto root = getChild(0);
+    world->reset();
     
-    auto playerTexture = _assets->get<Texture>("player");
-    auto orbTexture = _assets->get<Texture>("photon");
-    auto swapStTexture = _assets->get<Texture>("swapstation");
-    auto eggTexture = _assets->get<Texture>("target");
-
-    Vec2 playerPos = ((Vec2)PLAYER_POS);
-    Size textureSize = playerTexture->getSize();
-//    Size playerSize((textureSize.getIHeight())/_scale, (textureSize.getIWidth())/_scale);
-    Size playerSize(1,2); //TODO: manually setting the collision box but fix
-    _player = Player::alloc(playerPos, playerSize, Element::Water);
-    _player2 = Player::alloc(playerPos, playerSize, Element::Water);
-    _world->addObstacle(_player);
-    _player->setTextures(playerTexture);
-    _player->setDebugColor(Color4::YELLOW);
-    _player->setDebugScene(_debugnode);
-    _player->setID(0);
-    _player->setDrawScale(_scale);
-    _player->setUsername(NetworkController::getUsername());
-    _player->allocUsernameNode(_assets->get<Font>("username"));
+    auto idopt = NetworkController::getPlayerId();
+    if(idopt.has_value()){
+        world->getPlayer(idopt.value())->setUsername(NetworkController::getUsername());
+    }
     _playerController.init();
-    _world->addObstacle(_player2);
-    _player2->setTextures(playerTexture);
-    _player2->setID(1);
-    _player2->setDrawScale(_scale);
-    _player2->setDebugColor(Color4::YELLOW);
-    _player2->setDebugScene(_debugnode);
-    _player2->allocUsernameNode(_assets->get<Font>("username"));
-    
-    //creating the three orbs
-    _fireOrb = Orb::alloc(Vec2(4,4), Element::Fire);
-    _world->addObstacle(_fireOrb);
-    _fireOrb->setTextures(orbTexture);
-    _fireOrb->setDrawScale(_scale);
-    _fireOrb->setDebugColor(Color4::YELLOW);
-    _fireOrb->setDebugScene(_debugnode);
-    
-    _waterOrb = Orb::alloc(Vec2(20,8), Element::Water);
-    _world->addObstacle(_waterOrb);
-    _waterOrb->setTextures(orbTexture);
-    _waterOrb->setDrawScale(_scale);
-    _waterOrb->setDebugColor(Color4::YELLOW);
-    _waterOrb->setDebugScene(_debugnode);
-    
-    _grassOrb = Orb::alloc(Vec2(10,12), Element::Grass);
-    _world->addObstacle(_grassOrb);
-    _grassOrb->setTextures(orbTexture);
-    _grassOrb->setDrawScale(_scale);
-    _grassOrb->setDebugColor(Color4::YELLOW);
-    _grassOrb->setDebugScene(_debugnode);
-    
-    
-    Vec2 swapStPos = Vec2(8,8);
-    Size swapStSize(swapStTexture->getSize() / _scale);
-    _swapStation = SwapStation::alloc(swapStPos, swapStSize);
-    _world->addObstacle(_swapStation);
-    _swapStation->setTextures(swapStTexture);
-    _swapStation->setDrawScale(_scale);
-    _swapStation->setActive(true);
-    _swapStation->setDebugColor(Color4::YELLOW);
-    _swapStation->setDebugScene(_debugnode);
-    
-    Vec2 eggPos = Vec2(14,14);
-    Size eggSize(eggTexture->getSize() / _scale);
-    _egg = Egg::alloc(eggPos, eggSize);
-    _world->addObstacle(_egg);
-    _egg->setTextures(eggTexture);
-    _egg->setDrawScale(_scale);
-    _egg->setActive(true);
-    _egg->setDebugColor(Color4::YELLOW);
-    _egg->setDebugScene(_debugnode);
-    
+        
     populate();
-    
-    _worldnode->addChild(_fireOrb->getSceneNode());
-    _worldnode->addChild(_waterOrb->getSceneNode());
-    _worldnode->addChild(_grassOrb->getSceneNode());
-    _worldnode->addChild(_player->getSceneNode());
-    _worldnode->addChild(_player2->getSceneNode());
-    _worldnode->addChild(_swapStation->getSceneNode());
-    _worldnode->addChild(_egg->getSceneNode());
     
     setDebug(false);
 }
@@ -274,14 +202,7 @@ void GameScene::update(float timestep) {
     /*std::string currRoomId = NetworkController::getRoomId();
     _roomIdHUD->setText(currRoomId);*/
 //    NetworkController::step();
-    NetworkController::receive([&](const std::vector<uint8_t> msg) {
-        ND::NetworkData nd;
-        ND::fromBytes(nd, msg);
-        if(nd.packetType == ND::NetworkData::CLIENT_PACKET){
-            _player2->setPosition(nd.clientData.playerPos_x, nd.clientData.playerPos_y);
-            _player2->setLinearVelocity(nd.clientData.playerVel_x, nd.clientData.playerVel_y);
-        }
-    });
+    NetworkController::update(timestep);
     if (_currRoomId == "") {
         _currRoomId = NetworkController::getRoomId();
         stringstream ss;
@@ -293,8 +214,12 @@ void GameScene::update(float timestep) {
     
     // BEGIN PLAYER MOVEMENT //
     
+    auto playerId_option = NetworkController::getPlayerId();
+    if(! playerId_option.has_value()) return;
+    uint8_t playerId = playerId_option.value();
+    auto _player = world->getPlayer(playerId);
+    
     _playerController.readInput();
-    CULog("MOVEMENT: %i",static_cast<int>(_playerController.getMoveStyle()));
     switch (_playerController.getMoveStyle()) {
         case Movement::AlwaysForward: {
             auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
@@ -354,7 +279,7 @@ void GameScene::update(float timestep) {
     //END PLAYER MOVEMENT //
     
 
-    _world->update(timestep);
+    world->getPhysicsWorld()->update(timestep);
 //    if(NetworkController::isHost()){
 //        if (orbShouldMove) {
 //            std::random_device r;
@@ -367,27 +292,19 @@ void GameScene::update(float timestep) {
 //        orbShouldMove = false;
 //    }
 
-    //orb updates
-    if (_fireOrb->getCollected()) {
-        _fireOrb->respawn();
-        _score += 1;
+    for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
+        auto orb = world->getOrb(i);
+        if(orb->getCollected()) {
+            orb->respawn();
+            _score += 1;
+        }
+        orb->setCollected(false);
+
     }
     
-    if (_waterOrb->getCollected()) {
-        _waterOrb->respawn();
-        _score += 1;
-    }
-    
-    if (_grassOrb->getCollected()) {
-        _grassOrb->respawn();
-        _score += 1;
-    }
-    
-    _fireOrb->setCollected(false);
-    _waterOrb->setCollected(false);
-    _grassOrb->setCollected(false);
     
     //egg hatch logic
+    auto _egg = world->getEgg(0);
     if (_egg->getCollected() && _egg->getHatched() == false) {
         _egg->setPosition(_player->getPosition());
         _hatchbar->setVisible(true);
@@ -412,37 +329,23 @@ void GameScene::update(float timestep) {
     if (clock() - _hatchedTime >= _hatchTextTimer) {
         _hatchnode->setVisible(false);
     }
+
     
     // player tagging
-    if (_player->getDidTag()) {
-        _score += 15;
-    }
-    if (_player->getIsTagged()) {
-        _player->setPosition(Vec2(20,10));
-    }
-    if (_player2->getIsTagged()) {
-        _player2->setPosition(Vec2(20,10));
-    }
-    
+//    if (_player->getDidTag()) {
+//        _score += 15;
+//    }
+//    if (_player->getIsTagged()) {
+//        _player->setPosition(Vec2(20,10));
+//    }
+//    if (_player2->getIsTagged()) {
+//        _player2->setPosition(Vec2(20,10));
+//    }
 
     _scoreHUD->setText(updateScoreText(_score));
     
     //send new position
-    ND::NetworkData nd;
-    nd.packetType = ND::NetworkData::PacketType::CLIENT_PACKET;
-    nd.clientData.playerPos_x = _player->getPosition().x;
-    nd.clientData.playerPos_y = _player->getPosition().y;
-    nd.clientData.playerVel_x = _player->getLinearVelocity().x;
-    nd.clientData.playerVel_y = _player->getLinearVelocity().y;
-    std::vector<uint8_t> bytes;
-    ND::toBytes(bytes, nd);
-//    for(int i=0; i < bytes.size(); i++){
-//        int tmp = bytes.at(i);
-//        std::cout << tmp << ' ';
-//    }
-//    std::cout << endl << "-----------------------" << endl;
-       
-    NetworkController::send(bytes);
+    NetworkController::sendPosition();
 }
 
 void GameScene::populate() {
@@ -485,14 +388,15 @@ void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj
                             const std::shared_ptr<cugl::scene2::SceneNode>& node,
                             int zOrder,
                             bool useObjPosition) {
-    _world->addObstacle(obj);
+    world->getPhysicsWorld()->addObstacle(obj);
+//    obj->setDebugScene(_debugnode);
     obj->setDebugScene(_debugnode);
 
     // Position the scene graph node (enough for static objects)
       if (useObjPosition) {
           node->setPosition(obj->getPosition()*_scale);
       }
-      _worldnode->addChild(node, zOrder);
+      world->getSceneNode()->addChild(node, zOrder);
 
     // Dynamic objects need constant updating
     if (obj->getBodyType() == b2_dynamicBody) {

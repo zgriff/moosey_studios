@@ -34,8 +34,10 @@ bool Egg::init(const cugl::Vec2 pos, const cugl::Size size) {
 }
 
 void Egg::dispose(){
-    _sceneNode->dispose();
-    _sceneNode = nullptr;
+    if(_sceneNode != nullptr){
+        _sceneNode->dispose();
+        _sceneNode = nullptr;
+    }
     _texture = nullptr;
 }
 
