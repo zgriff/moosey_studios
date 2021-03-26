@@ -195,6 +195,7 @@ void GameScene::reset() {
     _player->setDebugScene(_debugnode);
     _player->setID(0);
     _player->setDrawScale(_scale);
+    _player->setUsername(NetworkController::getUsername());
     _player->allocUsernameNode(_assets->get<Font>("username"));
     _playerController.init();
     _world->addObstacle(_player2);

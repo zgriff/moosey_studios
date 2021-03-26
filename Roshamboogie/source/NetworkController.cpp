@@ -9,6 +9,7 @@ namespace NetworkController {
         std::string roomId;
         bool _isHost;
         int lastNum = 999;
+        //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username;
     }
 

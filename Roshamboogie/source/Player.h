@@ -75,6 +75,8 @@ public:
     */
     void allocUsernameNode(const std::shared_ptr<cugl::Font>& font);
 
+    void setUsername(std::string name) { _username = name; };
+
     
 #pragma mark Graphics
     /**

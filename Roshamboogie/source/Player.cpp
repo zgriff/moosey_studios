@@ -88,7 +88,7 @@ Element Player::getPreyElement() {
 }
 
 void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
-    _usernameNode = scene2::Label::alloc(NetworkController::getUsername(), font);
+    _usernameNode = scene2::Label::alloc(_username, font);
     _usernameNode->setPosition(-1*_usernameNode->getContentWidth()/2, 40);
     /*Hardcoded height because not sure how to get dimensions of the Player
     CULog("this width %d", this->getWidth());
