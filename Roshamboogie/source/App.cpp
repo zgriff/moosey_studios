@@ -25,6 +25,7 @@ void App::onStartup() {
 #ifdef CU_MOBILE
     Input::activate<Touchscreen>();
     Input::activate<Accelerometer>();
+    Input::activate<Keyboard>();
 #else
     Input::activate<Mouse>();
     Input::get<Mouse>()->setPointerAwareness(Mouse::PointerAwareness::DRAG);
@@ -59,6 +60,7 @@ void App::onShutdown() {
 #ifdef CU_MOBILE
     Input::deactivate<Touchscreen>();
     Input::deactivate<Accelerometer>();
+    Input::deactivate<Keyboard>();
 #else
     Input::deactivate<Mouse>();
     Input::deactivate<Keyboard>();
