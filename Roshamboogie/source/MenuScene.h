@@ -38,7 +38,10 @@ protected:
     std::shared_ptr<cugl::scene2::Button> _joinButton;
     /**join code text field*/
     std::shared_ptr<cugl::scene2::TextField> _codeField;
+
     std::shared_ptr<cugl::scene2::TextField> _usernameField;
+    std::shared_ptr<cugl::scene2::Label> _usernameLabel;
+
     std::shared_ptr<cugl::scene2::Slider> _slider;
     std::shared_ptr<cugl::scene2::Label> _label;
     float _sliderValue;

@@ -123,8 +123,11 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         //TODO: set username in network controller
         });
     _usernameField->setVisible(true);
+    _label = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_username_caption"));
+    _label->setVisible(true);
     
     Input::activate<TextInput>();
+    _usernameField->activate();
     _codeField->setVisible(false);
     if(_active) {
         _slider->activate();
@@ -142,6 +145,7 @@ void MenuScene::dispose() {
     _joinButton = nullptr;
     Input::deactivate<TextInput>();
     _codeField = nullptr;
+    _usernameField = nullptr;
     _slider = nullptr;
     _assets = nullptr;
 }
