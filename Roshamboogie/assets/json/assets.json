@@ -207,7 +207,7 @@
                                 "x_offset": -0.05
                             }
                         },
-                        "result": {
+                        "caption": {
                             "type": "Label",
                             "data": {
                                 "font": "felt",

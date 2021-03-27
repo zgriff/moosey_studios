@@ -199,12 +199,14 @@
     <ClCompile Include="..\..\source\InputController.cpp" />
     <ClCompile Include="..\..\source\LoadingScene.cpp" />
     <ClCompile Include="..\..\source\main.cpp" />
+    <ClCompile Include="..\..\source\MenuScene.cpp" />
     <ClCompile Include="..\..\source\NetworkController.cpp" />
     <ClCompile Include="..\..\source\NetworkData.cpp" />
     <ClCompile Include="..\..\source\Orb.cpp" />
     <ClCompile Include="..\..\source\OrbManager.cpp" />
     <ClCompile Include="..\..\source\Player.cpp" />
     <ClCompile Include="..\..\source\SwapStation.cpp" />
+    <ClCompile Include="..\..\source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\App.h" />
@@ -215,6 +217,8 @@
     <ClInclude Include="..\..\source\Globals.h" />
     <ClInclude Include="..\..\source\InputController.h" />
     <ClInclude Include="..\..\source\LoadingScene.h" />
+    <ClInclude Include="..\..\source\MenuScene.h" />
+    <ClInclude Include="..\..\source\MovementStyle.h" />
     <ClInclude Include="..\..\source\NetworkController.h" />
     <ClInclude Include="..\..\source\NetworkData.h" />
     <ClInclude Include="..\..\source\Orb.h" />

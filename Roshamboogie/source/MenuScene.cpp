@@ -58,7 +58,6 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _slider->setVisible(false);
         _slider->deactivate();
         _label->setVisible(false);
-//        _joinButton->dispose();
         this->_active = down;
     });
     
@@ -105,18 +104,25 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     _codeField->addExitListener([=](const std::string& name, const std::string& value) {
         CULog("Finish to %s", value.c_str());
         NetworkController::joinGame(value);
-        //this->_active = false;
         clock_t oldTime = clock();
+        //this is here as a hacky way to get network->receive, but can be removed when the network library is updated
         while (clock() - oldTime < 2 * CLOCKS_PER_SEC) {
             NetworkController::step();
         }
         if (NetworkController::getNumPlayers() > 1) {
-////            _joinButton->dispose();
         this->_active = false;
         }
         });
     
-    
+    _usernameField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_username_action"));
+    _usernameField->addTypeListener([=](const std::string& name, const std::string& value) {
+        CULog("Change to %s", value.c_str());
+        });
+    _usernameField->addExitListener([=](const std::string& name, const std::string& value) {
+        CULog("Finish to %s", value.c_str());
+        //TODO: set username in network controller
+        });
+    _usernameField->setVisible(true);
     
     Input::activate<TextInput>();
     _codeField->setVisible(false);
