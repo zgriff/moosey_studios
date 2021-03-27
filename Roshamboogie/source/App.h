@@ -11,6 +11,7 @@
 #include <cugl/cugl.h>
 #include "GameScene.h"
 #include "LoadingScene.h"
+#include "MenuScene.h"
 
 /**
  * This class represents the application root for the project.
@@ -27,9 +28,15 @@ protected:
     GameScene _gameplay;
     /** The controller for the loading screen */
     LoadingScene _loading;
+    /** The controller for the main menu  */
+    MenuScene _menu;
 
     /** Whether or not we have finished loading all assets */
-    bool _loaded;
+    enum class SceneSelect {
+        Loading, Menu, Game
+    };
+    
+    SceneSelect _currentScene;
     
 public:
     /**
@@ -41,7 +48,7 @@ public:
      * of initialization from the constructor allows main.cpp to perform
      * advanced configuration of the application before it starts.
      */
-    App() : cugl::Application(), _loaded(false) {}
+    App() : cugl::Application() {}
     
     /**
      * Disposes of this application, releasing all resources.

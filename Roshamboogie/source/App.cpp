@@ -25,6 +25,7 @@ void App::onStartup() {
 #ifdef CU_MOBILE
     Input::activate<Touchscreen>();
     Input::activate<Accelerometer>();
+    Input::activate<Keyboard>();
 #else
     Input::activate<Mouse>();
     Input::get<Mouse>()->setPointerAwareness(Mouse::PointerAwareness::DRAG);
@@ -38,7 +39,7 @@ void App::onStartup() {
     _assets->attach<scene2::SceneNode>(Scene2Loader::alloc()->getHook());
 
     // Create a "loading" screen
-    _loaded = false;
+    _currentScene = SceneSelect::Loading;
     _loading.init(_assets);
     
     // Queue up the other assets
@@ -51,6 +52,7 @@ void App::onStartup() {
 
 void App::onShutdown() {
     _loading.dispose();
+    _menu.dispose();
     _gameplay.dispose();
     _assets = nullptr;
     _batch = nullptr;
@@ -59,6 +61,7 @@ void App::onShutdown() {
 #ifdef CU_MOBILE
     Input::deactivate<Touchscreen>();
     Input::deactivate<Accelerometer>();
+    Input::deactivate<Keyboard>();
 #else
     Input::deactivate<Mouse>();
     Input::deactivate<Keyboard>();
@@ -110,14 +113,36 @@ void App::onResume() {
  * @param timestep  The amount of time (in seconds) since the last frame
  */
 void App::update(float timestep) {
-    if (!_loaded && _loading.isActive()) {
-        _loading.update(0.01f);
-    } else if (!_loaded) {
-        _loading.dispose(); // Disables the input listeners in this mode
-        _gameplay.init(_assets);
-        _loaded = true;
-    } else {
-        _gameplay.update(timestep);
+    switch (_currentScene) {
+        case SceneSelect::Loading:{
+            if (_loading.isActive()) {
+                _loading.update(0.01f);
+            } else {
+                _loading.dispose(); // Disables the input listeners in this mode
+                _menu.init(_assets);
+                _currentScene = SceneSelect::Menu;
+                _menu.setActive(true);
+            }
+            break;
+        }
+        case SceneSelect::Menu:{
+            if (_menu.isActive()) {
+//                _menu.update(0.01f);
+            } else {
+                _menu.setActive(false);
+                _gameplay.init(_assets);
+                _gameplay.setMovementStyle(_menu.getMovement());
+                _menu.dispose();
+                _currentScene = SceneSelect::Game;
+            }
+            break;
+        }
+        case SceneSelect::Game:{
+            _gameplay.update(timestep);
+            break;
+        }
+        default:
+            break;
     }
 }
 
@@ -131,9 +156,16 @@ void App::update(float timestep) {
  * at all. The default implmentation does nothing.
  */
 void App::draw() {
-    if (!_loaded) {
-        _loading.render(_batch);
-    } else {
-        _gameplay.render(_batch);
+    switch (_currentScene) {
+        case SceneSelect::Loading:
+            _loading.render(_batch);
+            break;
+        case SceneSelect::Menu:
+            _menu.render(_batch);
+            break;
+        default:
+            _gameplay.render(_batch);
+            break;
     }
+
 }
