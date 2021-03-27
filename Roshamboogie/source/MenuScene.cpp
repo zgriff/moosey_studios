@@ -120,7 +120,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         });
     _usernameField->addExitListener([=](const std::string& name, const std::string& value) {
         CULog("Finish to %s", value.c_str());
-        //TODO: set username in network controller
+        NetworkController::setUsername(value);
         });
     _usernameField->setVisible(true);
     _label = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_username_caption"));
