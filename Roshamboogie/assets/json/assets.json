@@ -202,8 +202,8 @@
                             },
                             "layout": {
                                 "x_anchor": "center",
-                                "y_anchor": "top",
-                                "y_offset": -0.3,
+                                "y_anchor": "middle",
+                                "y_offset": 0.0,
                                 "x_offset": -0.05
                             }
                         },
@@ -219,8 +219,8 @@
                             },
                             "layout": {
                                 "x_anchor": "center",
-                                "y_anchor": "top",
-                                "y_offset": -0.3,
+                                "y_anchor": "middle",
+                                "y_offset": -0.0,
                                 "x_offset": -0.2
                             }
                         }
