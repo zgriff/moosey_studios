@@ -75,7 +75,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _codeField->setVisible(true);
     });
     
-    _slider = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("menu_slider_action"));
+    _slider = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("menu_slider"));
     _label  = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_slider_label"));
     _label->setText("Always Forward");
     _movement = 0;
@@ -98,7 +98,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     });
     
 
-    _codeField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_joincode_action"));
+    _codeField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_joincode"));
     _codeField->addTypeListener([=](const std::string& name, const std::string& value) {
         CULog("Change to %s", value.c_str());
         });
