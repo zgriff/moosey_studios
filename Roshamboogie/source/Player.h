@@ -18,13 +18,14 @@ private:
     
     cugl::Vec2 _force;
     int _id;
-    Element currElt;
-    Element prevElt; //used when switching back to the element before collecting an egg
+    Element _currElt;
+    Element _prevElt; //used when switching back to the element before collecting an egg
+    bool _isTagged; //if this player is tagged
+    bool _didTag; //if this player tagged someone else -- earn points
     
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
     float _drawscale;
-
     /** */
     float _trauma = 0.0;
     
@@ -33,6 +34,10 @@ private:
     std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
     /** Reference to player's sprite for drawing */
     std::shared_ptr<cugl::scene2::AnimationNode> _animationNode;
+
+    std::string _username;
+    std::shared_ptr<cugl::scene2::Label> _usernameNode;
+
     /** Reference to the player texture */
     std::shared_ptr<cugl::Texture> _texture;
 
@@ -62,11 +67,27 @@ public:
     
     void setElement(Element e);
     
-    Element getCurrElement() { return currElt; }
+    Element getCurrElement() { return _currElt; }
     
-    Element getPrevElement() { return prevElt; }
+    Element getPrevElement() { return _prevElt; }
     
     Element getPreyElement();
+    
+    bool getIsTagged() { return _isTagged; }
+    
+    void setIsTagged(bool t) { _isTagged = t; }
+    
+    bool getDidTag() { return _didTag; }
+    
+    void setDidTag(bool t) { _didTag = t; }
+
+    /**
+    * Creates the username Label node with the font
+    *
+    */
+    void allocUsernameNode(const std::shared_ptr<cugl::Font>& font);
+
+    void setUsername(std::string name) { _username = name; };
 
     
 #pragma mark Graphics

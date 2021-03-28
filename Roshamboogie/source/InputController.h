@@ -10,11 +10,13 @@
 #define __INPUT_CONTROLLER_H__
 
 #include <cugl/cugl.h>
+#include "MovementStyle.h"
 
 class InputController {
 private:
-    /** Player id, to identify which keys map to this player */
-    int _player;
+    cugl::Vec2 moveVec;
+    cugl::Timestamp _timestamp;
+    bool processed;
 
     cugl::Vec2 mov;
     
@@ -26,25 +28,16 @@ private:
     bool  _keyDebug;
     /** Whether the debug toggle was chosen. */
     bool _debugPressed;
+    
+    Movement _moveStyle;
 
 public:
-    /**
-     * Returns the player for this controller
-     *
-     * @return the player for this controller
-     */
-    int getPlayer() const {
-        return _player;
+    cugl::Vec3 _tiltVec;
+        
+    cugl::Vec3 getTiltVec(){
+        return _tiltVec;
     }
 
-//    /**
-//     * Returns whether the fire button was pressed.
-//     *
-//     * @return whether the fire button was pressed.
-//     */
-//    bool didPressFire() const {
-//        return _didFire;
-//    }
 
     /**
      * Creates a new input controller with the default settings
@@ -58,6 +51,9 @@ public:
      */
     ~InputController() { dispose(); }
     
+    cugl::Vec2 getMoveVec() const {
+        return moveVec;
+    }
     /**
      * Deactivates this input controller, releasing all listeners.
      *
@@ -98,6 +94,10 @@ public:
     cugl::Vec2 getMov(){
         return mov;
     }
+    
+    Movement getMoveStyle() const {return  _moveStyle;}
+    
+    void setMoveStyle(Movement m) {_moveStyle = m;}
 
 #pragma mark -
 #pragma mark Touch Callbacks

@@ -2,6 +2,7 @@
 #define __NETWORK_CONTROLLER_H__
 
 #include <cugl/cugl.h>
+#include "World.h"
 
 namespace NetworkController {
 
@@ -12,15 +13,30 @@ namespace NetworkController {
     /** isHost is true if the player is a host of a game and false otherwise */
     bool isHost();
 
+    std::optional<uint8_t> getPlayerId();
+
     std::string getRoomId();
 
     uint8_t getNumPlayers();
 
     void step();
+    
+    /** Updates world states based on network packets. Should call at beginning of gamescene update method*/
+    void update(float timestep);
 
-    void send(const std::vector<uint8_t>& msg);
+    /** Send the current position and velocity over the network*/
+    void sendPosition();
 
-    void receive(const std::function<void(const std::vector<uint8_t>&)>& dispatcher);
+    void sendOrbCaptured(int orbId, int playerId);
+    void sendPlayerColorSwap(int playerId, Element newElement, int swapId);
+    void sendEggCollected(int playerId, int eggId);
+    void sendOrbRespawn(int orbId, Vec2 orbPosition);
+    //Give the network controller a reference to the world
+    void setWorld(std::shared_ptr<World> w);
+
+    std::string getUsername();
+
+    void setUsername(std::string name);
 
 };
 

@@ -20,7 +20,7 @@ void Orb::setTextures(const std::shared_ptr<Texture>& orb) {
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
     _texture = orb;
     _body->SetUserData(this);
-    setElement();
+//    setElement();
 }
 bool Orb::init(Vec2 pos, Element el){
     bool success = physics2::WheelObstacle::init(pos, ORB_RADIUS);
@@ -46,6 +46,9 @@ void Orb::setElement() {
         case Element::Water:
             _sceneNode->setColor(Color4(0, 0, 255));
             break;
+        case Element::None:
+            _sceneNode->setColor(Color4(255,255,255));
+            break;
     }
 }
 
@@ -70,7 +73,7 @@ void Orb::update(float delta) {
 }
 
 void Orb::respawn() {
-    std::random_device r;
+    std::random_device r; //TODO: move to only initialize once
     std::default_random_engine e1(r());
     std::uniform_int_distribution<int> rand_int(1, 31);
     std::uniform_int_distribution<int> rand_int2(1, 17);

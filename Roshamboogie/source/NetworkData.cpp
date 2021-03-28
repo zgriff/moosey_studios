@@ -11,8 +11,12 @@
 #include "Globals.h"
 
 namespace ND{
-#define TYPE_BITS 2
+//TODO: generate these from global maximums
+#define TYPE_BITS 3
 #define PLAYER_ID_BITS 3
+#define SWAP_ID_BITS 4
+#define ORB_ID_BITS 5
+#define EGG_ID_BITS 3
 
 //writing
 uint16_t scratch;
@@ -70,6 +74,14 @@ void writeVec2(std::vector<uint8_t> & buffer, cugl::Vec2 data){
     writeFloat(buffer, data.y);
 }
 
+void writeBool(std::vector<uint8_t> & buffer, bool b){
+    writeBits(buffer, b, 1);
+}
+
+void writeElement(std::vector<uint8_t> & buffer, Element e){
+    writeBits(buffer, e, 2);
+}
+
 //call at the end of writing data to make sure everything ends up in the buffer
 void flush(std::vector<uint8_t> & buffer){
     writeByte(buffer,scratch & 0b11111111);
@@ -125,6 +137,19 @@ cugl::Vec2 readVec2(const std::vector<uint8_t>& bytes){
     return cugl::Vec2(x, y);
 }
 
+Element readElement(const std::vector<uint8_t>& bytes){
+    uint32_t e = readBits(bytes, 2);
+    return (Element) e;
+}
+
+bool readBool(const std::vector<uint8_t>& bytes){
+    uint32_t b = readBits(bytes, 1);
+    if(b == 0){
+        return false;
+    }
+    return true;
+}
+
 
 
 //convert the bytes to a NetworkData struct, putting the result in dest
@@ -135,23 +160,27 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
     byte_arr_index = 0;
     dest.packetType = readBits(bytes, TYPE_BITS);
     switch(dest.packetType){
-        case NetworkData::WORLD_DATA:
-            //TODO
+        case NetworkData::ORB_CAPTURED:
+            dest.orbCapData.orbId = readBits(bytes, ORB_ID_BITS);
+            dest.orbCapData.playerId = readBits(bytes, PLAYER_ID_BITS);
             break;
-        case NetworkData::HOST_PACKET:
-            //TODO
+        case NetworkData::EGG_CAPTURED:
+            dest.eggCapData.playerId = readBits(bytes, PLAYER_ID_BITS);
+            dest.eggCapData.eggId = readBits(bytes, EGG_ID_BITS);
             break;
-        case NetworkData::CLIENT_PACKET:
-//            dest.clientData.playerPos = readVec2(bytes);
-//            dest.clientData.playerVelocity = readVec2(bytes);
-            dest.clientData.playerPos_x = readFloat(bytes);
-            dest.clientData.playerPos_y = readFloat(bytes);
-            dest.clientData.playerVel_x = readFloat(bytes);
-            dest.clientData.playerVel_y = readFloat(bytes);
-            dest.clientData.playerId = readBits(bytes, PLAYER_ID_BITS);
+        case NetworkData::SWAP_PACKET:
+            dest.swapData.swapId = readBits(bytes, SWAP_ID_BITS);
+            dest.swapData.playerId = readBits(bytes, PLAYER_ID_BITS);
+            dest.swapData.newElement = readElement(bytes);
             break;
-        default:
-            return false;
+        case NetworkData::POSITION_PACKET:
+            dest.positionData.playerPos = readVec2(bytes);
+            dest.positionData.playerVelocity = readVec2(bytes);
+            dest.positionData.playerId = readBits(bytes, PLAYER_ID_BITS);
+            break;
+        case NetworkData::ORB_RESPAWN:
+            dest.orbRespawnData.orbId = readBits(bytes, ORB_ID_BITS);
+            dest.orbRespawnData.position = readVec2(bytes);
     }
     return true;
 }
@@ -163,35 +192,28 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
     scratch_bits = 0;
     writeBits(dest, src.packetType, TYPE_BITS);
     switch(src.packetType){
-        case NetworkData::WORLD_DATA:
-            //TODO
+        case NetworkData::ORB_CAPTURED:
+            writeBits(dest, src.orbCapData.orbId, ORB_ID_BITS);
+            writeBits(dest, src.orbCapData.playerId, PLAYER_ID_BITS);
             break;
-        case NetworkData::HOST_PACKET:
-//            writeVec2(dest, src.hostData.hostPos);
-//            writeVec2(dest, src.hostData.hostVelocity);
-//            if(src.hostData.num_players <= globals::MAX_PLAYERS
-//               && src.hostData.num_players >= globals::MIN_PLAYERS){
-//                writeBits(dest, src.hostData.num_players, 8);
-//            } else {
-//                return false;
-//            }
+        case NetworkData::EGG_CAPTURED:
+            writeBits(dest, src.eggCapData.playerId, PLAYER_ID_BITS);
+            writeBits(dest, src.eggCapData.eggId, EGG_ID_BITS);
+            
             break;
-            //TODO: finish the rest of host data.
-//            uint8_t num_players;
-//            PlayerData players[MAX_PLAYERS];
-//            SwapStationData swapData[MAX_SWAP_STATIONS];
-//            OrbData orbData[MAX_ORBS];
-        case NetworkData::CLIENT_PACKET:
-//            writeVec2(dest, src.clientData.playerPos);
-//            writeVec2(dest, src.clientData.playerVelocity);
-            writeFloat(dest, src.clientData.playerPos_x);
-            writeFloat(dest, src.clientData.playerPos_y);
-            writeFloat(dest, src.clientData.playerVel_x);
-            writeFloat(dest, src.clientData.playerVel_y);
-            writeBits(dest, src.clientData.playerId, PLAYER_ID_BITS);
+        case NetworkData::SWAP_PACKET:
+            writeBits(dest, src.swapData.swapId, SWAP_ID_BITS);
+            writeBits(dest, src.swapData.playerId, PLAYER_ID_BITS);
+            writeElement(dest, src.swapData.newElement);
             break;
-        default:
-            return false;
+        case NetworkData::POSITION_PACKET:
+            writeVec2(dest, src.positionData.playerPos);
+            writeVec2(dest, src.positionData.playerVelocity);
+            writeBits(dest, src.positionData.playerId, PLAYER_ID_BITS);
+            break;
+        case NetworkData::ORB_RESPAWN:
+            writeBits(dest, src.orbRespawnData.orbId, ORB_ID_BITS);
+            writeVec2(dest, src.orbRespawnData.position);
     }
     flush(dest);
     return true;
