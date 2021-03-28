@@ -79,6 +79,7 @@ void CollisionController::beginContact(b2Contact* contact){
         if (e->getCollected() == false) {
             p->setElement(Element::None);
             e->setCollected(true);
+            e->setPID(p->getID());
             CULog("egg collected");
         }
         NetworkController::sendEggCollected(p->getID(), e->getID());
@@ -89,6 +90,7 @@ void CollisionController::beginContact(b2Contact* contact){
         if (e->getCollected() == false) {
             p->setElement(Element::None);
             e->setCollected(true);
+            e->setPID(p->getID());
             CULog("egg collected");
         }
         NetworkController::sendEggCollected(p->getID(), e->getID());
