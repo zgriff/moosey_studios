@@ -98,7 +98,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Start up the input handler
     _assets = assets;
     _playerController.init();
-    
+
     // Acquire the scene built by the asset loader and resize it the scene
     auto scene_background = _assets->get<scene2::SceneNode>("background");
     scene_background->setContentSize(dimen);
@@ -257,6 +257,9 @@ void GameScene::reset() {
     _worldnode->addChild(_egg->getSceneNode());
     
     setDebug(false);
+
+    getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
+    getCamera()->update();
 }
 
 void GameScene::update(float timestep) {
@@ -279,7 +282,6 @@ void GameScene::update(float timestep) {
     }
     
     if (_playerController.didDebug()) { setDebug(!isDebug()); }
-    
     _playerController.readInput();
     auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
     _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
@@ -301,7 +303,7 @@ void GameScene::update(float timestep) {
             turnForce.scale(-1.0f);
         }
         if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) { 
-            turnForce.scale(-1.0f); 
+            //turnForce.scale(-1.0f); 
             _player->applyForce();
         }
         _player->setForce(turnForce);
@@ -309,8 +311,14 @@ void GameScene::update(float timestep) {
         _player->setForce(forForce);
     }
     
-
     _world->update(timestep);
+
+    auto after = _player->getSceneNode()->getPosition();
+    auto camSpot = getCamera()->getPosition();
+    auto trans = after - camSpot;
+    getCamera()->translate(trans*.05f);
+    getCamera()->update();
+
 //    if(NetworkController::isHost()){
 //        if (orbShouldMove) {
 //            std::random_device r;

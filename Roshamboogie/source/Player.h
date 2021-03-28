@@ -25,6 +25,8 @@ private:
     cugl::Mat4 _affine;
     float _drawscale;
 
+    /** */
+    float _trauma = 0.0;
     
     // Asset references.  These should be set by GameMode
     /** Reference to the node for the player */
@@ -132,6 +134,17 @@ public:
     }
     
 #pragma mark -
+    /** 
+    * Returns the Player's current trauma value
+    */
+    float getTrauma() { return _trauma; }
+
+    /**
+    * Increases the Player's current trauma by t
+    * 
+    * Trauma cannot exceed a threshold of 1.0f
+    */
+    void addTrauma(float t) {}
 #pragma mark Physics
     /**
      * Applies the force to the body of this player

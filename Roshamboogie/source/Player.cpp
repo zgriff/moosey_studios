@@ -26,6 +26,8 @@ using namespace cugl;
 #define PLAYER_COLS       1
 /** Number of elements in this player image filmstrip */
 #define PLAYER_FRAMES     3
+/** How fast a player recovers from screen shake*/
+#define TRAUMA_RECOVERY   .005f
 
 /**
  * Sets the textures for this player.
@@ -143,6 +145,11 @@ void Player::update(float delta) {
         _sceneNode->setPosition(getPosition()*_drawscale);
         _sceneNode->setAngle(getAngle());
     }
+    _trauma = max(0.0f, _trauma - TRAUMA_RECOVERY);
+}
+
+void Player::addTrauma(float t) {
+    _trauma = min(1.0f, _trauma + t);
 }
 
 void Player::applyForce() {
