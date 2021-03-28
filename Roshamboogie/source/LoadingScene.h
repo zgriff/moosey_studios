@@ -9,7 +9,6 @@
 #ifndef __LOADING_SCENE_H__
 #define __LOADING_SCENE_H__
 #include <cugl/cugl.h>
-#include <stdio.h>
 
 class LoadingScene : public cugl::Scene2 {
 protected:
@@ -25,9 +24,12 @@ protected:
     std::shared_ptr<cugl::scene2::SceneNode>  _brand;
     /** The "play" button */
     std::shared_ptr<cugl::scene2::Button>    _button;
-    std::shared_ptr<cugl::scene2::Button>    _button2;
-    std::shared_ptr<cugl::scene2::TextField> _field;
-    bool _host;
+
+//    std::shared_ptr<cugl::scene2::Button>    _button2;
+//    std::shared_ptr<cugl::scene2::TextField> _field;
+//    std::shared_ptr<cugl::scene2::TextField> _username;
+
+//    bool _host;
 
     // MODEL
     /** The progress displayed on the screen */
@@ -90,7 +92,6 @@ public:
      */
     bool isPending( ) const;
 
-    bool isHost() { return _host; };
 };
 
 #endif /* LoadingScene_hpp */

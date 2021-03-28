@@ -38,6 +38,7 @@ _debugPressed(false) {
  */
 bool InputController::init() {
     bool success = true;
+    _moveStyle = Movement::TiltMove;
         
         // Only process keyboard on desktop
 #ifndef CU_MOBILE
@@ -77,16 +78,30 @@ void InputController::dispose() {
 void InputController::readInput() {
 #ifdef CU_MOBILE
     // YOU NEED TO PUT SOME CODE HERE
-    if (_keydown) {
-        if (_dtouch.x < 640) {
-            mov.x = -1;
-        }
-        else {
-            mov.x = 1;
-        }
-    }
-    else {
-        mov.x = 0;
+    switch (_moveStyle) {
+        case Movement::SwipeForce:
+            if(!processed){
+                processed = true;
+            }else{
+                moveVec = Vec2::ZERO;
+            }
+            break;
+        case Movement::TiltMove:
+            _tiltVec = Input::get<Accelerometer>()->getAcceleration();
+            break;
+        default:
+            if (_keydown) {
+                if (_dtouch.x < 640) {
+                    mov.x = -1;
+                }
+                else {
+                    mov.x = 1;
+                }
+            }
+            else {
+                mov.x = 0;
+            }
+            break;
     }
 #else
     // Figure out, based on which player we are, which keys
@@ -109,7 +124,6 @@ void InputController::readInput() {
     mov.x += keys->keyDown(right) ? 1 : 0;
     _keyDebug  = keys->keyPressed(DEBUG_KEY);
     _debugPressed = _keyDebug;
-
 #endif
 }
 
@@ -124,7 +138,7 @@ void InputController::readInput() {
 void InputController::touchBeganCB(const cugl::TouchEvent& event, bool focus) {
     // All touches correspond to key up
     _keydown = true;
-
+    _timestamp = event.timestamp;
     // Update the touch location for later gestures
     _dtouch = event.position;
 }
@@ -137,5 +151,17 @@ void InputController::touchBeganCB(const cugl::TouchEvent& event, bool focus) {
  */
 void InputController::touchEndedCB(const cugl::TouchEvent& event, bool focus) {
     // Gesture has ended.  Give it meaning.
-    _keydown = false;
+    switch (_moveStyle) {
+        case Movement::SwipeForce:{
+            Vec2 diff = event.position-_dtouch;
+            Uint64 t = event.timestamp.ellapsedMillis(_timestamp);
+            moveVec = diff.normalize() * (1000.0/t);
+            processed = false;
+            break;
+        }
+        default:
+            _keydown = false;
+            break;
+    }
 }
+

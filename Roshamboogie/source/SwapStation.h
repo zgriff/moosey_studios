@@ -32,6 +32,7 @@ private:
     bool _active;
     clock_t _lastUsed;
     clock_t _coolDownSecs = 2 * CLOCKS_PER_SEC;
+    int _id;
     
 public:
     
@@ -60,6 +61,9 @@ public:
     void setLastUsed(clock_t time) { _lastUsed = time; }
     
     clock_t getCoolDown() { return _coolDownSecs; }
+    
+    int getID(){ return _id; }
+    void setID(int i){ _id = i; }
 
     
     
@@ -120,5 +124,6 @@ public:
     float getDrawScale() const { return _drawscale; }
     
 };
+
 
 #endif /* SwapStation_hpp */

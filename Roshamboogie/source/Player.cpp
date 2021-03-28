@@ -8,6 +8,7 @@
 
 #include "Player.h"
 #include "Element.h"
+#include "NetworkController.h"
 
 using namespace cugl;
 
@@ -16,6 +17,7 @@ using namespace cugl;
 #define DEFAULT_DENSITY 1.0f
 /** The friction of this rocket */
 #define DEFAULT_FRICTION 0.5f
+
 /** The restitution of this rocket */
 #define DEFAULT_RESTITUTION 0.4f
 /** The constant force applied to this rocket */
@@ -26,6 +28,8 @@ using namespace cugl;
 #define PLAYER_COLS       1
 /** Number of elements in this player image filmstrip */
 #define PLAYER_FRAMES     3
+/** How fast a player recovers from screen shake*/
+#define TRAUMA_RECOVERY   .005f
 
 /**
  * Sets the textures for this player.
@@ -41,16 +45,17 @@ void Player::setTextures(const std::shared_ptr<Texture>& player) {
 //    _animationNode->setFrame(0);
     _animationNode->setPosition(0,0);
     _sceneNode->addChild(_animationNode);
+    
     _texture = player;
-    setElement(currElt);
+    setElement(_currElt);
     _body->SetUserData(this);
 
 }
 
 
 void Player::setElement(Element e){
-    prevElt = currElt;
-    currElt = e;
+    _prevElt = _currElt;
+    _currElt = e;
     
     switch(e){ 
         case Element::Grass:
@@ -73,7 +78,7 @@ void Player::setElement(Element e){
 }
 
 Element Player::getPreyElement() {
-    switch(currElt){
+    switch(_currElt){
         case Element::Grass:
             return Element::Water;
         case Element::Fire:
@@ -83,6 +88,16 @@ Element Player::getPreyElement() {
         case Element::None:
             return Element::None;
     }
+}
+
+void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
+    _usernameNode = scene2::Label::alloc(_username, font);
+    _usernameNode->setPosition(-1*_usernameNode->getContentWidth()/2, 40);
+    /*Hardcoded height because not sure how to get dimensions of the Player
+    CULog("this width %d", this->getWidth());
+    CULog("sceneNode width %d", _sceneNode->getContentWidth());
+    CULog("animationNode width %d", _animationNode->getContentWidth());*/
+    _sceneNode->addChild(_usernameNode);
 }
 
 /**
@@ -108,7 +123,7 @@ void Player::dispose() {
  * @return true if the initialization was successful
  */
 bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
-    if(physics2::BoxObstacle::init(pos,size*2)){
+    if(physics2::BoxObstacle::init(pos,size)){
         std::string name("player");
         setName(name);
         setDensity(DEFAULT_DENSITY);
@@ -116,8 +131,10 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         setRestitution(DEFAULT_RESTITUTION);
         setFixedRotation(true);
         setForce(DEFAULT_PLAYER_FORCE);
-        currElt = elt;
-        prevElt = elt;
+        _currElt = elt;
+        _prevElt = elt;
+        _isTagged = false;
+        _didTag = false;
         _sceneNode = nullptr;
         return true;
     }
@@ -143,6 +160,11 @@ void Player::update(float delta) {
         _sceneNode->setPosition(getPosition()*_drawscale);
         _sceneNode->setAngle(getAngle());
     }
+    _trauma = max(0.0f, _trauma - TRAUMA_RECOVERY);
+}
+
+void Player::addTrauma(float t) {
+    _trauma = min(1.0f, _trauma + t);
 }
 
 void Player::applyForce() {
