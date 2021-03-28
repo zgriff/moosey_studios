@@ -102,7 +102,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Start up the input handler
     _assets = assets;
     _playerController.init();
-    
+
     // Acquire the scene built by the asset loader and resize it the scene
     auto scene_background = _assets->get<scene2::SceneNode>("background");
     scene_background->setContentSize(dimen);
@@ -186,13 +186,17 @@ void GameScene::reset() {
     
     auto idopt = NetworkController::getPlayerId();
     if(idopt.has_value()){
-        world->getPlayer(idopt.value())->setUsername(NetworkController::getUsername());
+        auto _player = world->getPlayer(idopt.value());
+        _player->setUsername(NetworkController::getUsername());
+        getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
     }
     _playerController.init();
         
     populate();
     
     setDebug(false);
+
+    getCamera()->update();
 }
 
 void GameScene::update(float timestep) {
@@ -212,6 +216,7 @@ void GameScene::update(float timestep) {
         _roomIdHUD->setText(ss.str());
     }
     
+    if (_playerController.didDebug()) { setDebug(!isDebug()); }
     
     
     // BEGIN PLAYER MOVEMENT //
@@ -278,10 +283,15 @@ void GameScene::update(float timestep) {
             break;
     }
     
-    //END PLAYER MOVEMENT //
-    
+        world->getPhysicsWorld()->update(timestep);
 
-    world->getPhysicsWorld()->update(timestep);
+    auto after = _player->getSceneNode()->getPosition();
+    auto camSpot = getCamera()->getPosition();
+    auto trans = after - camSpot;
+    getCamera()->translate(trans*.05f);
+    getCamera()->update();
+
+
 //    if(NetworkController::isHost()){
 //        if (orbShouldMove) {
 //            std::random_device r;
