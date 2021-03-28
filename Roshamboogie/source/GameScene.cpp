@@ -330,11 +330,14 @@ void GameScene::update(float timestep) {
             _hatchnode->setVisible(true);
             CULog("hatched");
         }
+        if (_egg->getPID() == _player->getID()) {
+            if (clock() - _hatchedTime >= _hatchTextTimer) {
+                _hatchnode->setVisible(false);
+            }
+        }
     }
     
-    if (clock() - _hatchedTime >= _hatchTextTimer) {
-        _hatchnode->setVisible(false);
-    }
+    
 
     
     // player tagging
