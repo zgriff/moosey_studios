@@ -81,8 +81,9 @@ void CollisionController::beginContact(b2Contact* contact){
             e->setCollected(true);
             e->setPID(p->getID());
             CULog("egg collected");
+            NetworkController::sendEggCollected(p->getID(), e->getID());
         }
-        NetworkController::sendEggCollected(p->getID(), e->getID());
+        
     }
     else if (bd2->getName() == "egg" && bd1->getName() == "player") {
         Egg* e = (Egg*) bd2;
@@ -92,8 +93,8 @@ void CollisionController::beginContact(b2Contact* contact){
             e->setCollected(true);
             e->setPID(p->getID());
             CULog("egg collected");
+            NetworkController::sendEggCollected(p->getID(), e->getID());
         }
-        NetworkController::sendEggCollected(p->getID(), e->getID());
     }
     
     //player and player collision (tagging)
