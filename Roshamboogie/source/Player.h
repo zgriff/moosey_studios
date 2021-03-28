@@ -144,7 +144,7 @@ public:
     * 
     * Trauma cannot exceed a threshold of 1.0f
     */
-    void addTrauma(float t) {}
+    void addTrauma(float t);
 #pragma mark Physics
     /**
      * Applies the force to the body of this player
