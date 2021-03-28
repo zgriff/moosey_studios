@@ -313,7 +313,9 @@ void GameScene::update(float timestep) {
     if (_egg->getCollected() && _egg->getHatched() == false) {
         std::shared_ptr<Player> _eggCollector = world->getPlayer(_egg->getPID());
         _egg->setPosition(_eggCollector->getPosition());
-        _hatchbar->setVisible(true);
+        if (_egg->getPID() == _player->getID()) {
+            _hatchbar->setVisible(true);
+        }
         _hatchbar->setProgress(_egg->getDistanceWalked()/80);
         Vec2 diff = _eggCollector->getPosition() - _egg->getInitPos();
         float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
@@ -327,16 +329,17 @@ void GameScene::update(float timestep) {
 //            _egg->setCollected(false);
             _score += 10;
             _eggCollector->setElement(_eggCollector->getPrevElement());
-            _hatchnode->setVisible(true);
+            if (_egg->getPID() == _player->getID()) {
+                _hatchnode->setVisible(true);
+            }
             CULog("hatched");
         }
-        if (_egg->getPID() == _player->getID()) {
-            if (clock() - _hatchedTime >= _hatchTextTimer) {
-                _hatchnode->setVisible(false);
-            }
-        }
+        
     }
     
+    if (clock() - _hatchedTime >= _hatchTextTimer) {
+        _hatchnode->setVisible(false);
+    }
     
 
     
