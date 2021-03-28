@@ -32,6 +32,7 @@ private:
     Vec2 _initPos;
     float _distanceWalked;
     int _id;
+    int _playerID; //id of the player who collected the egg
     
 public:
     
@@ -61,6 +62,10 @@ public:
     
     int getID(){ return _id; }
     void setID(int i){ _id = i; }
+    
+    int getPID(){ return _playerID; }
+    
+    void setPID(int i){ _playerID = i; }
     
     Vec2 getInitPos() { return _initPos; }
     

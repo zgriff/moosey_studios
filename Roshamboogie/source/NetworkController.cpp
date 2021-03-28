@@ -124,6 +124,7 @@ namespace NetworkController {
                 case ND::NetworkData::EGG_CAPTURED:
                     world->getPlayer(nd.eggCapData.playerId)->setElement(Element::None);
                     world->getEgg(nd.eggCapData.eggId)->setCollected(true);
+                    world->getEgg(nd.eggCapData.eggId)->setPID(nd.eggCapData.playerId);
                     break;
                 case ND::NetworkData::ORB_RESPAWN:
                 {
