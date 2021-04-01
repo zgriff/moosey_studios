@@ -8,7 +8,7 @@
 
 #include "ifileencrypter.h"    // used for Crypto::IFileEncrypter
 #include "securestring.h"      // used for Crypto::CSecureString
- #include <openssl/ossl_typ.h> // used for RSA
+#include <openssl/ossl_typ.h>  // used for RSA
 
 namespace SLNet
 {

@@ -69,6 +69,8 @@ float WALL[WALL_COUNT][WALL_VERTS] = {
 #define BASIC_FRICTION  0.4f
 /** The restitution for all physics objects */
 #define BASIC_RESTITUTION   0.1f
+/** The restitution for all physics objects */
+#define TURNS_PER_SPIN   60.0f
 
 #pragma mark -
 #pragma mark Constructors
@@ -229,27 +231,39 @@ void GameScene::update(float timestep) {
     _playerController.readInput();
     switch (_playerController.getMoveStyle()) {
         case Movement::AlwaysForward: {
-            auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
+            auto ang = _player->getAngle() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
             _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
             
             auto vel = _player->getLinearVelocity();
+            //Please don't delete this comment, angles were difficult to derive and easy to forget
+            //vel angle originates from x axis, player angle orginates from y axis
             auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
-            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .02f);
+            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .03f);
             _player->setLinearVelocity(vel.add(correction));
+
             if (_playerController.getMov().x == 0) {
-                //if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
+                //constant acceleration
+                //_player->applyForce();
+                
+                //accelerate to a maximum velocity
+                auto forForce = _player->getForce();
+                auto scaling = _player->getForce();
+                //scaling.normalize().scale(0.05f * pow(30.0f - vel.length(), 2.0f));
+                scaling.normalize().scale(0.75f * (30.0f - vel.length()));
+                //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
+                _player->setForce(scaling);
                 _player->applyForce();
-                //}
+                _player->setForce(forForce);
             }
             else {
                 auto forForce = _player->getForce();
-                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * -1.1f);
-                if (_playerController.getMov().x > 0) {
+                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * 14.0f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN));
+                if (_playerController.getMov().x < 0) {
                     turnForce.scale(-1.0f);
                 }
                 if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
-                    turnForce.scale(-1.0f);
+                    //turnForce.scale(-1.0f);
                     _player->applyForce();
                 }
                 _player->setForce(turnForce);
