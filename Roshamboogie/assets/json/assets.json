@@ -150,7 +150,7 @@
                     "type"   : "Slider",
                     "data"   : {
                         "bounds" : [0,10,0,200],
-                        "range"  : [0,2],
+                        "range"  : [0,3],
                         "value"  : 0,
                         "tick"   : 1,
                         "snap"   : true,

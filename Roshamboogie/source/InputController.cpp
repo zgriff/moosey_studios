@@ -15,6 +15,8 @@ using namespace cugl;
 #define LISTENER_KEY        1
 /** The key for toggling the debug display */
 #define DEBUG_KEY KeyCode::D
+/** How far we must swipe up for a golf gesture */
+#define SWIPE_LENGTH    50
 
 /**
  * Creates a new input controller with the default settings
@@ -80,10 +82,13 @@ void InputController::readInput() {
     // YOU NEED TO PUT SOME CODE HERE
     switch (_moveStyle) {
         case Movement::SwipeForce:
+        case Movement::GolfMove:
             if(!processed){
                 processed = true;
+                mov.x = 1;
             }else{
                 moveVec = Vec2::ZERO;
+                mov.x = 0;
             }
             break;
         case Movement::TiltMove:
@@ -156,6 +161,14 @@ void InputController::touchEndedCB(const cugl::TouchEvent& event, bool focus) {
             Vec2 diff = event.position-_dtouch;
             Uint64 t = event.timestamp.ellapsedMillis(_timestamp);
             moveVec = diff.normalize() * (1000.0/t);
+            processed = false;
+            break;
+        }
+        case Movement::GolfMove:{
+            moveVec.set(_dtouch - event.position);
+            if (moveVec.length() < SWIPE_LENGTH ) {
+                moveVec.set(Vec2(0.0f,0.0f));
+            }
             processed = false;
             break;
         }

@@ -104,7 +104,6 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Start up the input handler
     _assets = assets;
     _playerController.init();
-
     // Acquire the scene built by the asset loader and resize it the scene
     auto scene_background = _assets->get<scene2::SceneNode>("background");
     scene_background->setContentSize(dimen);
@@ -290,6 +289,22 @@ void GameScene::update(float timestep) {
                 Vec3 tilt = _playerController.getTiltVec();
                 Vec2 moveVec(tilt.x, -tilt.y);
                 _player->setForce(moveVec * 50);
+                _player->applyForce();
+            #endif
+        }
+        case Movement::GolfMove:{
+            #ifndef CU_MOBILE
+                _player->setLinearVelocity(_playerController.getMov() * 3);
+            #else
+                Vec2 _moveVec;
+                if (_playerController.getMov().x == 0) {
+                    _moveVec = Vec2(-5*_player->getVX(),-5*_player->getVY());
+                } else  {
+                    Vec2 moveVec = _playerController.getMoveVec();
+                    _moveVec = Vec2(moveVec.x, -moveVec.y);
+                    _moveVec =  _moveVec*10;
+                }
+                _player->setForce(_moveVec);
                 _player->applyForce();
             #endif
         }

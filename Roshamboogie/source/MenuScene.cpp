@@ -90,8 +90,13 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
                 case 1:
                     _label->setText("Swipe Force");
                     break;
-                default:
+                case 2:
                     _label->setText("Tilt to Move");
+                    break;
+                case 3:
+                    _label->setText("Golfing");
+                    break;
+                default:
                     break;
             }
         }
