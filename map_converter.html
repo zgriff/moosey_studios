@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>Convert Tiled JSON</title>
+</head>
+<body id="drop-area">
+Drop Tiled JSON file here to convert to map JSON format.
+
+<script>
+  const dropArea = document.getElementById('drop-area');
+
+  dropArea.addEventListener('dragover', (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    // Style the drag-and-drop as a "copy file" operation.
+    event.dataTransfer.dropEffect = 'copy';
+  });
+
+  dropArea.addEventListener('drop', (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    const fileList = event.dataTransfer.files;
+    for (const f of fileList){
+      readFile(f);
+    }
+  });
+
+  function readFile(file){
+    if(!file.type || !(file.type == "application/json")){
+      return;
+    }
+    const reader = new FileReader();
+    reader.addEventListener('load', (event) => {
+      convertJSON(JSON.parse(reader.result));
+    });
+    reader.readAsText(file);
+  }
+
+  function convertJSON(json){
+    let output = {};
+    output["width"] = 0;
+    output["height"] = 0;
+    output["boundaries"] = [];
+    output["tiles"] = [];
+    output["swap_stations"] = [];
+    output["decorations"] = [];
+    output["egg_spawn_locations"] = [];
+    output["orb_spawn_locations"] = [];
+    output["player_spawn_locations"] = [];
+
+    downloadJSON(output);
+  }
+
+  //credit to https://stackoverflow.com/questions/19721439/download-json-object-as-a-file-from-browser
+  function downloadJSON(exportObj, exportName="tmp"){
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    downloadAnchorNode.style.display = 'none';
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  }
+</script>
+</body>
+</html>
