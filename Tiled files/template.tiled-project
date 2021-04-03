@@ -1,0 +1,21 @@
+{
+    "automappingRulesFile": "",
+    "commands": [
+        {
+            "arguments": "%mapfile",
+            "command": "python3 %projectpath/convert.py",
+            "enabled": true,
+            "name": "convert",
+            "saveBeforeExecute": true,
+            "shortcut": null,
+            "showOutput": true,
+            "workingDirectory": ""
+        }
+    ],
+    "extensionsPath": "extensions",
+    "folders": [
+        "maps",
+        "tilesets"
+    ],
+    "objectTypesFile": ""
+}
