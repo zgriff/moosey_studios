@@ -1,3 +1,11 @@
+const TILE_MAP = {
+  0: "grass"
+}
+
+const DECORATION_MAP = {
+  0: "tree"
+}
+
 var customMapFormat = {
     name: "Roshamboogie map format",
     extension: "json",
@@ -41,9 +49,13 @@ var customMapFormat = {
                 }
                 break;
               case "Decorations":
-              /*
-              x, y, asset
-              */
+                for(obj of layer.objects){
+                  m.decorations.push({
+                    x: obj.x,
+                    y: obj.y,
+                    asset: DECORATION_MAP[obj.tile.id]
+                  });
+                }
                 break;
               case "GameObjects":
                 for(obj of layer.objects){
@@ -55,6 +67,17 @@ var customMapFormat = {
                 }
                 break;
               case "Background":
+                for(let y = 0; y < layer.height; ++y){
+                  for(let x = 0; x < layer.width; ++x){
+                    if(layer.tileAt(x,y) != null){
+                      m.tiles.push({
+                        x: x,
+                        y: y,
+                        asset: TILE_MAP[layer.tileAt(x,y).id]
+                      });
+                    }
+                  }
+                }
                 break;
               default:
                 break;
