@@ -10,7 +10,7 @@
 #include "Element.h"
 #include <random>
 
-#define ORB_RADIUS 1
+#define ORB_RADIUS 0.6
 
 using namespace cugl;
 
@@ -22,10 +22,9 @@ void Orb::setTextures(const std::shared_ptr<Texture>& orb) {
     _body->SetUserData(this);
 //    setElement();
 }
-bool Orb::init(Vec2 pos, Element el){
+bool Orb::init(Vec2 pos){
     bool success = physics2::WheelObstacle::init(pos, ORB_RADIUS);
     if(success){
-        e = el;
         setSensor(true);
         setBodyType(b2_staticBody);
         setName("orb");
@@ -53,7 +52,10 @@ void Orb::setElement() {
 }
 
 void Orb::dispose(){
-    _sceneNode = nullptr;
+    if(_sceneNode != nullptr){
+        _sceneNode->dispose();
+        _sceneNode = nullptr;
+    }
     _texture = nullptr;
 }
 

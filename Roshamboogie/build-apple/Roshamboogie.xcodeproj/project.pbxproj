@@ -43,9 +43,9 @@
 		925FC53425F42D4D00532483 /* Orb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53225F42D4D00532483 /* Orb.cpp */; };
 		925FC53525F42D4D00532483 /* Orb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53225F42D4D00532483 /* Orb.cpp */; };
 		925FC53625F42D4D00532483 /* Orb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53225F42D4D00532483 /* Orb.cpp */; };
-		925FC53C25F42D5C00532483 /* OrbManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53A25F42D5C00532483 /* OrbManager.cpp */; };
-		925FC53D25F42D5C00532483 /* OrbManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53A25F42D5C00532483 /* OrbManager.cpp */; };
-		925FC53E25F42D5C00532483 /* OrbManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53A25F42D5C00532483 /* OrbManager.cpp */; };
+		925FC53C25F42D5C00532483 /* SpawnController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53A25F42D5C00532483 /* SpawnController.cpp */; };
+		925FC53D25F42D5C00532483 /* SpawnController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53A25F42D5C00532483 /* SpawnController.cpp */; };
+		925FC53E25F42D5C00532483 /* SpawnController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC53A25F42D5C00532483 /* SpawnController.cpp */; };
 		925FC54425F42D6800532483 /* SwapStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC54225F42D6800532483 /* SwapStation.cpp */; };
 		925FC54525F42D6800532483 /* SwapStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC54225F42D6800532483 /* SwapStation.cpp */; };
 		925FC54625F42D6800532483 /* SwapStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 925FC54225F42D6800532483 /* SwapStation.cpp */; };
@@ -116,6 +116,9 @@
 		EBBF189B1D74904A008E2001 /* Mac.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBBF189A1D74904A008E2001 /* Mac.xcassets */; };
 		EBFE7C051E19B496001007C2 /* json in Resources */ = {isa = PBXBuildFile; fileRef = EBFE7C041E19B496001007C2 /* json */; };
 		EBFE7C091E19B4AC001007C2 /* json in Resources */ = {isa = PBXBuildFile; fileRef = EBFE7C041E19B496001007C2 /* json */; };
+		EC86E557261B5E0F00203FCA /* EndScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC86E556261B5E0F00203FCA /* EndScene.cpp */; };
+		EC86E558261B5E0F00203FCA /* EndScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC86E556261B5E0F00203FCA /* EndScene.cpp */; };
+		EC86E559261B5E0F00203FCA /* EndScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC86E556261B5E0F00203FCA /* EndScene.cpp */; };
 		ECA583F42603008700DF6791 /* Egg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECA583F32603008700DF6791 /* Egg.cpp */; };
 		ECA583F52603008700DF6791 /* Egg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECA583F32603008700DF6791 /* Egg.cpp */; };
 		ECA583F62603008700DF6791 /* Egg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECA583F32603008700DF6791 /* Egg.cpp */; };
@@ -173,8 +176,8 @@
 		925FC52B25F42D3700532483 /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		925FC53225F42D4D00532483 /* Orb.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Orb.cpp; sourceTree = "<group>"; };
 		925FC53325F42D4D00532483 /* Orb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Orb.h; sourceTree = "<group>"; };
-		925FC53A25F42D5C00532483 /* OrbManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OrbManager.cpp; sourceTree = "<group>"; };
-		925FC53B25F42D5C00532483 /* OrbManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrbManager.h; sourceTree = "<group>"; };
+		925FC53A25F42D5C00532483 /* SpawnController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SpawnController.cpp; sourceTree = "<group>"; };
+		925FC53B25F42D5C00532483 /* SpawnController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpawnController.h; sourceTree = "<group>"; };
 		925FC54225F42D6800532483 /* SwapStation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SwapStation.cpp; sourceTree = "<group>"; };
 		925FC54325F42D6800532483 /* SwapStation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwapStation.h; sourceTree = "<group>"; };
 		925FC57F25F4489100532483 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
@@ -220,6 +223,8 @@
 		EBBF189A1D74904A008E2001 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
 		EBBF189F1D74904A008E2001 /* Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
 		EBFE7C041E19B496001007C2 /* json */ = {isa = PBXFileReference; lastKnownFileType = folder; path = json; sourceTree = "<group>"; };
+		EC86E555261B5DF900203FCA /* EndScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EndScene.h; sourceTree = "<group>"; };
+		EC86E556261B5E0F00203FCA /* EndScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EndScene.cpp; sourceTree = "<group>"; };
 		ECA583EF2603006C00DF6791 /* Egg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Egg.h; sourceTree = "<group>"; };
 		ECA583F32603008700DF6791 /* Egg.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Egg.cpp; sourceTree = "<group>"; };
 		ECFA78E82605149B009D7949 /* CollisionController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollisionController.h; sourceTree = "<group>"; };
@@ -426,8 +431,8 @@
 				925FC53325F42D4D00532483 /* Orb.h */,
 				925FC52A25F42D3700532483 /* Player.cpp */,
 				925FC53225F42D4D00532483 /* Orb.cpp */,
-				925FC53B25F42D5C00532483 /* OrbManager.h */,
-				925FC53A25F42D5C00532483 /* OrbManager.cpp */,
+				925FC53B25F42D5C00532483 /* SpawnController.h */,
+				925FC53A25F42D5C00532483 /* SpawnController.cpp */,
 				925FC54325F42D6800532483 /* SwapStation.h */,
 				925FC54225F42D6800532483 /* SwapStation.cpp */,
 				28E6A53625F76E72004998CF /* Element.h */,
@@ -441,6 +446,8 @@
 				ECFA78E82605149B009D7949 /* CollisionController.h */,
 				ECFA78EC260514B1009D7949 /* CollisionController.cpp */,
 				922094CC260D0AFB003C9263 /* MovementStyle.h */,
+				EC86E555261B5DF900203FCA /* EndScene.h */,
+				EC86E556261B5E0F00203FCA /* EndScene.cpp */,
 			);
 			name = Source;
 			path = ../source;
@@ -628,7 +635,7 @@
 				28D048A925F59412005AB6CC /* (null) in Sources */,
 				925FC4F825F42B2800532483 /* main.cpp in Sources */,
 				2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */,
-				925FC53E25F42D5C00532483 /* OrbManager.cpp in Sources */,
+				925FC53E25F42D5C00532483 /* SpawnController.cpp in Sources */,
 				92209531260DA500003C9263 /* MenuScene.cpp in Sources */,
 				925FC51E25F42D1800532483 /* InputController.cpp in Sources */,
 				925FC50E25F42CFD00532483 /* LoadingScene.cpp in Sources */,
@@ -637,6 +644,7 @@
 				28297958260CEE99002EC000 /* World.cpp in Sources */,
 				925FC51625F42D0800532483 /* GameScene.cpp in Sources */,
 				925FC54625F42D6800532483 /* SwapStation.cpp in Sources */,
+				EC86E559261B5E0F00203FCA /* EndScene.cpp in Sources */,
 				ECFA78EF260514B1009D7949 /* CollisionController.cpp in Sources */,
 				925FC50325F42B6F00532483 /* App.cpp in Sources */,
 				925FC52E25F42D3700532483 /* Player.cpp in Sources */,
@@ -651,7 +659,7 @@
 				28D048A825F59412005AB6CC /* (null) in Sources */,
 				925FC4F725F42B2800532483 /* main.cpp in Sources */,
 				2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */,
-				925FC53D25F42D5C00532483 /* OrbManager.cpp in Sources */,
+				925FC53D25F42D5C00532483 /* SpawnController.cpp in Sources */,
 				92209530260DA500003C9263 /* MenuScene.cpp in Sources */,
 				925FC51D25F42D1800532483 /* InputController.cpp in Sources */,
 				925FC50D25F42CFD00532483 /* LoadingScene.cpp in Sources */,
@@ -660,6 +668,7 @@
 				28297957260CEE99002EC000 /* World.cpp in Sources */,
 				925FC51525F42D0800532483 /* GameScene.cpp in Sources */,
 				925FC54525F42D6800532483 /* SwapStation.cpp in Sources */,
+				EC86E558261B5E0F00203FCA /* EndScene.cpp in Sources */,
 				ECFA78EE260514B1009D7949 /* CollisionController.cpp in Sources */,
 				925FC50225F42B6F00532483 /* App.cpp in Sources */,
 				925FC52D25F42D3700532483 /* Player.cpp in Sources */,
@@ -674,7 +683,7 @@
 				28D048A725F59412005AB6CC /* (null) in Sources */,
 				925FC4F625F42B2800532483 /* main.cpp in Sources */,
 				2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */,
-				925FC53C25F42D5C00532483 /* OrbManager.cpp in Sources */,
+				925FC53C25F42D5C00532483 /* SpawnController.cpp in Sources */,
 				9220952F260DA500003C9263 /* MenuScene.cpp in Sources */,
 				925FC51C25F42D1800532483 /* InputController.cpp in Sources */,
 				925FC50C25F42CFC00532483 /* LoadingScene.cpp in Sources */,
@@ -683,6 +692,7 @@
 				28297956260CEE99002EC000 /* World.cpp in Sources */,
 				925FC51425F42D0800532483 /* GameScene.cpp in Sources */,
 				925FC54425F42D6800532483 /* SwapStation.cpp in Sources */,
+				EC86E557261B5E0F00203FCA /* EndScene.cpp in Sources */,
 				ECFA78ED260514B1009D7949 /* CollisionController.cpp in Sources */,
 				925FC50125F42B6F00532483 /* App.cpp in Sources */,
 				925FC52C25F42D3700532483 /* Player.cpp in Sources */,

@@ -16,9 +16,13 @@
 namespace ND{
 
 struct NetworkData {
-    enum PacketType {ORB_RESPAWN, ORB_CAPTURED, EGG_CAPTURED, SWAP_PACKET, POSITION_PACKET};
+    enum PacketType {TAG_PACKET, ORB_RESPAWN, ORB_CAPTURED, EGG_CAPTURED, SWAP_PACKET, POSITION_PACKET};
     uint8_t packetType;
     union {
+        struct {
+            uint8_t taggedId;
+            uint8_t taggerId;
+        } tagData;
         struct {
             uint8_t orbId;
             cugl::Vec2 position;

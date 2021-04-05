@@ -27,6 +27,7 @@ bool World::init(int width, int height){
     _physicsWorld = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
     _worldNode = scene2::SceneNode::alloc();
     _worldNode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
+    _currOrbCount = 3;
     
     return true;
 }
@@ -56,7 +57,7 @@ void World::reset(){
     }
     
     //creating the three orbs
-    auto fireOrb = Orb::alloc(Vec2(4,4), Element::Fire);
+    auto fireOrb = Orb::alloc(Vec2(4,4));
     _physicsWorld->addObstacle(fireOrb);
     fireOrb->setTextures(orbTexture);
     fireOrb->setDrawScale(_scale);
@@ -65,7 +66,7 @@ void World::reset(){
     fireOrb->setID(0);
     _orbs.push_back(fireOrb);
 
-    auto waterOrb = Orb::alloc(Vec2(20,8), Element::Water);
+    auto waterOrb = Orb::alloc(Vec2(20,8));
     _physicsWorld->addObstacle(waterOrb);
     waterOrb->setTextures(orbTexture);
     waterOrb->setDrawScale(_scale);
@@ -74,7 +75,7 @@ void World::reset(){
     waterOrb->setID(1);
     _orbs.push_back(waterOrb);
     
-    auto grassOrb = Orb::alloc(Vec2(10,12), Element::Grass);
+    auto grassOrb = Orb::alloc(Vec2(10,12));
     _physicsWorld->addObstacle(grassOrb);
     grassOrb->setTextures(orbTexture);
     grassOrb->setDrawScale(_scale);
@@ -113,4 +114,20 @@ void World::reset(){
     _worldNode->addChild(grassOrb->getSceneNode());
     _worldNode->addChild(swapStation->getSceneNode());
     _worldNode->addChild(egg->getSceneNode());
+}
+
+//creates a new orb in the world with the given pos
+void World::addOrb(Vec2 pos) {
+    auto orbTexture = _assets->get<Texture>("photon");
+    auto orb = Orb::alloc(pos);
+    _physicsWorld->addObstacle(orb);
+    orb->setTextures(orbTexture);
+    orb->setDrawScale(_scale);
+    orb->setDebugColor(Color4::YELLOW);
+    orb->setDebugScene(_debugNode);
+    orb->setID(_currOrbCount);
+    _orbs.push_back(orb);
+    _currOrbCount++;
+    _worldNode->addChild(orb->getSceneNode());
+
 }

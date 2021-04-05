@@ -104,6 +104,7 @@ void InputController::readInput() {
             break;
     }
 #else
+//    CULog("input");
     // Figure out, based on which player we are, which keys
     // control our actions (depends on player).
     KeyCode up, left, right, down;

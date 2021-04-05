@@ -167,12 +167,18 @@ void MenuScene::dispose() {
  * @param value whether the scene is currently active
  */
 void MenuScene::setActive(bool value) {
+    _active = value;
     if (value && (!_hostButton->isActive() || !_joinButton->isActive())) {
+        _slider->setVisible(true);
+        _label->setVisible(true);
+        _slider->activate();
         _hostButton->activate();
         _joinButton->activate();
+        _codeField->activate();
     } else if (!value && (_hostButton->isActive() || _joinButton->isActive())) {
         _hostButton->deactivate();
         _joinButton->deactivate();
         _codeField->deactivate();
+        _slider->deactivate();
     }
 }

@@ -22,6 +22,10 @@ private:
     Element _prevElt; //used when switching back to the element before collecting an egg
     bool _isTagged; //if this player is tagged
     bool _didTag; //if this player tagged someone else -- earn points
+    int _score;
+    bool _isInvisible;
+    bool _isIntangible; //can't interact with any object (can't tag and nobody can tag you)
+    clock_t _tagCooldown;
     
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
@@ -80,6 +84,22 @@ public:
     bool getDidTag() { return _didTag; }
     
     void setDidTag(bool t) { _didTag = t; }
+    
+    int getScore() { return _score; }
+    
+    void incScore(int s) { _score = _score + s; }
+    
+    bool getIsInvisible() { return _isInvisible; }
+    
+    void setIsInvisible(bool b) { _isInvisible = b; }
+    
+    bool getIsIntangible() { return _isIntangible; }
+    
+    void setIsIntangible(bool b) { _isIntangible = b; }
+    
+    bool getTagCooldown() { return _tagCooldown; }
+    
+    void setTagCooldown(clock_t t) { _tagCooldown = t; }
 
     /**
     * Creates the username Label node with the font

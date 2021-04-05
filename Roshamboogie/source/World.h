@@ -36,6 +36,7 @@ private:
     
     float _scale;
     uint8_t _numPlayers;
+    uint8_t _currOrbCount;
 
 public:
 #pragma mark -
@@ -64,9 +65,30 @@ public:
         return _players[id];
     }
     
+    std::vector<std::shared_ptr<Player>> getPlayers(){
+        return _players;
+    }
+    
     std::shared_ptr<Orb> getOrb(int id){
         return _orbs[id];
     }
+    
+    std::vector<std::shared_ptr<Orb>> getOrbs(){
+        return _orbs;
+    }
+    
+    uint8_t getCurrOrbCount() {
+        return _currOrbCount;
+    }
+    
+    void setOrbCount(int c) {
+        _currOrbCount = c;
+    }
+    
+    void addOrb(Vec2 pos);
+    
+    float getScale() { return _scale; }
+    
     
     std::shared_ptr<Egg> getEgg(int id){
         return _eggs[id];

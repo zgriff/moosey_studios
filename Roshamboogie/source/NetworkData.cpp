@@ -160,6 +160,10 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
     byte_arr_index = 0;
     dest.packetType = readBits(bytes, TYPE_BITS);
     switch(dest.packetType){
+        case NetworkData::TAG_PACKET:
+            dest.tagData.taggedId = readBits(bytes, PLAYER_ID_BITS);
+            dest.tagData.taggerId = readBits(bytes, PLAYER_ID_BITS);
+            break;
         case NetworkData::ORB_CAPTURED:
             dest.orbCapData.orbId = readBits(bytes, ORB_ID_BITS);
             dest.orbCapData.playerId = readBits(bytes, PLAYER_ID_BITS);
@@ -192,6 +196,10 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
     scratch_bits = 0;
     writeBits(dest, src.packetType, TYPE_BITS);
     switch(src.packetType){
+        case NetworkData::TAG_PACKET:
+            writeBits(dest, src.tagData.taggedId, PLAYER_ID_BITS);
+            writeBits(dest, src.tagData.taggerId, PLAYER_ID_BITS);
+            break;
         case NetworkData::ORB_CAPTURED:
             writeBits(dest, src.orbCapData.orbId, ORB_ID_BITS);
             writeBits(dest, src.orbCapData.playerId, PLAYER_ID_BITS);

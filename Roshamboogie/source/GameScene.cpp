@@ -98,6 +98,8 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     //create world
     world = World::alloc(assets, DEFAULT_WIDTH, DEFAULT_HEIGHT, _scale, NetworkController::getNumPlayers());
     NetworkController::setWorld(world);
+    SpawnController::setWorld(world);
+    CollisionController::setWorld(world);
     
     // Start up the input handler
     _assets = assets;
@@ -216,8 +218,6 @@ void GameScene::update(float timestep) {
         _roomIdHUD->setText(ss.str());
     }
     
-    if (_playerController.didDebug()) { setDebug(!isDebug()); }
-    
     
     // BEGIN PLAYER MOVEMENT //
     
@@ -305,16 +305,37 @@ void GameScene::update(float timestep) {
 //    }
     
     if(NetworkController::isHost()){
-        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
-            auto orb = world->getOrb(i);
-            if(orb->getCollected()) {
-                orb->respawn();
-                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
-                _score += 1;
+//        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
+//            auto orb = world->getOrb(i);
+//            if(orb->getCollected()) {
+//                orb->respawn();
+//                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
+//            }
+//            orb->setCollected(false);
+//
+//        }
+        
+        std::vector<std::shared_ptr<Orb>> orbs = world->getOrbs();
+        for (int i = 0; i < orbs.size(); i++) {
+            std::shared_ptr<Orb> o = world->getOrbs()[i];
+            if (o->getCollected()) {
+                o->deactivatePhysics(*world->getPhysicsWorld()->getWorld());
+                orbs.erase(orbs.begin()+i);
+                
             }
-            orb->setCollected(false);
-
         }
+        
+        std::random_device r;
+        std::default_random_engine e1(r());
+        std::uniform_int_distribution<int> prob(0,100);
+//        CULog("prob %d", prob(e1));
+        if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
+            if (world->getCurrOrbCount() < 10) {
+                SpawnController::spawnOrbs();
+            }
+        }
+    
+//    CULog("orb count %d", world->getCurrOrbCount());
     }
     
     
@@ -337,12 +358,12 @@ void GameScene::update(float timestep) {
             _egg->setHatched(true);
             _egg->dispose();
 //            _egg->setCollected(false);
-            _score += 10;
             _eggCollector->setElement(_eggCollector->getPrevElement());
             if (_egg->getPID() == _player->getID()) {
                 _hatchnode->setVisible(true);
+                _player->incScore(10);
             }
-            CULog("hatched");
+//            CULog("hatched");
         }
         
     }
@@ -354,21 +375,29 @@ void GameScene::update(float timestep) {
 
     
     // player tagging
-//    if (_player->getDidTag()) {
-//        _score += 15;
-//    }
+    if (_player->getDidTag()) {
+        _score += 15;
+    }
 //    if (_player->getIsTagged()) {
-//        _player->setPosition(Vec2(20,10));
+//        _player->setIsInvincible(true);
 //    }
-//    if (_player2->getIsTagged()) {
-//        _player2->setPosition(Vec2(20,10));
-//    }
+    
+    //cooldown for player after it's tagged
+    if (_player->getIsTagged()) {
+        if (clock() - _player->getTagCooldown() >= 10 * CLOCKS_PER_SEC) {
+            CULog("not tagged");
+//            _player->getSceneNode()->setVisible(false);
+            _player->setIsTagged(false);
 
-    _scoreHUD->setText(updateScoreText(_score));
+        }
+    }
+
+    _scoreHUD->setText(updateScoreText(_player->getScore()));
     
     //send new position
     NetworkController::sendPosition();
 }
+
 
 void GameScene::populate() {
     std::shared_ptr<Texture> image = _assets->get<Texture>("earth");

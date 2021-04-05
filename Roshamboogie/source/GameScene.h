@@ -13,6 +13,7 @@
 #include <time.h>
 #include "InputController.h"
 #include "CollisionController.h"
+#include "SpawnController.h"
 #include "Player.h"
 #include "Orb.h"
 #include "NetworkController.h"

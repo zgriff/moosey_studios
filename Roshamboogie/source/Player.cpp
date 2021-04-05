@@ -133,6 +133,8 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         setForce(DEFAULT_PLAYER_FORCE);
         _currElt = elt;
         _prevElt = elt;
+        _score = 0;
+        _tagCooldown = 0;
         _isTagged = false;
         _didTag = false;
         _sceneNode = nullptr;
@@ -161,6 +163,24 @@ void Player::update(float delta) {
         _sceneNode->setAngle(getAngle());
     }
     _trauma = max(0.0f, _trauma - TRAUMA_RECOVERY);
+
+    
+    if (_isTagged) {
+        _isInvisible = true;
+        _isIntangible = true;
+    }
+    else {
+        _isInvisible = false;
+        _isIntangible = false;
+    }
+    
+    if (_isInvisible) {
+//        _sceneNode->setVisible(false);
+        //set invisible for other players
+    }
+    else {
+        _sceneNode->setVisible(true);
+    }
 }
 
 void Player::addTrauma(float t) {
