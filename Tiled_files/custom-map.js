@@ -21,8 +21,24 @@ var customMapFormat = {
               case "Hitboxes":
                 for(obj of layer.objects){
                   boundary = []
-                  for(point of obj.polygon){
-                    boundary.push({x: point.x, y: point.y});
+                  if(obj.shape == MapObject.Rectangle){
+                    boundary = [{
+                      x: obj.x,
+                      y: obj.y
+                    },{
+                      x: obj.x + obj.width,
+                      y: obj.y
+                    },{
+                      x: obj.x,
+                      y: obj.y + obj.height
+                    },{
+                      x: obj.x + obj.width,
+                      y: obj.y + obj.height
+                    }];
+                  }else if(obj.shape == MapObject.Polygon){
+                    for(point of obj.polygon){
+                      boundary.push({x: point.x, y: point.y});
+                    }
                   }
                   m.boundaries.push(boundary)
                 }
