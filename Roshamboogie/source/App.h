@@ -12,6 +12,7 @@
 #include "GameScene.h"
 #include "LoadingScene.h"
 #include "MenuScene.h"
+#include "LobbyScene.h"
 
 /**
  * This class represents the application root for the project.
@@ -30,10 +31,12 @@ protected:
     LoadingScene _loading;
     /** The controller for the main menu  */
     MenuScene _menu;
+    /** The controller for the player lobby  */
+    LobbyScene _lobby;
 
     /** Whether or not we have finished loading all assets */
     enum class SceneSelect {
-        Loading, Menu, Game
+        Loading, Menu, Lobby, Game
     };
     
     SceneSelect _currentScene;

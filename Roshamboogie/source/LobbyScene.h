@@ -1,13 +1,13 @@
 //
-//  MenuScene.h
+//  LobbyScene.h
 //  Roshamboogie
 //
 //  Created by Zach Griffin on 3/25/21.
 //  Copyright © 2021 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#ifndef MenuScene_h
-#define MenuScene_h
+#ifndef LobbyScene_h
+#define LobbyScene_h
 
 #include <stdio.h>
 #include <cugl/cugl.h>
@@ -28,24 +28,21 @@
  * Once asset loading is completed, it will display a play button.  Clicking
  * this button will inform the application root to switch to the gameplay mode.
  */
-class MenuScene : public cugl::Scene2 {
+class LobbyScene : public cugl::Scene2 {
 protected:
     /** The asset manager for loading. */
     std::shared_ptr<cugl::AssetManager> _assets;
 
     // VIEW
-    /** The host game button */
-    std::shared_ptr<cugl::scene2::Button> _hostButton;
-    /** The join game button */
-    std::shared_ptr<cugl::scene2::Button> _joinButton;
-    /**join code text field*/
-    std::shared_ptr<cugl::scene2::TextField> _codeField;
-    std::shared_ptr<cugl::scene2::Slider> _slider;
-    std::shared_ptr<cugl::scene2::Label> _label;
-    float _sliderValue;
+    std::shared_ptr<cugl::scene2::Button> _startButton;
+    std::shared_ptr<cugl::scene2::Label> _roomId;
+    std::vector<std::shared_ptr<cugl::scene2::Label>> _playerLabels;
+    
+    
     /**true host false client*/
+    std::string _currRoomId;
     bool _host;
-    int _movement;
+//    int _movement;
         
 
 public:
@@ -57,7 +54,7 @@ public:
      * This constructor does not allocate any objects or start the game.
      * This allows us to use the object without a heap pointer.
      */
-    MenuScene() : cugl::Scene2() {}
+    LobbyScene() : cugl::Scene2() {}
 
     /**
      * Disposes of all (non-static) resources allocated to this mode.
@@ -65,7 +62,7 @@ public:
      * This method is different from dispose() in that it ALSO shuts off any
      * static resources, like the input controller.
      */
-    ~MenuScene() { dispose(); }
+    ~LobbyScene() { dispose(); }
 
     /**
      * Disposes of all (non-static) resources allocated to this mode.
@@ -95,7 +92,7 @@ public:
      *
      * @param timestep  The amount of time (in seconds) since the last frame
      */
-//    virtual void update(float timestep) override;
+    virtual void update(float timestep) override;
 
     /**
      * Sets whether the scene is currently active
@@ -104,10 +101,10 @@ public:
      */
     virtual void setActive(bool value) override;
     
+    void displayLobby();
+    
     bool isHost() {return _host;};
         
-    int getMovement() {return _movement;};
-
 };
 
-#endif /* MenuScene_h */
+#endif /* LobbyScene_h */
