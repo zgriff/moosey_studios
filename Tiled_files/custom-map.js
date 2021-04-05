@@ -8,11 +8,8 @@ var customMapFormat = {
             height: map.height,
             boundaries: [],
             tiles: [],
-            swap_stations: [],
-            decorations: [],
-            egg_spawn_locations: [],
-            orb_spawn_locations: [],
-            player_spawn_locations: []
+            gameObjects: [],
+            decorations: []
         };
 
         for (var i = 0; i < map.layerCount; ++i) {
@@ -44,26 +41,16 @@ var customMapFormat = {
                 }
                 break;
               case "Decorations":
+              /*
+              x, y, asset
+              */
                 break;
               case "GameObjects":
                 for(obj of layer.objects){
-                  dest = []
-                  switch(obj.name){
-                    case "swap_station":
-                      dest = m.swap_stations;
-                      break;
-                    case "egg_spawn":
-                      dest = m.egg_spawn_locations;
-                      break;
-                    case "player_spawn":
-                      dest = m.player_spawn_locations;
-                      break;
-                    default:
-                      break;
-                  }
-                  dest.push({
+                  m.gameObjects.push({
                     x: obj.x,
-                    y: obj.y
+                    y: obj.y,
+                    type: obj.name
                   });
                 }
                 break;
