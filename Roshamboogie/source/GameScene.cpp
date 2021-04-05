@@ -305,35 +305,35 @@ void GameScene::update(float timestep) {
 //    }
     
     if(NetworkController::isHost()){
-//        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
-//            auto orb = world->getOrb(i);
-//            if(orb->getCollected()) {
-//                orb->respawn();
-//                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
-//            }
-//            orb->setCollected(false);
+        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
+            auto orb = world->getOrb(i);
+            if(orb->getCollected()) {
+                orb->respawn();
+                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
+            }
+            orb->setCollected(false);
+
+        }
+        
+//        std::vector<std::shared_ptr<Orb>> orbs = world->getOrbs();
+//        for (int i = 0; i < orbs.size(); i++) {
+//            std::shared_ptr<Orb> o = world->getOrbs()[i];
+//            if (o->getCollected()) {
+//                o->deactivatePhysics(*world->getPhysicsWorld()->getWorld());
+//                orbs.erase(orbs.begin()+i);
 //
+//            }
 //        }
         
-        std::vector<std::shared_ptr<Orb>> orbs = world->getOrbs();
-        for (int i = 0; i < orbs.size(); i++) {
-            std::shared_ptr<Orb> o = world->getOrbs()[i];
-            if (o->getCollected()) {
-                o->deactivatePhysics(*world->getPhysicsWorld()->getWorld());
-                orbs.erase(orbs.begin()+i);
-                
-            }
-        }
-        
-        std::random_device r;
-        std::default_random_engine e1(r());
-        std::uniform_int_distribution<int> prob(0,100);
-//        CULog("prob %d", prob(e1));
-        if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
-            if (world->getCurrOrbCount() < 10) {
-                SpawnController::spawnOrbs();
-            }
-        }
+//        std::random_device r;
+//        std::default_random_engine e1(r());
+//        std::uniform_int_distribution<int> prob(0,100);
+////        CULog("prob %d", prob(e1));
+//        if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
+//            if (world->getCurrOrbCount() < 10) {
+//                SpawnController::spawnOrbs();
+//            }
+//        }
     
 //    CULog("orb count %d", world->getCurrOrbCount());
     }
@@ -388,7 +388,6 @@ void GameScene::update(float timestep) {
             CULog("not tagged");
 //            _player->getSceneNode()->setVisible(false);
             _player->setIsTagged(false);
-
         }
     }
 
