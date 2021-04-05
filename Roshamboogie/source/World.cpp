@@ -86,8 +86,8 @@ void World::reset(){
     
     
     Vec2 swapStPos = Vec2(8,8);
-    Size swapStSize(swapStTexture->getSize() / _scale);
-    auto swapStation = SwapStation::alloc(swapStPos, swapStSize);
+//    Size swapStSize(swapStTexture->getSize() / _scale);
+    auto swapStation = SwapStation::alloc(swapStPos);
     _physicsWorld->addObstacle(swapStation);
     swapStation->setTextures(swapStTexture);
     swapStation->setDrawScale(_scale);

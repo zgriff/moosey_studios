@@ -61,10 +61,10 @@ void CollisionController::beginContact(b2Contact* contact){
         Player* p = (Player*) bd2;
         SwapStation* s = (SwapStation*) bd1;
         if (p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
-            if (time(NULL) - s->getLastUsed() >= s->getCoolDown()) {
+            if (s->getActive()) {
                 s->setLastUsed(time(NULL));
                 p->setElement(p->getPreyElement());
-    //            s->setActive(false);
+                s->setActive(false);
                 NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
             }
         }
@@ -73,10 +73,10 @@ void CollisionController::beginContact(b2Contact* contact){
         Player* p = (Player*) bd1;
         SwapStation* s = (SwapStation*) bd2;
         if (p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
-            if (time(NULL) - s->getLastUsed() >= s->getCoolDown()) {
+            if (s->getActive()) {
                 s->setLastUsed(time(NULL));
                 p->setElement(p->getPreyElement());
-    //            s->setActive(false);
+                s->setActive(false);
                 NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
             }
         }
