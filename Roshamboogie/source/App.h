@@ -40,7 +40,7 @@ protected:
         Loading, Menu, Game, Results
     };
     
-    clock_t gameTimer = 100 * CLOCKS_PER_SEC;
+    clock_t gameTimer = 1000 * CLOCKS_PER_SEC;
     clock_t startTimer;
     
     SceneSelect _currentScene;

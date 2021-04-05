@@ -25,7 +25,7 @@ private:
     int _score;
     bool _isInvisible;
     bool _isIntangible; //can't interact with any object (can't tag and nobody can tag you)
-    clock_t _tagCooldown;
+    time_t _tagCooldown;
     
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
@@ -97,7 +97,7 @@ public:
     
     void setIsIntangible(bool b) { _isIntangible = b; }
     
-    bool getTagCooldown() { return _tagCooldown; }
+    time_t getTagCooldown() { return _tagCooldown; }
     
     void setTagCooldown(clock_t t) { _tagCooldown = t; }
 

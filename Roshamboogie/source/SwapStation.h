@@ -30,8 +30,8 @@ private:
     /** Reference to the swap station texture */
     std::shared_ptr<cugl::Texture> _texture;
     bool _active;
-    clock_t _lastUsed;
-    clock_t _coolDownSecs = 2 * CLOCKS_PER_SEC;
+    time_t _lastUsed;
+    time_t _coolDownSecs = 5;
     int _id;
     
 public:
@@ -56,11 +56,11 @@ public:
     
     void setActive(bool a) override { _active = a; }
     
-    clock_t getLastUsed() { return _lastUsed; }
+    time_t getLastUsed() { return _lastUsed; }
     
-    void setLastUsed(clock_t time) { _lastUsed = time; }
+    void setLastUsed(time_t time) { _lastUsed = time; }
     
-    clock_t getCoolDown() { return _coolDownSecs; }
+    time_t getCoolDown() { return _coolDownSecs; }
     
     int getID(){ return _id; }
     void setID(int i){ _id = i; }

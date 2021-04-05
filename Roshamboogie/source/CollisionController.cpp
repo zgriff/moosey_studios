@@ -61,8 +61,8 @@ void CollisionController::beginContact(b2Contact* contact){
         Player* p = (Player*) bd2;
         SwapStation* s = (SwapStation*) bd1;
         if (p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
-            if (clock() - s->getLastUsed() >= s->getCoolDown()) {
-                s->setLastUsed(clock());
+            if (time(NULL) - s->getLastUsed() >= s->getCoolDown()) {
+                s->setLastUsed(time(NULL));
                 p->setElement(p->getPreyElement());
     //            s->setActive(false);
                 NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
@@ -73,8 +73,8 @@ void CollisionController::beginContact(b2Contact* contact){
         Player* p = (Player*) bd1;
         SwapStation* s = (SwapStation*) bd2;
         if (p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
-            if (clock() - s->getLastUsed() >= s->getCoolDown()) {
-                s->setLastUsed(clock());
+            if (time(NULL) - s->getLastUsed() >= s->getCoolDown()) {
+                s->setLastUsed(time(NULL));
                 p->setElement(p->getPreyElement());
     //            s->setActive(false);
                 NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
@@ -117,7 +117,7 @@ void CollisionController::beginContact(b2Contact* contact){
             if (p1->getCurrElement() == p2->getPreyElement()) {
                 CULog("tagged");
                 p1->setIsTagged(true);
-                p1->setTagCooldown(clock());
+                p1->setTagCooldown(time(NULL));
                 p2->setDidTag(true);
                 NetworkController::sendTag(p1->getID(), p2->getID());
             }
@@ -125,7 +125,7 @@ void CollisionController::beginContact(b2Contact* contact){
             else if (p2->getCurrElement() == p1->getPreyElement()) {
                 CULog("tagged");
                 p2->setIsTagged(true);
-                p2->setTagCooldown(clock());
+                p2->setTagCooldown(time(NULL));
                 p1->setDidTag(true);
                 NetworkController::sendTag(p2->getID(), p1->getID());
             }

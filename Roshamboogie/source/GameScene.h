@@ -49,8 +49,8 @@ protected:
     std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
     std::string _currRoomId;
     
-    clock_t _hatchTextTimer = CLOCKS_PER_SEC;
-    clock_t _hatchedTime;
+    time_t _hatchTextTimer = 5; //5 secs
+    time_t _hatchedTime;
     
     /** Whether or not debug mode is active */
     bool _debug;

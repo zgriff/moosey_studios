@@ -354,7 +354,7 @@ void GameScene::update(float timestep) {
         _egg->setInitPos(_eggCollector->getPosition());
         if (_egg->getDistanceWalked() >= 80) {
             _hatchbar->dispose();
-            _hatchedTime = clock();
+            _hatchedTime = time(NULL);
             _egg->setHatched(true);
             _egg->dispose();
 //            _egg->setCollected(false);
@@ -368,7 +368,7 @@ void GameScene::update(float timestep) {
         
     }
     
-    if (clock() - _hatchedTime >= _hatchTextTimer) {
+    if (time(NULL) - _hatchedTime >= _hatchTextTimer) {
         _hatchnode->setVisible(false);
     }
     
@@ -383,8 +383,10 @@ void GameScene::update(float timestep) {
 //    }
     
     //cooldown for player after it's tagged
+    CULog("cooldown time %ld", _player->getTagCooldown());
     if (_player->getIsTagged()) {
-        if (clock() - _player->getTagCooldown() >= 10 * CLOCKS_PER_SEC) {
+        CULog("time %ld", time(NULL) - _player->getTagCooldown());
+        if (time(NULL) - _player->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
             CULog("not tagged");
 //            _player->getSceneNode()->setVisible(false);
             _player->setIsTagged(false);
