@@ -65,8 +65,8 @@ void CollisionController::beginContact(b2Contact* contact){
                 s->setLastUsed(clock());
                 p->setElement(p->getPreyElement());
     //            s->setActive(false);
+                NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
             }
-            NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
         }
     }
     else if(bd1->getName() == "player" && bd2->getName() == "swapstation") {
@@ -77,9 +77,8 @@ void CollisionController::beginContact(b2Contact* contact){
                 s->setLastUsed(clock());
                 p->setElement(p->getPreyElement());
     //            s->setActive(false);
-
+                NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
             }
-            NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
         }
     }
     
