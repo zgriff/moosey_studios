@@ -74,6 +74,7 @@ void Orb::update(float delta) {
     }
 }
 
+//TODO: delete since spawning of orbs is handled by spawncontroller now
 void Orb::respawn() {
     std::random_device r; //TODO: move to only initialize once
     std::default_random_engine e1(r());

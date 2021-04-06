@@ -40,8 +40,8 @@ void SpawnController::spawnOrbs() {
 //        CULog("player pos (x, y) : %f, %f", playerPos.x, playerPos.y);
 //        CULog("player loc (col, row) : %d, %d", j, i);
         
-        CULog("i %d", i);
-        CULog("j %d", j);
+//        CULog("i %d", i);
+//        CULog("j %d", j);
         spaces[i][j] += 1;
     }
     
@@ -51,7 +51,7 @@ void SpawnController::spawnOrbs() {
     for (int i = 0; i < cols; i++) {
         for (int j = 0; j < rows; j++) {
             if (spaces[i][j] == 0) {
-                CULog("empty space (col, row) : %d, %d", j, i);
+//                CULog("empty space (col, row) : %d, %d", j, i);
                 emptySpaces.push_back(Vec2(float(i),float(j)));
             }
         }
@@ -61,13 +61,13 @@ void SpawnController::spawnOrbs() {
     std::uniform_int_distribution<int> rand_int(0, (int)emptySpaces.size()-1);
     int randRoom = rand_int(e1);
     
-    CULog("randroom %d", randRoom);
+//    CULog("randroom %d", randRoom);
     //get rand position of orb
 //    CULog("randroom x %f", emptySpaces[randRoom].x);
 //    CULog("randroom y %f", emptySpaces[randRoom].y);
     std::uniform_int_distribution<float> rand_x(emptySpaces[randRoom].x * roomWidth, emptySpaces[randRoom].x * roomWidth + roomWidth);
     std::uniform_int_distribution<float> rand_y(emptySpaces[randRoom].y * roomHeight, emptySpaces[randRoom].y * roomHeight + roomHeight);
-    CULog("new pos %f %f", rand_x(e1), rand_y(e1));
+//    CULog("new pos %f %f", rand_x(e1), rand_y(e1));
     
     for (int i = 0; i < 10; i++) {
         std::shared_ptr<Orb> orb = world->getOrb(i);
@@ -78,10 +78,20 @@ void SpawnController::spawnOrbs() {
             NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
         }
     }
-   
-//    world->addOrb(Vec2(rand_x(e1), rand_y(e1)));
     
+}
+
+// spawn the initial orbs randomly on the map
+void SpawnController::initSpawn() {
     
+    for (int i = 0; i < 10; i++) {
+        std::uniform_int_distribution<int> rand_x(1, 36);
+        std::uniform_int_distribution<int> rand_y(1, 18);
+        auto orb = world->getOrb(i);
+        orb->setPosition(Vec2(rand_x(e1), rand_y(e1)));
+        orb->setCollected(false);
+        NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
+    }
 }
 
 

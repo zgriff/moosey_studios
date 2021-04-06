@@ -27,7 +27,7 @@ bool World::init(int width, int height){
     _physicsWorld = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
     _worldNode = scene2::SceneNode::alloc();
     _worldNode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
-    _currOrbCount = 0;
+    _currOrbCount = 10;
     
     return true;
 }
@@ -58,21 +58,16 @@ void World::reset(){
     
     // preallocate 10 orbs in _orbs list with random positions for the beginning
     for (int i = 0; i < 10; i++) {
-        std::default_random_engine e1(r());
-        std::uniform_int_distribution<int> rand_x(1, 36);
-        std::uniform_int_distribution<int> rand_y(1, 18);
-        auto orb = Orb::alloc(Vec2(rand_x(e1), rand_y(e1)));
+        auto orb = Orb::alloc(Vec2(10,10));
         _physicsWorld->addObstacle(orb);
         orb->setTextures(orbTexture);
         orb->setDrawScale(_scale);
         orb->setDebugColor(Color4::YELLOW);
         orb->setDebugScene(_debugNode);
         orb->setID(i);
-        orb->setCollected(true);
         _orbs.push_back(orb);
         _worldNode->addChild(orb->getSceneNode());
     }
-    
     
     Vec2 swapStPos = Vec2(8,8);
 //    Size swapStSize(swapStTexture->getSize() / _scale);

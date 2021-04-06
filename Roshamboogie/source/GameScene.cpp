@@ -193,6 +193,10 @@ void GameScene::reset() {
 //        getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
     }
     _playerController.init();
+    
+    if (NetworkController::isHost()) {
+        SpawnController::initSpawn();
+    }
         
     populate();
     
@@ -308,6 +312,7 @@ void GameScene::update(float timestep) {
         std::uniform_int_distribution<int> prob(0,100);
 //        CULog("prob %d", prob(e1));
         if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
+//            CULog("curr orbs %d", world->getCurrOrbCount());
             if (world->getCurrOrbCount() < 10) {
                 SpawnController::spawnOrbs();
             }

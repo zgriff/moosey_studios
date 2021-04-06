@@ -104,6 +104,10 @@ public:
         return _worldNode;
     }
     
+    std::shared_ptr<cugl::scene2::SceneNode> getDebugNode(){
+        return _debugNode;
+    }
+    
     std::shared_ptr<cugl::physics2::ObstacleWorld> getPhysicsWorld(){
         return _physicsWorld;
     }
@@ -111,6 +115,8 @@ public:
     void setDebugNode(const std::shared_ptr<cugl::scene2::SceneNode> & debugNode){
         _debugNode = debugNode;
     }
+    
+    
 };
 
 
