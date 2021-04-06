@@ -112,6 +112,7 @@ namespace NetworkController {
                     auto tagged = world->getPlayer(nd.tagData.taggedId);
                     auto tagger = world->getPlayer(nd.tagData.taggerId);
                     tagged->setIsTagged(true);
+                    tagged->setTagCooldown(nd.tagData.timestamp);
                     tagger->setDidTag(true);
                 }
                     break;
@@ -202,11 +203,12 @@ namespace NetworkController {
         network->send(bytes);
     }
 
-    void sendTag(int taggedId, int taggerId){
+    void sendTag(int taggedId, int taggerId, time_t timestamp){
         ND::NetworkData nd{};
         nd.packetType = ND::NetworkData::PacketType::TAG_PACKET;
         nd.tagData.taggedId = taggedId;
         nd.tagData.taggerId = taggerId;
+        nd.tagData.timestamp = timestamp;
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
         network->send(bytes);

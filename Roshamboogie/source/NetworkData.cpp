@@ -35,6 +35,11 @@ union float_to_ui32 {
     float f;
 };
 
+union ui64_to_ui8 {
+    uint64_t ui64;
+    uint8_t ui8[8];
+};
+
 void writeByte(std::vector<uint8_t> & buffer, uint8_t data){
     buffer.push_back(data);
 }
@@ -80,6 +85,21 @@ void writeBool(std::vector<uint8_t> & buffer, bool b){
 
 void writeElement(std::vector<uint8_t> & buffer, Element e){
     writeBits(buffer, e, 2);
+}
+
+void writeTimestamp(std::vector<uint8_t> & buffer, time_t timestamp){
+    uint64_t tmp = static_cast<uint64_t>(timestamp);
+    uint64_t marshalled = cugl::marshall(tmp);
+    ui64_to_ui8 u;
+    u.ui64 = marshalled;
+    writeBits(buffer, u.ui8[0], 8);
+    writeBits(buffer, u.ui8[1], 8);
+    writeBits(buffer, u.ui8[2], 8);
+    writeBits(buffer, u.ui8[3], 8);
+    writeBits(buffer, u.ui8[4], 8);
+    writeBits(buffer, u.ui8[5], 8);
+    writeBits(buffer, u.ui8[6], 8);
+    writeBits(buffer, u.ui8[7], 8);
 }
 
 //call at the end of writing data to make sure everything ends up in the buffer
@@ -137,6 +157,20 @@ cugl::Vec2 readVec2(const std::vector<uint8_t>& bytes){
     return cugl::Vec2(x, y);
 }
 
+time_t readTimestamp(const std::vector<uint8_t>& bytes){
+    ui64_to_ui8 u;
+    u.ui8[0] = readBits(bytes, 8);
+    u.ui8[1] = readBits(bytes, 8);
+    u.ui8[2] = readBits(bytes, 8);
+    u.ui8[3] = readBits(bytes, 8);
+    u.ui8[4] = readBits(bytes, 8);
+    u.ui8[5] = readBits(bytes, 8);
+    u.ui8[6] = readBits(bytes, 8);
+    u.ui8[7] = readBits(bytes, 8);
+    uint64_t marshalled = cugl::marshall(u.ui64);
+    return static_cast<time_t>(marshalled);
+}
+
 Element readElement(const std::vector<uint8_t>& bytes){
     uint32_t e = readBits(bytes, 2);
     return (Element) e;
@@ -163,6 +197,7 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
         case NetworkData::TAG_PACKET:
             dest.tagData.taggedId = readBits(bytes, PLAYER_ID_BITS);
             dest.tagData.taggerId = readBits(bytes, PLAYER_ID_BITS);
+            dest.tagData.timestamp = readTimestamp(bytes);
             break;
         case NetworkData::ORB_CAPTURED:
             dest.orbCapData.orbId = readBits(bytes, ORB_ID_BITS);
@@ -199,6 +234,7 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
         case NetworkData::TAG_PACKET:
             writeBits(dest, src.tagData.taggedId, PLAYER_ID_BITS);
             writeBits(dest, src.tagData.taggerId, PLAYER_ID_BITS);
+            writeTimestamp(dest, src.tagData.timestamp);
             break;
         case NetworkData::ORB_CAPTURED:
             writeBits(dest, src.orbCapData.orbId, ORB_ID_BITS);

@@ -115,17 +115,19 @@ void CollisionController::beginContact(b2Contact* contact){
             if (p1->getCurrElement() == p2->getPreyElement()) {
                 CULog("tagged");
                 p1->setIsTagged(true);
-                p1->setTagCooldown(time(NULL));
+                time_t timestamp = time(NULL);
+                p1->setTagCooldown(timestamp);
                 p2->setDidTag(true);
-                NetworkController::sendTag(p1->getID(), p2->getID());
+                NetworkController::sendTag(p1->getID(), p2->getID(), timestamp);
             }
             //p1 tags p2
             else if (p2->getCurrElement() == p1->getPreyElement()) {
                 CULog("tagged");
                 p2->setIsTagged(true);
-                p2->setTagCooldown(time(NULL));
+                time_t timestamp = time(NULL);
+                p2->setTagCooldown(timestamp);
                 p1->setDidTag(true);
-                NetworkController::sendTag(p2->getID(), p1->getID());
+                NetworkController::sendTag(p2->getID(), p1->getID(), timestamp);
             }
         }
     }

@@ -22,6 +22,7 @@ struct NetworkData {
         struct {
             uint8_t taggedId;
             uint8_t taggerId;
+            time_t timestamp;
         } tagData;
         struct {
             uint8_t orbId;
