@@ -12,7 +12,7 @@
 #include <cugl/cugl.h>
 #include "Element.h"
 
-class Player : public cugl::physics2::BoxObstacle{
+class Player : public cugl::physics2::CapsuleObstacle{
 private:
     CU_DISALLOW_COPY_AND_ASSIGN(Player);
     
@@ -139,7 +139,7 @@ public:
      * To properly initialize the player, you should call the init
      * method.
      */
-    Player(void) : BoxObstacle(), _drawscale(1.0f) { }
+    Player(void) : CapsuleObstacle(), _drawscale(1.0f) { }
     
     /**
      * Disposes the player, releasing all resources.

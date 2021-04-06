@@ -123,7 +123,7 @@ void Player::dispose() {
  * @return true if the initialization was successful
  */
 bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
-    if(physics2::BoxObstacle::init(pos,size)){
+    if(physics2::CapsuleObstacle::init(pos,size)){
         std::string name("player");
         setName(name);
         setDensity(DEFAULT_DENSITY);

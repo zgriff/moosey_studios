@@ -368,9 +368,6 @@ void GameScene::update(float timestep) {
     if (_player->getDidTag()) {
         _score += 15;
     }
-//    if (_player->getIsTagged()) {
-//        _player->setIsInvincible(true);
-//    }
     
     //cooldown for player after it's tagged
     if (_player->getIsTagged()) {
