@@ -72,7 +72,7 @@ float WALL[WALL_COUNT][WALL_VERTS] = {
 /** The restitution for all physics objects */
 #define TURNS_PER_SPIN   70.0f
 /** how much the lateral velocity is subtracted per frame*/
-#define KINETIC_FRICTION 0.001 f
+#define KINETIC_FRICTION 1.4f
 
 #pragma mark -
 #pragma mark Constructors
@@ -245,7 +245,7 @@ void GameScene::update(float timestep) {
 
             auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset));
             if (correction.length() > KINETIC_FRICTION) {
-                correction *= KINETIC_FRICTION / correction.length();
+                correction.scale( KINETIC_FRICTION / correction.length());
             }
             _player->setLinearVelocity(vel.add(correction));
 
