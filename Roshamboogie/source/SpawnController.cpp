@@ -9,6 +9,7 @@
 #include <cugl/cugl.h>
 #include "SpawnController.h"
 #include "Orb.h"
+#include "NetworkController.h"
 
 using namespace cugl;
 
@@ -69,10 +70,12 @@ void SpawnController::spawnOrbs() {
     CULog("new pos %f %f", rand_x(e1), rand_y(e1));
     
     for (int i = 0; i < 10; i++) {
-        if (world->getOrb(i)->getCollected()) {
-            world->getOrb(i)->setPosition(Vec2(rand_x(e1), rand_y(e1)));
-            world->getOrb(i)->setCollected(false);
+        std::shared_ptr<Orb> orb = world->getOrb(i);
+        if (orb->getCollected()) {
+            orb->setPosition(Vec2(rand_x(e1), rand_y(e1)));
+            orb->setCollected(false);
             world->setOrbCount(world->getCurrOrbCount()+1);
+            NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
         }
     }
    
