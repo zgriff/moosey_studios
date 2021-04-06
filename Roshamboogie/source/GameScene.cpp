@@ -70,7 +70,9 @@ float WALL[WALL_COUNT][WALL_VERTS] = {
 /** The restitution for all physics objects */
 #define BASIC_RESTITUTION   0.1f
 /** The restitution for all physics objects */
-#define TURNS_PER_SPIN   60.0f
+#define TURNS_PER_SPIN   70.0f
+/** how much the lateral velocity is subtracted per frame*/
+#define KINETIC_FRICTION 0.001 f
 
 #pragma mark -
 #pragma mark Constructors
@@ -220,7 +222,9 @@ void GameScene::update(float timestep) {
     if (_playerController.didDebug()) { setDebug(!isDebug()); }
     
     
-    // BEGIN PLAYER MOVEMENT //
+
+
+        // BEGIN PLAYER MOVEMENT //
     
     auto playerId_option = NetworkController::getPlayerId();
     if(! playerId_option.has_value()) return;
@@ -238,18 +242,22 @@ void GameScene::update(float timestep) {
             //vel angle originates from x axis, player angle orginates from y axis
             auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
-            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .03f);
+
+            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset));
+            if (correction.length() > KINETIC_FRICTION) {
+                correction *= KINETIC_FRICTION / correction.length();
+            }
             _player->setLinearVelocity(vel.add(correction));
 
             if (_playerController.getMov().x == 0) {
                 //constant acceleration
                 //_player->applyForce();
-                
+
                 //accelerate to a maximum velocity
                 auto forForce = _player->getForce();
                 auto scaling = _player->getForce();
                 //scaling.normalize().scale(0.05f * pow(30.0f - vel.length(), 2.0f));
-                scaling.normalize().scale(0.75f * (30.0f - vel.length()));
+                scaling.normalize().scale(0.65f * (28.0f - vel.length()));
                 //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
                 _player->setForce(scaling);
                 _player->applyForce();
@@ -257,7 +265,7 @@ void GameScene::update(float timestep) {
             }
             else {
                 auto forForce = _player->getForce();
-                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * 14.0f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN));
+                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * 2.0f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN));
                 if (_playerController.getMov().x < 0) {
                     turnForce.scale(-1.0f);
                 }
@@ -269,17 +277,6 @@ void GameScene::update(float timestep) {
                 _player->applyForce();
                 _player->setForce(forForce);
             }
-            break;
-        }
-        case Movement::SwipeForce:{
-            #ifndef CU_MOBILE
-                _player->setLinearVelocity(_playerController.getMov() * 3);
-            #else
-                Vec2 moveVec = _playerController.getMoveVec();
-                Vec2 _moveVec(moveVec.x, -moveVec.y);
-                _player->setForce(_moveVec * 30);
-                _player->applyForce();
-            #endif
             break;
         }
         case Movement::TiltMove:{
