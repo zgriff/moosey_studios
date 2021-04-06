@@ -15,7 +15,7 @@
 
 using namespace cugl;
 
-class SwapStation : public cugl::physics2::BoxObstacle{
+class SwapStation : public cugl::physics2::WheelObstacle{
 private:
     
     /** Cache object for transforming the force according the object angle */
@@ -26,6 +26,7 @@ private:
     // Asset references.  These should be set by GameMode
     /** Reference to the node for the swap station */
     std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
+    std::shared_ptr<cugl::scene2::AnimationNode> _animationNode;
     
     /** Reference to the swap station texture */
     std::shared_ptr<cugl::Texture> _texture;
@@ -64,6 +65,7 @@ public:
     
     int getID(){ return _id; }
     void setID(int i){ _id = i; }
+    
 
     
     
@@ -74,7 +76,7 @@ public:
      * To properly initialize the swap station, you should call the init
      * method.
      */
-    SwapStation(void) : BoxObstacle(), _drawscale(1.0f) { }
+    SwapStation(void) : WheelObstacle(), _drawscale(1.0f) { }
     
     /**
      * Disposes the swap station, releasing all resources.
@@ -91,7 +93,7 @@ public:
      *     *
      * @return true if the initialization was successful
      */
-    virtual bool init(const cugl::Vec2 pos, const cugl::Size size) override;
+    virtual bool init(const cugl::Vec2 pos) override;
 
     /**
      * Returns a newly allocated  swap station
@@ -99,9 +101,9 @@ public:
      *
      * @return a newly allocated  swap station
      */
-    static std::shared_ptr<SwapStation> alloc(const cugl::Vec2 pos, const cugl::Size size) {
+    static std::shared_ptr<SwapStation> alloc(const cugl::Vec2 pos) {
         std::shared_ptr<SwapStation> result = std::make_shared<SwapStation>();
-        return (result->init(pos, size) ? result : nullptr);
+        return (result->init(pos) ? result : nullptr);
     }
     
 #pragma mark -
@@ -122,6 +124,11 @@ public:
      * @return the ratio of the swap station sprite to the physics body
      */
     float getDrawScale() const { return _drawscale; }
+    
+    /*
+     @param delta Timing values from parent loop
+    */
+    virtual void update(float delta) override;
     
 };
 

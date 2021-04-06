@@ -22,7 +22,7 @@
             "file":  "textures/grass.png"
         },
         "swapstation": {
-            "file": "textures/swapst.png"
+            "file": "textures/swapst_two.png"
         },
         "wall": {
             "file": "textures/barrier.png"
