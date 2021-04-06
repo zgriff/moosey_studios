@@ -1,0 +1,32 @@
+{
+    "activeFile": "maps/untitled.tmx",
+    "expandedProjectPaths": [
+        "templates",
+        "maps"
+    ],
+    "fileStates": {
+        "maps/untitled.tmx": {
+            "scale": 0.7725,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 683.495145631068,
+                "y": 442.7184466019418
+            }
+        },
+        "tilesets/tiles.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "tilesets/tree.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        }
+    },
+    "openFiles": [
+        "maps/untitled.tmx"
+    ],
+    "project": "template.tiled-project",
+    "recentFiles": [
+        "maps/untitled.tmx"
+    ]
+}
