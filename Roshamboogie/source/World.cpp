@@ -27,7 +27,7 @@ bool World::init(int width, int height){
     _physicsWorld = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
     _worldNode = scene2::SceneNode::alloc();
     _worldNode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
-    _currOrbCount = 10;
+    _currOrbCount = 0;
     
     return true;
 }
@@ -68,6 +68,7 @@ void World::reset(){
         orb->setDebugColor(Color4::YELLOW);
         orb->setDebugScene(_debugNode);
         orb->setID(i);
+        orb->setCollected(true);
         _orbs.push_back(orb);
         _worldNode->addChild(orb->getSceneNode());
     }

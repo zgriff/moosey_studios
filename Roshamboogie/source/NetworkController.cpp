@@ -113,7 +113,7 @@ namespace NetworkController {
                     auto tagger = world->getPlayer(nd.tagData.taggerId);
                     tagged->setIsTagged(true);
                     tagged->setTagCooldown(nd.tagData.timestamp);
-                    tagger->setDidTag(true);
+                    tagger->incScore(globals::TAG_SCORE);
                 }
                     break;
                 case ND::NetworkData::POSITION_PACKET:
@@ -129,6 +129,7 @@ namespace NetworkController {
                 case ND::NetworkData::SWAP_PACKET:
                     world->getPlayer(nd.swapData.playerId)->setElement(nd.swapData.newElement);
                     world->getSwapStation(nd.swapData.swapId)->setLastUsed(clock());
+                    world->getSwapStation(nd.swapData.swapId)->setActive(false);
                     break;
                 case ND::NetworkData::EGG_CAPTURED:
                     world->getPlayer(nd.eggCapData.playerId)->setElement(Element::None);

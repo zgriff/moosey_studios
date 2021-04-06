@@ -23,6 +23,8 @@ constexpr uint8_t MAX_ORBS = 20;
 /** Maximum number of swap stations per game */
 constexpr uint8_t MAX_SWAP_STATIONS = 5;
 
+constexpr int TAG_SCORE = 15;
+
 }
 
 #endif /* Globals_h */

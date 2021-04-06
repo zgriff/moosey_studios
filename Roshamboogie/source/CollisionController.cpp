@@ -18,6 +18,7 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
 #include "NetworkController.h"
+#include "Globals.h"
 
 void CollisionController::setWorld(std::shared_ptr<World> w){
     world = w;
@@ -117,7 +118,7 @@ void CollisionController::beginContact(b2Contact* contact){
                 p1->setIsTagged(true);
                 time_t timestamp = time(NULL);
                 p1->setTagCooldown(timestamp);
-                p2->setDidTag(true);
+                p2->incScore(globals::TAG_SCORE);
                 NetworkController::sendTag(p1->getID(), p2->getID(), timestamp);
             }
             //p1 tags p2
@@ -126,7 +127,7 @@ void CollisionController::beginContact(b2Contact* contact){
                 p2->setIsTagged(true);
                 time_t timestamp = time(NULL);
                 p2->setTagCooldown(timestamp);
-                p1->setDidTag(true);
+                p1->incScore(globals::TAG_SCORE);
                 NetworkController::sendTag(p2->getID(), p1->getID(), timestamp);
             }
         }
@@ -135,22 +136,22 @@ void CollisionController::beginContact(b2Contact* contact){
 
 
 void CollisionController::endContact(b2Contact* contact) {
-    b2Fixture * fixA = contact->GetFixtureA();
-    b2Body * bodyA = fixA->GetBody();
-    b2Fixture * fixB = contact->GetFixtureB();
-    b2Body * bodyB = fixB->GetBody();
-    
-    cugl::physics2::Obstacle* bd1 = (cugl::physics2::Obstacle*) bodyA->GetUserData();
-    cugl::physics2::Obstacle* bd2 = (cugl::physics2::Obstacle*) bodyB->GetUserData();
-    
-    if ((bd1->getName() == "player" && bd2->getName() == "player") || (bd2->getName() == "player" && bd1->getName() == "player")) {
-        Player* p1 = (Player*) bd1;
-        Player* p2 = (Player*) bd2;
-//        p1->setIsTagged(false);
-//        p2->setIsTagged(false);
-        p1->setDidTag(false);
-        p2->setDidTag(false);
-    }
+//    b2Fixture * fixA = contact->GetFixtureA();
+//    b2Body * bodyA = fixA->GetBody();
+//    b2Fixture * fixB = contact->GetFixtureB();
+//    b2Body * bodyB = fixB->GetBody();
+//    
+//    cugl::physics2::Obstacle* bd1 = (cugl::physics2::Obstacle*) bodyA->GetUserData();
+//    cugl::physics2::Obstacle* bd2 = (cugl::physics2::Obstacle*) bodyB->GetUserData();
+//    
+//    if ((bd1->getName() == "player" && bd2->getName() == "player") || (bd2->getName() == "player" && bd1->getName() == "player")) {
+//        Player* p1 = (Player*) bd1;
+//        Player* p2 = (Player*) bd2;
+////        p1->setIsTagged(false);
+////        p2->setIsTagged(false);
+//        p1->setDidTag(false);
+//        p2->setDidTag(false);
+//    }
 }
 
 void CollisionController::beforeSolve(b2Contact* contact, const b2Manifold* oldManifold){

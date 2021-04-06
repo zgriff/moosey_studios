@@ -80,9 +80,6 @@ protected:
     
     std::shared_ptr<cugl::scene2::Label> _scoreHUD;
     
-    int _score = 0;
-    
-    
     /** The weapon fire sound for the blue player */
 //    std::shared_ptr<cugl::Sound> _blueSound;
     bool swap = false;
