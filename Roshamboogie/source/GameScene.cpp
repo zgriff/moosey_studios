@@ -190,7 +190,7 @@ void GameScene::reset() {
     if(idopt.has_value()){
         auto _player = world->getPlayer(idopt.value());
         _player->setUsername(NetworkController::getUsername());
-        getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
+//        getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
     }
     _playerController.init();
         
@@ -288,8 +288,8 @@ void GameScene::update(float timestep) {
     auto after = _player->getSceneNode()->getPosition();
     auto camSpot = getCamera()->getPosition();
     auto trans = after - camSpot;
-    getCamera()->translate(trans*.05f);
-    getCamera()->update();
+//    getCamera()->translate(trans*.05f);
+//    getCamera()->update();
 
 
 //    if(NetworkController::isHost()){
@@ -305,37 +305,27 @@ void GameScene::update(float timestep) {
 //    }
     
     if(NetworkController::isHost()){
-        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
-            auto orb = world->getOrb(i);
-            if(orb->getCollected()) {
-                orb->respawn();
-                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
-            }
-            orb->setCollected(false);
-
-        }
-        
-//        std::vector<std::shared_ptr<Orb>> orbs = world->getOrbs();
-//        for (int i = 0; i < orbs.size(); i++) {
-//            std::shared_ptr<Orb> o = world->getOrbs()[i];
-//            if (o->getCollected()) {
-//                o->deactivatePhysics(*world->getPhysicsWorld()->getWorld());
-//                orbs.erase(orbs.begin()+i);
+//        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
+//            auto orb = world->getOrb(i);
+//            if(orb->getCollected()) {
+//                orb->respawn();
+//                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
+//            }
+//            orb->setCollected(false);
 //
-//            }
 //        }
         
-//        std::random_device r;
-//        std::default_random_engine e1(r());
-//        std::uniform_int_distribution<int> prob(0,100);
-////        CULog("prob %d", prob(e1));
-//        if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
-//            if (world->getCurrOrbCount() < 10) {
-//                SpawnController::spawnOrbs();
-//            }
-//        }
+        std::random_device r;
+        std::default_random_engine e1(r());
+        std::uniform_int_distribution<int> prob(0,100);
+//        CULog("prob %d", prob(e1));
+        if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
+            if (world->getCurrOrbCount() < 10) {
+                SpawnController::spawnOrbs();
+            }
+        }
     
-//    CULog("orb count %d", world->getCurrOrbCount());
+    CULog("orb count %d", world->getCurrOrbCount());
     }
     
     
@@ -383,9 +373,7 @@ void GameScene::update(float timestep) {
 //    }
     
     //cooldown for player after it's tagged
-    CULog("cooldown time %ld", _player->getTagCooldown());
     if (_player->getIsTagged()) {
-        CULog("time %ld", time(NULL) - _player->getTagCooldown());
         if (time(NULL) - _player->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
             CULog("not tagged");
 //            _player->getSceneNode()->setVisible(false);

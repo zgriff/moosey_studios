@@ -27,7 +27,7 @@ bool World::init(int width, int height){
     _physicsWorld = physics2::ObstacleWorld::alloc(rect,Vec2::ZERO);
     _worldNode = scene2::SceneNode::alloc();
     _worldNode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
-    _currOrbCount = 3;
+    _currOrbCount = 10;
     
     return true;
 }
@@ -56,33 +56,21 @@ void World::reset(){
         _worldNode->addChild(player->getSceneNode());
     }
     
-    //creating the three orbs
-    auto fireOrb = Orb::alloc(Vec2(4,4));
-    _physicsWorld->addObstacle(fireOrb);
-    fireOrb->setTextures(orbTexture);
-    fireOrb->setDrawScale(_scale);
-    fireOrb->setDebugColor(Color4::YELLOW);
-    fireOrb->setDebugScene(_debugNode);
-    fireOrb->setID(0);
-    _orbs.push_back(fireOrb);
-
-    auto waterOrb = Orb::alloc(Vec2(20,8));
-    _physicsWorld->addObstacle(waterOrb);
-    waterOrb->setTextures(orbTexture);
-    waterOrb->setDrawScale(_scale);
-    waterOrb->setDebugColor(Color4::YELLOW);
-    waterOrb->setDebugScene(_debugNode);
-    waterOrb->setID(1);
-    _orbs.push_back(waterOrb);
-    
-    auto grassOrb = Orb::alloc(Vec2(10,12));
-    _physicsWorld->addObstacle(grassOrb);
-    grassOrb->setTextures(orbTexture);
-    grassOrb->setDrawScale(_scale);
-    grassOrb->setDebugColor(Color4::YELLOW);
-    grassOrb->setDebugScene(_debugNode);
-    grassOrb->setID(2);
-    _orbs.push_back(grassOrb);
+    // preallocate 10 orbs in _orbs list with random positions for the beginning
+    for (int i = 0; i < 10; i++) {
+        std::default_random_engine e1(r());
+        std::uniform_int_distribution<int> rand_x(1, 36);
+        std::uniform_int_distribution<int> rand_y(1, 18);
+        auto orb = Orb::alloc(Vec2(rand_x(e1), rand_y(e1)));
+        _physicsWorld->addObstacle(orb);
+        orb->setTextures(orbTexture);
+        orb->setDrawScale(_scale);
+        orb->setDebugColor(Color4::YELLOW);
+        orb->setDebugScene(_debugNode);
+        orb->setID(i);
+        _orbs.push_back(orb);
+        _worldNode->addChild(orb->getSceneNode());
+    }
     
     
     Vec2 swapStPos = Vec2(8,8);
@@ -109,25 +97,7 @@ void World::reset(){
     egg->setID(0);
     _eggs.push_back(egg);
     
-    _worldNode->addChild(fireOrb->getSceneNode());
-    _worldNode->addChild(waterOrb->getSceneNode());
-    _worldNode->addChild(grassOrb->getSceneNode());
     _worldNode->addChild(swapStation->getSceneNode());
     _worldNode->addChild(egg->getSceneNode());
 }
 
-//creates a new orb in the world with the given pos
-void World::addOrb(Vec2 pos) {
-    auto orbTexture = _assets->get<Texture>("photon");
-    auto orb = Orb::alloc(pos);
-    _physicsWorld->addObstacle(orb);
-    orb->setTextures(orbTexture);
-    orb->setDrawScale(_scale);
-    orb->setDebugColor(Color4::YELLOW);
-    orb->setDebugScene(_debugNode);
-    orb->setID(_currOrbCount);
-    _orbs.push_back(orb);
-    _currOrbCount++;
-    _worldNode->addChild(orb->getSceneNode());
-
-}

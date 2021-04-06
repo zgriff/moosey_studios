@@ -21,10 +21,8 @@ void SpawnController::setWorld(std::shared_ptr<World> w){
 //divide map and check each region --> how many people in each region and
     //spawn where less people
 void SpawnController::spawnOrbs() {
-//    Size dimen = Application::get()->getDisplaySize();
-    int rows = 2;
-    int cols = 2;
-//    float scale = world->getScale();
+    int rows = 4;
+    int cols = 4;
     
     float roomWidth = 36.0f / cols;
     float roomHeight = 18.0f / rows;
@@ -38,8 +36,11 @@ void SpawnController::spawnOrbs() {
         int j = (int) playerPos.x / roomWidth;
         int i = (int) playerPos.y / roomHeight;
         
-//        CULog("i %d", i);
-//        CULog("j %d", j);
+//        CULog("player pos (x, y) : %f, %f", playerPos.x, playerPos.y);
+//        CULog("player loc (col, row) : %d, %d", j, i);
+        
+        CULog("i %d", i);
+        CULog("j %d", j);
         spaces[i][j] += 1;
     }
     
@@ -49,25 +50,34 @@ void SpawnController::spawnOrbs() {
     for (int i = 0; i < cols; i++) {
         for (int j = 0; j < rows; j++) {
             if (spaces[i][j] == 0) {
-                emptySpaces.push_back(Vec2(i,j));
+                CULog("empty space (col, row) : %d, %d", j, i);
+                emptySpaces.push_back(Vec2(float(i),float(j)));
             }
         }
     }
     
-    CULog("emptyspaces %lu", emptySpaces.size());
-    
     //get which room to spawn orb in
-    std::uniform_int_distribution<int> rand_int(0, 99);
-    int factor = 100 / emptySpaces.size();
-    int randRoom = rand_int(e1) / factor;
+    std::uniform_int_distribution<int> rand_int(0, (int)emptySpaces.size()-1);
+    int randRoom = rand_int(e1);
     
     CULog("randroom %d", randRoom);
     //get rand position of orb
-    CULog("randroom x %f", emptySpaces[randRoom].x);
-    CULog("randroom y %f", emptySpaces[randRoom].y);
-    std::uniform_int_distribution<float> rand_x(emptySpaces[randRoom].x, emptySpaces[randRoom].x + roomWidth);
-    std::uniform_int_distribution<float> rand_y(emptySpaces[randRoom].y, emptySpaces[randRoom].y + roomHeight);
-    world->addOrb(Vec2(rand_x(e1), rand_y(e1)));
+//    CULog("randroom x %f", emptySpaces[randRoom].x);
+//    CULog("randroom y %f", emptySpaces[randRoom].y);
+    std::uniform_int_distribution<float> rand_x(emptySpaces[randRoom].x * roomWidth, emptySpaces[randRoom].x * roomWidth + roomWidth);
+    std::uniform_int_distribution<float> rand_y(emptySpaces[randRoom].y * roomHeight, emptySpaces[randRoom].y * roomHeight + roomHeight);
+    CULog("new pos %f %f", rand_x(e1), rand_y(e1));
+    
+    for (int i = 0; i < 10; i++) {
+        if (world->getOrb(i)->getCollected()) {
+            world->getOrb(i)->setPosition(Vec2(rand_x(e1), rand_y(e1)));
+            world->getOrb(i)->setCollected(false);
+            world->setOrbCount(world->getCurrOrbCount()+1);
+        }
+    }
+   
+//    world->addOrb(Vec2(rand_x(e1), rand_y(e1)));
+    
     
 }
 

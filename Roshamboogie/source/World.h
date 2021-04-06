@@ -34,6 +34,8 @@ private:
     
     std::vector<std::shared_ptr<Egg>> _eggs;
     
+    std::random_device r;
+    
     float _scale;
     uint8_t _numPlayers;
     uint8_t _currOrbCount;
