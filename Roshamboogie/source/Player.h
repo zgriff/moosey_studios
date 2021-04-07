@@ -13,7 +13,7 @@
 #include "Element.h"
 #include <algorithm>
 
-class Player : public cugl::physics2::BoxObstacle{
+class Player : public cugl::physics2::CapsuleObstacle{
 private:
     CU_DISALLOW_COPY_AND_ASSIGN(Player);
     
@@ -23,6 +23,13 @@ private:
     Element _prevElt; //used when switching back to the element before collecting an egg
     bool _isTagged; //if this player is tagged
     bool _didTag; //if this player tagged someone else -- earn points
+    int _score;
+    bool _isInvisible;
+    bool _isIntangible; //can't interact with any object (can't tag and nobody can tag you)
+    time_t _tagCooldown;
+    bool _holdingEgg;
+    bool _isLocal; // true if the player is the one running on this system
+    int _eggID; //id of the egg that the player is holding, if any
     
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
@@ -72,7 +79,8 @@ public:
     
     Element getCurrElement() { return _currElt; }
     
-    Element getPrevElement() { return _prevElt; }
+    Element getPrevElement() {
+        return _prevElt; }
     
     Element getPreyElement();
     
@@ -83,6 +91,36 @@ public:
     bool getDidTag() { return _didTag; }
     
     void setDidTag(bool t) { _didTag = t; }
+    
+    int getScore() { return _score; }
+    
+    void incScore(int s) { _score = _score + s; }
+    
+    bool getIsInvisible() { return _isInvisible; }
+    
+    void setIsInvisible(bool b) { _isInvisible = b; }
+    
+    bool getIsIntangible() { return _isIntangible; }
+    
+    void setIsIntangible(bool b) { _isIntangible = b; }
+    
+    time_t getTagCooldown() { return _tagCooldown; }
+    
+    void setTagCooldown(clock_t t) { _tagCooldown = t; }
+    
+    bool getHoldingEgg() { return _holdingEgg; }
+    
+    void setHoldingEgg(bool b) { _holdingEgg = b; }
+    
+    bool getIsLocal() { return _isLocal; }
+    
+    void setIsLocal(bool b) { _isLocal = b; }
+    
+    int getEggId() { return _eggID; }
+    
+    void setEggId(int eid) {
+        _eggID = eid;
+    }
 
     void setOrbScore(int orbScore) { _orbScore = min(orbScore, 5); };
 
@@ -126,7 +164,7 @@ public:
      * To properly initialize the player, you should call the init
      * method.
      */
-    Player(void) : BoxObstacle(), _drawscale(1.0f) { }
+    Player(void) : CapsuleObstacle(), _drawscale(1.0f), _isLocal(false) { }
     
     /**
      * Disposes the player, releasing all resources.

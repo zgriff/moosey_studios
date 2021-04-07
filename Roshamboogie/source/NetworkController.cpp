@@ -107,6 +107,23 @@ namespace NetworkController {
             ND::NetworkData nd{};
             ND::fromBytes(nd, msg);
             switch(nd.packetType){
+                case ND::NetworkData::TAG_PACKET:
+                {
+                    auto tagged = world->getPlayer(nd.tagData.taggedId);
+                    auto tagger = world->getPlayer(nd.tagData.taggerId);
+                    tagged->setIsTagged(true);
+                    tagged->setTagCooldown(nd.tagData.timestamp);
+                    tagger->incScore(globals::TAG_SCORE);
+                    if (tagged->getCurrElement() == Element::None) {
+                        auto egg = world->getEgg(tagged->getEggId());
+                        egg->setPID(tagger->getID());
+                        tagged->setElement(tagged->getPrevElement());
+                        egg->incDistanceWalked(-1*egg->getDistanceWalked());
+                        tagger->setElement(Element::None);
+                        tagger->setEggId(egg->getID());
+                    }
+                }
+                    break;
                 case ND::NetworkData::POSITION_PACKET:
                     {
                         auto p = world->getPlayer(nd.positionData.playerId);
@@ -120,9 +137,11 @@ namespace NetworkController {
                 case ND::NetworkData::SWAP_PACKET:
                     world->getPlayer(nd.swapData.playerId)->setElement(nd.swapData.newElement);
                     world->getSwapStation(nd.swapData.swapId)->setLastUsed(clock());
+                    world->getSwapStation(nd.swapData.swapId)->setActive(false);
                     break;
                 case ND::NetworkData::EGG_CAPTURED:
                     world->getPlayer(nd.eggCapData.playerId)->setElement(Element::None);
+                    world->getPlayer(nd.eggCapData.playerId)->setEggId(nd.eggCapData.eggId);
                     world->getEgg(nd.eggCapData.eggId)->setCollected(true);
                     world->getEgg(nd.eggCapData.eggId)->setPID(nd.eggCapData.playerId);
                     break;
@@ -189,6 +208,17 @@ namespace NetworkController {
         nd.packetType = ND::NetworkData::PacketType::ORB_RESPAWN;
         nd.orbRespawnData.orbId = orbId;
         nd.orbRespawnData.position = orbPosition;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void sendTag(int taggedId, int taggerId, time_t timestamp){
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::TAG_PACKET;
+        nd.tagData.taggedId = taggedId;
+        nd.tagData.taggerId = taggerId;
+        nd.tagData.timestamp = timestamp;
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
         network->send(bytes);

@@ -54,6 +54,7 @@ void App::onShutdown() {
     _loading.dispose();
     _menu.dispose();
     _gameplay.dispose();
+    _results.dispose();
     _assets = nullptr;
     _batch = nullptr;
 
@@ -132,14 +133,32 @@ void App::update(float timestep) {
                 _menu.setActive(false);
                 _gameplay.init(_assets);
                 _gameplay.setMovementStyle(_menu.getMovement());
-                _menu.dispose();
+//                _menu.dispose();
+                startTimer = clock();
                 _currentScene = SceneSelect::Game;
             }
             break;
         }
         case SceneSelect::Game:{
             _gameplay.update(timestep);
+            if (clock() - startTimer >= gameTimer) {
+                _results.init(_assets);
+                _gameplay.dispose();
+                _currentScene = SceneSelect::Results;
+            }
             break;
+        }
+        case SceneSelect::Results: {
+            if (_results.isActive()) {
+                
+            }
+            else {
+                _results.dispose();
+//                _menu.init(_assets);
+                _currentScene = SceneSelect::Menu;
+                _menu.setActive(true);
+            }
+//            _results.update(timestep);
         }
         default:
             break;
@@ -162,6 +181,9 @@ void App::draw() {
             break;
         case SceneSelect::Menu:
             _menu.render(_batch);
+            break;
+        case SceneSelect::Results:
+            _results.render(_batch);
             break;
         default:
             _gameplay.render(_batch);

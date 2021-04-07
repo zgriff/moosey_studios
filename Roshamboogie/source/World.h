@@ -15,6 +15,8 @@
 #include "SwapStation.h"
 #include "Egg.h"
 
+using namespace cugl;
+
 class World {
 private:
     std::shared_ptr<cugl::AssetManager> _assets;
@@ -34,8 +36,14 @@ private:
     
     std::vector<std::shared_ptr<Egg>> _eggs;
     
+    std::vector<cugl::Vec2> _initOrbPos = {Vec2(10,10), Vec2(3,5),  Vec2(23, 15), Vec2(15,8),
+        Vec2(9,4), Vec2(9,7), Vec2(30, 15), Vec2(30, 12), Vec2(12, 8), Vec2(7,4)}; //temp
+    
+    std::random_device r;
+    
     float _scale;
     uint8_t _numPlayers;
+    uint8_t _currOrbCount;
 
 public:
 #pragma mark -
@@ -64,9 +72,30 @@ public:
         return _players[id];
     }
     
+    std::vector<std::shared_ptr<Player>> getPlayers(){
+        return _players;
+    }
+    
     std::shared_ptr<Orb> getOrb(int id){
         return _orbs[id];
     }
+    
+    std::vector<std::shared_ptr<Orb>> getOrbs(){
+        return _orbs;
+    }
+    
+    uint8_t getCurrOrbCount() {
+        return _currOrbCount;
+    }
+    
+    void setOrbCount(int c) {
+        _currOrbCount = c;
+    }
+    
+    void addOrb(Vec2 pos);
+    
+    float getScale() { return _scale; }
+    
     
     std::shared_ptr<Egg> getEgg(int id){
         return _eggs[id];
@@ -80,6 +109,10 @@ public:
         return _worldNode;
     }
     
+    std::shared_ptr<cugl::scene2::SceneNode> getDebugNode(){
+        return _debugNode;
+    }
+    
     std::shared_ptr<cugl::physics2::ObstacleWorld> getPhysicsWorld(){
         return _physicsWorld;
     }
@@ -87,6 +120,8 @@ public:
     void setDebugNode(const std::shared_ptr<cugl::scene2::SceneNode> & debugNode){
         _debugNode = debugNode;
     }
+    
+    
 };
 
 

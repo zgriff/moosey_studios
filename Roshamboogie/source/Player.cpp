@@ -23,11 +23,11 @@ using namespace cugl;
 /** The constant force applied to this rocket */
 #define DEFAULT_PLAYER_FORCE Vec2(0.0f, 8.3f)
 /** Number of rows in the player image filmstrip */
-#define PLAYER_ROWS       3
+#define PLAYER_ROWS       1
 /** Number of columns in this player image filmstrip */
-#define PLAYER_COLS       1
+#define PLAYER_COLS       9
 /** Number of elements in this player image filmstrip */
-#define PLAYER_FRAMES     3
+#define PLAYER_FRAMES     9
 /** How fast a player recovers from screen shake*/
 #define TRAUMA_RECOVERY   .005f
 
@@ -63,22 +63,19 @@ void Player::setElement(Element e){
     
     switch(e){ 
         case Element::Grass:
-            _animationNode->setFrame(2);
-            _sceneNode->setColor(Color4(255, 255, 255));
+            _animationNode->setFrame(4);
             break;
         case Element::Fire:
-            _animationNode->setFrame(0);
-            _sceneNode->setColor(Color4(255, 255, 255));
+            _animationNode->setFrame(3);
             break;
         case Element::Water:
-            _animationNode->setFrame(1);
-            _sceneNode->setColor(Color4(255, 255, 255));
+            _animationNode->setFrame(0);
             break;
         case Element::None:
-            _sceneNode->setColor(Color4(0, 0, 0));
+            _animationNode->setFrame(6);
             break;
         case Element::Aether:
-            _sceneNode->setColor(Color4(100, 100, 100));
+            _sceneNode->setColor(Color4(0, 0, 0));
     }
     
 }
@@ -132,7 +129,7 @@ void Player::dispose() {
  * @return true if the initialization was successful
  */
 bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
-    if(physics2::BoxObstacle::init(pos,size)){
+    if(physics2::CapsuleObstacle::init(pos,size)){
         std::string name("player");
         setName(name);
         setDensity(DEFAULT_DENSITY);
@@ -142,6 +139,8 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         setForce(DEFAULT_PLAYER_FORCE);
         _currElt = elt;
         _prevElt = elt;
+        _score = 0;
+        _tagCooldown = 0;
         _isTagged = false;
         _didTag = false;
         _sceneNode = nullptr;
@@ -170,6 +169,29 @@ void Player::update(float delta) {
         _sceneNode->setAngle(getAngle());
     }
     _trauma = max(0.0f, _trauma - TRAUMA_RECOVERY);
+
+    
+    if (_isTagged) {
+        _isInvisible = true;
+        _isIntangible = true;
+        _sceneNode->setColor(Color4(255,255,255,50));
+    }
+    else {
+        _isInvisible = false;
+        _isIntangible = false;
+        if (_currElt != Element::Aether) {
+            _sceneNode->setColor(Color4(255, 255, 255, 255));
+        }
+    }
+    
+    if (_isInvisible) {
+        //set invisible for other players
+        if(! _isLocal){
+            _sceneNode->setVisible(false);
+        }
+    } else {
+        _sceneNode->setVisible(true);
+    }
 }
 
 void Player::addTrauma(float t) {

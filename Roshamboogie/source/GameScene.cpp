@@ -99,6 +99,8 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     //create world
     world = World::alloc(assets, DEFAULT_WIDTH, DEFAULT_HEIGHT, _scale, NetworkController::getNumPlayers());
     NetworkController::setWorld(world);
+    SpawnController::setWorld(world);
+    CollisionController::setWorld(world);
     
     // Start up the input handler
     _assets = assets;
@@ -197,10 +199,15 @@ void GameScene::reset() {
     if(idopt.has_value()){
         auto _player = world->getPlayer(idopt.value());
         _player->setUsername(NetworkController::getUsername());
+        _player->setIsLocal(true);
         getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
     }
     _playerController.init();
-        
+    
+//    if (NetworkController::isHost()) {
+//        SpawnController::initSpawn();
+//    }
+
     populate();
     
     setDebug(false);
@@ -224,8 +231,6 @@ void GameScene::update(float timestep) {
         ss << "Room Id: " << _currRoomId;
         _roomIdHUD->setText(ss.str());
     }
-    
-    if (_playerController.didDebug()) { setDebug(!isDebug()); }
     
     
     // BEGIN PLAYER MOVEMENT //
@@ -295,7 +300,7 @@ void GameScene::update(float timestep) {
             break;
     }
     
-        world->getPhysicsWorld()->update(timestep);
+    world->getPhysicsWorld()->update(timestep);
 
     auto after = _player->getSceneNode()->getPosition();
     auto camSpot = getCamera()->getPosition();
@@ -303,40 +308,43 @@ void GameScene::update(float timestep) {
     getCamera()->translate(trans*.05f);
     getCamera()->update();
 
-
-//    if(NetworkController::isHost()){
-//        if (orbShouldMove) {
-//            std::random_device r;
-//            std::default_random_engine e1(r());
-//            std::uniform_int_distribution<int> rand_int(1, 31);
-//            std::uniform_int_distribution<int> rand_int2(1, 17);
-//            _orbTest->setPosition(rand_int(e1), rand_int2(e1));
-//        }
-//
-//        orbShouldMove = false;
-//    }
     
     if(NetworkController::isHost()){
-        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
-            auto orb = world->getOrb(i);
-            if(orb->getCollected()) {
-                orb->respawn();
-                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
-                _player->setOrbScore( _player->getOrbScore() + 1);
+//        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
+//            auto orb = world->getOrb(i);
+//            if(orb->getCollected()) {
+//                orb->respawn();
+//                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
+//            }
+//            orb->setCollected(false);
+//
+//        }
+        
+        std::random_device r;
+        std::default_random_engine e1(r());
+        std::uniform_int_distribution<int> prob(0,100);
+//        CULog("prob %d", prob(e1));
+        if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
+//            CULog("curr orbs %d", world->getCurrOrbCount());
+            if (world->getCurrOrbCount() < 10) {
+                SpawnController::spawnOrbs();
             }
-            orb->setCollected(false);
-
         }
+    
     }
     
     
     //egg hatch logic
+    //TODO: change to allow multiple eggs
     auto _egg = world->getEgg(0);
     if (_egg->getCollected() && _egg->getHatched() == false) {
         std::shared_ptr<Player> _eggCollector = world->getPlayer(_egg->getPID());
         _egg->setPosition(_eggCollector->getPosition());
         if (_egg->getPID() == _player->getID()) {
             _hatchbar->setVisible(true);
+        }
+        else {
+            _hatchbar->setVisible(false);
         }
         _hatchbar->setProgress(_egg->getDistanceWalked()/80);
         Vec2 diff = _eggCollector->getPosition() - _egg->getInitPos();
@@ -345,22 +353,33 @@ void GameScene::update(float timestep) {
         _egg->setInitPos(_eggCollector->getPosition());
         if (_egg->getDistanceWalked() >= 80) {
             _hatchbar->dispose();
-            _hatchedTime = clock();
+            _hatchedTime = time(NULL);
             _egg->setHatched(true);
             _egg->dispose();
 //            _egg->setCollected(false);
-            _score += 10;
             _eggCollector->setElement(_eggCollector->getPrevElement());
             if (_egg->getPID() == _player->getID()) {
                 _hatchnode->setVisible(true);
+                _player->incScore(10);
             }
-            CULog("hatched");
+//            CULog("hatched");
         }
         
     }
     
-    if (clock() - _hatchedTime >= _hatchTextTimer) {
+    if (time(NULL) - _hatchedTime >= _hatchTextTimer) {
         _hatchnode->setVisible(false);
+    }
+    
+    //cooldown for player after it's tagged
+    for(auto p : world->getPlayers()){
+        if (p->getIsTagged()) {
+            if (time(NULL) - p->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
+                CULog("not tagged");
+    //            _player->getSceneNode()->setVisible(false);
+                p->setIsTagged(false);
+            }
+        }
     }
     
     // ability stuff here
@@ -374,22 +393,15 @@ void GameScene::update(float timestep) {
     }
     _abilityController.deactivateAbility(_player, _abilityname);
 
-    // player tagging
-//    if (_player->getDidTag()) {
-//        _score += 15;
-//    }
-//    if (_player->getIsTagged()) {
-//        _player->setPosition(Vec2(20,10));
-//    }
-//    if (_player2->getIsTagged()) {
-//        _player2->setPosition(Vec2(20,10));
-//    }
+  
 
-    _scoreHUD->setText(updateScoreText(_score));
+    _scoreHUD->setText(updateScoreText(_player->getScore()));
     
     //send new position
+    //TODO: only every few frames
     NetworkController::sendPosition();
 }
+
 
 void GameScene::populate() {
     std::shared_ptr<Texture> image = _assets->get<Texture>("earth");
