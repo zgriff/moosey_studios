@@ -15,6 +15,7 @@ namespace NetworkController {
         std::shared_ptr<World> world;
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username;
+        int _networkFrame;
     }
 
     /** IP of the NAT punchthrough server */
@@ -127,6 +128,8 @@ namespace NetworkController {
                 case ND::NetworkData::POSITION_PACKET:
                     {
                         auto p = world->getPlayer(nd.positionData.playerId);
+                        auto newError = (p->getPosition() + p->getPositionError()) - nd.positionData.playerPos;
+                        p->setPositionError(newError);
                         p->setPosition(nd.positionData.playerPos);
                         p->setLinearVelocity(nd.positionData.playerVelocity);
                     }
@@ -158,6 +161,8 @@ namespace NetworkController {
     //send current player's position
     void sendPosition(){
         if(! getPlayerId().has_value()) return;
+        _networkFrame = (_networkFrame + 1) % NETWORK_FRAMERATE;
+        if(_networkFrame != 0) return;
         auto p = world->getPlayer(getPlayerId().value());
         ND::NetworkData nd{};
         nd.packetType = ND::NetworkData::PacketType::POSITION_PACKET;

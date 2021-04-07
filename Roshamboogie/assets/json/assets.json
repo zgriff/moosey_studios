@@ -525,24 +525,6 @@
                 "type": "Anchored"
             },
             "children": {
-                "roomId": {
-                    "type": "Label",
-                    "data": {
-                        "font": "retro",
-                        "text": "",
-                        "foreground": [ 0, 0, 0, 255 ],
-                        "size": [ 100, 15 ],
-                        "valign": "bottom",
-                        "halign": "left"
-                    },
-                    "layout": {
-                        "x_anchor": "right",
-                        "y_anchor": "bottom",
-                        "x_offset": -725,
-                        "y_offset": 100,
-                        "absolute": true
-                    }
-                },
                 "hud" : {
                     "type": "Label",
                     "data": {

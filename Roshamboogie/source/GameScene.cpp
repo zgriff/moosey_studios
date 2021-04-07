@@ -195,7 +195,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _hatchnode = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_hatched"));
     _hatchnode->setVisible(false);
     
-    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
+//    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
     
     auto _world = world->getPhysicsWorld();
     _world->activateCollisionCallbacks(true);
@@ -288,12 +288,12 @@ void GameScene::update(float timestep) {
     _roomIdHUD->setText(currRoomId);*/
 //    NetworkController::step();
     NetworkController::update(timestep);
-    if (_currRoomId == "") {
-        _currRoomId = NetworkController::getRoomId();
-        stringstream ss;
-        ss << "Room Id: " << _currRoomId;
-        _roomIdHUD->setText(ss.str());
-    }
+//    if (_currRoomId == "") {
+//        _currRoomId = NetworkController::getRoomId();
+//        stringstream ss;
+//        ss << "Room Id: " << _currRoomId;
+//        _roomIdHUD->setText(ss.str());
+//    }
     
     
 
