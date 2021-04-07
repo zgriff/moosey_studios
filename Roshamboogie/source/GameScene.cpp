@@ -69,6 +69,10 @@ float WALL[WALL_COUNT][WALL_VERTS] = {
 #define BASIC_FRICTION  0.4f
 /** The restitution for all physics objects */
 #define BASIC_RESTITUTION   0.1f
+/** The restitution for all physics objects */
+#define TURNS_PER_SPIN   55.0f
+/** how much the lateral velocity is subtracted per frame*/
+#define KINETIC_FRICTION 1.4f
 
 #pragma mark -
 #pragma mark Constructors
@@ -104,15 +108,14 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Start up the input handler
     _assets = assets;
     _playerController.init();
-
     // Acquire the scene built by the asset loader and resize it the scene
     auto scene_background = _assets->get<scene2::SceneNode>("background");
     scene_background->setContentSize(dimen);
     scene_background->doLayout(); // Repositions the HUD;
     
-    auto scene_ui = _assets->get<scene2::SceneNode>("ui");
-    scene_ui->setContentSize(dimen);
-    scene_ui->doLayout(); // Repositions the HUD;
+    _UInode = _assets->get<scene2::SceneNode>("ui");
+    _UInode->setContentSize(dimen);
+    _UInode->doLayout(); // Repositions the HUD;
 
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
     
@@ -154,7 +157,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(scene_background);
     addChild(_worldnode);
     addChild(_debugnode);
-    addChild(scene_ui);
+    addChild(_UInode);
     reset();
     return true;
 }
@@ -224,7 +227,9 @@ void GameScene::update(float timestep) {
 //    }
     
     
-    // BEGIN PLAYER MOVEMENT //
+
+
+        // BEGIN PLAYER MOVEMENT //
     
     auto playerId_option = NetworkController::getPlayerId();
     if(! playerId_option.has_value()) return;
@@ -234,27 +239,45 @@ void GameScene::update(float timestep) {
     _playerController.readInput();
     switch (_playerController.getMoveStyle()) {
         case Movement::AlwaysForward: {
-            auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
+            auto ang = _player->getAngle() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
             _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
             
             auto vel = _player->getLinearVelocity();
+            //Please don't delete this comment, angles were difficult to derive and easy to forget
+            //vel angle originates from x axis, player angle orginates from y axis
             auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
-            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .02f);
+
+            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset));
+            if (correction.length() > KINETIC_FRICTION) {
+                correction.scale( KINETIC_FRICTION / correction.length());
+            }
             _player->setLinearVelocity(vel.add(correction));
+
             if (_playerController.getMov().x == 0) {
-                //if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
+                //constant acceleration
+                //_player->applyForce();
+
+                auto big = _player->getMass();
+
+                //accelerate to a maximum velocity
+                auto forForce = _player->getForce();
+                auto scaling = _player->getForce();
+                //scaling.normalize().scale(0.05f * pow(30.0f - vel.length(), 2.0f));
+                scaling.normalize().scale(_player->getMass() * 0.32f * (26.0f - vel.length()));
+                //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
+                _player->setForce(scaling);
                 _player->applyForce();
-                //}
+                _player->setForce(forForce);
             }
             else {
                 auto forForce = _player->getForce();
-                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * -1.1f);
-                if (_playerController.getMov().x > 0) {
+                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * 2.0f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN));
+                if (_playerController.getMov().x < 0) {
                     turnForce.scale(-1.0f);
                 }
                 if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
-                    turnForce.scale(-1.0f);
+                    //turnForce.scale(-1.0f);
                     _player->applyForce();
                 }
                 _player->setForce(turnForce);
@@ -263,7 +286,7 @@ void GameScene::update(float timestep) {
             }
             break;
         }
-        case Movement::SwipeForce:{
+        case Movement::SwipeForce: {
             #ifndef CU_MOBILE
                 _player->setLinearVelocity(_playerController.getMov() * 3);
             #else
@@ -279,8 +302,26 @@ void GameScene::update(float timestep) {
                 _player->setLinearVelocity(_playerController.getMov() * 3);
             #else
                 Vec3 tilt = _playerController.getTiltVec();
+
                 Vec2 moveVec(tilt.x, -tilt.y);
                 _player->setForce(moveVec * 50);
+
+                _player->applyForce();
+            #endif
+        }
+        case Movement::GolfMove:{
+            #ifndef CU_MOBILE
+                _player->setLinearVelocity(_playerController.getMov() * 3);
+            #else
+                Vec2 _moveVec;
+                if (_playerController.getMov().x == 0) {
+                    _moveVec = Vec2(-5*_player->getVX(),-5*_player->getVY());
+                } else  {
+                    Vec2 moveVec = _playerController.getMoveVec();
+                    _moveVec = Vec2(moveVec.x, -moveVec.y);
+                    _moveVec =  _moveVec*10;
+                }
+                _player->setForce(_moveVec);
                 _player->applyForce();
             #endif
         }
@@ -290,11 +331,13 @@ void GameScene::update(float timestep) {
     
     world->getPhysicsWorld()->update(timestep);
 
-    auto after = _player->getSceneNode()->getPosition();
+    auto playPos = _player->getSceneNode()->getPosition();
     auto camSpot = getCamera()->getPosition();
-    auto trans = after - camSpot;
-    getCamera()->translate(trans*.05f);
+    auto trans = (playPos - camSpot)*.07f;
+    getCamera()->translate(trans);
     getCamera()->update();
+    _UInode->setPosition(camSpot + trans - Vec2(SCENE_WIDTH/2.0f, SCENE_HEIGHT/2.0f));
+
 
     
     if(NetworkController::isHost()){
