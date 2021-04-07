@@ -18,6 +18,9 @@
         "target": {
             "file": "textures/target.png"
         },
+        "egg": {
+            "file": "textures/egg.png"
+        },
         "grass": {
             "file":  "textures/grass.png"
         },

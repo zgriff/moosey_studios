@@ -39,7 +39,7 @@ void World::reset(){
     auto playerTexture = _assets->get<Texture>("player");
     auto orbTexture = _assets->get<Texture>("photon");
     auto swapStTexture = _assets->get<Texture>("swapstation");
-    auto eggTexture = _assets->get<Texture>("target");
+    auto eggTexture = _assets->get<Texture>("egg");
 
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size playerSize(1, 2);
