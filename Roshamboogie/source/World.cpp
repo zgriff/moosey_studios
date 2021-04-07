@@ -42,6 +42,7 @@ void World::reset(){
     auto eggTexture = _assets->get<Texture>("egg");
 
     Vec2 playerPos = ((Vec2)PLAYER_POS);
+//    Size playerSize(playerTexture->getSize() / _scale);
     Size playerSize(1, 2);
     for(int i = 0; i < 3; ++i){ //TODO: Change to _numPlayers once that's locked in
         auto player = Player::alloc(playerPos, playerSize, Element::Water);
@@ -69,7 +70,7 @@ void World::reset(){
         _worldNode->addChild(orb->getSceneNode());
     }
     
-    Vec2 swapStPos = Vec2(8,8);
+    Vec2 swapStPos = Vec2(70,38);
 //    Size swapStSize(swapStTexture->getSize() / _scale);
     auto swapStation = SwapStation::alloc(swapStPos);
     _physicsWorld->addObstacle(swapStation);
@@ -81,8 +82,10 @@ void World::reset(){
     swapStation->setID(0);
     _swapStations.push_back(swapStation);
     
-    Vec2 eggPos = Vec2(14,14);
+    Vec2 eggPos = Vec2(120,55);
     Size eggSize(eggTexture->getSize() / _scale);
+    CULog("size w : %f    h : %f", eggSize.width,eggSize.height);
+    
     auto egg = Egg::alloc(eggPos, eggSize);
     _physicsWorld->addObstacle(egg);
     egg->setTextures(eggTexture);

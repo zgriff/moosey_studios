@@ -31,13 +31,13 @@ using namespace std;
 #define SCENE_HEIGHT 720
 
 /** Width of the game world in Box2d units */
-#define DEFAULT_WIDTH   36.0f
+#define DEFAULT_WIDTH   150.0f
 /** Height of the game world in Box2d units */
-#define DEFAULT_HEIGHT  18.0f
+#define DEFAULT_HEIGHT  75.0f
 
 
 #define WALL_VERTS  8
-#define WALL_COUNT  4
+#define WALL_COUNT  16
 // Left/Right wall padding
 #define LR_PADDING  0.5f
 // Top/Bottom wall padding
@@ -59,7 +59,76 @@ float WALL[WALL_COUNT][WALL_VERTS] = {
     {LR_PADDING, DEFAULT_HEIGHT-TB_PADDING,
         DEFAULT_WIDTH-LR_PADDING, DEFAULT_HEIGHT-TB_PADDING,
         DEFAULT_WIDTH-LR_PADDING,  DEFAULT_HEIGHT,
-        LR_PADDING, DEFAULT_HEIGHT}
+        LR_PADDING, DEFAULT_HEIGHT},
+    {20.0f, DEFAULT_HEIGHT,
+        21.0f, DEFAULT_HEIGHT,
+        21.0f, DEFAULT_HEIGHT-30.0,
+        20.0f, DEFAULT_HEIGHT-30.0},
+    {20.0f, 25.0f,
+        70.0f, 25.0f,
+        70.0f, 26.0f,
+        20.0f, 26.0f},
+    {
+        45.0f,25.0f,
+        46.0f,25.0f,
+        46.0f,60.0f,
+        45.0f,60.0f
+    },
+    {
+        60.0f,60.0f,
+        60.0f,59.0f,
+        85.0f,59.0f,
+        85.0f,60.0f
+    },
+    {
+        85.0f,60.0f,
+        84.0f,60.0f,
+        84.0f,20.0f,
+        85.0f,20.0f
+    },
+    {
+        85.0f,20.0f,
+        85.0f,21.0f,
+        95.0f,21.0f,
+        95.0f,20.0f
+    },
+    {
+        85.0f,46.0f,
+        85.0f,47.0f,
+        105.0f,47.0f,
+        105.0f,46.0f
+    },
+    {
+        105.0f,60.0f,
+        106.0f,60.0f,
+        106.0f,75.0f,
+        105.0f,75.0f
+    },
+    {
+        105.0f,33.0f,
+        105.0f,34.0f,
+        130.0f,34.0f,
+        130.0f,33.0f
+    },
+    {
+        130.0f,60.0f,
+        131.0f,60.0f,
+        131.0f,20.0f,
+        130.0f,20.0f
+    },
+    {
+        120.0f,20.0f,
+        140.0f,20.0f,
+        140.0f,21.0f,
+        120.0f,21.0f
+    },
+    {
+        140.0f,35.0f,
+        140.0f,36.0f,
+        150.0f,36.0f,
+        150.0f,35.0f
+    }
+    
 };
 
 #define BASIC_DENSITY   0.0f

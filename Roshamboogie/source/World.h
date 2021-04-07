@@ -36,8 +36,8 @@ private:
     
     std::vector<std::shared_ptr<Egg>> _eggs;
     
-    std::vector<cugl::Vec2> _initOrbPos = {Vec2(10,10), Vec2(3,5),  Vec2(23, 15), Vec2(15,8),
-        Vec2(9,4), Vec2(9,7), Vec2(30, 15), Vec2(30, 12), Vec2(12, 8), Vec2(7,4)}; //temp
+    std::vector<cugl::Vec2> _initOrbPos = {Vec2(10,10), Vec2(20,20),  Vec2(140, 15), Vec2(10,65),
+        Vec2(50,65), Vec2(60,35), Vec2(70, 45), Vec2(135, 60), Vec2(90, 30), Vec2(90,50)}; //temp
     
     std::random_device r;
     

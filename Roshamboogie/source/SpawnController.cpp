@@ -25,8 +25,8 @@ void SpawnController::spawnOrbs() {
     int rows = 4;
     int cols = 4;
     
-    float roomWidth = 36.0f / cols;
-    float roomHeight = 18.0f / rows;
+    float roomWidth = 150.0f / cols;
+    float roomHeight = 75.0f / rows;
     
     std::vector<std::shared_ptr<Player>> players = world->getPlayers();
     
