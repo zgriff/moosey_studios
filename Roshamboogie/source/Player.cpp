@@ -23,11 +23,11 @@ using namespace cugl;
 /** The constant force applied to this rocket */
 #define DEFAULT_PLAYER_FORCE Vec2(0.0f, 8.3f)
 /** Number of rows in the player image filmstrip */
-#define PLAYER_ROWS       3
+#define PLAYER_ROWS       1
 /** Number of columns in this player image filmstrip */
-#define PLAYER_COLS       1
+#define PLAYER_COLS       8
 /** Number of elements in this player image filmstrip */
-#define PLAYER_FRAMES     3
+#define PLAYER_FRAMES     8
 /** How fast a player recovers from screen shake*/
 #define TRAUMA_RECOVERY   .005f
 
@@ -59,19 +59,17 @@ void Player::setElement(Element e){
     
     switch(e){ 
         case Element::Grass:
-            _animationNode->setFrame(2);
-            _sceneNode->setColor(Color4(255, 255, 255));
+            _animationNode->setFrame(4);
             break;
         case Element::Fire:
-            _animationNode->setFrame(0);
-            _sceneNode->setColor(Color4(255, 255, 255));
+            _animationNode->setFrame(3);
             break;
         case Element::Water:
-            _animationNode->setFrame(1);
-            _sceneNode->setColor(Color4(255, 255, 255));
+            CULog("water");
+            _animationNode->setFrame(0);
             break;
         case Element::None:
-            _sceneNode->setColor(Color4(0, 0, 0));
+            _animationNode->setFrame(6);
             break;
     }
     

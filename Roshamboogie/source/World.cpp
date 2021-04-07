@@ -58,7 +58,7 @@ void World::reset(){
     
     // preallocate 10 orbs in _orbs list with random positions for the beginning
     for (int i = 0; i < 10; i++) {
-        auto orb = Orb::alloc(Vec2(10,10));
+        auto orb = Orb::alloc(_initOrbPos[i]);
         _physicsWorld->addObstacle(orb);
         orb->setTextures(orbTexture);
         orb->setDrawScale(_scale);

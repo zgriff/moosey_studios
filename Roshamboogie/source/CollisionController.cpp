@@ -85,8 +85,14 @@ void CollisionController::beginContact(b2Contact* contact){
     else if (bd1->getName() == "egg" && bd2->getName() == "player") {
         Egg* e = (Egg*) bd1;
         Player* p = (Player*) bd2;
-        if (e->getCollected() == false && p->getIsIntangible() == false) {
+        if (p->getHoldingEgg() == false && p->getIsIntangible() == false) {
+            if (e->getCollected()) {
+                auto prevPlayer = world->getPlayer(e->getPID());
+                prevPlayer->setElement(prevPlayer->getPrevElement());
+                prevPlayer->setHoldingEgg(false);
+            }
             p->setElement(Element::None);
+            p->setHoldingEgg(true);
             e->setCollected(true);
             e->setPID(p->getID());
             CULog("egg collected");
@@ -97,8 +103,14 @@ void CollisionController::beginContact(b2Contact* contact){
     else if (bd2->getName() == "egg" && bd1->getName() == "player") {
         Egg* e = (Egg*) bd2;
         Player* p = (Player*) bd1;
-        if (e->getCollected() == false && p->getIsIntangible() == false) {
+        if (p->getHoldingEgg() == false && p->getIsIntangible() == false) {
+            if (e->getCollected()) {
+                auto prevPlayer = world->getPlayer(e->getPID());
+                prevPlayer->setElement(prevPlayer->getPrevElement());
+                prevPlayer->setHoldingEgg(false);
+            }
             p->setElement(Element::None);
+            p->setHoldingEgg(true);
             e->setCollected(true);
             e->setPID(p->getID());
             CULog("egg collected");
@@ -113,7 +125,7 @@ void CollisionController::beginContact(b2Contact* contact){
 
         if (p1->getIsIntangible() == false && p2->getIsIntangible() == false) {
             //p2 tags p1
-            if (p1->getCurrElement() == p2->getPreyElement()) {
+            if ((p1->getCurrElement() == p2->getPreyElement()) || (p1->getCurrElement() == Element::None && p2->getCurrElement() != Element::None)) {
                 CULog("tagged");
                 p1->setIsTagged(true);
                 time_t timestamp = time(NULL);
@@ -122,7 +134,7 @@ void CollisionController::beginContact(b2Contact* contact){
                 NetworkController::sendTag(p1->getID(), p2->getID(), timestamp);
             }
             //p1 tags p2
-            else if (p2->getCurrElement() == p1->getPreyElement()) {
+            else if ((p2->getCurrElement() == p1->getPreyElement()) || (p2->getCurrElement() == Element::None && p1->getCurrElement() != Element::None)) {
                 CULog("tagged");
                 p2->setIsTagged(true);
                 time_t timestamp = time(NULL);

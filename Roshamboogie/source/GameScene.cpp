@@ -194,10 +194,10 @@ void GameScene::reset() {
     }
     _playerController.init();
     
-    if (NetworkController::isHost()) {
-        SpawnController::initSpawn();
-    }
-        
+//    if (NetworkController::isHost()) {
+//        SpawnController::initSpawn();
+//    }
+
     populate();
     
     setDebug(false);

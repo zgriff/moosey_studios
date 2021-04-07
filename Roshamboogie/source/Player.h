@@ -26,6 +26,7 @@ private:
     bool _isInvisible;
     bool _isIntangible; //can't interact with any object (can't tag and nobody can tag you)
     time_t _tagCooldown;
+    bool _holdingEgg;
     
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
@@ -73,7 +74,12 @@ public:
     
     Element getCurrElement() { return _currElt; }
     
-    Element getPrevElement() { return _prevElt; }
+    Element getPrevElement() {
+        CULog("prev elt");
+        if (_prevElt == Element::None) {
+            CULog("prev elt NONE");
+        }
+        return _prevElt; }
     
     Element getPreyElement();
     
@@ -100,6 +106,10 @@ public:
     time_t getTagCooldown() { return _tagCooldown; }
     
     void setTagCooldown(clock_t t) { _tagCooldown = t; }
+    
+    bool getHoldingEgg() { return _holdingEgg; }
+    
+    void setHoldingEgg(bool b) { _holdingEgg = b; }
 
     /**
     * Creates the username Label node with the font

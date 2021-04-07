@@ -10,7 +10,7 @@
             "file": "textures/ships.png"
         },
         "player": {
-            "file": "textures/player.png"
+            "file": "textures/character_sprite.png"
         },
         "rocket": {
             "file": "textures/rocket.png"
