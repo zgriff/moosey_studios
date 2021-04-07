@@ -27,6 +27,7 @@ private:
     bool _isIntangible; //can't interact with any object (can't tag and nobody can tag you)
     time_t _tagCooldown;
     bool _holdingEgg;
+    bool _isLocal; // true if the player is the one running on this system
     
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
@@ -110,6 +111,10 @@ public:
     bool getHoldingEgg() { return _holdingEgg; }
     
     void setHoldingEgg(bool b) { _holdingEgg = b; }
+    
+    bool getIsLocal() { return _isLocal; }
+    
+    void setIsLocal(bool b) { _isLocal = b; }
 
     /**
     * Creates the username Label node with the font
@@ -149,7 +154,7 @@ public:
      * To properly initialize the player, you should call the init
      * method.
      */
-    Player(void) : CapsuleObstacle(), _drawscale(1.0f) { }
+    Player(void) : CapsuleObstacle(), _drawscale(1.0f), _isLocal(false) { }
     
     /**
      * Disposes the player, releasing all resources.

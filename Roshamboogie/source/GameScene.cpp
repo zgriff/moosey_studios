@@ -190,6 +190,7 @@ void GameScene::reset() {
     if(idopt.has_value()){
         auto _player = world->getPlayer(idopt.value());
         _player->setUsername(NetworkController::getUsername());
+        _player->setIsLocal(true);
 //        getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
     }
     _playerController.init();

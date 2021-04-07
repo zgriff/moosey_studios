@@ -173,10 +173,11 @@ void Player::update(float delta) {
     }
     
     if (_isInvisible) {
-//        _sceneNode->setVisible(false);
         //set invisible for other players
-    }
-    else {
+        if(! _isLocal){
+            _sceneNode->setVisible(false);
+        }
+    } else {
         _sceneNode->setVisible(true);
     }
 }
