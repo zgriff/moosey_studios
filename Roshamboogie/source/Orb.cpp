@@ -10,7 +10,7 @@
 #include "Element.h"
 #include <random>
 
-#define ORB_RADIUS 0.6
+#define ORB_RADIUS 1.5 //TODO: change to depend on world scale
 
 using namespace cugl;
 

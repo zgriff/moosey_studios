@@ -43,7 +43,7 @@ void World::reset(){
 
     Vec2 playerPos = ((Vec2)PLAYER_POS);
 //    Size playerSize(playerTexture->getSize() / _scale);
-    Size playerSize(1, 2);
+    Size playerSize(4, 8); //TODO: change to depend on world scale
     for(int i = 0; i < 3; ++i){ //TODO: Change to _numPlayers once that's locked in
         auto player = Player::alloc(playerPos, playerSize, Element::Water);
         _physicsWorld->addObstacle(player);
