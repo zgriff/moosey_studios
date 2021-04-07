@@ -2,8 +2,8 @@
 #define __ABILITY_CONTROLLER_H__
 
 #include <cugl/cugl.h>
-#include <Player.h>
-#include <Element.h>
+#include "Player.h"
+#include "Element.h"
 #include <time.h>
 #include <chrono>
 #include <ctime> 
@@ -29,7 +29,7 @@ public:
 
 	//bool init();
 
-	void AbilityController::updateAbility(std::shared_ptr<cugl::scene2::Label> abilityname);
+	void updateAbility(std::shared_ptr<cugl::scene2::Label> abilityname);
 
 	Ability getQueuedAbility() { return _queuedAbility; };
 
