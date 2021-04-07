@@ -8,6 +8,7 @@
 
 #include "App.h"
 #include "NetworkController.h"
+#include "MapConstants.h"
 
 using namespace cugl;
 
@@ -35,15 +36,16 @@ void App::onStartup() {
     _assets->attach<Font>(FontLoader::alloc()->getHook());
     _assets->attach<Texture>(TextureLoader::alloc()->getHook());
     _assets->attach<Sound>(SoundLoader::alloc()->getHook());
-    _assets->attach<Font>(FontLoader::alloc()->getHook());
     _assets->attach<scene2::SceneNode>(Scene2Loader::alloc()->getHook());
-
+    _assets->attach<World>(GenericLoader<World>::alloc()->getHook());
+    
     // Create a "loading" screen
     _currentScene = SceneSelect::Loading;
     _loading.init(_assets);
     
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
+    _assets->loadAsync<World>(GRASS_MAP_KEY,GRASS_MAP_JSON,nullptr);
     
     AudioEngine::start();
     Application::onStartup(); // YOU MUST END with call to parent

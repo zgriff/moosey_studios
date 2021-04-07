@@ -157,6 +157,7 @@
 		2882167626098AEE0073F7D4 /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
 		28821696260A545C0073F7D4 /* World.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
 		28E6A53625F76E72004998CF /* Element.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Element.h; sourceTree = "<group>"; };
+		92165332261C370200FFE01E /* MapConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapConstants.h; sourceTree = "<group>"; };
 		922094CC260D0AFB003C9263 /* MovementStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MovementStyle.h; sourceTree = "<group>"; };
 		9220952D260DA500003C9263 /* MenuScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MenuScene.cpp; sourceTree = "<group>"; };
 		9220952E260DA500003C9263 /* MenuScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
@@ -441,6 +442,7 @@
 				ECFA78E82605149B009D7949 /* CollisionController.h */,
 				ECFA78EC260514B1009D7949 /* CollisionController.cpp */,
 				922094CC260D0AFB003C9263 /* MovementStyle.h */,
+				92165332261C370200FFE01E /* MapConstants.h */,
 			);
 			name = Source;
 			path = ../source;

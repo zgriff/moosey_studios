@@ -3,7 +3,7 @@
         "background": {
             "file": "textures/background.png"
         },
-        "photon": {
+        "orb": {
             "file": "textures/photon.png"
         },
         "ship": {
@@ -15,7 +15,7 @@
         "rocket": {
             "file": "textures/rocket.png"
         },
-        "target": {
+        "egg": {
             "file": "textures/target.png"
         },
         "grass": {

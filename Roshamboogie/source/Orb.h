@@ -15,7 +15,6 @@
 
 class Orb : public cugl::physics2::WheelObstacle{
 private:
-    Element e;
     float _drawscale;
     std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
     std::shared_ptr<cugl::Texture> _texture;
@@ -30,21 +29,15 @@ public:
     }
     void dispose();
     
-    virtual bool init(cugl::Vec2 pos, Element e);
+    virtual bool init(cugl::Vec2 pos);
     
-    static std::shared_ptr<Orb> alloc(cugl::Vec2 pos, const Element e) {
+    static std::shared_ptr<Orb> alloc(cugl::Vec2 pos) {
         std::shared_ptr<Orb> result = std::make_shared<Orb>();
-        return (result->init(pos, e) ? result : nullptr);
+        return (result->init(pos) ? result : nullptr);
     }
     
     void setTextures(const std::shared_ptr<cugl::Texture>& orb);
-    
-    Element getElement(){
-        return e;
-    }
-    
-    //sets color based on element
-    void setElement();
+
     
     bool getCollected() { return _collected; }
     

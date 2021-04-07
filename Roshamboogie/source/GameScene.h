@@ -27,13 +27,16 @@ class GameScene : public cugl::Scene2 {
 protected:
     /** The asset manager for this game mode. */
     std::shared_ptr<cugl::AssetManager> _assets;
+    
+    /** Reference to the physics root of the scene graph */
+    std::shared_ptr<cugl::scene2::SceneNode> _rootnode;
 
     /** Reference to the physics root of the scene graph */
 //    std::shared_ptr<cugl::scene2::SceneNode> _worldnode;
     /** The Box2D world */
 //    std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
     
-    std::shared_ptr<World> world;
+    std::shared_ptr<World> _world;
     
     std::shared_ptr<cugl::scene2::Label> _hatchnode;
     

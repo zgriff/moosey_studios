@@ -14,6 +14,7 @@
 #include "NetworkController.h"
 #include "NetworkData.h"
 #include "CollisionController.h"
+#include "MapConstants.h"
 
 #include <cugl/cugl.h>
 #include <iostream>
@@ -96,17 +97,22 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
     
     //create world
-    world = World::alloc(assets, DEFAULT_WIDTH, DEFAULT_HEIGHT, _scale, NetworkController::getNumPlayers());
-    NetworkController::setWorld(world);
+//    world = World::alloc(assets, DEFAULT_WIDTH, DEFAULT_HEIGHT, _scale, NetworkController::getNumPlayers());
+    _world = assets->get<World>(GRASS_MAP_KEY);
+    if (_world == nullptr) {
+        CULog("Fail!");
+        return false;
+    }
+    NetworkController::setWorld(_world);
     
     // Start up the input handler
     _assets = assets;
     _playerController.init();
 
     // Acquire the scene built by the asset loader and resize it the scene
-    auto scene_background = _assets->get<scene2::SceneNode>("background");
-    scene_background->setContentSize(dimen);
-    scene_background->doLayout(); // Repositions the HUD;
+//    auto scene_background = _assets->get<scene2::SceneNode>("background");
+//    scene_background->setContentSize(dimen);
+//    scene_background->doLayout(); // Repositions the HUD;
     
     auto scene_ui = _assets->get<scene2::SceneNode>("ui");
     scene_ui->setContentSize(dimen);
@@ -123,36 +129,38 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
     
-    auto _world = world->getPhysicsWorld();
-    _world->activateCollisionCallbacks(true);
+    auto world = _world->getPhysicsWorld();
+    world->activateCollisionCallbacks(true);
     if(NetworkController::isHost()){
-        _world->onBeginContact = [this](b2Contact* contact) {
+        world->onBeginContact = [this](b2Contact* contact) {
             CollisionController::beginContact(contact);
         };
-        _world->onEndContact = [this](b2Contact* contact) {
+        world->onEndContact = [this](b2Contact* contact) {
             CollisionController::endContact(contact);
         };
     }
-    _world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
+    world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
         CollisionController::beforeSolve(contact,oldManifold);
     };
     
     Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
 
-    auto _worldnode = world->getSceneNode();
-    _worldnode->setPosition(offset);
+    _rootnode = scene2::SceneNode::alloc();
+    _rootnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
+    _rootnode->setPosition(offset);
+//    auto _worldnode = _world->getSceneNode();
+//    _worldnode->setPosition(offset);
     
-    _debugnode = scene2::SceneNode::alloc();
-    _debugnode->setScale(_scale); // Debug node draws in PHYSICS coordinates
-    _debugnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
-    _debugnode->setPosition(offset);
-    
-    world->setDebugNode(_debugnode);
-    
-    addChild(scene_background);
-    addChild(_worldnode);
-    addChild(_debugnode);
+    _debugnode = _world->getDebugNode();
+//    addChild(scene_background);
+//    addChild(_worldnode);
+//    addChild(_debugnode);
+    addChild(_rootnode);
     addChild(scene_ui);
+    _rootnode->setContentSize(Size(SCENE_WIDTH,SCENE_HEIGHT));
+    
+    _world->setAssets(_assets);
+    
     reset();
     return true;
 }
@@ -170,7 +178,7 @@ void GameScene::dispose() {
         _active = false;
         _debug = false;
         Scene2::dispose();
-        world = nullptr;
+        _world = nullptr;
     }
 }
 
@@ -181,12 +189,12 @@ void GameScene::dispose() {
  * Resets the status of the game so that we can play again.
  */
 void GameScene::reset() {
-    _debugnode->removeAllChildren();
-    world->reset();
+    _world->setRootNode(_rootnode);
     
     auto idopt = NetworkController::getPlayerId();
     if(idopt.has_value()){
-        auto _player = world->getPlayer(idopt.value());
+        CULog("playerid: %i",idopt.value());
+        auto _player = _world->getPlayer(idopt.value());
         _player->setUsername(NetworkController::getUsername());
         getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
     }
@@ -194,7 +202,7 @@ void GameScene::reset() {
         
     populate();
     
-    setDebug(false);
+    _world->setDebug(false);
 
     getCamera()->update();
 }
@@ -224,7 +232,7 @@ void GameScene::update(float timestep) {
     auto playerId_option = NetworkController::getPlayerId();
     if(! playerId_option.has_value()) return;
     uint8_t playerId = playerId_option.value();
-    auto _player = world->getPlayer(playerId);
+    auto _player = _world->getPlayer(playerId);
     
     _playerController.readInput();
     switch (_playerController.getMoveStyle()) {
@@ -283,7 +291,7 @@ void GameScene::update(float timestep) {
             break;
     }
     
-        world->getPhysicsWorld()->update(timestep);
+    _world->getPhysicsWorld()->update(timestep);
 
     auto after = _player->getSceneNode()->getPosition();
     auto camSpot = getCamera()->getPosition();
@@ -306,7 +314,7 @@ void GameScene::update(float timestep) {
     
     if(NetworkController::isHost()){
         for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
-            auto orb = world->getOrb(i);
+            auto orb = _world->getOrb(i);
             if(orb->getCollected()) {
                 orb->respawn();
                 NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
@@ -319,9 +327,9 @@ void GameScene::update(float timestep) {
     
     
     //egg hatch logic
-    auto _egg = world->getEgg(0);
+    auto _egg = _world->getEgg(0);
     if (_egg->getCollected() && _egg->getHatched() == false) {
-        std::shared_ptr<Player> _eggCollector = world->getPlayer(_egg->getPID());
+        std::shared_ptr<Player> _eggCollector = _world->getPlayer(_egg->getPID());
         _egg->setPosition(_eggCollector->getPosition());
         if (_egg->getPID() == _player->getID()) {
             _hatchbar->setVisible(true);
@@ -410,7 +418,7 @@ void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj
                             const std::shared_ptr<cugl::scene2::SceneNode>& node,
                             int zOrder,
                             bool useObjPosition) {
-    world->getPhysicsWorld()->addObstacle(obj);
+    _world->getPhysicsWorld()->addObstacle(obj);
 //    obj->setDebugScene(_debugnode);
     obj->setDebugScene(_debugnode);
 
@@ -418,7 +426,7 @@ void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj
       if (useObjPosition) {
           node->setPosition(obj->getPosition()*_scale);
       }
-      world->getSceneNode()->addChild(node, zOrder);
+    _world->getSceneNode()->addChild(node, zOrder);
 
     // Dynamic objects need constant updating
     if (obj->getBodyType() == b2_dynamicBody) {
