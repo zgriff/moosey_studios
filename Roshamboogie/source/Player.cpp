@@ -25,9 +25,9 @@ using namespace cugl;
 /** Number of rows in the player image filmstrip */
 #define PLAYER_ROWS       1
 /** Number of columns in this player image filmstrip */
-#define PLAYER_COLS       9
+#define PLAYER_COLS       8
 /** Number of elements in this player image filmstrip */
-#define PLAYER_FRAMES     9
+#define PLAYER_FRAMES     8
 /** How fast a player recovers from screen shake*/
 #define TRAUMA_RECOVERY   .005f
 
