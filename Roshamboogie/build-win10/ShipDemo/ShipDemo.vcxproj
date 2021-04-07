@@ -192,6 +192,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\source\AbilityController.cpp" />
     <ClCompile Include="..\..\source\App.cpp" />
     <ClCompile Include="..\..\source\CollisionController.cpp" />
     <ClCompile Include="..\..\source\Egg.cpp" />
@@ -209,6 +210,7 @@
     <ClCompile Include="..\..\source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\source\AbilityController.h" />
     <ClInclude Include="..\..\source\App.h" />
     <ClInclude Include="..\..\source\CollisionController.h" />
     <ClInclude Include="..\..\source\Egg.h" />

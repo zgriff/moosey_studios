@@ -22,6 +22,7 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
 #include "World.h"
+#include "AbilityController.h"
 
 class GameScene : public cugl::Scene2 {
 protected:
@@ -38,6 +39,10 @@ protected:
     std::shared_ptr<cugl::scene2::Label> _hatchnode;
     
     std::shared_ptr<cugl::scene2::ProgressBar>  _hatchbar;
+
+    std::shared_ptr<cugl::scene2::ProgressBar>  _abilitybar;
+    std::shared_ptr<cugl::scene2::Label> _abilityname;
+    AbilityController _abilityController;
     
     /** Reference to the debug root of the scene graph */
     std::shared_ptr<cugl::scene2::SceneNode> _debugnode;

@@ -16,6 +16,7 @@
     <ClCompile Include="..\..\source\Player.cpp" />
     <ClCompile Include="..\..\source\SwapStation.cpp" />
     <ClCompile Include="..\..\source\World.cpp" />
+    <ClCompile Include="..\..\source\AbilityController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\App.h" />
@@ -35,5 +36,6 @@
     <ClInclude Include="..\..\source\Player.h" />
     <ClInclude Include="..\..\source\SwapStation.h" />
     <ClInclude Include="..\..\source\World.h" />
+    <ClInclude Include="..\..\source\AbilityController.h" />
   </ItemGroup>
 </Project>

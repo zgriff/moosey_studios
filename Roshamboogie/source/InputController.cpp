@@ -77,7 +77,7 @@ void InputController::dispose() {
  */
 void InputController::readInput() {
 #ifdef CU_MOBILE
-    // YOU NEED TO PUT SOME CODE HERE
+    Touchscreen* touch = Input::get<Touchscreen>();
     switch (_moveStyle) {
         case Movement::SwipeForce:
             if(!processed){
@@ -90,7 +90,8 @@ void InputController::readInput() {
             _tiltVec = Input::get<Accelerometer>()->getAcceleration();
             break;
         default:
-            if (_keydown) {
+            _abilityPressed = false;
+            if (_keydown && touch->touchCount() == 1) {
                 if (_dtouch.x < 640) {
                     mov.x = -1;
                 }
@@ -100,17 +101,21 @@ void InputController::readInput() {
             }
             else {
                 mov.x = 0;
+                if (touch->touchCount() > 0) {
+                    _abilityPressed = true;
+                }
             }
             break;
     }
 #else
     // Figure out, based on which player we are, which keys
     // control our actions (depends on player).
-    KeyCode up, left, right, down;
+    KeyCode up, left, right, down, space;
         up    = KeyCode::ARROW_UP;
         down  = KeyCode::ARROW_DOWN;
         left  = KeyCode::ARROW_LEFT;
         right = KeyCode::ARROW_RIGHT;
+        space = KeyCode::SPACE;
     
     // Convert keyboard state into game commands
 //    _didFire = false;
@@ -122,6 +127,7 @@ void InputController::readInput() {
     mov.y += keys->keyDown(down) ? -1 : 0;
     mov.x += keys->keyDown(left) ? -1 : 0;
     mov.x += keys->keyDown(right) ? 1 : 0;
+    _abilityPressed = keys->keyDown(space);
     _keyDebug  = keys->keyPressed(DEBUG_KEY);
     _debugPressed = _keyDebug;
 #endif

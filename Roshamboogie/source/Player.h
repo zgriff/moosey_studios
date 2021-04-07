@@ -11,6 +11,7 @@
 
 #include <cugl/cugl.h>
 #include "Element.h"
+#include <algorithm>
 
 class Player : public cugl::physics2::BoxObstacle{
 private:
@@ -40,6 +41,8 @@ private:
 
     /** Reference to the player texture */
     std::shared_ptr<cugl::Texture> _texture;
+
+    int _orbScore = 0;
 
 public:
 #pragma mark Properties
@@ -80,6 +83,10 @@ public:
     bool getDidTag() { return _didTag; }
     
     void setDidTag(bool t) { _didTag = t; }
+
+    void setOrbScore(int orbScore) { _orbScore = min(orbScore, 5); };
+
+    int getOrbScore() { return _orbScore; };
 
     /**
     * Creates the username Label node with the font

@@ -14,6 +14,7 @@
 #include "NetworkController.h"
 #include "NetworkData.h"
 #include "CollisionController.h"
+#include "AbilityController.h"
 
 #include <cugl/cugl.h>
 #include <iostream>
@@ -120,6 +121,12 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _hatchnode = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_hatched"));
     _hatchnode->setVisible(false);
+
+    _abilityname = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_abilityName"));
+    _abilityname->setVisible(false);
+
+    _abilitybar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_abilityBar"));
+    _abilitybar->setForegroundColor(Color4(255, 255, 0));
     
     _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
     
@@ -167,6 +174,8 @@ void GameScene::dispose() {
         _scoreHUD = nullptr;
         _hatchnode = nullptr;
         _hatchbar = nullptr;
+        _abilitybar = nullptr;
+        _abilityname = nullptr;
         _active = false;
         _debug = false;
         Scene2::dispose();
@@ -229,6 +238,9 @@ void GameScene::update(float timestep) {
     _playerController.readInput();
     switch (_playerController.getMoveStyle()) {
         case Movement::AlwaysForward: {
+            if (_abilityController.getActiveAbility() == AbilityController::Ability::SpeedBoost) {
+                break;
+            }
             auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
             _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
             
@@ -310,7 +322,7 @@ void GameScene::update(float timestep) {
             if(orb->getCollected()) {
                 orb->respawn();
                 NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
-                _score += 1;
+                _player->setOrbScore( _player->getOrbScore() + 1);
             }
             orb->setCollected(false);
 
@@ -351,8 +363,17 @@ void GameScene::update(float timestep) {
         _hatchnode->setVisible(false);
     }
     
+    // ability stuff here
+    _abilitybar->setProgress(_player->getOrbScore() * 0.2);
+    if (_player->getOrbScore() == 5 && _abilityController.getQueuedAbility() == AbilityController::Ability::NoAbility) {
+        _abilityController.updateAbility(_abilityname);
+        _abilityname->setVisible(true); 
+    }
+    if (_playerController.isAbilityPressed()) {
+        _abilityController.activateAbility(_player);
+    }
+    _abilityController.deactivateAbility(_player, _abilityname);
 
-    
     // player tagging
 //    if (_player->getDidTag()) {
 //        _score += 15;

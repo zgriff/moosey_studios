@@ -54,7 +54,11 @@ void Player::setTextures(const std::shared_ptr<Texture>& player) {
 
 
 void Player::setElement(Element e){
-    _prevElt = _currElt;
+    // this is so if you collect the egg as Aether, it will revert back to your orignal color
+    // since keeping track that prev element is Aether doesn't seem to have any use atm
+    if (_currElt != Element::Aether) {
+        _prevElt = _currElt;
+    }
     _currElt = e;
     
     switch(e){ 
@@ -73,6 +77,8 @@ void Player::setElement(Element e){
         case Element::None:
             _sceneNode->setColor(Color4(0, 0, 0));
             break;
+        case Element::Aether:
+            _sceneNode->setColor(Color4(100, 100, 100));
     }
     
 }
@@ -86,6 +92,9 @@ Element Player::getPreyElement() {
         case Element::Water:
             return Element::Fire;
         case Element::None:
+            return Element::None;
+        case Element::Aether:
+            //All three elements are prey, so this gets handled seperately in collision controller
             return Element::None;
     }
 }

@@ -49,7 +49,7 @@ void CollisionController::beginContact(b2Contact* contact){
    else if (bd1->getName() == "swapstation" && bd2->getName() == "player") {
         Player* p = (Player*) bd2;
         SwapStation* s = (SwapStation*) bd1;
-        if (p->getCurrElement() != Element::None) {
+        if (p->getCurrElement() != Element::None && p->getCurrElement() != Element::Aether) {
             if (clock() - s->getLastUsed() >= s->getCoolDown()) {
                 s->setLastUsed(clock());
                 p->setElement(p->getPreyElement());
@@ -61,7 +61,7 @@ void CollisionController::beginContact(b2Contact* contact){
     else if(bd1->getName() == "player" && bd2->getName() == "swapstation") {
         Player* p = (Player*) bd1;
         SwapStation* s = (SwapStation*) bd2;
-        if (p->getCurrElement() != Element::None) {
+        if (p->getCurrElement() != Element::None && p->getCurrElement() != Element::Aether) {
             if (clock() - s->getLastUsed() >= s->getCoolDown()) {
                 s->setLastUsed(clock());
                 p->setElement(p->getPreyElement());
@@ -103,13 +103,17 @@ void CollisionController::beginContact(b2Contact* contact){
         Player* p2 = (Player*) bd2;
 
         //p2 tags p1
-        if (p1->getCurrElement() == p2->getPreyElement()) {
+        if (p1->getCurrElement() == p2->getPreyElement() || 
+            p2->getCurrElement() == Element::Aether && p1->getCurrElement() != Element::Aether) 
+        {
             CULog("tagged");
             p1->setIsTagged(true);
             p2->setDidTag(true);
         }
         //p1 tags p2
-        else if (p2->getCurrElement() == p1->getPreyElement()) {
+        else if (p2->getCurrElement() == p1->getPreyElement() ||
+            p1->getCurrElement() == Element::Aether && p2->getCurrElement() != Element::Aether)
+        {
             CULog("tagged");
             p2->setIsTagged(true);
             p1->setDidTag(true);
