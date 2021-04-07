@@ -113,7 +113,7 @@ void CollisionController::beginContact(b2Contact* contact){
         Player* p1 = (Player*) bd1;
         Player* p2 = (Player*) bd2;
 
-        if (p1->getIsIntangible() == false && p2->getIsIntangible() == false) {
+        if (p1->getIsTagged() == false && p2->getIsTagged() == false && p1->getIsIntangible() == false && p2->getIsIntangible() == false) {
             //p2 tags p1
             if ((p1->getCurrElement() == p2->getPreyElement()) || (p1->getCurrElement() == Element::None && p2->getCurrElement() != Element::None)) {
                 CULog("tagged");
@@ -130,7 +130,6 @@ void CollisionController::beginContact(b2Contact* contact){
                     egg->incDistanceWalked(-1*egg->getDistanceWalked());
                     p2->setElement(Element::None);
                     p2->setEggId(egg->getID());
-                    NetworkController::sendEggCollected(p2->getID(), egg->getID());
                 }
             }
             //p1 tags p2
@@ -149,7 +148,6 @@ void CollisionController::beginContact(b2Contact* contact){
                     egg->incDistanceWalked(-1*egg->getDistanceWalked());
                     p1->setElement(Element::None);
                     p1->setEggId(egg->getID());
-                    NetworkController::sendEggCollected(p1->getID(), egg->getID());
                 }
             }
         }

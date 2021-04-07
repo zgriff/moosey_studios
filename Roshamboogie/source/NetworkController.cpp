@@ -114,6 +114,14 @@ namespace NetworkController {
                     tagged->setIsTagged(true);
                     tagged->setTagCooldown(nd.tagData.timestamp);
                     tagger->incScore(globals::TAG_SCORE);
+                    if (tagged->getCurrElement() == Element::None) {
+                        auto egg = world->getEgg(tagged->getEggId());
+                        egg->setPID(tagger->getID());
+                        tagged->setElement(tagged->getPrevElement());
+                        egg->incDistanceWalked(-1*egg->getDistanceWalked());
+                        tagger->setElement(Element::None);
+                        tagger->setEggId(egg->getID());
+                    }
                 }
                     break;
                 case ND::NetworkData::POSITION_PACKET:
@@ -133,6 +141,7 @@ namespace NetworkController {
                     break;
                 case ND::NetworkData::EGG_CAPTURED:
                     world->getPlayer(nd.eggCapData.playerId)->setElement(Element::None);
+                    world->getPlayer(nd.eggCapData.playerId)->setEggId(nd.eggCapData.eggId);
                     world->getEgg(nd.eggCapData.eggId)->setCollected(true);
                     world->getEgg(nd.eggCapData.eggId)->setPID(nd.eggCapData.playerId);
                     break;
