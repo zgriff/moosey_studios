@@ -85,17 +85,11 @@ void CollisionController::beginContact(b2Contact* contact){
     else if (bd1->getName() == "egg" && bd2->getName() == "player") {
         Egg* e = (Egg*) bd1;
         Player* p = (Player*) bd2;
-        if (p->getHoldingEgg() == false && p->getIsIntangible() == false) {
-            if (e->getCollected()) {
-                auto prevPlayer = world->getPlayer(e->getPID());
-                prevPlayer->setElement(prevPlayer->getPrevElement());
-                prevPlayer->setHoldingEgg(false);
-                e->incDistanceWalked(-1*e->getDistanceWalked());
-            }
+        if (e->getCollected() == false && p->getIsIntangible() == false) {
             p->setElement(Element::None);
-            p->setHoldingEgg(true);
             e->setCollected(true);
             e->setPID(p->getID());
+            p->setEggId(e->getID());
             CULog("egg collected");
             NetworkController::sendEggCollected(p->getID(), e->getID());
         }
@@ -104,17 +98,11 @@ void CollisionController::beginContact(b2Contact* contact){
     else if (bd2->getName() == "egg" && bd1->getName() == "player") {
         Egg* e = (Egg*) bd2;
         Player* p = (Player*) bd1;
-        if (p->getHoldingEgg() == false && p->getIsIntangible() == false) {
-            if (e->getCollected()) {
-                auto prevPlayer = world->getPlayer(e->getPID());
-                prevPlayer->setElement(prevPlayer->getPrevElement());
-                prevPlayer->setHoldingEgg(false);
-                e->incDistanceWalked(-1*e->getDistanceWalked());
-            }
+        if (e->getCollected() == false && p->getIsIntangible() == false) {
             p->setElement(Element::None);
-            p->setHoldingEgg(true);
             e->setCollected(true);
             e->setPID(p->getID());
+            p->setEggId(e->getID());
             CULog("egg collected");
             NetworkController::sendEggCollected(p->getID(), e->getID());
         }
@@ -134,6 +122,16 @@ void CollisionController::beginContact(b2Contact* contact){
                 p1->setTagCooldown(timestamp);
                 p2->incScore(globals::TAG_SCORE);
                 NetworkController::sendTag(p1->getID(), p2->getID(), timestamp);
+                //p1 holding egg and p2 steals it
+                if (p1->getCurrElement() == Element::None) {
+                    auto egg = world->getEgg(p1->getEggId());
+                    egg->setPID(p2->getID());
+                    p1->setElement(p1->getPrevElement());
+                    egg->incDistanceWalked(-1*egg->getDistanceWalked());
+                    p2->setElement(Element::None);
+                    p2->setEggId(egg->getID());
+                    NetworkController::sendEggCollected(p2->getID(), egg->getID());
+                }
             }
             //p1 tags p2
             else if ((p2->getCurrElement() == p1->getPreyElement()) || (p2->getCurrElement() == Element::None && p1->getCurrElement() != Element::None)) {
@@ -143,6 +141,16 @@ void CollisionController::beginContact(b2Contact* contact){
                 p2->setTagCooldown(timestamp);
                 p1->incScore(globals::TAG_SCORE);
                 NetworkController::sendTag(p2->getID(), p1->getID(), timestamp);
+                //p2 holding egg and p1 steals it
+                if (p2->getCurrElement() == Element::None) {
+                    auto egg = world->getEgg(p2->getEggId());
+                    egg->setPID(p1->getID());
+                    p1->setElement(p2->getPrevElement());
+                    egg->incDistanceWalked(-1*egg->getDistanceWalked());
+                    p1->setElement(Element::None);
+                    p1->setEggId(egg->getID());
+                    NetworkController::sendEggCollected(p1->getID(), egg->getID());
+                }
             }
         }
     }

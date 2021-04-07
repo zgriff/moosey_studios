@@ -28,6 +28,7 @@ private:
     time_t _tagCooldown;
     bool _holdingEgg;
     bool _isLocal; // true if the player is the one running on this system
+    int _eggID; //id of the egg that the player is holding, if any
     
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
@@ -111,6 +112,12 @@ public:
     bool getIsLocal() { return _isLocal; }
     
     void setIsLocal(bool b) { _isLocal = b; }
+    
+    int getEggId() { return _eggID; }
+    
+    void setEggId(int eid) {
+        _eggID = eid;
+    }
 
     /**
     * Creates the username Label node with the font
