@@ -28,7 +28,7 @@ void AbilityController::updateAbility(std::shared_ptr<cugl::scene2::Label> abili
 }
 
 void AbilityController::activateAbility(std::shared_ptr<Player> player) {
-	if (_queuedAbility != Ability::NoAbility && player->getCurrElement() != Element::None) {
+	if (_queuedAbility != Ability::NoAbility && player->getCurrElement() != Element::None && !player->getIsTagged()) {
 		player->setOrbScore(0);
 		_timer = std::chrono::system_clock::now();
 		
