@@ -264,6 +264,7 @@ void GameScene::reset() {
         _player->setUsername(NetworkController::getUsername());
         _player->setIsLocal(true);
         getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
+//        getCamera()->setZoom(2.0f);
     }
     _playerController.init();
     
@@ -333,7 +334,7 @@ void GameScene::update(float timestep) {
                 auto forForce = _player->getForce();
                 auto scaling = _player->getForce();
                 //scaling.normalize().scale(0.05f * pow(30.0f - vel.length(), 2.0f));
-                scaling.normalize().scale(_player->getMass() * 0.32f * (26.0f - vel.length()));
+                scaling.normalize().scale(_player->getMass() * 0.32f * (150.0f - vel.length()));
                 //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
                 _player->setForce(scaling);
                 _player->applyForce();
