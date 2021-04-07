@@ -90,6 +90,7 @@ void CollisionController::beginContact(b2Contact* contact){
                 auto prevPlayer = world->getPlayer(e->getPID());
                 prevPlayer->setElement(prevPlayer->getPrevElement());
                 prevPlayer->setHoldingEgg(false);
+                e->incDistanceWalked(-1*e->getDistanceWalked());
             }
             p->setElement(Element::None);
             p->setHoldingEgg(true);
@@ -108,6 +109,7 @@ void CollisionController::beginContact(b2Contact* contact){
                 auto prevPlayer = world->getPlayer(e->getPID());
                 prevPlayer->setElement(prevPlayer->getPrevElement());
                 prevPlayer->setHoldingEgg(false);
+                e->incDistanceWalked(-1*e->getDistanceWalked());
             }
             p->setElement(Element::None);
             p->setHoldingEgg(true);

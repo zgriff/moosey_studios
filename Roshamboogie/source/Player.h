@@ -76,10 +76,6 @@ public:
     Element getCurrElement() { return _currElt; }
     
     Element getPrevElement() {
-        CULog("prev elt");
-        if (_prevElt == Element::None) {
-            CULog("prev elt NONE");
-        }
         return _prevElt; }
     
     Element getPreyElement();

@@ -65,7 +65,6 @@ void Player::setElement(Element e){
             _animationNode->setFrame(3);
             break;
         case Element::Water:
-            CULog("water");
             _animationNode->setFrame(0);
             break;
         case Element::None:
@@ -166,10 +165,12 @@ void Player::update(float delta) {
     if (_isTagged) {
         _isInvisible = true;
         _isIntangible = true;
+        _sceneNode->setColor(Color4(255,255,255,50));
     }
     else {
         _isInvisible = false;
         _isIntangible = false;
+        _sceneNode->setColor(Color4(255,255,255,255));
     }
     
     if (_isInvisible) {
