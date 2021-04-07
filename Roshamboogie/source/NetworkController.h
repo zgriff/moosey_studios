@@ -4,6 +4,8 @@
 #include <cugl/cugl.h>
 #include "World.h"
 
+#define NETWORK_FRAMERATE 6
+
 namespace NetworkController {
 
 	void createGame();
