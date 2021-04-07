@@ -35,10 +35,9 @@ protected:
     
     std::shared_ptr<World> world;
     
-    std::shared_ptr<cugl::scene2::Label> _hatchnode;
-    
-    std::shared_ptr<cugl::scene2::ProgressBar>  _hatchbar;
-    
+    /** Reference to the UI node that moves synchronously with the camera */
+    std::shared_ptr<cugl::scene2::SceneNode> _UInode;
+
     /** Reference to the debug root of the scene graph */
     std::shared_ptr<cugl::scene2::SceneNode> _debugnode;
     
@@ -46,8 +45,16 @@ protected:
     float _scale;
 
     std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
+
+    std::shared_ptr<cugl::scene2::Label> _hatchnode;
+
+    std::shared_ptr<cugl::scene2::ProgressBar>  _hatchbar;
     std::string _currRoomId;
-    
+
+    std::shared_ptr<cugl::scene2::Label> _scoreHUD;
+
+    int _score = 0;
+
     clock_t _hatchTextTimer = CLOCKS_PER_SEC;
     clock_t _hatchedTime;
     
@@ -76,11 +83,6 @@ protected:
 //    std::shared_ptr<SwapStation> _swapStation;
 //
 //    std::shared_ptr<Egg> _egg;
-    
-    std::shared_ptr<cugl::scene2::Label> _scoreHUD;
-    
-    int _score = 0;
-    
     
     /** The weapon fire sound for the blue player */
 //    std::shared_ptr<cugl::Sound> _blueSound;

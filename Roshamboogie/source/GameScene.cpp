@@ -111,9 +111,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     scene_background->setContentSize(dimen);
     scene_background->doLayout(); // Repositions the HUD;
     
-    auto scene_ui = _assets->get<scene2::SceneNode>("ui");
-    scene_ui->setContentSize(dimen);
-    scene_ui->doLayout(); // Repositions the HUD;
+    _UInode = _assets->get<scene2::SceneNode>("ui");
+    _UInode->setContentSize(dimen);
+    _UInode->doLayout(); // Repositions the HUD;
 
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
     
@@ -155,7 +155,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(scene_background);
     addChild(_worldnode);
     addChild(_debugnode);
-    addChild(scene_ui);
+    addChild(_UInode);
     reset();
     return true;
 }
@@ -257,7 +257,7 @@ void GameScene::update(float timestep) {
                 auto forForce = _player->getForce();
                 auto scaling = _player->getForce();
                 //scaling.normalize().scale(0.05f * pow(30.0f - vel.length(), 2.0f));
-                scaling.normalize().scale(0.65f * (28.0f - vel.length()));
+                scaling.normalize().scale(0.65f * (25.0f - vel.length()));
                 //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
                 _player->setForce(scaling);
                 _player->applyForce();
@@ -277,6 +277,17 @@ void GameScene::update(float timestep) {
                 _player->applyForce();
                 _player->setForce(forForce);
             }
+            break;
+        }
+        case Movement::SwipeForce: {
+            #ifndef CU_MOBILE
+                _player->setLinearVelocity(_playerController.getMov() * 3);
+            #else
+                Vec2 moveVec = _playerController.getMoveVec();
+                Vec2 _moveVec(moveVec.x, -moveVec.y);
+                _player->setForce(_moveVec * 30);
+                _player->applyForce();
+            #endif
             break;
         }
         case Movement::TiltMove:{
@@ -309,14 +320,15 @@ void GameScene::update(float timestep) {
             break;
     }
     
-        world->getPhysicsWorld()->update(timestep);
+    world->getPhysicsWorld()->update(timestep);
 
-    auto after = _player->getSceneNode()->getPosition();
+    auto playPos = _player->getSceneNode()->getPosition();
     auto camSpot = getCamera()->getPosition();
-    auto trans = after - camSpot;
-    getCamera()->translate(trans*.05f);
+    auto trans = (playPos - camSpot)*.07f;
+    getCamera()->translate(trans);
     getCamera()->update();
-
+    _UInode->setPosition(camSpot + trans - Vec2(SCENE_WIDTH/2.0f, SCENE_HEIGHT/2.0f));
+    
 
 //    if(NetworkController::isHost()){
 //        if (orbShouldMove) {
