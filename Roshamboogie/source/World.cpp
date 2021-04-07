@@ -43,7 +43,7 @@ void World::reset(){
 
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size playerSize(1, 2);
-    for(int i = 0; i < 3; ++i){ //TODO: Change to _numPlayers once that's locked in
+    for(int i = 0; i < _numPlayers; ++i){
         auto player = Player::alloc(playerPos, playerSize, Element::Water);
         _physicsWorld->addObstacle(player);
         player->setTextures(playerTexture);
