@@ -330,6 +330,9 @@ void GameScene::update(float timestep) {
         if (_egg->getPID() == _player->getID()) {
             _hatchbar->setVisible(true);
         }
+        else {
+            _hatchbar->setVisible(false);
+        }
         _hatchbar->setProgress(_egg->getDistanceWalked()/80);
         Vec2 diff = _eggCollector->getPosition() - _egg->getInitPos();
         float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
