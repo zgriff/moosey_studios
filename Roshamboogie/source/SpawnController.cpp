@@ -65,8 +65,8 @@ void SpawnController::spawnOrbs() {
     //get rand position of orb
 //    CULog("randroom x %f", emptySpaces[randRoom].x);
 //    CULog("randroom y %f", emptySpaces[randRoom].y);
-    std::uniform_int_distribution<float> rand_x(emptySpaces[randRoom].x * roomWidth, emptySpaces[randRoom].x * roomWidth + roomWidth);
-    std::uniform_int_distribution<float> rand_y(emptySpaces[randRoom].y * roomHeight, emptySpaces[randRoom].y * roomHeight + roomHeight);
+    std::uniform_int_distribution<long> rand_x(emptySpaces[randRoom].x * roomWidth, emptySpaces[randRoom].x * roomWidth + roomWidth);
+    std::uniform_int_distribution<long> rand_y(emptySpaces[randRoom].y * roomHeight, emptySpaces[randRoom].y * roomHeight + roomHeight);
 //    CULog("new pos %f %f", rand_x(e1), rand_y(e1));
     
     for (int i = 0; i < 10; i++) {
