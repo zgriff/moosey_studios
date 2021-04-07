@@ -43,7 +43,6 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         return false;
     }
     
-    // IMMEDIATELY load the splash screen assets
     _assets = assets;
     auto layer = assets->get<scene2::SceneNode>("menu");
     layer->setContentSize(dimen);
@@ -97,7 +96,6 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         }
     });
     
-
     _codeField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_joincode"));
     _codeField->addTypeListener([=](const std::string& name, const std::string& value) {
         CULog("Change to %s", value.c_str());
@@ -150,14 +148,6 @@ void MenuScene::dispose() {
  *
  * @param timestep  The amount of time (in seconds) since the last frame
  */
-//void MenuScene::update(float progress) {
-//
-//    _hostButton->setVisible(true);
-//    _hostButton->activate();
-//    _joinButton->setVisible(true);
-//    _joinButton->activate();
-//
-//}
 
 
 
