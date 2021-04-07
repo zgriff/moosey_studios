@@ -191,7 +191,7 @@ void GameScene::reset() {
         auto _player = world->getPlayer(idopt.value());
         _player->setUsername(NetworkController::getUsername());
         _player->setIsLocal(true);
-//        getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
+        getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
     }
     _playerController.init();
     
@@ -293,8 +293,8 @@ void GameScene::update(float timestep) {
     auto after = _player->getSceneNode()->getPosition();
     auto camSpot = getCamera()->getPosition();
     auto trans = after - camSpot;
-//    getCamera()->translate(trans*.05f);
-//    getCamera()->update();
+    getCamera()->translate(trans*.05f);
+    getCamera()->update();
 
     
     if(NetworkController::isHost()){
