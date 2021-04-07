@@ -70,7 +70,7 @@ float WALL[WALL_COUNT][WALL_VERTS] = {
 /** The restitution for all physics objects */
 #define BASIC_RESTITUTION   0.1f
 /** The restitution for all physics objects */
-#define TURNS_PER_SPIN   70.0f
+#define TURNS_PER_SPIN   55.0f
 /** how much the lateral velocity is subtracted per frame*/
 #define KINETIC_FRICTION 1.4f
 
@@ -253,11 +253,13 @@ void GameScene::update(float timestep) {
                 //constant acceleration
                 //_player->applyForce();
 
+                auto big = _player->getMass();
+
                 //accelerate to a maximum velocity
                 auto forForce = _player->getForce();
                 auto scaling = _player->getForce();
                 //scaling.normalize().scale(0.05f * pow(30.0f - vel.length(), 2.0f));
-                scaling.normalize().scale(0.65f * (25.0f - vel.length()));
+                scaling.normalize().scale(_player->getMass() * 0.32f * (26.0f - vel.length()));
                 //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
                 _player->setForce(scaling);
                 _player->applyForce();
@@ -295,8 +297,10 @@ void GameScene::update(float timestep) {
                 _player->setLinearVelocity(_playerController.getMov() * 3);
             #else
                 Vec3 tilt = _playerController.getTiltVec();
+
                 Vec2 moveVec(tilt.x, -tilt.y);
                 _player->setForce(moveVec * 50);
+
                 _player->applyForce();
             #endif
         }
