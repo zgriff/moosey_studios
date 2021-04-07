@@ -39,7 +39,7 @@ void CollisionController::beginContact(b2Contact* contact){
         Player* p = (Player*) bd2;
         if (!o->getCollected() && p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
             o->setCollected(true);
-            p->incScore(1);
+//            p->incScore(1);
             world->setOrbCount(world->getCurrOrbCount() - 1);
             NetworkController::sendOrbCaptured(o->getID(), p->getID());
         }
@@ -49,7 +49,7 @@ void CollisionController::beginContact(b2Contact* contact){
         Player* p = (Player*) bd1;
         if (!o->getCollected() && p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
             o->setCollected(true);
-            p->incScore(1);
+//            p->incScore(1);
             world->setOrbCount(world->getCurrOrbCount() - 1);
             NetworkController::sendOrbCaptured(o->getID(), p->getID());
         }
