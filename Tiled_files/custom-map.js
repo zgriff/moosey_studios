@@ -14,6 +14,8 @@ var customMapFormat = {
         var m = {
             width: map.width,
             height: map.height,
+            totalOrbs: 0,
+            totalEggs: 0,
             boundaries: [],
             tiles: [],
             gameObjects: [],
@@ -59,6 +61,11 @@ var customMapFormat = {
                 break;
               case "GameObjects":
                 for(obj of layer.objects){
+                  if(obj.name == "egg_spawn"){
+                    m.totalEggs += 1;
+                  }else if(obj.name == "active_orb" || obj.name == "inactive_orb"){
+                    m.totalOrbs += 1;
+                  }
                   m.gameObjects.push({
                     x: obj.x,
                     y: obj.y,
@@ -82,16 +89,6 @@ var customMapFormat = {
               default:
                 break;
             }
-            // if (layer.isTileLayer) {
-            //     var rows = [];
-            //     for (y = 0; y < layer.height; ++y) {
-            //         var row = [];
-            //         for (x = 0; x < layer.width; ++x)
-            //             row.push(layer.cellAt(x, y).tileId);
-            //         rows.push(row);
-            //     }
-            //     m.layers.push(rows);
-            // }
         }
 
         var file = new TextFile(fileName, TextFile.WriteOnly);
