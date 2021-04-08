@@ -2,3 +2,6 @@
 obj
 
 Roshamboogie/cugl/external/slikenet/Lib/LibStatic/x64/*
+Roshamboogie/build-win10/Lib/SLikeNet_LibStatic_Debug_x64.idb
+Roshamboogie/build-win10/Lib/SLikeNet_LibStatic_Debug_x64.lib
+Roshamboogie/build-win10/Lib/SLikeNet_LibStatic_Debug_x64.pdb
