@@ -23,6 +23,16 @@ constexpr uint8_t MAX_ORBS = 20;
 /** Maximum number of swap stations per game */
 constexpr uint8_t MAX_SWAP_STATIONS = 5;
 
+constexpr float  TILE_TO_BOX2D = 30.0f/40.0f;
+
+constexpr float  TILE_TO_SCENE = 30.0f;
+
+constexpr float  SCENE_TO_BOX2D = 1.0f/40.0f;
+
+constexpr float  BOX2D_TO_SCENE = 40.0f;
+
+
+
 }
 
 #endif /* Globals_h */

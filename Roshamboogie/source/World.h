@@ -30,7 +30,9 @@ protected:
     /** The bounds of this level in physics coordinates */
     Rect _bounds;
     /** The level drawing scale (difference between physics and drawing coordinates) */
-    Vec2 _scale;
+//    Vec2 _scale;
+    
+    Vec2 _sceneSize;
     
     /** Reference to the physics root of the scene graph */
     std::shared_ptr<cugl::scene2::SceneNode> _worldNode;
@@ -54,7 +56,7 @@ protected:
     
     bool _debug;
     
-//    float _scale;
+    float _scale;
     uint8_t _numPlayers;
     
 #pragma mark Internal Helpers
@@ -93,20 +95,6 @@ protected:
 public:
 #pragma mark -
 #pragma mark Constructors
-//    World(){}
-//    ~World() { dispose(); }
-//    void dispose();
-    
-//    bool init(int width, int height);
-//
-//    static std::shared_ptr<World> alloc(const std::shared_ptr<cugl::AssetManager>& assets, int width, int height, float scale, uint8_t numPlayers){
-//        std::shared_ptr<World> result = std::make_shared<World>();
-//        result->_assets = assets;
-//        result->_scale = scale;
-//        result->_numPlayers = numPlayers;
-//        return (result->init(width, height) ? result : nullptr);
-//    }
-//
     /**
      * Creates a new game level with no source file.
      *
@@ -151,7 +139,7 @@ public:
      *
      * @return the drawing scale for this game level
      */
-    const Vec2& getDrawScale() const { return _scale; }
+    const float getDrawScale() const { return _scale; }
 
     /**
      * Sets the drawing scale for this game level
@@ -190,7 +178,7 @@ public:
      * @retain  a reference to this scene graph node
      * @release the previous scene graph node used by this object
      */
-    void setRootNode(const std::shared_ptr<scene2::SceneNode>& root);
+    void setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float scale);
 
     /**
      * Sets the loaded assets for this game level
@@ -233,6 +221,8 @@ public:
     std::shared_ptr<cugl::physics2::ObstacleWorld> getPhysicsWorld(){
         return _physicsWorld;
     }
+    
+    const Vec2& getSceneSize() const {return _sceneSize;}
 
     const Rect& getBounds() const   { return _bounds; }
     

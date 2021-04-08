@@ -202,7 +202,7 @@ public:
      * This method is for graceful handling of different aspect
      * ratios
      */
-    cugl::Size computeActiveSize() const;
+    cugl::Size computeActiveSize(float w, float h) const;
     
     void setMovementStyle(int m);
     

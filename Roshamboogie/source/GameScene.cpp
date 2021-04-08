@@ -86,23 +86,24 @@ float WALL[WALL_COUNT][WALL_VERTS] = {
  */
 bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Initialize the scene to a locked width
-    Size dimen = computeActiveSize();
+    //create world
+    _world = assets->get<World>(GRASS_MAP_KEY);
+    if (_world == nullptr) {
+        CULog("Fail!");
+        return false;
+    }
+    float w = _world->getSceneSize().x;
+    float h = _world->getSceneSize().y;
+    
+    Size dimen = computeActiveSize(w,h);
     Rect rect(0,0,DEFAULT_WIDTH,DEFAULT_HEIGHT);
     if (assets == nullptr) {
         return false;
     } else if (!Scene2::init(dimen)) {
         return false;
     }
+
     
-    _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
-    
-    //create world
-//    world = World::alloc(assets, DEFAULT_WIDTH, DEFAULT_HEIGHT, _scale, NetworkController::getNumPlayers());
-    _world = assets->get<World>(GRASS_MAP_KEY);
-    if (_world == nullptr) {
-        CULog("Fail!");
-        return false;
-    }
     NetworkController::setWorld(_world);
     
     // Start up the input handler
@@ -131,6 +132,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     auto world = _world->getPhysicsWorld();
     world->activateCollisionCallbacks(true);
+    _scale = dimen.width == SCENE_WIDTH ? dimen.width/world->getBounds().getMaxX() : dimen.height/world->getBounds().getMaxY();
     if(NetworkController::isHost()){
         world->onBeginContact = [this](b2Contact* contact) {
             CollisionController::beginContact(contact);
@@ -148,13 +150,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _rootnode = scene2::SceneNode::alloc();
     _rootnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
     _rootnode->setPosition(offset);
-//    auto _worldnode = _world->getSceneNode();
-//    _worldnode->setPosition(offset);
     
     _debugnode = _world->getDebugNode();
 //    addChild(scene_background);
-//    addChild(_worldnode);
-//    addChild(_debugnode);
     addChild(_rootnode);
     addChild(scene_ui);
     _rootnode->setContentSize(Size(SCENE_WIDTH,SCENE_HEIGHT));
@@ -189,7 +187,7 @@ void GameScene::dispose() {
  * Resets the status of the game so that we can play again.
  */
 void GameScene::reset() {
-    _world->setRootNode(_rootnode);
+    _world->setRootNode(_rootnode,_scale);
     
     auto idopt = NetworkController::getPlayerId();
     if(idopt.has_value()){
@@ -451,14 +449,14 @@ void GameScene::setMovementStyle(int m) {
  * This method is for graceful handling of different aspect
  * ratios
  */
-Size GameScene::computeActiveSize() const {
+Size GameScene::computeActiveSize(float w, float h) const {
     Size dimen = Application::get()->getDisplaySize();
     float ratio1 = dimen.width/dimen.height;
-    float ratio2 = ((float)SCENE_WIDTH)/((float)SCENE_HEIGHT);
+    float ratio2 = ((float)w)/((float)h);
     if (ratio1 < ratio2) {
-        dimen *= SCENE_WIDTH/dimen.width;
+        dimen *= w/dimen.width;
     } else {
-        dimen *= SCENE_HEIGHT/dimen.height;
+        dimen *= h/dimen.height;
     }
     return dimen;
 }
