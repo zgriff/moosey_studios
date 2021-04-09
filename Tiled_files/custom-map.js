@@ -1,11 +1,11 @@
 const TILE_MAP = {
-  0: "grass"
+  2: "grass"
 }
 
 const DECORATION_MAP = {
-  0: "tree",
-  1: "tree2",
-  2: "tree3"
+  1: "tree",
+  2: "tree2",
+  3: "tree3"
 }
 
 const TILE_SIZE = 50;
