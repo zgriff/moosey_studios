@@ -5,8 +5,10 @@ const TILE_MAP = {
 const DECORATION_MAP = {
   0: "tree",
   1: "tree2",
-  3: "tree3"
+  2: "tree3"
 }
+
+const TILE_SIZE = 50;
 
 var customMapFormat = {
     name: "Roshamboogie map format",
@@ -14,7 +16,7 @@ var customMapFormat = {
 
     write: function(map, fileName) {
       let flipY = function(y){
-        return map.height * 30 - y;
+        return map.height * TILE_SIZE - y;
       };
         var m = {
             width: map.width,
@@ -57,12 +59,17 @@ var customMapFormat = {
                 break;
               case "Decorations":
                 for(obj of layer.objects){
-                  m.decorations.push({
-                    x: obj.x,
-                    y: flipY(obj.y),
-                    asset: DECORATION_MAP[obj.tile.id]
-                  });
+                  if(obj.tile.id in DECORATION_MAP){
+                    m.decorations.push({
+                      x: obj.x + obj.width/2,
+                      y: flipY(obj.y - obj.height / 2),
+                      asset: DECORATION_MAP[obj.tile.id]
+                    });
+                  }
                 }
+                m.decorations.sort(function(e1, e2){
+                  return e2.y - e1.y;
+                });
                 break;
               case "GameObjects":
                 for(obj of layer.objects){
