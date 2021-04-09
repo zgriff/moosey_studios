@@ -3,7 +3,9 @@ const TILE_MAP = {
 }
 
 const DECORATION_MAP = {
-  0: "tree"
+  0: "tree",
+  1: "tree2",
+  3: "tree3"
 }
 
 var customMapFormat = {
@@ -11,6 +13,9 @@ var customMapFormat = {
     extension: "json",
 
     write: function(map, fileName) {
+      let flipY = function(y){
+        return map.height * 30 - y;
+      };
         var m = {
             width: map.width,
             height: map.height,
@@ -31,20 +36,20 @@ var customMapFormat = {
                   if(obj.shape == MapObject.Rectangle){
                     boundary = [{
                       x: obj.x,
-                      y: obj.y
+                      y: flipY(obj.y)
                     },{
                       x: obj.x + obj.width,
-                      y: obj.y
+                      y: flipY(obj.y)
                     },{
                       x: obj.x,
-                      y: obj.y + obj.height
+                      y: flipY(obj.y + obj.height)
                     },{
                       x: obj.x + obj.width,
-                      y: obj.y + obj.height
+                      y: flipY(obj.y + obj.height)
                     }];
                   }else if(obj.shape == MapObject.Polygon){
                     for(point of obj.polygon){
-                      boundary.push({x: point.x, y: point.y});
+                      boundary.push({x: point.x + obj.x, y: flipY(point.y + obj.y)});
                     }
                   }
                   m.boundaries.push(boundary)
@@ -54,7 +59,7 @@ var customMapFormat = {
                 for(obj of layer.objects){
                   m.decorations.push({
                     x: obj.x,
-                    y: obj.y,
+                    y: flipY(obj.y),
                     asset: DECORATION_MAP[obj.tile.id]
                   });
                 }
@@ -68,7 +73,7 @@ var customMapFormat = {
                   }
                   m.gameObjects.push({
                     x: obj.x,
-                    y: obj.y,
+                    y: flipY(obj.y),
                     type: obj.name
                   });
                 }
@@ -79,7 +84,7 @@ var customMapFormat = {
                     if(layer.tileAt(x,y) != null){
                       m.tiles.push({
                         x: x,
-                        y: y,
+                        y: map.height - y,
                         asset: TILE_MAP[layer.tileAt(x,y).id]
                       });
                     }
