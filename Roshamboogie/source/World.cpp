@@ -128,7 +128,8 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size playerSize(1, 2);
-    _numPlayers = 4;//TODO: delete once _numPlayers is locked in by lobby
+//    _numPlayers = 4;//TODO: delete once _numPlayers is locked in by lobby
+    CULog("numpy : %i", _numPlayers);
     for(int i = 0; i < _numPlayers; ++i){
         if (_playerSpawns.size()-1>=i) {
             playerPos = _playerSpawns[i];
