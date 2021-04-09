@@ -206,6 +206,10 @@ public:
         return _orbs[id];
     }
     
+    int getNumOrbs() {
+        return (int)_orbs.size();
+    }
+    
     std::shared_ptr<Egg> getEgg(int id){
         return _eggs[id];
     }

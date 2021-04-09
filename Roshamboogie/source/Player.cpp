@@ -160,6 +160,7 @@ void Player::update(float delta) {
         _sceneNode->setPosition(getPosition()*_drawscale);
         _sceneNode->setAngle(getAngle());
     }
+//    CULog("play pos: x: %f  y:%f",getPosition().x,getPosition().y);
     _trauma = max(0.0f, _trauma - TRAUMA_RECOVERY);
 }
 

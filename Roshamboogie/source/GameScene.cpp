@@ -311,7 +311,7 @@ void GameScene::update(float timestep) {
 //    }
     
     if(NetworkController::isHost()){
-        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
+        for(int i = 0; i < _world->getNumOrbs(); ++i){ //TODO: This is temporary;
             auto orb = _world->getOrb(i);
             if(orb->getCollected()) {
                 orb->respawn();

@@ -117,6 +117,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     
     for(auto it = _swapStations.begin(); it != _swapStations.end(); ++it) {
         std::shared_ptr<SwapStation> station = *it;
+        station->setDimension(swapStTexture->getSize() / _scale);
         _physicsWorld->addObstacle(station);
         station->setDrawScale(_scale);
         station->setActive(true);
@@ -221,10 +222,6 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
     auto walls = json->get(WALLS_FIELD);
     if (walls != nullptr) {
         loadWalls(walls);
-//        int wsize = (int)walls->size();
-//        for(int ii = 0; ii < wsize; ii++) {
-//            loadWall(walls->get(ii));
-//        }
     } else {
         CUAssertLog(false, "Failed to load walls");
         return false;
@@ -327,18 +324,11 @@ bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
     bool success = true;
     CULog("loading wall");
     
-//    std::shared_ptr<Texture> image = _assets->get<Texture>("earth");
-//    std::shared_ptr<scene2::PolygonNode> sprite;
-//    std::shared_ptr<scene2::WireNode> draw;
     std::string wname = "wall";
     
     auto wsize = json->size();
-    
-//    std::string wal = ;
-//    float walls[wsize][json->get(0)->asFloatArray().size()];
-//
+    std::vector<Vec2> points;
     for (int ii = 0; ii<wsize ; ii++) {
-        std::vector<Vec2> points;
         for (int jj = 0; jj<json->get(ii)->size(); jj++) {
             points.push_back(Vec2(json->get(ii)->get(jj)->getFloat("x")*globals::SCENE_TO_BOX2D,json->get(ii)->get(jj)->getFloat("y")*globals::SCENE_TO_BOX2D));
         }
@@ -358,9 +348,6 @@ bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
 
         // Set the physics attributes
         wallobj->setBodyType(b2_staticBody);
-//        wallobj->setDensity(BASIC_DENSITY);
-//        wallobj->setFriction(BASIC_FRICTION);
-//        wallobj->setRestitution(BASIC_RESTITUTION);
 
         wall *= _scale;
         _walls.push_back(wallobj);
