@@ -109,15 +109,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         CULog("Finish to %s", value.c_str());
         NetworkController::joinGame(value);
         //this->_active = false;
-        clock_t oldTime = clock();
-        while (clock() - oldTime < 2 * CLOCKS_PER_SEC) {
-            NetworkController::step();
-        }
-        if (NetworkController::getNumPlayers() > 1) {
-////            _joinButton->dispose();
-        this->_active = false;
-        }
-        });
+    });
     
     
     

@@ -96,7 +96,6 @@ void LobbyScene::dispose() {
  * @param timestep  The amount of time (in seconds) since the last frame
  */
 void LobbyScene::update(float progress) {
-    NetworkController::step();
     if (_currRoomId == "") {
         _currRoomId = NetworkController::getRoomId();
         stringstream ss;
