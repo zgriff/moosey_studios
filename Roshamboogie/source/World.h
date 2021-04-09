@@ -48,11 +48,13 @@ protected:
     
     std::vector<std::shared_ptr<physics2::PolygonObstacle>> _walls;
     
-    std::vector<Vec2> _playerSpawns;
-    
     std::vector<std::shared_ptr<Player>> _players;
     
+    std::vector<Vec2> _playerSpawns;
+    
     std::vector<std::shared_ptr<Orb>> _orbs;
+    
+    std::vector<Vec2> _orbSpawns;
     
     std::vector<std::shared_ptr<SwapStation>> _swapStations;
     
@@ -73,6 +75,8 @@ protected:
     bool loadGameObject(const std::shared_ptr<JsonValue>& json);
     
     bool loadOrb(const std::shared_ptr<JsonValue>& json);
+    
+    bool loadOrbLoc(const std::shared_ptr<JsonValue>& json);
     
     bool loadStation(const std::shared_ptr<JsonValue>& json);
     
