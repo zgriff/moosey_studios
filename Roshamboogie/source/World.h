@@ -64,7 +64,7 @@ protected:
     
     bool loadPlayerSpawn(const std::shared_ptr<JsonValue>& json);
     
-    bool loadWall(const std::shared_ptr<JsonValue>& json);
+    bool loadWalls(const std::shared_ptr<JsonValue>& json);
     
     bool loadGameObject(const std::shared_ptr<JsonValue>& json);
     
@@ -237,6 +237,7 @@ public:
     }
     void setDebug(bool value) { _debug = value; _debugNode->setVisible(value); }
     
+    bool getDebug() const {return _debug;}
     
 #pragma mark -
 #pragma mark Asset Loading

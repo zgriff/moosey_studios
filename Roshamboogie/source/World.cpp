@@ -73,39 +73,60 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     auto swapStTexture = _assets->get<Texture>("swapstation");
     auto eggTexture = _assets->get<Texture>("egg");
 //
-//    for(auto it = _walls.begin(); it != _walls.end(); ++it) {
-//        std::shared_ptr<physics2::PolygonObstacle> wall = *it;
-//        auto sprite = scene2::PolygonNode::allocWithTexture(_assets->get<Texture>("earth"));
+    for(auto it = _walls.begin(); it != _walls.end(); ++it) {
+        std::shared_ptr<physics2::PolygonObstacle> wall = *it;
+        auto sprite = scene2::PolygonNode::allocWithTexture(_assets->get<Texture>("earth"),wall->getPolygon()*_scale);
+    
+        _physicsWorld->addObstacle(wall);
+        wall->setDebugScene(_debugNode);
+
+        sprite->setPosition(wall->getPosition()*_scale);
+        _worldNode->addChild(sprite,1);
 //        addObstacle(wall,sprite,1);   // PUT SAME TEXTURES IN SAME LAYER!!!
-//    }
+    }
     
     for(auto it = _eggs.begin(); it != _eggs.end(); ++it) {
         std::shared_ptr<Egg> egg = *it;
         _physicsWorld->addObstacle(egg);
         egg->setTextures(eggTexture);
+        egg->setDrawScale(_scale);
+        egg->setActive(true);
+        egg->setDebugColor(Color4::YELLOW);
+        egg->setDebugScene(_debugNode);
+        egg->setID(0);
 //        auto sprite = scene2::PolygonNode::allocWithTexture(_assets->get<Texture>("egg"));
-        addObstacle(egg,egg->getSceneNode(),2);   // PUT SAME TEXTURES IN SAME LAYER!!!
+        _worldNode->addChild(egg->getSceneNode(),1);   // PUT SAME TEXTURES IN SAME LAYER!!!
     }
     
     int counter = 0;
     for(auto it = _orbs.begin(); it != _orbs.end(); ++it) {
         std::shared_ptr<Orb> orb = *it;
-        orb->setID(counter);
 //        orb->setTextures(_assets->get<Texture>("swaporb"));
         CULog("orb pos x: %f y: %f", orb->getPosition().x, orb->getPosition().y);
         _physicsWorld->addObstacle(orb);
+        orb->setDrawScale(_scale);
+        orb->setActive(true);
+        orb->setDebugColor(Color4::YELLOW);
+        orb->setDebugScene(_debugNode);
+        orb->setID(counter);
         orb->setTextures(orbTexture);
+        counter++;
 //        auto sprite = scene2::PolygonNode::allocWithTexture(_assets->get<Texture>("swaporb"));
-        addObstacle(orb,orb->getSceneNode(),1);
+        _worldNode->addChild(orb->getSceneNode(),1);
     }
     
     for(auto it = _swapStations.begin(); it != _swapStations.end(); ++it) {
         std::shared_ptr<SwapStation> station = *it;
-//        station->setTextures(_assets->get<Texture>("swapstation"));
         _physicsWorld->addObstacle(station);
+        station->setDrawScale(_scale);
+        station->setActive(true);
+        station->setDebugColor(Color4::YELLOW);
+        station->setDebugScene(_debugNode);
+        station->setID(0);
         station->setTextures(swapStTexture);
-//        auto sprite = scene2::PolygonNode::allocWithTexture(_assets->get<Texture>("swapstation"));
-        addObstacle(station,station->getSceneNode(),1);
+        CULog("station pos x: %f y: %f", station->getSceneNode()->getPosition().x, station->getSceneNode()->getPosition().y);
+//        addObstacle(station,station->getSceneNode(),1);
+        _worldNode->addChild(station->getSceneNode(),1);
     }
     
     Vec2 playerPos = ((Vec2)PLAYER_POS);
@@ -114,12 +135,12 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         auto player = Player::alloc(playerPos, playerSize, Element::Water);
         _physicsWorld->addObstacle(player);
         player->setTextures(playerTexture);
-        addObstacle(player, player->getSceneNode(), 2);
         player->setID(i);
         player->setDrawScale(_scale);
         player->setDebugColor(Color4::YELLOW);
         player->setDebugScene(_debugNode);
         player->allocUsernameNode(_assets->get<Font>("username"));
+        _worldNode->addChild(player->getSceneNode(),1);
         _players.push_back(player);
     }
     
@@ -197,16 +218,17 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
         return false;
     }
     
-//    auto walls = json->get(WALLS_FIELD);
-//    if (walls != nullptr) {
+    auto walls = json->get(WALLS_FIELD);
+    if (walls != nullptr) {
+        loadWalls(walls);
 //        int wsize = (int)walls->size();
 //        for(int ii = 0; ii < wsize; ii++) {
 //            loadWall(walls->get(ii));
 //        }
-//    } else {
-//        CUAssertLog(false, "Failed to load walls");
-//        return false;
-//    }
+    } else {
+        CUAssertLog(false, "Failed to load walls");
+        return false;
+    }
     
     
 //    auto tiles = json->get(TILES_FIELD);
@@ -301,51 +323,56 @@ GameObjectType World::getObjectType(std::string obj) {
 #pragma mark -
 #pragma mark Object Loading
 
-bool World::loadWall(const std::shared_ptr<JsonValue> &json) {
+bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
     bool success = true;
     CULog("loading wall");
+    
 //    std::shared_ptr<Texture> image = _assets->get<Texture>("earth");
 //    std::shared_ptr<scene2::PolygonNode> sprite;
 //    std::shared_ptr<scene2::WireNode> draw;
-//    std::string wname = "wall";
-//    int polysize = (int)json->size();
+    std::string wname = "wall";
     
+    auto wsize = json->size();
     
-    
-//    for (int ii = 0; ii<; ii++) {
-//        std::shared_ptr<physics2::PolygonObstacle> wallobj;
+//    std::string wal = ;
+//    float walls[wsize][json->get(0)->asFloatArray().size()];
 //
-//        Poly2 wall(WALL[ii],WALL_VERTS);
-//        // Call this on a polygon to get a solid shape
-//        SimpleTriangulator triangulator;
-//        triangulator.set(wall);
-//        triangulator.calculate();
-//        wall.setIndices(triangulator.getTriangulation());
-//        wall.setGeometry(Geometry::SOLID);
-//
-//        wallobj = physics2::PolygonObstacle::alloc(wall);
-//        wallobj->setDebugColor(Color4::WHITE);
-//        // You cannot add constant "".  Must stringify
-//        wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
-//        wallobj->setName(wname);
-//
-//        // Set the physics attributes
-//        wallobj->setBodyType(b2_staticBody);
+    for (int ii = 0; ii<wsize ; ii++) {
+        std::vector<Vec2> points;
+        for (int jj = 0; jj<json->get(ii)->size(); jj++) {
+            points.push_back(Vec2(json->get(ii)->get(jj)->getFloat("x")*globals::SCENE_TO_BOX2D,json->get(ii)->get(jj)->getFloat("y")*globals::SCENE_TO_BOX2D));
+        }
+        std::shared_ptr<physics2::PolygonObstacle> wallobj;
+        Poly2 wall(points);
+        SimpleTriangulator triangulator;
+        triangulator.set(wall);
+        triangulator.calculate();
+        wall.setIndices(triangulator.getTriangulation());
+        wall.setGeometry(Geometry::SOLID);
+
+        wallobj = physics2::PolygonObstacle::alloc(wall);
+        wallobj->setDebugColor(Color4::WHITE);
+        // You cannot add constant "".  Must stringify
+        wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
+        wallobj->setName(wname);
+
+        // Set the physics attributes
+        wallobj->setBodyType(b2_staticBody);
 //        wallobj->setDensity(BASIC_DENSITY);
 //        wallobj->setFriction(BASIC_FRICTION);
 //        wallobj->setRestitution(BASIC_RESTITUTION);
-//
-//        wall *= _scale;
-//        sprite = scene2::PolygonNode::allocWithTexture(image,wall);
-//        addObstacle(wallobj,sprite,2);
-//    }
+
+        wall *= _scale;
+        _walls.push_back(wallobj);
+        points.clear();
+    }
     
     return success;
 }
 
 bool World::loadStation(const std::shared_ptr<JsonValue> &json) {
-    float xCoord = json->getFloat(X_FIELD) * globals::TILE_TO_BOX2D;
-    float yCoord = json->getFloat(Y_FIELD) * globals::TILE_TO_BOX2D;
+    float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
+    float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
     
     // **** NEED TO CHANGE SIZE, CANNOT ACCESS _ASSETS IN LOADS
 //    auto swapStTexture = _assets->get<Texture>("swapstation");
@@ -353,18 +380,13 @@ bool World::loadStation(const std::shared_ptr<JsonValue> &json) {
 //    Size swapStSize(swapStTexture->getSize() / _scale);
     Size swapStSize(2,2);
     auto swapStation = SwapStation::alloc(swapStPos, swapStSize);
-    swapStation->setDrawScale(_scale);
-    swapStation->setActive(true);
-    swapStation->setDebugColor(Color4::YELLOW);
-    swapStation->setDebugScene(_debugNode);
-    swapStation->setID(0);
     _swapStations.push_back(swapStation);
     return true;
 }
 
 bool World::loadEgg(const std::shared_ptr<JsonValue> &json){
-    float xCoord = json->getFloat(X_FIELD) * globals::TILE_TO_BOX2D;
-    float yCoord = json->getFloat(Y_FIELD) * globals::TILE_TO_BOX2D;
+    float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
+    float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
     
     // **** NEED TO CHANGE SIZE, CANNOT ACCESS _ASSETS IN LOADS
     
@@ -373,20 +395,17 @@ bool World::loadEgg(const std::shared_ptr<JsonValue> &json){
 //    Size eggSize(eggTexture->getSize() / _scale);
     Size eggSize(1, 2);
     auto egg = Egg::alloc(eggPos, eggSize);
+    CULog("orbPos: %f   y %f",eggPos.x,eggPos.y);
+
 //    egg->setTextures(eggTexture);
-    egg->setDrawScale(_scale);
-    egg->setActive(true);
-    egg->setDebugColor(Color4::YELLOW);
-    egg->setDebugScene(_debugNode);
-    egg->setID(0);
     _eggs.push_back(egg);
     return true;
 }
 
 
 bool World::loadOrb(const std::shared_ptr<JsonValue> &json){
-    float xCoord = json->getFloat(X_FIELD) * globals::TILE_TO_BOX2D;
-    float yCoord = json->getFloat(Y_FIELD) * globals::TILE_TO_BOX2D;
+    float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
+    float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
     
     // **** NEED TO CHANGE SIZE, CANNOT ACCESS _ASSETS IN LOADS
     
@@ -394,35 +413,16 @@ bool World::loadOrb(const std::shared_ptr<JsonValue> &json){
     Vec2 orbPos = Vec2(xCoord,yCoord);
 //    Size orbSize(orbTexture->getSize() / _scale);
     Size orbSize(1, 2);
-    CULog("orbPos: %f   y %f",orbPos.x,orbPos.y);
     auto orb = Orb::alloc(orbPos);
-    orb->setDrawScale(_scale);
-    orb->setActive(true);
-    orb->setDebugColor(Color4::YELLOW);
-    orb->setDebugScene(_debugNode);
-    orb->setID(0);
     _orbs.push_back(orb);
     return true;
 }
 
-//bool World::loadPlayer(const int i, Vec2 loc){
-//    Size playerSize(1, 2);
-//    auto player = Player::alloc(loc, playerSize, Element::Water);
-//    _physicsWorld->addObstacle(player);
-//    player->setID(i);
-//    player->setDrawScale(_scale);
-//    player->setDebugColor(Color4::YELLOW);
-//    player->setDebugScene(_debugNode);
-//    player->allocUsernameNode(_assets->get<Font>("username"));
-//    _players.push_back(player);
-//    _worldNode->addChild(player->getSceneNode());
-//    return true;
-//}
 
 //Only get spawn locations from json. wait to load players until numplayers
 bool World::loadPlayerSpawn(const std::shared_ptr<JsonValue> &json) {
-    float xCoord = json->getFloat(X_FIELD) * globals::TILE_TO_BOX2D;
-    float yCoord = json->getFloat(Y_FIELD) * globals::TILE_TO_BOX2D;
+    float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
+    float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
     
     Vec2 spawnPos = Vec2(xCoord,yCoord);
     
@@ -445,7 +445,6 @@ bool World::loadGameObject(const std::shared_ptr<JsonValue>& json) {
             break;
             
         case GameObjectType::OrbSpawn:
-            CULog("spawning orb");
             success = loadOrb(json);
             break;
             
@@ -468,7 +467,7 @@ void World::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj,
     const std::shared_ptr<cugl::scene2::SceneNode>& node,
     int zOrder) {
 //    _physicsWorld->addObstacle(obj);
-    obj->setDebugScene(_debugNode);
+//    obj->setDebugScene(_debugNode);
 
     // Position the scene graph node (enough for static objects)
 //    node->setPosition(obj->getPosition()*_scale);

@@ -44,6 +44,11 @@ void SwapStation::setDrawScale(float scale) {
 }
 
 
-
+void SwapStation::update(float delta) {
+    Obstacle::update(delta);
+    if (_sceneNode != nullptr) {
+        _sceneNode->setPosition(getPosition()*_drawscale);
+    }
+}
 
 

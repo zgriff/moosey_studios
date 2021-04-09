@@ -123,6 +123,9 @@ public:
      */
     float getDrawScale() const { return _drawscale; }
     
+    void update(float delta) override;
+
+    
 };
 
 

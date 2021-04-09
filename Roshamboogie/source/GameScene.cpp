@@ -105,7 +105,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     
     NetworkController::setWorld(_world);
-    
+    _world->setNumPlayers(NetworkController::getNumPlayers());
     // Start up the input handler
     _assets = assets;
     _playerController.init();
@@ -198,7 +198,7 @@ void GameScene::reset() {
     }
     _playerController.init();
         
-    populate();
+//    populate();
     
     _world->setDebug(false);
 
@@ -207,7 +207,7 @@ void GameScene::reset() {
 
 void GameScene::update(float timestep) {
     
-    if (_playerController.didDebug()) { setDebug(!isDebug()); }
+    if (_playerController.didDebug()) { _world->setDebug(!_world->getDebug()); }
     
     // NETWORK //
     
@@ -222,8 +222,8 @@ void GameScene::update(float timestep) {
         _roomIdHUD->setText(ss.str());
     }
     
-    if (_playerController.didDebug()) { setDebug(!isDebug()); }
-    
+//    if (_playerController.didDebug()) { setDebug(!isDebug()); }
+//
     
     // BEGIN PLAYER MOVEMENT //
     
@@ -341,13 +341,13 @@ void GameScene::update(float timestep) {
             _hatchbar->dispose();
             _hatchedTime = clock();
             _egg->setHatched(true);
-            _egg->dispose();
 //            _egg->setCollected(false);
             _score += 10;
             _eggCollector->setElement(_eggCollector->getPrevElement());
             if (_egg->getPID() == _player->getID()) {
                 _hatchnode->setVisible(true);
             }
+            _egg->dispose();
             CULog("hatched");
         }
         
