@@ -23,13 +23,15 @@ using namespace cugl;
 /** The constant force applied to this rocket */
 #define DEFAULT_PLAYER_FORCE Vec2(0.0f, 8.3f)
 /** Number of rows in the player image filmstrip */
-#define PLAYER_ROWS       3
+#define PLAYER_ROWS       1
 /** Number of columns in this player image filmstrip */
-#define PLAYER_COLS       1
+#define PLAYER_COLS       8
 /** Number of elements in this player image filmstrip */
-#define PLAYER_FRAMES     3
+#define PLAYER_FRAMES     8
 /** How fast a player recovers from screen shake*/
 #define TRAUMA_RECOVERY   .005f
+/** How fast a player moves to physics body location. Between 0 and 1 */
+#define INTERPOLATION_AMOUNT 0.9f
 
 /**
  * Sets the textures for this player.
@@ -59,19 +61,16 @@ void Player::setElement(Element e){
     
     switch(e){ 
         case Element::Grass:
-            _animationNode->setFrame(2);
-            _sceneNode->setColor(Color4(255, 255, 255));
+            _animationNode->setFrame(4);
             break;
         case Element::Fire:
-            _animationNode->setFrame(0);
-            _sceneNode->setColor(Color4(255, 255, 255));
+            _animationNode->setFrame(3);
             break;
         case Element::Water:
-            _animationNode->setFrame(1);
-            _sceneNode->setColor(Color4(255, 255, 255));
+            _animationNode->setFrame(0);
             break;
         case Element::None:
-            _sceneNode->setColor(Color4(0, 0, 0));
+            _animationNode->setFrame(6);
             break;
     }
     
@@ -98,6 +97,7 @@ void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     CULog("sceneNode width %d", _sceneNode->getContentWidth());
     CULog("animationNode width %d", _animationNode->getContentWidth());*/
     _sceneNode->addChild(_usernameNode);
+    
 }
 
 /**
@@ -123,7 +123,7 @@ void Player::dispose() {
  * @return true if the initialization was successful
  */
 bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
-    if(physics2::BoxObstacle::init(pos,size)){
+    if(physics2::CapsuleObstacle::init(pos,size)){
         std::string name("player");
         setName(name);
         setDensity(DEFAULT_DENSITY);
@@ -133,9 +133,12 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         setForce(DEFAULT_PLAYER_FORCE);
         _currElt = elt;
         _prevElt = elt;
+        _score = 0;
+        _tagCooldown = 0;
         _isTagged = false;
         _didTag = false;
         _sceneNode = nullptr;
+        _positionError = Vec2::ZERO;
         return true;
     }
     return false;
@@ -157,11 +160,41 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
 void Player::update(float delta) {
     Obstacle::update(delta);
     if (_sceneNode != nullptr) {
-        _sceneNode->setPosition(getPosition()*_drawscale);
+        //interp
+//        auto dest = (getPosition()*_drawscale) + _positionError;
+//        CULog("%s\n", _positionError.toString().c_str());
+//        _positionError *= INTERPOLATION_AMOUNT;
+        if(_positionError.length() < 0.00001f){
+            _positionError.setZero();
+        }
+        _sceneNode->setPosition((getPosition() + _positionError) * _drawscale);
         _sceneNode->setAngle(getAngle());
+        
+        _positionError *= INTERPOLATION_AMOUNT;
     }
 //    CULog("play pos: x: %f  y:%f",getPosition().x,getPosition().y);
     _trauma = max(0.0f, _trauma - TRAUMA_RECOVERY);
+
+    
+    if (_isTagged) {
+        _isInvisible = true;
+        _isIntangible = true;
+        _sceneNode->setColor(Color4(255,255,255,50));
+    }
+    else {
+        _isInvisible = false;
+        _isIntangible = false;
+        _sceneNode->setColor(Color4(255,255,255,255));
+    }
+    
+    if (_isInvisible) {
+        //set invisible for other players
+        if(! _isLocal){
+            _sceneNode->setVisible(false);
+        }
+    } else {
+        _sceneNode->setVisible(true);
+    }
 }
 
 void Player::addTrauma(float t) {

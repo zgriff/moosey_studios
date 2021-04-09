@@ -97,7 +97,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         _worldNode->addChild(egg->getSceneNode(),1);
     }
     
-    int counter = 0;
+    _currOrbCount = 0;
     for(auto it = _orbs.begin(); it != _orbs.end(); ++it) {
         std::shared_ptr<Orb> orb = *it;
         _physicsWorld->addObstacle(orb);
@@ -105,16 +105,17 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         orb->setActive(true);
         orb->setDebugColor(Color4::YELLOW);
         orb->setDebugScene(_debugNode);
-        orb->setID(counter);
+        orb->setID(_currOrbCount);
         orb->setTextures(orbTexture);
-        counter++;
+        _currOrbCount = _currOrbCount + 1;
         _worldNode->addChild(orb->getSceneNode(),1);
     }
+
 
     
     for(auto it = _swapStations.begin(); it != _swapStations.end(); ++it) {
         std::shared_ptr<SwapStation> station = *it;
-        station->setDimension(swapStTexture->getSize() / _scale);
+//        station->setDimension(swapStTexture->getSize() / _scale);
         _physicsWorld->addObstacle(station);
         station->setDrawScale(_scale);
         station->setActive(true);
@@ -386,8 +387,7 @@ bool World::loadStation(const std::shared_ptr<JsonValue> &json) {
     
     // **** NEED TO CHANGE SIZE, CANNOT ACCESS _ASSETS IN LOADS
     Vec2 swapStPos = Vec2(xCoord,yCoord);
-    Size swapStSize(2,2);
-    auto swapStation = SwapStation::alloc(swapStPos, swapStSize);
+    auto swapStation = SwapStation::alloc(swapStPos);
     _swapStations.push_back(swapStation);
     return true;
 }

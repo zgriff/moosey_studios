@@ -4,6 +4,8 @@
 #include <cugl/cugl.h>
 #include "World.h"
 
+#define NETWORK_FRAMERATE 6
+
 namespace NetworkController {
 
 	void createGame();
@@ -31,6 +33,7 @@ namespace NetworkController {
     void sendPlayerColorSwap(int playerId, Element newElement, int swapId);
     void sendEggCollected(int playerId, int eggId);
     void sendOrbRespawn(int orbId, Vec2 orbPosition);
+    void sendTag(int taggedId, int taggerId, time_t timestamp);
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);
 

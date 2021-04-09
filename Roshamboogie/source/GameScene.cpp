@@ -70,6 +70,10 @@ float WALL[WALL_COUNT][WALL_VERTS] = {
 #define BASIC_FRICTION  0.4f
 /** The restitution for all physics objects */
 #define BASIC_RESTITUTION   0.1f
+/** The restitution for all physics objects */
+#define TURNS_PER_SPIN   55.0f
+/** how much the lateral velocity is subtracted per frame*/
+#define KINETIC_FRICTION 1.4f
 
 #pragma mark -
 #pragma mark Constructors
@@ -106,18 +110,21 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     NetworkController::setWorld(_world);
     _world->setNumPlayers(NetworkController::getNumPlayers());
+
+    SpawnController::setWorld(_world);
+    CollisionController::setWorld(_world);
+    
     // Start up the input handler
     _assets = assets;
     _playerController.init();
-
     // Acquire the scene built by the asset loader and resize it the scene
 //    auto scene_background = _assets->get<scene2::SceneNode>("background");
 //    scene_background->setContentSize(dimen);
 //    scene_background->doLayout(); // Repositions the HUD;
     
-    auto scene_ui = _assets->get<scene2::SceneNode>("ui");
-    scene_ui->setContentSize(dimen);
-    scene_ui->doLayout(); // Repositions the HUD;
+    _UInode = _assets->get<scene2::SceneNode>("ui");
+    _UInode->setContentSize(dimen);
+    _UInode->doLayout(); // Repositions the HUD;
 
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
     
@@ -128,7 +135,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _hatchnode = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_hatched"));
     _hatchnode->setVisible(false);
     
-    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
+//    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
     
     auto world = _world->getPhysicsWorld();
     world->activateCollisionCallbacks(true);
@@ -154,12 +161,12 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _debugnode = _world->getDebugNode();
 //    addChild(scene_background);
     addChild(_rootnode);
-    addChild(scene_ui);
     _rootnode->setContentSize(Size(w,h));
-    scene_ui->setContentSize(Size(w,h));
     
     _world->setAssets(_assets);
     
+
+    addChild(_UInode);
     reset();
     return true;
 }
@@ -195,11 +202,10 @@ void GameScene::reset() {
         CULog("playerid: %i",idopt.value());
         auto _player = _world->getPlayer(idopt.value());
         _player->setUsername(NetworkController::getUsername());
+        _player->setIsLocal(true);
         getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
     }
     _playerController.init();
-        
-//    populate();
     
     _world->setDebug(false);
 
@@ -216,17 +222,17 @@ void GameScene::update(float timestep) {
     _roomIdHUD->setText(currRoomId);*/
 //    NetworkController::step();
     NetworkController::update(timestep);
-    if (_currRoomId == "") {
-        _currRoomId = NetworkController::getRoomId();
-        stringstream ss;
-        ss << "Room Id: " << _currRoomId;
-        _roomIdHUD->setText(ss.str());
-    }
-    
-//    if (_playerController.didDebug()) { setDebug(!isDebug()); }
-//
-    
-    // BEGIN PLAYER MOVEMENT //
+
+//    if (_currRoomId == "") {
+//        _currRoomId = NetworkController::getRoomId();
+//        stringstream ss;
+//        ss << "Room Id: " << _currRoomId;
+//        _roomIdHUD->setText(ss.str());
+//    }
+        
+
+
+        // BEGIN PLAYER MOVEMENT //
     
     auto playerId_option = NetworkController::getPlayerId();
     if(! playerId_option.has_value()) return;
@@ -236,27 +242,45 @@ void GameScene::update(float timestep) {
     _playerController.readInput();
     switch (_playerController.getMoveStyle()) {
         case Movement::AlwaysForward: {
-            auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
+            auto ang = _player->getAngle() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
             _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
             
             auto vel = _player->getLinearVelocity();
+            //Please don't delete this comment, angles were difficult to derive and easy to forget
+            //vel angle originates from x axis, player angle orginates from y axis
             auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
-            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .02f);
+
+            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset));
+            if (correction.length() > KINETIC_FRICTION) {
+                correction.scale( KINETIC_FRICTION / correction.length());
+            }
             _player->setLinearVelocity(vel.add(correction));
+
             if (_playerController.getMov().x == 0) {
-                //if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
+                //constant acceleration
+                //_player->applyForce();
+
+                auto big = _player->getMass();
+
+                //accelerate to a maximum velocity
+                auto forForce = _player->getForce();
+                auto scaling = _player->getForce();
+                //scaling.normalize().scale(0.05f * pow(30.0f - vel.length(), 2.0f));
+                scaling.normalize().scale(_player->getMass() * 0.32f * (26.0f - vel.length()));
+                //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
+                _player->setForce(scaling);
                 _player->applyForce();
-                //}
+                _player->setForce(forForce);
             }
             else {
                 auto forForce = _player->getForce();
-                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * -1.1f);
-                if (_playerController.getMov().x > 0) {
+                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * 2.0f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN));
+                if (_playerController.getMov().x < 0) {
                     turnForce.scale(-1.0f);
                 }
                 if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
-                    turnForce.scale(-1.0f);
+                    //turnForce.scale(-1.0f);
                     _player->applyForce();
                 }
                 _player->setForce(turnForce);
@@ -265,7 +289,7 @@ void GameScene::update(float timestep) {
             }
             break;
         }
-        case Movement::SwipeForce:{
+        case Movement::SwipeForce: {
             #ifndef CU_MOBILE
                 _player->setLinearVelocity(_playerController.getMov() * 3);
             #else
@@ -281,8 +305,26 @@ void GameScene::update(float timestep) {
                 _player->setLinearVelocity(_playerController.getMov() * 3);
             #else
                 Vec3 tilt = _playerController.getTiltVec();
+
                 Vec2 moveVec(tilt.x, -tilt.y);
                 _player->setForce(moveVec * 50);
+
+                _player->applyForce();
+            #endif
+        }
+        case Movement::GolfMove:{
+            #ifndef CU_MOBILE
+                _player->setLinearVelocity(_playerController.getMov() * 3);
+            #else
+                Vec2 _moveVec;
+                if (_playerController.getMov().x == 0) {
+                    _moveVec = Vec2(-5*_player->getVX(),-5*_player->getVY());
+                } else  {
+                    Vec2 moveVec = _playerController.getMoveVec();
+                    _moveVec = Vec2(moveVec.x, -moveVec.y);
+                    _moveVec =  _moveVec*10;
+                }
+                _player->setForce(_moveVec);
                 _player->applyForce();
             #endif
         }
@@ -292,46 +334,53 @@ void GameScene::update(float timestep) {
     
     _world->getPhysicsWorld()->update(timestep);
 
-    auto after = _player->getSceneNode()->getPosition();
+
+    auto playPos = _player->getSceneNode()->getPosition();
     auto camSpot = getCamera()->getPosition();
-    auto trans = after - camSpot;
-    getCamera()->translate(trans*.05f);
+    auto trans = (playPos - camSpot)*.07f;
+    getCamera()->translate(trans);
     getCamera()->update();
+    _UInode->setPosition(camSpot + trans - Vec2(SCENE_WIDTH/2.0f, SCENE_HEIGHT/2.0f));
 
 
-//    if(NetworkController::isHost()){
-//        if (orbShouldMove) {
-//            std::random_device r;
-//            std::default_random_engine e1(r());
-//            std::uniform_int_distribution<int> rand_int(1, 31);
-//            std::uniform_int_distribution<int> rand_int2(1, 17);
-//            _orbTest->setPosition(rand_int(e1), rand_int2(e1));
-//        }
-//
-//        orbShouldMove = false;
-//    }
     
     if(NetworkController::isHost()){
-        for(int i = 0; i < _world->getNumOrbs(); ++i){ //TODO: This is temporary;
-            auto orb = _world->getOrb(i);
-            if(orb->getCollected()) {
-                orb->respawn();
-                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
-                _score += 1;
-            }
-            orb->setCollected(false);
 
+//        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
+//            auto orb = world->getOrb(i);
+//            if(orb->getCollected()) {
+//                orb->respawn();
+//                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
+//            }
+//            orb->setCollected(false);
+//
+//        }
+        std::random_device r;
+        std::default_random_engine e1(r());
+        std::uniform_int_distribution<int> prob(0,100);
+//        CULog("prob %d", prob(e1));
+        if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
+            CULog("curr orbs %d", _world->getCurrOrbCount());
+            if (_world->getCurrOrbCount() < _world->getNumOrbs()) {
+                SpawnController::spawnOrbs();
+            }
         }
+    
     }
     
     
     //egg hatch logic
+
+    //TODO: change to allow multiple eggs
     auto _egg = _world->getEgg(0);
     if (_egg->getCollected() && _egg->getHatched() == false) {
         std::shared_ptr<Player> _eggCollector = _world->getPlayer(_egg->getPID());
         _egg->setPosition(_eggCollector->getPosition());
         if (_egg->getPID() == _player->getID()) {
             _hatchbar->setVisible(true);
+        }
+        else {
+            _hatchbar->setVisible(false);
         }
         _hatchbar->setProgress(_egg->getDistanceWalked()/80);
         Vec2 diff = _eggCollector->getPosition() - _egg->getInitPos();
@@ -340,42 +389,43 @@ void GameScene::update(float timestep) {
         _egg->setInitPos(_eggCollector->getPosition());
         if (_egg->getDistanceWalked() >= 80) {
             _hatchbar->dispose();
-            _hatchedTime = clock();
+            _hatchedTime = time(NULL);
             _egg->setHatched(true);
 //            _egg->setCollected(false);
-            _score += 10;
             _eggCollector->setElement(_eggCollector->getPrevElement());
             if (_egg->getPID() == _player->getID()) {
                 _hatchnode->setVisible(true);
+                _player->incScore(10);
             }
             _egg->dispose();
-            CULog("hatched");
+
         }
         
     }
     
-    if (clock() - _hatchedTime >= _hatchTextTimer) {
+    if (time(NULL) - _hatchedTime >= _hatchTextTimer) {
         _hatchnode->setVisible(false);
     }
     
-
+    //cooldown for player after it's tagged
+    for(auto p : _world->getPlayers()){
+        if (p->getIsTagged()) {
+            if (time(NULL) - p->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
+                CULog("not tagged");
+    //            _player->getSceneNode()->setVisible(false);
+                p->setIsTagged(false);
+            }
+        }
+    }
     
-    // player tagging
-//    if (_player->getDidTag()) {
-//        _score += 15;
-//    }
-//    if (_player->getIsTagged()) {
-//        _player->setPosition(Vec2(20,10));
-//    }
-//    if (_player2->getIsTagged()) {
-//        _player2->setPosition(Vec2(20,10));
-//    }
 
-    _scoreHUD->setText(updateScoreText(_score));
+    _scoreHUD->setText(updateScoreText(_player->getScore()));
     
     //send new position
+    //TODO: only every few frames
     NetworkController::sendPosition();
 }
+
 
 void GameScene::populate() {
     std::shared_ptr<Texture> image = _assets->get<Texture>("earth");

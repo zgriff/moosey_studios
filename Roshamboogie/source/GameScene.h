@@ -13,6 +13,7 @@
 #include <time.h>
 #include "InputController.h"
 #include "CollisionController.h"
+#include "SpawnController.h"
 #include "Player.h"
 #include "Orb.h"
 #include "NetworkController.h"
@@ -38,10 +39,9 @@ protected:
     
     std::shared_ptr<World> _world;
     
-    std::shared_ptr<cugl::scene2::Label> _hatchnode;
-    
-    std::shared_ptr<cugl::scene2::ProgressBar>  _hatchbar;
-    
+    /** Reference to the UI node that moves synchronously with the camera */
+    std::shared_ptr<cugl::scene2::SceneNode> _UInode;
+
     /** Reference to the debug root of the scene graph */
     std::shared_ptr<cugl::scene2::SceneNode> _debugnode;
     
@@ -49,10 +49,16 @@ protected:
     float _scale;
 
     std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
+
+    std::shared_ptr<cugl::scene2::Label> _hatchnode;
+
+    std::shared_ptr<cugl::scene2::ProgressBar>  _hatchbar;
     std::string _currRoomId;
     
-    clock_t _hatchTextTimer = CLOCKS_PER_SEC;
-    clock_t _hatchedTime;
+    time_t _hatchTextTimer = 5; //5 secs
+    time_t _hatchedTime;
+
+    std::shared_ptr<cugl::scene2::Label> _scoreHUD;
     
     /** Whether or not debug mode is active */
     bool _debug;
@@ -79,12 +85,7 @@ protected:
 //    std::shared_ptr<SwapStation> _swapStation;
 //
 //    std::shared_ptr<Egg> _egg;
-    
-    std::shared_ptr<cugl::scene2::Label> _scoreHUD;
-    
-    int _score = 0;
-    
-    
+
     /** The weapon fire sound for the blue player */
 //    std::shared_ptr<cugl::Sound> _blueSound;
     bool swap = false;

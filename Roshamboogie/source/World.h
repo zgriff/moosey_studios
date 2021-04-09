@@ -59,11 +59,15 @@ protected:
     std::vector<std::shared_ptr<SwapStation>> _swapStations;
     
     std::vector<std::shared_ptr<Egg>> _eggs;
-    
+        
     bool _debug;
+    
+    std::random_device r;
     
     float _scale;
     uint8_t _numPlayers;
+    uint8_t _currOrbCount;
+
     
 #pragma mark Internal Helpers
     bool loadPlayer(const int i, Vec2 loc);
@@ -98,7 +102,6 @@ protected:
      */
     void clearRootNode();
 
-    
 
 public:
 #pragma mark -
@@ -210,6 +213,10 @@ public:
         return _players[id];
     }
     
+    std::vector<std::shared_ptr<Player>> getPlayers(){
+        return _players;
+    }
+    
     std::shared_ptr<Orb> getOrb(int id){
         return _orbs[id];
     }
@@ -217,6 +224,23 @@ public:
     int getNumOrbs() {
         return (int)_orbs.size();
     }
+    
+    std::vector<std::shared_ptr<Orb>> getOrbs(){
+        return _orbs;
+    }
+    
+    uint8_t getCurrOrbCount() {
+        return _currOrbCount;
+    }
+    
+    void setOrbCount(int c) {
+        _currOrbCount = c;
+    }
+    
+    void addOrb(Vec2 pos);
+    
+    float getScale() { return _scale; }
+    
     
     std::shared_ptr<Egg> getEgg(int id){
         return _eggs[id];
@@ -229,6 +253,7 @@ public:
     std::shared_ptr<cugl::scene2::SceneNode> getSceneNode(){
         return _worldNode;
     }
+    
     
     std::shared_ptr<cugl::physics2::ObstacleWorld> getPhysicsWorld(){
         return _physicsWorld;
@@ -301,6 +326,7 @@ public:
      * Destroys this level, releasing all resources.
      */
     virtual ~World(void);
+
 };
 
 
