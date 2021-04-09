@@ -42,6 +42,10 @@ protected:
     /** The Box2D world */
     std::shared_ptr<cugl::physics2::ObstacleWorld> _physicsWorld;
     
+    std::vector<std::tuple<std::string,Vec2>> _bgTiles;
+    
+    std::vector<std::tuple<std::string,Vec2>> _decorations;
+    
     std::vector<std::shared_ptr<physics2::PolygonObstacle>> _walls;
     
     std::vector<Vec2> _playerSpawns;
@@ -76,7 +80,7 @@ protected:
     
     bool loadBackground(const std::shared_ptr<JsonValue>& json);
     
-    bool loadDecorations(const std::shared_ptr<JsonValue>& json);
+    bool loadDecoration(const std::shared_ptr<JsonValue>& json);
     
     Color4 parseColor(std::string name);
     

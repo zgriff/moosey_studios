@@ -19,13 +19,22 @@
             "file": "textures/target.png"
         },
         "grass": {
-            "file":  "textures/grass.png"
+            "file":  "textures/grass_texture.png"
         },
         "swapstation": {
             "file": "textures/swapst.png"
         },
         "wall": {
             "file": "textures/barrier.png"
+        },
+        "tree": {
+            "file": "textures/tree1.png"
+        },
+        "tree2": {
+            "file": "textures/tree2.png"
+        },
+        "tree3": {
+            "file": "textures/tree3.png"
         },
         "earth": {
             "file": "textures/earthtile.png",

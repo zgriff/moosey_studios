@@ -132,7 +132,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     auto world = _world->getPhysicsWorld();
     world->activateCollisionCallbacks(true);
-    _scale = dimen.width == SCENE_WIDTH ? dimen.width/world->getBounds().getMaxX() : dimen.height/world->getBounds().getMaxY();
+    _scale = dimen.width == w ? dimen.width/world->getBounds().getMaxX() : dimen.height/world->getBounds().getMaxY();
     if(NetworkController::isHost()){
         world->onBeginContact = [this](b2Contact* contact) {
             CollisionController::beginContact(contact);
@@ -145,7 +145,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         CollisionController::beforeSolve(contact,oldManifold);
     };
     
-    Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
+    Vec2 offset((dimen.width-w)/2.0f,(dimen.height-h)/2.0f);
 
     _rootnode = scene2::SceneNode::alloc();
     _rootnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
@@ -155,7 +155,8 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 //    addChild(scene_background);
     addChild(_rootnode);
     addChild(scene_ui);
-    _rootnode->setContentSize(Size(SCENE_WIDTH,SCENE_HEIGHT));
+    _rootnode->setContentSize(Size(w,h));
+    scene_ui->setContentSize(Size(w,h));
     
     _world->setAssets(_assets);
     

@@ -85,6 +85,14 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
 //        addObstacle(wall,sprite,1);   // PUT SAME TEXTURES IN SAME LAYER!!!
     }
     
+    for(auto it = _bgTiles.begin(); it!= _bgTiles.end();  ++it) {
+        std::string name = get<0>(*it);
+        Vec2 pos = get<1>(*it);
+        auto sprite = scene2::PolygonNode::allocWithTexture(_assets->get<Texture>(name));
+        sprite->setPosition(pos*_scale);
+        _worldNode->addChild(sprite,0);
+    }
+    
     for(auto it = _eggs.begin(); it != _eggs.end(); ++it) {
         std::shared_ptr<Egg> egg = *it;
         _physicsWorld->addObstacle(egg);
@@ -101,8 +109,6 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     int counter = 0;
     for(auto it = _orbs.begin(); it != _orbs.end(); ++it) {
         std::shared_ptr<Orb> orb = *it;
-//        orb->setTextures(_assets->get<Texture>("swaporb"));
-        CULog("orb pos x: %f y: %f", orb->getPosition().x, orb->getPosition().y);
         _physicsWorld->addObstacle(orb);
         orb->setDrawScale(_scale);
         orb->setActive(true);
@@ -111,9 +117,9 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         orb->setID(counter);
         orb->setTextures(orbTexture);
         counter++;
-//        auto sprite = scene2::PolygonNode::allocWithTexture(_assets->get<Texture>("swaporb"));
         _worldNode->addChild(orb->getSceneNode(),1);
     }
+
     
     for(auto it = _swapStations.begin(); it != _swapStations.end(); ++it) {
         std::shared_ptr<SwapStation> station = *it;
@@ -125,14 +131,13 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         station->setDebugScene(_debugNode);
         station->setID(0);
         station->setTextures(swapStTexture);
-        CULog("station pos x: %f y: %f", station->getSceneNode()->getPosition().x, station->getSceneNode()->getPosition().y);
-//        addObstacle(station,station->getSceneNode(),1);
         _worldNode->addChild(station->getSceneNode(),1);
     }
     
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size playerSize(1, 2);
-    for(int i = 0; i < _numPlayers; ++i){ //TODO: Change to _numPlayers once that's locked in
+    _numPlayers = 4;//TODO: delete once _numPlayers is locked in by lobby
+    for(int i = 0; i < _numPlayers; ++i){
         auto player = Player::alloc(playerPos, playerSize, Element::Water);
         _physicsWorld->addObstacle(player);
         player->setTextures(playerTexture);
@@ -143,6 +148,14 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->allocUsernameNode(_assets->get<Font>("username"));
         _worldNode->addChild(player->getSceneNode(),1);
         _players.push_back(player);
+    }
+    
+    for(auto it = _decorations.begin(); it!= _decorations.end();  ++it) {
+        std::string name = get<0>(*it);
+        Vec2 pos = get<1>(*it);
+        auto sprite = scene2::PolygonNode::allocWithTexture(_assets->get<Texture>(name));
+        sprite->setPosition(pos*_scale);
+        _worldNode->addChild(sprite,2);
     }
     
 }
@@ -228,28 +241,28 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
     }
     
     
-//    auto tiles = json->get(TILES_FIELD);
-//    if (tiles != nullptr) {
-//        int tsize = (int)tiles->size();
-//        for(int ii = 0; ii < tsize; ii++) {
-//            loadBackground(tiles->get(ii));
-//        }
-//    } else {
-//        CUAssertLog(false, "Failed to load tiles");
-//        return false;
-//    }
-//
-//
-//    auto decorations = json->get(DECORATIONS_FIELD);
-//    if (decorations != nullptr) {
-//        int dsize = (int)decorations->size();
-//        for(int ii = 0; ii < dsize; ii++) {
-//            loadDecorations(decorations->get(ii));
-//        }
-//    } else {
-//        CUAssertLog(false, "Failed to load decorations");
-//        return false;
-//    }
+    auto tiles = json->get(TILES_FIELD);
+    if (tiles != nullptr) {
+        int tsize = (int)tiles->size();
+        for(int ii = 0; ii < tsize; ii++) {
+            loadBackground(tiles->get(ii));
+        }
+    } else {
+        CUAssertLog(false, "Failed to load tiles");
+        return false;
+    }
+
+
+    auto decorations = json->get(DECORATIONS_FIELD);
+    if (decorations != nullptr) {
+        int dsize = (int)decorations->size();
+        for(int ii = 0; ii < dsize; ii++) {
+            loadDecoration(decorations->get(ii));
+        }
+    } else {
+        CUAssertLog(false, "Failed to load decorations");
+        return false;
+    }
     
     return true;
 }
@@ -320,6 +333,19 @@ GameObjectType World::getObjectType(std::string obj) {
 #pragma mark -
 #pragma mark Object Loading
 
+bool World::loadBackground(const std::shared_ptr<JsonValue> &json) {
+    float xCoord = json->getFloat(X_FIELD) * globals::TILE_TO_BOX2D;
+    float yCoord = json->getFloat(Y_FIELD) * globals::TILE_TO_BOX2D;
+    
+//    std::string assetName = json->getString("asset");
+    std::string assetName = "grass";
+    
+    _bgTiles.push_back(std::make_tuple(assetName,Vec2(xCoord,yCoord)));
+    
+    return true;
+}
+
+
 bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
     bool success = true;
     CULog("loading wall");
@@ -357,14 +383,23 @@ bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
     return success;
 }
 
+bool World::loadDecoration(const std::shared_ptr<JsonValue> &json) {
+    float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
+    float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
+    
+    std::string assetName = json->getString("asset");
+    
+    _decorations.push_back(std::make_tuple(assetName,Vec2(xCoord,yCoord)));
+    
+    return true;
+}
+
 bool World::loadStation(const std::shared_ptr<JsonValue> &json) {
     float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
     float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
     
     // **** NEED TO CHANGE SIZE, CANNOT ACCESS _ASSETS IN LOADS
-//    auto swapStTexture = _assets->get<Texture>("swapstation");
     Vec2 swapStPos = Vec2(xCoord,yCoord);
-//    Size swapStSize(swapStTexture->getSize() / _scale);
     Size swapStSize(2,2);
     auto swapStation = SwapStation::alloc(swapStPos, swapStSize);
     _swapStations.push_back(swapStation);

@@ -29,7 +29,7 @@ public:
     }
     void dispose();
     
-    virtual bool init(cugl::Vec2 pos);
+    virtual bool init(cugl::Vec2 pos) override;
     
     static std::shared_ptr<Orb> alloc(cugl::Vec2 pos) {
         std::shared_ptr<Orb> result = std::make_shared<Orb>();
