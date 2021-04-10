@@ -206,6 +206,7 @@
     <ClCompile Include="..\..\source\NetworkData.cpp" />
     <ClCompile Include="..\..\source\Orb.cpp" />
     <ClCompile Include="..\..\source\Player.cpp" />
+    <ClCompile Include="..\..\source\Projectile.cpp" />
     <ClCompile Include="..\..\source\SpawnController.cpp" />
     <ClCompile Include="..\..\source\SwapStation.cpp" />
     <ClCompile Include="..\..\source\World.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="..\..\source\NetworkData.h" />
     <ClInclude Include="..\..\source\Orb.h" />
     <ClInclude Include="..\..\source\Player.h" />
+    <ClInclude Include="..\..\source\Projectile.h" />
     <ClInclude Include="..\..\source\SpawnController.h" />
     <ClInclude Include="..\..\source\SwapStation.h" />
     <ClInclude Include="..\..\source\World.h" />

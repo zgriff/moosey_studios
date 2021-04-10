@@ -4,6 +4,7 @@
 #include <cugl/cugl.h>
 #include "Player.h"
 #include "Element.h"
+#include "Projectile.h"
 #include <time.h>
 #include <chrono>
 #include <ctime> 

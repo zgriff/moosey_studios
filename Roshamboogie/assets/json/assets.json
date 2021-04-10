@@ -18,6 +18,9 @@
         "target": {
             "file": "textures/target.png"
         },
+        "projectile": {
+            "file": "textures/projectile.png"
+        },
         "grass": {
             "file": "textures/grass.png"
         },

@@ -132,8 +132,12 @@ namespace NetworkController {
                     }
                     break;
                 case ND::NetworkData::ORB_CAPTURED:
+                {
                     world->getOrb(nd.orbCapData.orbId)->setCollected(true);
+                    auto p = world->getPlayer(nd.orbCapData.playerId);
+                    p->setOrbScore(p->getOrbScore() + 1);
                     break;
+                }
                 case ND::NetworkData::SWAP_PACKET:
                     world->getPlayer(nd.swapData.playerId)->setElement(nd.swapData.newElement);
                     world->getSwapStation(nd.swapData.swapId)->setLastUsed(clock());

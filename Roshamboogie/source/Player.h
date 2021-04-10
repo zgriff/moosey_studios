@@ -11,6 +11,7 @@
 
 #include <cugl/cugl.h>
 #include "Element.h"
+#include "Projectile.h"
 #include <algorithm>
 
 class Player : public cugl::physics2::CapsuleObstacle{
@@ -50,6 +51,8 @@ private:
     std::shared_ptr<cugl::Texture> _texture;
 
     int _orbScore = 0;
+    // Associating each player with their own projectile makes it easier to network probably
+    std::shared_ptr<Projectile> _projectile;
 
 public:
 #pragma mark Properties
@@ -70,6 +73,9 @@ public:
     void setID(int id) {
         _id = id;
     }
+
+    void Player::allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale,
+        std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld);
 
     const cugl::Vec2& getForce() const { return _force; }
     
@@ -125,6 +131,8 @@ public:
     void setOrbScore(int orbScore) { _orbScore = min(orbScore, 5); };
 
     int getOrbScore() { return _orbScore; };
+
+    std::shared_ptr<Projectile> getProjectile() { return _projectile; };
 
     /**
     * Creates the username Label node with the font

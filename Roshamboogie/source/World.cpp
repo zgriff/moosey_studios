@@ -51,6 +51,7 @@ void World::reset(){
         player->setDrawScale(_scale);
         player->setDebugColor(Color4::YELLOW);
         player->setDebugScene(_debugNode);
+        player->allocProjectile(_assets->get<Texture>("projectile"), _scale, _physicsWorld);
         player->allocUsernameNode(_assets->get<Font>("username"));
         _players.push_back(player);
         _worldNode->addChild(player->getSceneNode());

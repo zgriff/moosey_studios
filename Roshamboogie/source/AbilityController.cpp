@@ -74,5 +74,4 @@ void AbilityController::deactivateAbility(std::shared_ptr<Player> player, std::s
 
 
 void AbilityController::dispose() {
-
 }

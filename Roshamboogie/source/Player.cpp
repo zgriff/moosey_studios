@@ -8,6 +8,7 @@
 
 #include "Player.h"
 #include "Element.h"
+#include "Projectile.h"
 #include "NetworkController.h"
 
 using namespace cugl;
@@ -106,6 +107,17 @@ void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     _sceneNode->addChild(_usernameNode);
 }
 
+void Player::allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale, 
+                            std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld) {
+    Size projSize(projectileTexture->getSize() / scale);
+    _projectile = Projectile::alloc(Vec2(0, 0), projSize, _id);
+    physicsWorld->addObstacle(_projectile);
+    _projectile->setTextures(projectileTexture);
+    _projectile->setTextures(projectileTexture);
+    _projectile->setDrawScale(scale);
+    _projectile->setActive(false);
+}
+
 /**
  * Disposes the player, releasing all resources.
  */
@@ -114,6 +126,7 @@ void Player::dispose() {
     _sceneNode = nullptr;
     _animationNode = nullptr;
     _texture = nullptr;
+    _projectile = nullptr;
 }
 
 /**
