@@ -125,6 +125,7 @@ public:
      */
     float getDrawScale() const { return _drawscale; }
     
+
     /*
      @param delta Timing values from parent loop
     */

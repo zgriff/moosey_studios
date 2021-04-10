@@ -15,7 +15,6 @@
 
 class Orb : public cugl::physics2::WheelObstacle{
 private:
-    Element e;
     float _drawscale;
     std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
     std::shared_ptr<cugl::Texture> _texture;
@@ -38,13 +37,7 @@ public:
     }
     
     void setTextures(const std::shared_ptr<cugl::Texture>& orb);
-    
-    Element getElement(){
-        return e;
-    }
-    
-    //sets color based on element
-    void setElement();
+
     
     bool getCollected() { return _collected; }
     

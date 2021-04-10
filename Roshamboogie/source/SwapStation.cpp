@@ -59,6 +59,9 @@ void SwapStation::setDrawScale(float scale) {
 */
 void SwapStation::update(float delta) {
     Obstacle::update(delta);
+    if (_sceneNode != nullptr) {
+        _sceneNode->setPosition(getPosition()*_drawscale);
+    }
     if (time(NULL) - _lastUsed >= _coolDownSecs) {
         _active = true;
         _animationNode->setFrame(0);
@@ -68,10 +71,3 @@ void SwapStation::update(float delta) {
         _animationNode->setFrame(1);
     }
 }
-
-
-
-
-
-
-

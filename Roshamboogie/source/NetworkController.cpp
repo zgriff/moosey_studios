@@ -11,10 +11,10 @@ namespace NetworkController {
     namespace {
         std::shared_ptr<cugl::CUNetworkConnection> network;
         std::string roomId;
-        int lastNum = 999;
         std::shared_ptr<World> world;
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username;
+        int _networkFrame;
     }
 
     /** IP of the NAT punchthrough server */
@@ -37,6 +37,13 @@ namespace NetworkController {
         CULog("%s", roomId.c_str());
         CULog("num players %d", network->getNumPlayers());
         CULog("total players %d", network->getTotalPlayers());
+    }
+
+    cugl::CUNetworkConnection::NetStatus getStatus(){
+        if(network == nullptr){
+            return cugl::CUNetworkConnection::NetStatus::Disconnected;
+        }
+        return network->getStatus();
     }
 
     void setWorld(std::shared_ptr<World> w){
@@ -80,26 +87,13 @@ namespace NetworkController {
     }
 
     void step() {
-        auto* k = cugl::Input::get<cugl::Keyboard>();
-        if (k->keyPressed(cugl::KeyCode::SPACE)) {
-            CULog("Sending");
-            std::vector<uint8_t> msg = { 1,2,3,4 };
-            network->send(msg);
-        }
+        if(network == nullptr) return;
         network->receive([&](const std::vector<uint8_t> msg) {
             CULog("Received message of length %lu", msg.size());
             for (const auto& d : msg) {
                 CULog("%d", d);
             }
             });
-        if (network->getNumPlayers() != lastNum) {
-            lastNum = network->getNumPlayers();
-            CULog("Num players %d, total players %d", network->getNumPlayers(), network->getTotalPlayers());
-            CULog("Room ID %s", network->getRoomID().c_str());
-            if (network->getPlayerID().has_value()) {
-                CULog("Player ID %d", *network->getPlayerID());
-            }
-        }
     }
 
     void update(float timestep){
@@ -127,6 +121,8 @@ namespace NetworkController {
                 case ND::NetworkData::POSITION_PACKET:
                     {
                         auto p = world->getPlayer(nd.positionData.playerId);
+                        auto newError = (p->getPosition() + p->getPositionError()) - nd.positionData.playerPos;
+                        p->setPositionError(newError);
                         p->setPosition(nd.positionData.playerPos);
                         p->setLinearVelocity(nd.positionData.playerVelocity);
                     }
@@ -162,6 +158,8 @@ namespace NetworkController {
     //send current player's position
     void sendPosition(){
         if(! getPlayerId().has_value()) return;
+        _networkFrame = (_networkFrame + 1) % NETWORK_FRAMERATE;
+        if(_networkFrame != 0) return;
         auto p = world->getPlayer(getPlayerId().value());
         ND::NetworkData nd{};
         nd.packetType = ND::NetworkData::PacketType::POSITION_PACKET;

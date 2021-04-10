@@ -31,6 +31,8 @@ using namespace cugl;
 #define PLAYER_FRAMES     8
 /** How fast a player recovers from screen shake*/
 #define TRAUMA_RECOVERY   .005f
+/** How fast a player moves to physics body location. Between 0 and 1 */
+#define INTERPOLATION_AMOUNT 0.9f
 
 /**
  * Sets the textures for this player.
@@ -105,6 +107,7 @@ void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     CULog("sceneNode width %d", _sceneNode->getContentWidth());
     CULog("animationNode width %d", _animationNode->getContentWidth());*/
     _sceneNode->addChild(_usernameNode);
+    
 }
 
 void Player::allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale, 
@@ -157,6 +160,7 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         _isTagged = false;
         _didTag = false;
         _sceneNode = nullptr;
+        _positionError = Vec2::ZERO;
         return true;
     }
     return false;
@@ -178,9 +182,19 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
 void Player::update(float delta) {
     Obstacle::update(delta);
     if (_sceneNode != nullptr) {
-        _sceneNode->setPosition(getPosition()*_drawscale);
+        //interp
+//        auto dest = (getPosition()*_drawscale) + _positionError;
+//        CULog("%s\n", _positionError.toString().c_str());
+//        _positionError *= INTERPOLATION_AMOUNT;
+        if(_positionError.length() < 0.00001f){
+            _positionError.setZero();
+        }
+        _sceneNode->setPosition((getPosition() + _positionError) * _drawscale);
         _sceneNode->setAngle(getAngle());
+        
+        _positionError *= INTERPOLATION_AMOUNT;
     }
+//    CULog("play pos: x: %f  y:%f",getPosition().x,getPosition().y);
     _trauma = max(0.0f, _trauma - TRAUMA_RECOVERY);
 
     

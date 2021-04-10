@@ -20,8 +20,8 @@ void Orb::setTextures(const std::shared_ptr<Texture>& orb) {
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
     _texture = orb;
     _body->SetUserData(this);
-//    setElement();
 }
+
 bool Orb::init(Vec2 pos){
     bool success = physics2::WheelObstacle::init(pos, ORB_RADIUS);
     if(success){
@@ -29,27 +29,10 @@ bool Orb::init(Vec2 pos){
         setBodyType(b2_staticBody);
         setName("orb");
         _collected = false;
-            
     }
     return success;
 }
 
-void Orb::setElement() {
-    switch(e){ //TODO: change to texture when assets made
-        case Element::Grass:
-            _sceneNode->setColor(Color4(0, 255, 0));
-            break;
-        case Element::Fire:
-            _sceneNode->setColor(Color4(255, 0, 0));
-            break;
-        case Element::Water:
-            _sceneNode->setColor(Color4(0, 0, 255));
-            break;
-        case Element::None:
-            _sceneNode->setColor(Color4(255,255,255));
-            break;
-    }
-}
 
 void Orb::dispose(){
     if(_sceneNode != nullptr){

@@ -1,27 +1,31 @@
 {
     "activeFile": "maps/untitled.tmx",
     "expandedProjectPaths": [
-        "templates",
-        "maps"
+        "maps",
+        "tilesets",
+        "templates"
     ],
     "fileStates": {
         "maps/untitled.tmx": {
-            "scale": 0.7725,
+            "scale": 1.1155,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 683.495145631068,
-                "y": 442.7184466019418
+                "x": 1610.040340654415,
+                "y": 818.0188256387271
             }
         },
-        "tilesets/tiles.tsx": {
-            "dynamicWrapping": false,
-            "scaleInDock": 1
-        },
-        "tilesets/tree.tsx": {
+        "tilesets/decorations.tsx": {
             "dynamicWrapping": true,
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 0.67
+        },
+        "tilesets/tiles.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 0.67
         }
     },
+    "last.objectTemplatePath": "/Users/joshuakaplan/Documents/School Stuff/2020-2021/Spring Semester/game design/moosey_studios/Tiled_files/templates",
     "openFiles": [
         "maps/untitled.tmx"
     ],

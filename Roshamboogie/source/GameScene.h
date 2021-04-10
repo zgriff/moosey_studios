@@ -29,22 +29,21 @@ class GameScene : public cugl::Scene2 {
 protected:
     /** The asset manager for this game mode. */
     std::shared_ptr<cugl::AssetManager> _assets;
+    
+    /** Reference to the physics root of the scene graph */
+    std::shared_ptr<cugl::scene2::SceneNode> _rootnode;
 
     /** Reference to the physics root of the scene graph */
 //    std::shared_ptr<cugl::scene2::SceneNode> _worldnode;
     /** The Box2D world */
 //    std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
     
-    std::shared_ptr<World> world;
     
-    std::shared_ptr<cugl::scene2::Label> _hatchnode;
+    std::shared_ptr<World> _world;
     
-    std::shared_ptr<cugl::scene2::ProgressBar>  _hatchbar;
+    /** Reference to the UI node that moves synchronously with the camera */
+    std::shared_ptr<cugl::scene2::SceneNode> _UInode;
 
-    std::shared_ptr<cugl::scene2::ProgressBar>  _abilitybar;
-    std::shared_ptr<cugl::scene2::Label> _abilityname;
-    AbilityController _abilityController;
-    
     /** Reference to the debug root of the scene graph */
     std::shared_ptr<cugl::scene2::SceneNode> _debugnode;
     
@@ -52,10 +51,20 @@ protected:
     float _scale;
 
     std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
+	
+	std::shared_ptr<cugl::scene2::ProgressBar>  _abilitybar;
+    std::shared_ptr<cugl::scene2::Label> _abilityname;
+    AbilityController _abilityController;
+
+    std::shared_ptr<cugl::scene2::Label> _hatchnode;
+
+    std::shared_ptr<cugl::scene2::ProgressBar>  _hatchbar;
     std::string _currRoomId;
     
     time_t _hatchTextTimer = 5; //5 secs
     time_t _hatchedTime;
+
+    std::shared_ptr<cugl::scene2::Label> _scoreHUD;
     
     /** Whether or not debug mode is active */
     bool _debug;
@@ -82,9 +91,7 @@ protected:
 //    std::shared_ptr<SwapStation> _swapStation;
 //
 //    std::shared_ptr<Egg> _egg;
-    
-    std::shared_ptr<cugl::scene2::Label> _scoreHUD;
-    
+
     /** The weapon fire sound for the blue player */
 //    std::shared_ptr<cugl::Sound> _blueSound;
     bool swap = false;
@@ -202,7 +209,7 @@ public:
      * This method is for graceful handling of different aspect
      * ratios
      */
-    cugl::Size computeActiveSize() const;
+    cugl::Size computeActiveSize(float w, float h) const;
     
     void setMovementStyle(int m);
     

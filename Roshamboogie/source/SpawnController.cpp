@@ -25,8 +25,8 @@ void SpawnController::spawnOrbs() {
     int rows = 4;
     int cols = 4;
     
-    float roomWidth = 36.0f / cols;
-    float roomHeight = 18.0f / rows;
+    float roomWidth = world->getPhysicsWorld()->getBounds().getMaxX() / cols;
+    float roomHeight = world->getPhysicsWorld()->getBounds().getMaxY() / rows;
     
     std::vector<std::shared_ptr<Player>> players = world->getPlayers();
     
@@ -69,7 +69,7 @@ void SpawnController::spawnOrbs() {
     std::uniform_int_distribution<long> rand_y(emptySpaces[randRoom].y * roomHeight, emptySpaces[randRoom].y * roomHeight + roomHeight);
 //    CULog("new pos %f %f", rand_x(e1), rand_y(e1));
     
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < world->getNumOrbs(); i++) {
         std::shared_ptr<Orb> orb = world->getOrb(i);
         if (orb->getCollected()) {
             orb->setPosition(Vec2(rand_x(e1), rand_y(e1)));
@@ -84,7 +84,7 @@ void SpawnController::spawnOrbs() {
 // spawn the initial orbs randomly on the map
 void SpawnController::initSpawn() {
     
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < world->getNumOrbs(); i++) {
         std::uniform_int_distribution<int> rand_x(1, 36);
         std::uniform_int_distribution<int> rand_y(1, 18);
         auto orb = world->getOrb(i);

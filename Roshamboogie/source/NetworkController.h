@@ -4,6 +4,8 @@
 #include <cugl/cugl.h>
 #include "World.h"
 
+#define NETWORK_FRAMERATE 6
+
 namespace NetworkController {
 
 	void createGame();
@@ -18,6 +20,8 @@ namespace NetworkController {
     std::string getRoomId();
 
     uint8_t getNumPlayers();
+    
+    cugl::CUNetworkConnection::NetStatus getStatus();
 
     void step();
     

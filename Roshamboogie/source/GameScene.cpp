@@ -15,6 +15,7 @@
 #include "NetworkData.h"
 #include "CollisionController.h"
 #include "AbilityController.h"
+#include "MapConstants.h"
 
 #include <cugl/cugl.h>
 #include <iostream>
@@ -70,6 +71,10 @@ float WALL[WALL_COUNT][WALL_VERTS] = {
 #define BASIC_FRICTION  0.4f
 /** The restitution for all physics objects */
 #define BASIC_RESTITUTION   0.1f
+/** The restitution for all physics objects */
+#define TURNS_PER_SPIN   55.0f
+/** how much the lateral velocity is subtracted per frame*/
+#define KINETIC_FRICTION 1.4f
 
 #pragma mark -
 #pragma mark Constructors
@@ -86,34 +91,41 @@ float WALL[WALL_COUNT][WALL_VERTS] = {
  */
 bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Initialize the scene to a locked width
-    Size dimen = computeActiveSize();
+    //create world
+    _world = assets->get<World>(GRASS_MAP_KEY);
+    if (_world == nullptr) {
+        CULog("Fail!");
+        return false;
+    }
+    float w = _world->getSceneSize().x;
+    float h = _world->getSceneSize().y;
+    
+    Size dimen = computeActiveSize(w,h);
     Rect rect(0,0,DEFAULT_WIDTH,DEFAULT_HEIGHT);
     if (assets == nullptr) {
         return false;
     } else if (!Scene2::init(dimen)) {
         return false;
     }
+
     
-    _scale = dimen.width == SCENE_WIDTH ? dimen.width/rect.size.width : dimen.height/rect.size.height;
-    
-    //create world
-    world = World::alloc(assets, DEFAULT_WIDTH, DEFAULT_HEIGHT, _scale, NetworkController::getNumPlayers());
-    NetworkController::setWorld(world);
-    SpawnController::setWorld(world);
-    CollisionController::setWorld(world);
+    NetworkController::setWorld(_world);
+    _world->setNumPlayers(NetworkController::getNumPlayers());
+
+    SpawnController::setWorld(_world);
+    CollisionController::setWorld(_world);
     
     // Start up the input handler
     _assets = assets;
     _playerController.init();
-
     // Acquire the scene built by the asset loader and resize it the scene
-    auto scene_background = _assets->get<scene2::SceneNode>("background");
-    scene_background->setContentSize(dimen);
-    scene_background->doLayout(); // Repositions the HUD;
+//    auto scene_background = _assets->get<scene2::SceneNode>("background");
+//    scene_background->setContentSize(dimen);
+//    scene_background->doLayout(); // Repositions the HUD;
     
-    auto scene_ui = _assets->get<scene2::SceneNode>("ui");
-    scene_ui->setContentSize(dimen);
-    scene_ui->doLayout(); // Repositions the HUD;
+    _UInode = _assets->get<scene2::SceneNode>("ui");
+    _UInode->setContentSize(dimen);
+    _UInode->doLayout(); // Repositions the HUD;
 
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
     
@@ -130,38 +142,38 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _abilitybar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_abilityBar"));
     _abilitybar->setForegroundColor(Color4(255, 255, 0));
     
-    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
+//    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
     
-    auto _world = world->getPhysicsWorld();
-    _world->activateCollisionCallbacks(true);
+    auto world = _world->getPhysicsWorld();
+    world->activateCollisionCallbacks(true);
+    _scale = dimen.width == w ? dimen.width/world->getBounds().getMaxX() : dimen.height/world->getBounds().getMaxY();
     if(NetworkController::isHost()){
-        _world->onBeginContact = [this](b2Contact* contact) {
+        world->onBeginContact = [this](b2Contact* contact) {
             CollisionController::beginContact(contact);
         };
-        _world->onEndContact = [this](b2Contact* contact) {
+        world->onEndContact = [this](b2Contact* contact) {
             CollisionController::endContact(contact);
         };
     }
-    _world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
+    world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
         CollisionController::beforeSolve(contact,oldManifold);
     };
     
-    Vec2 offset((dimen.width-SCENE_WIDTH)/2.0f,(dimen.height-SCENE_HEIGHT)/2.0f);
+    Vec2 offset((dimen.width-w)/2.0f,(dimen.height-h)/2.0f);
 
-    auto _worldnode = world->getSceneNode();
-    _worldnode->setPosition(offset);
+    _rootnode = scene2::SceneNode::alloc();
+    _rootnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
+    _rootnode->setPosition(offset);
     
-    _debugnode = scene2::SceneNode::alloc();
-    _debugnode->setScale(_scale); // Debug node draws in PHYSICS coordinates
-    _debugnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
-    _debugnode->setPosition(offset);
+    _debugnode = _world->getDebugNode();
+//    addChild(scene_background);
+    addChild(_rootnode);
+    _rootnode->setContentSize(Size(w,h));
     
-    world->setDebugNode(_debugnode);
+    _world->setAssets(_assets);
     
-    addChild(scene_background);
-    addChild(_worldnode);
-    addChild(_debugnode);
-    addChild(scene_ui);
+
+    addChild(_UInode);
     reset();
     return true;
 }
@@ -181,7 +193,7 @@ void GameScene::dispose() {
         _active = false;
         _debug = false;
         Scene2::dispose();
-        world = nullptr;
+        _world = nullptr;
     }
 }
 
@@ -192,32 +204,26 @@ void GameScene::dispose() {
  * Resets the status of the game so that we can play again.
  */
 void GameScene::reset() {
-    _debugnode->removeAllChildren();
-    world->reset();
+    _world->setRootNode(_rootnode,_scale);
     
     auto idopt = NetworkController::getPlayerId();
     if(idopt.has_value()){
-        auto _player = world->getPlayer(idopt.value());
+        CULog("playerid: %i",idopt.value());
+        auto _player = _world->getPlayer(idopt.value());
         _player->setUsername(NetworkController::getUsername());
         _player->setIsLocal(true);
         getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
     }
     _playerController.init();
     
-//    if (NetworkController::isHost()) {
-//        SpawnController::initSpawn();
-//    }
-
-    populate();
-    
-    setDebug(false);
+    _world->setDebug(false);
 
     getCamera()->update();
 }
 
 void GameScene::update(float timestep) {
     
-    if (_playerController.didDebug()) { setDebug(!isDebug()); }
+    if (_playerController.didDebug()) { _world->setDebug(!_world->getDebug()); }
     
     // NETWORK //
     
@@ -225,48 +231,68 @@ void GameScene::update(float timestep) {
     _roomIdHUD->setText(currRoomId);*/
 //    NetworkController::step();
     NetworkController::update(timestep);
-    if (_currRoomId == "") {
-        _currRoomId = NetworkController::getRoomId();
-        stringstream ss;
-        ss << "Room Id: " << _currRoomId;
-        _roomIdHUD->setText(ss.str());
-    }
-    
-    
-    // BEGIN PLAYER MOVEMENT //
+
+//    if (_currRoomId == "") {
+//        _currRoomId = NetworkController::getRoomId();
+//        stringstream ss;
+//        ss << "Room Id: " << _currRoomId;
+//        _roomIdHUD->setText(ss.str());
+//    }
+        
+
+
+        // BEGIN PLAYER MOVEMENT //
     
     auto playerId_option = NetworkController::getPlayerId();
     if(! playerId_option.has_value()) return;
     uint8_t playerId = playerId_option.value();
-    auto _player = world->getPlayer(playerId);
+    auto _player = _world->getPlayer(playerId);
     
     _playerController.readInput();
     switch (_playerController.getMoveStyle()) {
-        case Movement::AlwaysForward: {
+        case Movement::AlwaysForward: {\
             if (_abilityController.getActiveAbility() == AbilityController::Ability::SpeedBoost) {
                 break;
             }
-            auto ang = _player->getAngle() + _playerController.getMov().x * M_PI / -30.0f;
+            auto ang = _player->getAngle() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
             _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
             
             auto vel = _player->getLinearVelocity();
+            //Please don't delete this comment, angles were difficult to derive and easy to forget
+            //vel angle originates from x axis, player angle orginates from y axis
             auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
-            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * .02f);
+
+            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset));
+            if (correction.length() > KINETIC_FRICTION) {
+                correction.scale( KINETIC_FRICTION / correction.length());
+            }
             _player->setLinearVelocity(vel.add(correction));
+
             if (_playerController.getMov().x == 0) {
-                //if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
+                //constant acceleration
+                //_player->applyForce();
+
+                auto big = _player->getMass();
+
+                //accelerate to a maximum velocity
+                auto forForce = _player->getForce();
+                auto scaling = _player->getForce();
+                //scaling.normalize().scale(0.05f * pow(30.0f - vel.length(), 2.0f));
+                scaling.normalize().scale(_player->getMass() * 0.32f * (26.0f - vel.length()));
+                //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
+                _player->setForce(scaling);
                 _player->applyForce();
-                //}
+                _player->setForce(forForce);
             }
             else {
                 auto forForce = _player->getForce();
-                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * -1.1f);
-                if (_playerController.getMov().x > 0) {
+                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * 2.0f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN));
+                if (_playerController.getMov().x < 0) {
                     turnForce.scale(-1.0f);
                 }
                 if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
-                    turnForce.scale(-1.0f);
+                    //turnForce.scale(-1.0f);
                     _player->applyForce();
                 }
                 _player->setForce(turnForce);
@@ -275,7 +301,7 @@ void GameScene::update(float timestep) {
             }
             break;
         }
-        case Movement::SwipeForce:{
+        case Movement::SwipeForce: {
             #ifndef CU_MOBILE
                 _player->setLinearVelocity(_playerController.getMov() * 3);
             #else
@@ -291,8 +317,26 @@ void GameScene::update(float timestep) {
                 _player->setLinearVelocity(_playerController.getMov() * 3);
             #else
                 Vec3 tilt = _playerController.getTiltVec();
+
                 Vec2 moveVec(tilt.x, -tilt.y);
                 _player->setForce(moveVec * 50);
+
+                _player->applyForce();
+            #endif
+        }
+        case Movement::GolfMove:{
+            #ifndef CU_MOBILE
+                _player->setLinearVelocity(_playerController.getMov() * 3);
+            #else
+                Vec2 _moveVec;
+                if (_playerController.getMov().x == 0) {
+                    _moveVec = Vec2(-5*_player->getVX(),-5*_player->getVY());
+                } else  {
+                    Vec2 moveVec = _playerController.getMoveVec();
+                    _moveVec = Vec2(moveVec.x, -moveVec.y);
+                    _moveVec =  _moveVec*10;
+                }
+                _player->setForce(_moveVec);
                 _player->applyForce();
             #endif
         }
@@ -300,16 +344,20 @@ void GameScene::update(float timestep) {
             break;
     }
     
-    world->getPhysicsWorld()->update(timestep);
+    _world->getPhysicsWorld()->update(timestep);
 
-    auto after = _player->getSceneNode()->getPosition();
+
+    auto playPos = _player->getSceneNode()->getPosition();
     auto camSpot = getCamera()->getPosition();
-    auto trans = after - camSpot;
-    getCamera()->translate(trans*.05f);
+    auto trans = (playPos - camSpot)*.07f;
+    getCamera()->translate(trans);
     getCamera()->update();
+    _UInode->setPosition(camSpot + trans - Vec2(SCENE_WIDTH/2.0f, SCENE_HEIGHT/2.0f));
+
 
     
     if(NetworkController::isHost()){
+
 //        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
 //            auto orb = world->getOrb(i);
 //            if(orb->getCollected()) {
@@ -319,14 +367,12 @@ void GameScene::update(float timestep) {
 //            orb->setCollected(false);
 //
 //        }
-        
         std::random_device r;
         std::default_random_engine e1(r());
         std::uniform_int_distribution<int> prob(0,100);
 //        CULog("prob %d", prob(e1));
         if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
-//            CULog("curr orbs %d", world->getCurrOrbCount());
-            if (world->getCurrOrbCount() < 10) {
+            if (_world->getCurrOrbCount() < _world->getNumOrbs()) {
                 SpawnController::spawnOrbs();
             }
         }
@@ -335,10 +381,11 @@ void GameScene::update(float timestep) {
     
     
     //egg hatch logic
+
     //TODO: change to allow multiple eggs
-    auto _egg = world->getEgg(0);
+    auto _egg = _world->getEgg(0);
     if (_egg->getCollected() && _egg->getHatched() == false) {
-        std::shared_ptr<Player> _eggCollector = world->getPlayer(_egg->getPID());
+        std::shared_ptr<Player> _eggCollector = _world->getPlayer(_egg->getPID());
         _egg->setPosition(_eggCollector->getPosition());
         if (_egg->getPID() == _player->getID()) {
             _hatchbar->setVisible(true);
@@ -355,14 +402,14 @@ void GameScene::update(float timestep) {
             _hatchbar->dispose();
             _hatchedTime = time(NULL);
             _egg->setHatched(true);
-            _egg->dispose();
 //            _egg->setCollected(false);
             _eggCollector->setElement(_eggCollector->getPrevElement());
             if (_egg->getPID() == _player->getID()) {
                 _hatchnode->setVisible(true);
                 _player->incScore(10);
             }
-//            CULog("hatched");
+            _egg->dispose();
+
         }
         
     }
@@ -372,7 +419,7 @@ void GameScene::update(float timestep) {
     }
     
     //cooldown for player after it's tagged
-    for(auto p : world->getPlayers()){
+    for(auto p : _world->getPlayers()){
         if (p->getIsTagged()) {
             if (time(NULL) - p->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
                 CULog("not tagged");
@@ -443,7 +490,7 @@ void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj
                             const std::shared_ptr<cugl::scene2::SceneNode>& node,
                             int zOrder,
                             bool useObjPosition) {
-    world->getPhysicsWorld()->addObstacle(obj);
+    _world->getPhysicsWorld()->addObstacle(obj);
 //    obj->setDebugScene(_debugnode);
     obj->setDebugScene(_debugnode);
 
@@ -451,7 +498,7 @@ void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj
       if (useObjPosition) {
           node->setPosition(obj->getPosition()*_scale);
       }
-      world->getSceneNode()->addChild(node, zOrder);
+    _world->getSceneNode()->addChild(node, zOrder);
 
     // Dynamic objects need constant updating
     if (obj->getBodyType() == b2_dynamicBody) {
@@ -476,14 +523,14 @@ void GameScene::setMovementStyle(int m) {
  * This method is for graceful handling of different aspect
  * ratios
  */
-Size GameScene::computeActiveSize() const {
+Size GameScene::computeActiveSize(float w, float h) const {
     Size dimen = Application::get()->getDisplaySize();
     float ratio1 = dimen.width/dimen.height;
-    float ratio2 = ((float)SCENE_WIDTH)/((float)SCENE_HEIGHT);
+    float ratio2 = ((float)w)/((float)h);
     if (ratio1 < ratio2) {
-        dimen *= SCENE_WIDTH/dimen.width;
+        dimen *= w/dimen.width;
     } else {
-        dimen *= SCENE_HEIGHT/dimen.height;
+        dimen *= h/dimen.height;
     }
     return dimen;
 }
