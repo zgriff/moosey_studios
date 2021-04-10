@@ -44,6 +44,7 @@ private:
     float _scale;
     uint8_t _numPlayers;
     uint8_t _currOrbCount;
+    uint8_t _currEggCount;
 
 public:
 #pragma mark -
@@ -92,6 +93,14 @@ public:
         _currOrbCount = c;
     }
     
+    uint8_t getCurrEggCount() {
+        return _currEggCount;
+    }
+    
+    void setCurrEggCount(int c) {
+        _currEggCount = c;
+    }
+    
     void addOrb(Vec2 pos);
     
     float getScale() { return _scale; }
@@ -99,6 +108,10 @@ public:
     
     std::shared_ptr<Egg> getEgg(int id){
         return _eggs[id];
+    }
+    
+    std::vector<std::shared_ptr<Egg>> getEggs(){
+        return _eggs;
     }
     
     std::shared_ptr<SwapStation> getSwapStation(int id){

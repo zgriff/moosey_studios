@@ -28,6 +28,7 @@ bool World::init(int width, int height){
     _worldNode = scene2::SceneNode::alloc();
     _worldNode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
     _currOrbCount = 10;
+    _currEggCount = 2;
     
     return true;
 }
@@ -93,7 +94,20 @@ void World::reset(){
     egg->setID(0);
     _eggs.push_back(egg);
     
+    Vec2 eggPos1 = Vec2(17,5);
+    Size eggSize1(eggTexture->getSize() / _scale);
+    auto egg1 = Egg::alloc(eggPos1, eggSize1);
+    _physicsWorld->addObstacle(egg1);
+    egg1->setTextures(eggTexture);
+    egg1->setDrawScale(_scale);
+    egg1->setActive(true);
+    egg1->setDebugColor(Color4::YELLOW);
+    egg1->setDebugScene(_debugNode);
+    egg1->setID(1);
+    _eggs.push_back(egg1);
+    
     _worldNode->addChild(swapStation->getSceneNode());
     _worldNode->addChild(egg->getSceneNode());
+    _worldNode->addChild(egg1->getSceneNode());
 }
 

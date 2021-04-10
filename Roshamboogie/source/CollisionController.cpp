@@ -85,11 +85,12 @@ void CollisionController::beginContact(b2Contact* contact){
     else if (bd1->getName() == "egg" && bd2->getName() == "player") {
         Egg* e = (Egg*) bd1;
         Player* p = (Player*) bd2;
-        if (e->getCollected() == false && p->getIsIntangible() == false) {
+        if (e->getCollected() == false && p->getIsIntangible() == false && !p->getHoldingEgg()) {
             p->setElement(Element::None);
             e->setCollected(true);
             e->setPID(p->getID());
             p->setEggId(e->getID());
+            p->setHoldingEgg(true);
             CULog("egg collected");
             NetworkController::sendEggCollected(p->getID(), e->getID());
         }
@@ -98,11 +99,12 @@ void CollisionController::beginContact(b2Contact* contact){
     else if (bd2->getName() == "egg" && bd1->getName() == "player") {
         Egg* e = (Egg*) bd2;
         Player* p = (Player*) bd1;
-        if (e->getCollected() == false && p->getIsIntangible() == false) {
+        if (e->getCollected() == false && p->getIsIntangible() == false && !p->getHoldingEgg()) {
             p->setElement(Element::None);
             e->setCollected(true);
             e->setPID(p->getID());
             p->setEggId(e->getID());
+            p->setHoldingEgg(true);
             CULog("egg collected");
             NetworkController::sendEggCollected(p->getID(), e->getID());
         }
@@ -130,6 +132,8 @@ void CollisionController::beginContact(b2Contact* contact){
                     egg->incDistanceWalked(-1*egg->getDistanceWalked());
                     p2->setElement(Element::None);
                     p2->setEggId(egg->getID());
+                    p1->setHoldingEgg(false);
+                    p2->setHoldingEgg(true);
                 }
             }
             //p1 tags p2
@@ -148,6 +152,8 @@ void CollisionController::beginContact(b2Contact* contact){
                     egg->incDistanceWalked(-1*egg->getDistanceWalked());
                     p1->setElement(Element::None);
                     p1->setEggId(egg->getID());
+                    p2->setHoldingEgg(false);
+                    p1->setHoldingEgg(true);
                 }
             }
         }

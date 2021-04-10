@@ -44,9 +44,9 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _playAgainButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("end_playagain"));
     _playAgainButton->activate();
-    _playAgainButton->addListener([=](const std::string& name, bool down) {
-        this->_active = down;
-    });
+//    _playAgainButton->addListener([=](const std::string& name, bool down) {
+//        this->_active = down;
+//    });
 
     
 

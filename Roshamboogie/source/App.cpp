@@ -154,7 +154,7 @@ void App::update(float timestep) {
                 _gameplay.init(_assets);
                 _gameplay.setMovementStyle(_menu.getMovement());
 //                _menu.dispose();
-                startTimer = clock();
+                startTimer = time(NULL);
                 _menu.dispose();
                 _lobby.dispose();
                 _currentScene = SceneSelect::Game;
@@ -163,7 +163,7 @@ void App::update(float timestep) {
         }
         case SceneSelect::Game:{
             _gameplay.update(timestep);
-            if (clock() - startTimer >= gameTimer) {
+            if (time(NULL) - startTimer >= gameTimer) {
                 _results.init(_assets);
                 _gameplay.dispose();
                 _currentScene = SceneSelect::Results;
@@ -171,16 +171,17 @@ void App::update(float timestep) {
             break;
         }
         case SceneSelect::Results: {
-            if (_results.isActive()) {
-                
-            }
-            else {
-                _results.dispose();
-//                _menu.init(_assets);
-                _currentScene = SceneSelect::Menu;
-                _menu.setActive(true);
-            }
-//            _results.update(timestep);
+//            if (_results.isActive()) {
+//
+//            }
+//            else {
+//                _results.dispose();
+////                _menu.init(_assets);
+//                _currentScene = SceneSelect::Menu;
+//                _menu.setActive(true);
+//            }
+////            _results.update(timestep);
+            break;
         }
         default:
             break;

@@ -543,6 +543,24 @@
                         "absolute" : true
                     }
                 },
+                "timer" : {
+                       "type": "Label",
+                       "data": {
+                           "font"       : "retro",
+                           "text"       : "Timer: 0",
+                           "foreground" : [255,255,255,255],
+                           "size"       : [500,70],
+                           "valign"     : "bottom",
+                           "halign"     : "left"
+                       },
+                       "layout" : {
+                           "x_anchor" : "left",
+                           "y_anchor" : "top",
+                           "x_offset" : 80,
+                           "y_offset" : -150,
+                           "absolute" : true
+                       }
+                   },
                 "bar"  : {
                     "type"   : "Progress",
                     "data"   : {
