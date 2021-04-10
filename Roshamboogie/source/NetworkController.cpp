@@ -11,7 +11,6 @@ namespace NetworkController {
     namespace {
         std::shared_ptr<cugl::CUNetworkConnection> network;
         std::string roomId;
-        int lastNum = 999;
         std::shared_ptr<World> world;
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username;
@@ -38,6 +37,13 @@ namespace NetworkController {
         CULog("%s", roomId.c_str());
         CULog("num players %d", network->getNumPlayers());
         CULog("total players %d", network->getTotalPlayers());
+    }
+
+    cugl::CUNetworkConnection::NetStatus getStatus(){
+        if(network == nullptr){
+            return cugl::CUNetworkConnection::NetStatus::Disconnected;
+        }
+        return network->getStatus();
     }
 
     void setWorld(std::shared_ptr<World> w){
@@ -81,26 +87,13 @@ namespace NetworkController {
     }
 
     void step() {
-        auto* k = cugl::Input::get<cugl::Keyboard>();
-        if (k->keyPressed(cugl::KeyCode::SPACE)) {
-            CULog("Sending");
-            std::vector<uint8_t> msg = { 1,2,3,4 };
-            network->send(msg);
-        }
+        if(network == nullptr) return;
         network->receive([&](const std::vector<uint8_t> msg) {
             CULog("Received message of length %lu", msg.size());
             for (const auto& d : msg) {
                 CULog("%d", d);
             }
             });
-        if (network->getNumPlayers() != lastNum) {
-            lastNum = network->getNumPlayers();
-            CULog("Num players %d, total players %d", network->getNumPlayers(), network->getTotalPlayers());
-            CULog("Room ID %s", network->getRoomID().c_str());
-            if (network->getPlayerID().has_value()) {
-                CULog("Player ID %d", *network->getPlayerID());
-            }
-        }
     }
 
     void update(float timestep){

@@ -20,6 +20,8 @@ namespace NetworkController {
     std::string getRoomId();
 
     uint8_t getNumPlayers();
+    
+    cugl::CUNetworkConnection::NetStatus getStatus();
 
     void step();
     

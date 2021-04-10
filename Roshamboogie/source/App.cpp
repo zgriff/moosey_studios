@@ -132,6 +132,13 @@ void App::update(float timestep) {
         case SceneSelect::Menu:{
             if (_menu.isActive()) {
 //                _menu.update(0.01f);
+                NetworkController::step();
+                if(NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected){
+                    _menu.setActive(false);
+                    _lobby.init(_assets);
+                    _lobby.setActive(true);
+                    _currentScene = SceneSelect::Lobby;
+                }
             } else {
                 _menu.setActive(false);
                 _lobby.init(_assets);
@@ -142,6 +149,7 @@ void App::update(float timestep) {
         }
         case SceneSelect::Lobby:{
             if (_lobby.isActive()) {
+                NetworkController::step();
                 _lobby.update(0.01f);
             } else {
                 _lobby.setActive(false);
