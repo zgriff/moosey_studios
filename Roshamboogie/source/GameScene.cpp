@@ -360,7 +360,6 @@ void GameScene::update(float timestep) {
         std::uniform_int_distribution<int> prob(0,100);
 //        CULog("prob %d", prob(e1));
         if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
-            CULog("curr orbs %d", _world->getCurrOrbCount());
             if (_world->getCurrOrbCount() < _world->getNumOrbs()) {
                 SpawnController::spawnOrbs();
             }
