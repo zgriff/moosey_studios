@@ -1,17 +1,17 @@
 {
     "activeFile": "maps/forest.tmx",
     "expandedProjectPaths": [
-        "maps",
+        "templates",
         "tilesets",
-        "templates"
+        "maps"
     ],
     "fileStates": {
         "maps/forest.tmx": {
-            "scale": 0.3139,
+            "scale": 0.2485,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 463.52341510035035,
-                "y": 942.9754698948709
+                "x": 1410.4627766599597,
+                "y": 1513.0784708249498
             }
         },
         "maps/untitled.tmx": {

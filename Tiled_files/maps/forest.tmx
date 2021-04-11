@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="54" height="34" tilewidth="50" tileheight="50" infinite="0" nextlayerid="6" nextobjectid="497">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="54" height="34" tilewidth="50" tileheight="50" infinite="0" nextlayerid="6" nextobjectid="500">
  <editorsettings>
   <export target="../../../../../../../../Downloads/forest.json" format="roshamboogie"/>
  </editorsettings>
@@ -54,9 +54,6 @@
   <object id="239" x="814.67" y="872.488">
    <polygon points="0,0 -317.831,386.066 -468.666,396.84 -474.053,0"/>
   </object>
-  <object id="374" x="592.085" y="1632.91">
-   <polygon points="0,0 324.089,-461.203 445.622,-548.457 523.528,-535.993 629.48,-355.251 885.011,-361.483 1006.54,-548.457 1137.43,-554.69 1514.49,24.9299"/>
-  </object>
   <object id="459" x="678.56" y="127.429">
    <polygon points="0,0 286.716,442.816 395.03,446.002 538.388,273.973 780.503,251.673 911.118,446.002 997.133,442.816 1357.12,0"/>
   </object>
@@ -65,6 +62,15 @@
   </object>
   <object id="461" x="1930.55" y="904.747">
    <polygon points="0,0 410.959,-6.37146 404.587,363.173 312.201,366.359"/>
+  </object>
+  <object id="497" x="591.933" y="1647.46">
+   <polygon points="0,0 314.301,-463.594 442.64,-550.026 521.215,-550.026 796.228,18.3342"/>
+  </object>
+  <object id="498" x="1169.78" y="1283.36">
+   <polygon points="0,0 365.06,-13.0573 362.507,282.909 -38.293,243.737"/>
+  </object>
+  <object id="499" x="1595.08" y="1089.58">
+   <polygon points="0,0 -369.303,565.741 521.215,576.218 136.197,-10.4767"/>
   </object>
  </objectgroup>
  <objectgroup id="4" name="GameObjects">
