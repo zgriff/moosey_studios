@@ -34,8 +34,12 @@ private:
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
     float _drawscale;
-    /** */
+    /** severity of screenshake*/
     float _trauma = 0.0;
+    /** the direction the player is pointing
+        0.0 directed in the positive x axis
+        adding rotates counterclockwise      */
+    float _direct = 0.0;
     
     // Asset references.  These should be set by GameMode
     /** Reference to the node for the player */
@@ -105,6 +109,10 @@ public:
     time_t getTagCooldown() { return _tagCooldown; }
     
     void setTagCooldown(clock_t t) { _tagCooldown = t; }
+
+    double getDirection() { return _direct; }
+
+    void setDirection(double d);
     
     bool getHoldingEgg() { return _holdingEgg; }
     

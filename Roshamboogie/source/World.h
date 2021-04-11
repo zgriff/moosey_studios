@@ -17,7 +17,7 @@
 #include "SwapStation.h"
 #include "Egg.h"
 #include "MapConstants.h"
-
+#include "Booster.h"
 
 
 class World : public Asset {
@@ -57,6 +57,8 @@ protected:
     std::vector<Vec2> _orbSpawns;
     
     std::vector<std::shared_ptr<SwapStation>> _swapStations;
+
+    std::vector<std::shared_ptr<Booster>> _boosters;
     
     std::vector<std::shared_ptr<Egg>> _eggs;
         
@@ -83,6 +85,8 @@ protected:
     bool loadOrbLoc(const std::shared_ptr<JsonValue>& json);
     
     bool loadStation(const std::shared_ptr<JsonValue>& json);
+
+    bool loadBooster(const std::shared_ptr<JsonValue>& json);
     
     bool loadEgg(const std::shared_ptr<JsonValue>& json);
     
@@ -248,6 +252,10 @@ public:
     
     std::shared_ptr<SwapStation> getSwapStation(int id){
         return _swapStations[id];
+    }
+
+    std::shared_ptr<Booster> getBooster(int id) {
+        return _boosters[id];
     }
     
     std::shared_ptr<cugl::scene2::SceneNode> getSceneNode(){

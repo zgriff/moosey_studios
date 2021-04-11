@@ -67,6 +67,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     auto orbTexture = _assets->get<Texture>("orb");
     auto swapStTexture = _assets->get<Texture>("swapstation");
     auto eggTexture = _assets->get<Texture>("egg");
+    auto boosterTexture = _assets->get<Texture>("booster");
 //
     //Currently adding elements in back to front order
     //TODO create ordered nodes so if we need to change the order of layering
@@ -83,6 +84,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         std::shared_ptr<physics2::PolygonObstacle> wall = *it;
         _physicsWorld->addObstacle(wall);
         wall->setDebugScene(_debugNode);
+        wall->setName("wall");
     }
     
     for(auto it = _eggs.begin(); it != _eggs.end(); ++it) {
@@ -110,8 +112,6 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         _currOrbCount = _currOrbCount + 1;
         _worldNode->addChild(orb->getSceneNode(),1);
     }
-
-
     
     for(auto it = _swapStations.begin(); it != _swapStations.end(); ++it) {
         std::shared_ptr<SwapStation> station = *it;
@@ -124,6 +124,18 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         station->setID(0);
         station->setTextures(swapStTexture);
         _worldNode->addChild(station->getSceneNode(),1);
+    }
+
+    for (auto it = _boosters.begin(); it != _boosters.end(); ++it) {
+        std::shared_ptr<Booster> booster = *it;
+        _physicsWorld->addObstacle(booster);
+        booster->setDrawScale(_scale);
+        booster->setActive(true);
+        booster->setDebugColor(Color4::YELLOW);
+        booster->setDebugScene(_debugNode);
+        booster->setID(0);
+        booster->setTextures(boosterTexture);
+        _worldNode->addChild(booster->getSceneNode(), 1);
     }
     
     Vec2 playerPos = ((Vec2)PLAYER_POS);
@@ -284,6 +296,14 @@ void World::unload()  {
         (*it) = nullptr;
     }
     _swapStations.clear();
+
+    for (auto it = _boosters.begin(); it != _boosters.end(); ++it) {
+        if (_physicsWorld != nullptr) {
+            _physicsWorld->removeObstacle((*it).get());
+        }
+        (*it) = nullptr;
+    }
+    _boosters.clear();
     
     for (auto it = _eggs.begin(); it != _eggs.end(); ++it)  {
         if (_physicsWorld != nullptr) {
@@ -392,6 +412,17 @@ bool World::loadStation(const std::shared_ptr<JsonValue> &json) {
     return true;
 }
 
+bool World::loadBooster(const std::shared_ptr<JsonValue>& json) {
+    float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
+    float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
+
+    // **** NEED TO CHANGE SIZE, CANNOT ACCESS _ASSETS IN LOADS
+    Vec2 boosterPos = Vec2(xCoord, yCoord);
+    auto boostpad = Booster::alloc(boosterPos);
+    _boosters.push_back(boostpad);
+    return true;
+}
+
 bool World::loadEgg(const std::shared_ptr<JsonValue> &json){
     float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
     float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
@@ -451,6 +482,8 @@ bool World::loadPlayerSpawn(const std::shared_ptr<JsonValue> &json) {
 GameObjectType World::getObjectType(std::string obj) {
     if (obj == SWAP_STATION) {
         return GameObjectType::Station;
+    } else if (obj == BOOSTER) {
+        return GameObjectType::Booster;
     } else if (obj == EGG_SPAWN) {
         return GameObjectType::EggSpawn;
     }  else if (obj == ORB_SPAWN) {
@@ -470,6 +503,10 @@ bool World::loadGameObject(const std::shared_ptr<JsonValue>& json) {
     switch (objectType) {
         case GameObjectType::Station:
             success = loadStation(json);
+            break;
+
+        case GameObjectType::Booster:
+            success = loadBooster(json);
             break;
             
         case GameObjectType::EggSpawn:

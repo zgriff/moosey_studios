@@ -13,10 +13,14 @@
 using namespace cugl;
 
 // Default physics values
-/** The density of this rocket */
+/** The density of the player */
 #define DEFAULT_DENSITY 1.0f
-/** The friction of this rocket */
+/** The friction of the player */
 #define DEFAULT_FRICTION 0.5f
+/** The minimum total velocity for drag to apply */
+#define THRESHOLD_VELOCITY 35.0f
+/** The how much the player is slowed down to minimum velocity per frame*/
+#define SPEEDING_DRAG 0.90f
 
 /** The restitution of this rocket */
 #define DEFAULT_RESTITUTION 0.4f
@@ -32,6 +36,8 @@ using namespace cugl;
 #define TRAUMA_RECOVERY   .005f
 /** How fast a player moves to physics body location. Between 0 and 1 */
 #define INTERPOLATION_AMOUNT 0.9f
+
+
 
 /**
  * Sets the textures for this player.
@@ -53,7 +59,6 @@ void Player::setTextures(const std::shared_ptr<Texture>& player) {
     _body->SetUserData(this);
 
 }
-
 
 void Player::setElement(Element e){
     _prevElt = _currElt;
@@ -144,6 +149,13 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
     return false;
 }
 
+/** sets the players direction
+ *  don't use values outside of the range (-2 * PI, 4 * PI)
+ */
+void Player::setDirection(double d) {
+    _direct = d > 2.0 * M_PI ? d - 2.0 * M_PI : (d < 0.0 ? d + 2.0 * M_PI : d);
+}
+
 /**
  * Updates the object's physics state (NOT GAME LOGIC).
  *
@@ -175,6 +187,10 @@ void Player::update(float delta) {
 //    CULog("play pos: x: %f  y:%f",getPosition().x,getPosition().y);
     _trauma = max(0.0f, _trauma - TRAUMA_RECOVERY);
 
+    if (getLinearVelocity().length() > THRESHOLD_VELOCITY) {
+        auto adjust = getLinearVelocity();
+        adjust.scale(SPEEDING_DRAG + THRESHOLD_VELOCITY * (1 - SPEEDING_DRAG) / adjust.length());
+    }
     
     if (_isTagged) {
         _isInvisible = true;
@@ -208,7 +224,7 @@ void Player::applyForce() {
     
     // Orient the force with rotation.
     Vec4 netforce(_force.x,_force.y,0.0f,1.0f);
-    Mat4::createRotationZ(getAngle(),&_affine);
+    Mat4::createRotationZ(_direct, &_affine);
     netforce *= _affine;
     
     // Apply force to the rocket BODY, not the rocket
