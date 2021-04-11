@@ -2,16 +2,16 @@
     "activeFile": "maps/untitled.tmx",
     "expandedProjectPaths": [
         "maps",
-        "tilesets",
-        "templates"
+        "templates",
+        "tilesets"
     ],
     "fileStates": {
         "maps/untitled.tmx": {
-            "scale": 1.1155,
+            "scale": 0.3612,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1610.040340654415,
-                "y": 818.0188256387271
+                "x": 689.3687707641196,
+                "y": 607.6965669988924
             }
         },
         "tilesets/decorations.tsx": {

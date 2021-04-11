@@ -149,7 +149,6 @@ void App::update(float timestep) {
         }
         case SceneSelect::Lobby:{
             if (_lobby.isActive()) {
-                NetworkController::step();
                 _lobby.update(0.01f);
             } else {
                 _lobby.setActive(false);

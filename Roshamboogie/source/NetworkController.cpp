@@ -15,6 +15,9 @@ namespace NetworkController {
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username;
         int _networkFrame;
+    
+        std::function<void(uint8_t, bool)> readyCallback;
+        std::function<void(void)> startCallback;
     }
 
     /** IP of the NAT punchthrough server */
@@ -86,6 +89,14 @@ namespace NetworkController {
         network->send(msg);
     }
 
+    void setReadyCallback(std::function<void(uint8_t, bool)> cb){
+        readyCallback = cb;
+    }
+
+    void setStartCallback (std::function<void(void)> cb){
+        startCallback = cb;
+    }
+
     void step() {
         if(network == nullptr) return;
         network->receive([&](const std::vector<uint8_t> msg) {
@@ -101,6 +112,15 @@ namespace NetworkController {
             ND::NetworkData nd{};
             ND::fromBytes(nd, msg);
             switch(nd.packetType){
+                case ND::NetworkData::CLIENT_READY:
+                    readyCallback(nd.readyData.player_id, true);
+                    break;
+                case ND::NetworkData::CLIENT_UNREADY:
+                    readyCallback(nd.readyData.player_id, false);
+                    break;
+                case ND::NetworkData::HOST_STARTGAME:
+                    startCallback();
+                    break;
                 case ND::NetworkData::TAG_PACKET:
                 {
                     auto tagged = world->getPlayer(nd.tagData.taggedId);
@@ -217,6 +237,33 @@ namespace NetworkController {
         nd.tagData.taggedId = taggedId;
         nd.tagData.taggerId = taggerId;
         nd.tagData.timestamp = timestamp;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void ready(){
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::CLIENT_READY;
+        nd.readyData.player_id = network->getPlayerID().value();
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void unready(){
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::CLIENT_UNREADY;
+        nd.readyData.player_id = network->getPlayerID().value();
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void startGame(){
+        network->startGame();
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::HOST_STARTGAME;
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
         network->send(bytes);
