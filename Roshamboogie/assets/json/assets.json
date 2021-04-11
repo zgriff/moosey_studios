@@ -534,7 +534,6 @@
                 "type": "Anchored"
             },
             "children": {
-<<<<<<< HEAD
                 "roomId": {
                     "type": "Label",
                     "data": {
@@ -554,9 +553,6 @@
                     }
                 },
                 "hud": {
-=======
-                "hud" : {
->>>>>>> sprint/alpha
                     "type": "Label",
                     "data": {
                         "font": "retro",

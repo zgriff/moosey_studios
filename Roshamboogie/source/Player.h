@@ -75,7 +75,7 @@ public:
         _id = id;
     }
 
-    void Player::allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale,
+    void allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale,
         std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld);
 
     const cugl::Vec2& getForce() const { return _force; }

@@ -205,6 +205,7 @@ void GameScene::dispose() {
  */
 void GameScene::reset() {
     _world->setRootNode(_rootnode,_scale);
+    NetworkController::setWorld(_world);
     
     auto idopt = NetworkController::getPlayerId();
     if(idopt.has_value()){

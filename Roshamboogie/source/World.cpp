@@ -119,6 +119,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         _physicsWorld->addObstacle(station);
         station->setDrawScale(_scale);
         station->setActive(true);
+        station->setLastUsed(time(NULL));
         station->setDebugColor(Color4::YELLOW);
         station->setDebugScene(_debugNode);
         station->setID(0);
