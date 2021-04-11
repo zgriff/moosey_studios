@@ -17,7 +17,7 @@ using namespace cugl;
 /** The density of the player */
 #define DEFAULT_DENSITY 1.0f
 /** The friction of the player */
-#define DEFAULT_FRICTION 0.5f
+#define DEFAULT_FRICTION 0.0f
 /** The minimum total velocity for drag to apply */
 #define THRESHOLD_VELOCITY 35.0f
 /** The how much the player is slowed down to minimum velocity per frame*/

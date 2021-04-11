@@ -32,7 +32,7 @@
 
 #define TILE_SIZE           50.0f
 
-#define GRASS_MAP_JSON      "maps/forest.json"
+#define GRASS_MAP_JSON      "json/forest.json"
 #define GRASS_MAP_KEY       "grass_map"
 
 

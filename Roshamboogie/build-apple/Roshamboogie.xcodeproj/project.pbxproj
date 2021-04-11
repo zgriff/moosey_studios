@@ -16,6 +16,9 @@
 		288216542605A90E0073F7D4 /* NetworkData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216522605A90E0073F7D4 /* NetworkData.cpp */; };
 		288216552605A90E0073F7D4 /* NetworkData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216522605A90E0073F7D4 /* NetworkData.cpp */; };
 		288216562605A90E0073F7D4 /* NetworkData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216522605A90E0073F7D4 /* NetworkData.cpp */; };
+		28BF965D2622AE8B0050EDCD /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28BF96582622AE8B0050EDCD /* Booster.cpp */; };
+		28BF96612622AE920050EDCD /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28BF96582622AE8B0050EDCD /* Booster.cpp */; };
+		28BF96652622AE930050EDCD /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28BF96582622AE8B0050EDCD /* Booster.cpp */; };
 		28D048A725F59412005AB6CC /* (null) in Sources */ = {isa = PBXBuildFile; };
 		28D048A825F59412005AB6CC /* (null) in Sources */ = {isa = PBXBuildFile; };
 		28D048A925F59412005AB6CC /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -168,6 +171,8 @@
 		288216532605A90E0073F7D4 /* NetworkData.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = NetworkData.h; sourceTree = "<group>"; };
 		2882167626098AEE0073F7D4 /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
 		28821696260A545C0073F7D4 /* World.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
+		28BF96582622AE8B0050EDCD /* Booster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Booster.cpp; sourceTree = "<group>"; };
+		28BF965C2622AE8B0050EDCD /* Booster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Booster.h; sourceTree = "<group>"; };
 		28E6A53625F76E72004998CF /* Element.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Element.h; sourceTree = "<group>"; };
 		92165312261B6DDA00FFE01E /* LobbyScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LobbyScene.cpp; sourceTree = "<group>"; };
 		92165313261B6DDA00FFE01E /* LobbyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LobbyScene.h; sourceTree = "<group>"; };
@@ -430,6 +435,8 @@
 		EBBF18B11D749176008E2001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				28BF96582622AE8B0050EDCD /* Booster.cpp */,
+				28BF965C2622AE8B0050EDCD /* Booster.h */,
 				925FC4F525F42B2800532483 /* main.cpp */,
 				925FC50025F42B6F00532483 /* App.h */,
 				925FC4FF25F42B6F00532483 /* App.cpp */,
@@ -665,6 +672,7 @@
 				925FC50E25F42CFD00532483 /* LoadingScene.cpp in Sources */,
 				92165316261B6DDA00FFE01E /* LobbyScene.cpp in Sources */,
 				925FC53625F42D4D00532483 /* Orb.cpp in Sources */,
+				28BF96652622AE930050EDCD /* Booster.cpp in Sources */,
 				ECA583F62603008700DF6791 /* Egg.cpp in Sources */,
 				921654492622999000FFE01E /* AbilityController.cpp in Sources */,
 				28297958260CEE99002EC000 /* World.cpp in Sources */,
@@ -692,6 +700,7 @@
 				925FC50D25F42CFD00532483 /* LoadingScene.cpp in Sources */,
 				92165315261B6DDA00FFE01E /* LobbyScene.cpp in Sources */,
 				925FC53525F42D4D00532483 /* Orb.cpp in Sources */,
+				28BF96612622AE920050EDCD /* Booster.cpp in Sources */,
 				ECA583F52603008700DF6791 /* Egg.cpp in Sources */,
 				921654482622999000FFE01E /* AbilityController.cpp in Sources */,
 				28297957260CEE99002EC000 /* World.cpp in Sources */,
@@ -719,6 +728,7 @@
 				925FC50C25F42CFC00532483 /* LoadingScene.cpp in Sources */,
 				92165314261B6DDA00FFE01E /* LobbyScene.cpp in Sources */,
 				925FC53425F42D4D00532483 /* Orb.cpp in Sources */,
+				28BF965D2622AE8B0050EDCD /* Booster.cpp in Sources */,
 				ECA583F42603008700DF6791 /* Egg.cpp in Sources */,
 				921654472622999000FFE01E /* AbilityController.cpp in Sources */,
 				28297956260CEE99002EC000 /* World.cpp in Sources */,

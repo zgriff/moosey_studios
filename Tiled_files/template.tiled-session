@@ -34,5 +34,6 @@
     "project": "template.tiled-project",
     "recentFiles": [
         "maps/untitled.tmx"
-    ]
+    ],
+    "resizeMap.removeObjects": false
 }
