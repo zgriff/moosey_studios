@@ -83,7 +83,7 @@ void CollisionController::beginContact(b2Contact* contact){
     else if (bd1->getName() == "booster" && bd2->getName() == "player") {
         Player* p = (Player*)bd2;
         auto adjust = p->getLinearVelocity();
-        p->setLinearVelocity(adjust.scale(50.0f / adjust.length()));
+        p->setLinearVelocity(adjust.scale(45.0f / adjust.length()));
     }
         
     //player and player collision (tagging)

@@ -19,7 +19,7 @@ using namespace cugl;
 /** The friction of the player */
 #define DEFAULT_FRICTION 0.0f
 /** The minimum total velocity for drag to apply */
-#define THRESHOLD_VELOCITY 35.0f
+#define THRESHOLD_VELOCITY 30.0f
 /** The how much the player is slowed down to minimum velocity per frame*/
 #define SPEEDING_DRAG 0.90f
 
@@ -248,7 +248,7 @@ void Player::applyForce() {
     
     // Orient the force with rotation.
     Vec4 netforce(_force.x,_force.y,0.0f,1.0f);
-    Mat4::createRotationZ(_direct, &_affine);
+    Mat4::createRotationZ(getAngle(), &_affine);
     netforce *= _affine;
     
     // Apply force to the rocket BODY, not the rocket

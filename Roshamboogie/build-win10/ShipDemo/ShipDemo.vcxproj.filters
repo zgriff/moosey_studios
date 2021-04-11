@@ -9,7 +9,6 @@
     <ClCompile Include="..\..\source\GameScene.cpp" />
     <ClCompile Include="..\..\source\InputController.cpp" />
     <ClCompile Include="..\..\source\LoadingScene.cpp" />
-    <ClCompile Include="..\..\source\LobbyScene.cpp" />
     <ClCompile Include="..\..\source\main.cpp" />
     <ClCompile Include="..\..\source\MenuScene.cpp" />
     <ClCompile Include="..\..\source\NetworkController.cpp" />
@@ -20,6 +19,8 @@
     <ClCompile Include="..\..\source\SwapStation.cpp" />
     <ClCompile Include="..\..\source\World.cpp" />
     <ClCompile Include="..\..\source\Projectile.cpp" />
+    <ClCompile Include="..\..\source\Booster.cpp" />
+    <ClCompile Include="..\..\source\LobbyScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\AbilityController.h" />
@@ -32,8 +33,6 @@
     <ClInclude Include="..\..\source\Globals.h" />
     <ClInclude Include="..\..\source\InputController.h" />
     <ClInclude Include="..\..\source\LoadingScene.h" />
-    <ClInclude Include="..\..\source\LobbyScene.h" />
-    <ClInclude Include="..\..\source\MapConstants.h" />
     <ClInclude Include="..\..\source\MenuScene.h" />
     <ClInclude Include="..\..\source\MovementStyle.h" />
     <ClInclude Include="..\..\source\NetworkController.h" />
@@ -44,5 +43,8 @@
     <ClInclude Include="..\..\source\SwapStation.h" />
     <ClInclude Include="..\..\source\World.h" />
     <ClInclude Include="..\..\source\Projectile.h" />
+    <ClInclude Include="..\..\source\Booster.h" />
+    <ClInclude Include="..\..\source\LobbyScene.h" />
+    <ClInclude Include="..\..\source\MapConstants.h" />
   </ItemGroup>
 </Project>
