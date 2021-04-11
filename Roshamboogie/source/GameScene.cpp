@@ -164,16 +164,19 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _rootnode = scene2::SceneNode::alloc();
     _rootnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
     _rootnode->setPosition(offset);
+
+    _UInode->setAnchor(Vec2::ANCHOR_CENTER);
+    
     
     _debugnode = _world->getDebugNode();
 //    addChild(scene_background);
     addChild(_rootnode);
+    addChild(_UInode);
+    _UInode->setContentSize(Size(w,h));
     _rootnode->setContentSize(Size(w,h));
     
     _world->setAssets(_assets);
-    
 
-    addChild(_UInode);
     reset();
     return true;
 }
@@ -251,36 +254,40 @@ void GameScene::update(float timestep) {
     
     _playerController.readInput();
     switch (_playerController.getMoveStyle()) {
-        case Movement::AlwaysForward: {\
+        case Movement::AlwaysForward: {
             if (_abilityController.getActiveAbility() == AbilityController::Ability::SpeedBoost) {
                 break;
             }
-            auto ang = _player->getAngle() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
-            _player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
-            
+            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0 * M_PI / TURNS_PER_SPIN;
+            //x_player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
+            _player->setDirection(ang);
+
             auto vel = _player->getLinearVelocity();
             //Please don't delete this comment, angles were difficult to derive and easy to forget
-            //vel angle originates from x axis, player angle orginates from y axis
-            auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
+            //vel angle originates from y axis, player angle orginates from x axis
+            auto offset = (vel.getAngle() + M_PI/2.0) - _player->getDirection();
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
             auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset));
             if (correction.length() > KINETIC_FRICTION) {
                 correction.scale( KINETIC_FRICTION / correction.length());
             }
-            _player->setLinearVelocity(vel.add(correction));
+            vel.add(correction);
+
+            //apply friction if going backwards IE braking
+            if (abs(offset) > M_PI / 2.0) {
+
+            }
+            _player->setLinearVelocity(vel);
 
             if (_playerController.getMov().x == 0) {
-                //constant acceleration
-                //_player->applyForce();
-
-                auto big = _player->getMass();
 
                 //accelerate to a maximum velocity
                 auto forForce = _player->getForce();
                 auto scaling = _player->getForce();
+
                 //scaling.normalize().scale(0.05f * pow(30.0f - vel.length(), 2.0f));
-                scaling.normalize().scale(_player->getMass() * 0.32f * (26.0f - vel.length()));
+                scaling.normalize().scale(_player->getMass() * 0.32f * (25.0f - vel.length()));
                 //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
                 _player->setForce(scaling);
                 _player->applyForce();
