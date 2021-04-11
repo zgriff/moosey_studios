@@ -10,7 +10,7 @@
             "scale": 0.3612,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 689.3687707641196,
+                "x": 692.1373200442966,
                 "y": 607.6965669988924
             }
         },
@@ -25,7 +25,9 @@
             "scaleInEditor": 0.67
         }
     },
+    "last.exportedFilePath": "/Users/joshuakaplan/Downloads",
     "last.objectTemplatePath": "/Users/joshuakaplan/Documents/School Stuff/2020-2021/Spring Semester/game design/moosey_studios/Tiled_files/templates",
+    "map.lastUsedExportFilter": "Roshamboogie map format (*.json)",
     "openFiles": [
         "maps/untitled.tmx"
     ],
