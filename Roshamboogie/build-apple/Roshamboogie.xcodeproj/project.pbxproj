@@ -22,6 +22,9 @@
 		92165314261B6DDA00FFE01E /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92165312261B6DDA00FFE01E /* LobbyScene.cpp */; };
 		92165315261B6DDA00FFE01E /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92165312261B6DDA00FFE01E /* LobbyScene.cpp */; };
 		92165316261B6DDA00FFE01E /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92165312261B6DDA00FFE01E /* LobbyScene.cpp */; };
+		9216542A262282A400FFE01E /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92165425262282A300FFE01E /* Booster.cpp */; };
+		9216542B262282A400FFE01E /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92165425262282A300FFE01E /* Booster.cpp */; };
+		9216542C262282A400FFE01E /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92165425262282A300FFE01E /* Booster.cpp */; };
 		9220952F260DA500003C9263 /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9220952D260DA500003C9263 /* MenuScene.cpp */; };
 		92209530260DA500003C9263 /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9220952D260DA500003C9263 /* MenuScene.cpp */; };
 		92209531260DA500003C9263 /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9220952D260DA500003C9263 /* MenuScene.cpp */; };
@@ -163,9 +166,11 @@
 		2882167626098AEE0073F7D4 /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
 		28821696260A545C0073F7D4 /* World.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
 		28E6A53625F76E72004998CF /* Element.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Element.h; sourceTree = "<group>"; };
-		92165332261C370200FFE01E /* MapConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapConstants.h; sourceTree = "<group>"; };
 		92165312261B6DDA00FFE01E /* LobbyScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LobbyScene.cpp; sourceTree = "<group>"; };
 		92165313261B6DDA00FFE01E /* LobbyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LobbyScene.h; sourceTree = "<group>"; };
+		92165332261C370200FFE01E /* MapConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapConstants.h; sourceTree = "<group>"; };
+		92165425262282A300FFE01E /* Booster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Booster.cpp; sourceTree = "<group>"; };
+		92165429262282A300FFE01E /* Booster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Booster.h; sourceTree = "<group>"; };
 		922094CC260D0AFB003C9263 /* MovementStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MovementStyle.h; sourceTree = "<group>"; };
 		9220952D260DA500003C9263 /* MenuScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MenuScene.cpp; sourceTree = "<group>"; };
 		9220952E260DA500003C9263 /* MenuScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
@@ -451,6 +456,8 @@
 				28297955260CEE99002EC000 /* World.cpp */,
 				ECA583EF2603006C00DF6791 /* Egg.h */,
 				ECA583F32603008700DF6791 /* Egg.cpp */,
+				92165429262282A300FFE01E /* Booster.h */,
+				92165425262282A300FFE01E /* Booster.cpp */,
 				ECFA78E82605149B009D7949 /* CollisionController.h */,
 				ECFA78EC260514B1009D7949 /* CollisionController.cpp */,
 				922094CC260D0AFB003C9263 /* MovementStyle.h */,
@@ -644,6 +651,7 @@
 				28D048A925F59412005AB6CC /* (null) in Sources */,
 				925FC4F825F42B2800532483 /* main.cpp in Sources */,
 				2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */,
+				9216542C262282A400FFE01E /* Booster.cpp in Sources */,
 				925FC53E25F42D5C00532483 /* SpawnController.cpp in Sources */,
 				92209531260DA500003C9263 /* MenuScene.cpp in Sources */,
 				925FC51E25F42D1800532483 /* InputController.cpp in Sources */,
@@ -669,6 +677,7 @@
 				28D048A825F59412005AB6CC /* (null) in Sources */,
 				925FC4F725F42B2800532483 /* main.cpp in Sources */,
 				2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */,
+				9216542B262282A400FFE01E /* Booster.cpp in Sources */,
 				925FC53D25F42D5C00532483 /* SpawnController.cpp in Sources */,
 				92209530260DA500003C9263 /* MenuScene.cpp in Sources */,
 				925FC51D25F42D1800532483 /* InputController.cpp in Sources */,
@@ -694,6 +703,7 @@
 				28D048A725F59412005AB6CC /* (null) in Sources */,
 				925FC4F625F42B2800532483 /* main.cpp in Sources */,
 				2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */,
+				9216542A262282A400FFE01E /* Booster.cpp in Sources */,
 				925FC53C25F42D5C00532483 /* SpawnController.cpp in Sources */,
 				9220952F260DA500003C9263 /* MenuScene.cpp in Sources */,
 				925FC51C25F42D1800532483 /* InputController.cpp in Sources */,

@@ -48,6 +48,9 @@
         "aether":{
             "file": "textures/Character2_ColorAether.png"
         },
+        "player_color":{
+            "file": "textures/Character2_Color.png"
+        },
         "egg_color":{
             "file": "textures/Character2_ColorEgg.png"
         },
@@ -101,6 +104,15 @@
         },
         "staff_tag_water":{
             "file": "textures/Character7_TagWater.png"
+        },
+        "direction_fire":{
+            "file": "textures/Direction_FireRing.png"
+        },
+        "direction_grass":{
+            "file": "textures/Direction_GrassRing.png"
+        },
+        "direction_water":{
+            "file": "textures/Direction_FireRing.png"
         },
         "earth": {
             "file": "textures/earthtile.png",

@@ -148,11 +148,12 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         }
         auto player = Player::alloc(playerPos, playerSize, Element::Water);
         player->setSkinKey("skin1");
-        player->setColorKey("egg_color");
+        player->setColorKey("player_color");
         player->setFaceKey("face1");
         player->setBodyKey("body_line");
         player->setHatKey("hat_star");
         player->setStaffKey("staff_egg");
+        player->setRingKey("direction_fire");
         
         _physicsWorld->addObstacle(player);
         player->setTextures(_assets);

@@ -57,6 +57,10 @@ private:
     std::shared_ptr<cugl::scene2::AnimationNode> _staffNode;
     bool _staffCycle;
     
+    std::string _ringKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _ringNode;
+    bool _ringCycle;
+    
     time_t _animationTimer;
         
     /** Cache object for transforming the force according the object angle */
@@ -218,6 +222,10 @@ public:
     
     void setStaffKey(std::string staff) {
         _staffKey = staff;
+    }
+    
+    void setRingKey(std::string ring) {
+        _ringKey = ring;
     }
     
     

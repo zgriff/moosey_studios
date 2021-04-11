@@ -50,9 +50,9 @@ using namespace cugl;
 #define SKIN_COLS           4
 #define SKIN_FRAMES         4
 
-#define COLOR_ROWS          1
+#define COLOR_ROWS          4
 #define COLOR_COLS          4
-#define COLOR_FRAMES        4
+#define COLOR_FRAMES        16
 
 #define FACE_ROWS           1
 #define FACE_COLS           4
@@ -69,6 +69,11 @@ using namespace cugl;
 #define STAFF_ROWS          1
 #define STAFF_COLS          4
 #define STAFF_FRAMES        4
+
+#define RING_ROWS          1
+#define RING_COLS          2
+#define RING_FRAMES        2
+
 
 #define MOVEMENT_ANIM_RATE  .001
 
@@ -89,9 +94,10 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _skinNode = scene2::AnimationNode::alloc(assets->get<Texture>(_skinKey), SKIN_ROWS, SKIN_COLS, SKIN_FRAMES);
     _colorNode = scene2::AnimationNode::alloc(assets->get<Texture>(_colorKey), COLOR_ROWS, COLOR_COLS, COLOR_FRAMES);
     _faceNode = scene2::AnimationNode::alloc(assets->get<Texture>(_faceKey), FACE_ROWS, FACE_COLS, FACE_FRAMES);
-    _bodyNode = scene2::AnimationNode::alloc(assets->get<Texture>(_colorKey), BODY_ROWS, BODY_COLS, BODY_FRAMES);
-    _hatNode = scene2::AnimationNode::alloc(assets->get<Texture>(_colorKey), HAT_ROWS, HAT_COLS, HAT_FRAMES);
+    _bodyNode = scene2::AnimationNode::alloc(assets->get<Texture>(_bodyKey), BODY_ROWS, BODY_COLS, BODY_FRAMES);
+    _hatNode = scene2::AnimationNode::alloc(assets->get<Texture>(_hatKey), HAT_ROWS, HAT_COLS, HAT_FRAMES);
     _staffNode = scene2::AnimationNode::alloc(assets->get<Texture>(_staffKey), STAFF_ROWS, STAFF_COLS, STAFF_FRAMES);
+    _ringNode = scene2::AnimationNode::alloc(assets->get<Texture>(_ringKey), RING_ROWS, RING_COLS, RING_FRAMES);
     
     _skinNode->setContentSize(_animationNode->SceneNode::getSize());
     _colorNode->setContentSize(_animationNode->SceneNode::getSize());
@@ -99,20 +105,16 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _bodyNode->setContentSize(_animationNode->SceneNode::getSize());
     _hatNode->setContentSize(_animationNode->SceneNode::getSize());
     _staffNode->setContentSize(_animationNode->SceneNode::getSize());
-    
-    _skinNode->setAnchor(Vec2::ANCHOR_CENTER);
-    _colorNode->setAnchor(Vec2::ANCHOR_CENTER);
-    _faceNode->setAnchor(Vec2::ANCHOR_CENTER);
-    _bodyNode->setAnchor(Vec2::ANCHOR_CENTER);
-    _hatNode->setAnchor(Vec2::ANCHOR_CENTER);
-    _staffNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _ringNode->setContentSize(_animationNode->SceneNode::getSize());
     
     _skinNode->setPosition(0,0);
-    _colorNode->setPosition(0,0);
+//    _colorNode->setPosition(0,0);
     _faceNode->setPosition(0,0);
     _bodyNode->setPosition(0,0);
     _hatNode->setPosition(0,0);
     _staffNode->setPosition(0,0);
+    _ringNode->setPosition(0,0);
+    
     
     _sceneNode->addChild(_skinNode);
     _sceneNode->addChild(_colorNode);
@@ -120,10 +122,12 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _sceneNode->addChild(_bodyNode);
     _sceneNode->addChild(_hatNode);
     _sceneNode->addChild(_staffNode);
+    _sceneNode->addChild(_ringNode);
     
     _animationTimer = time(NULL);
-
+    
     setElement(_currElt);
+
     _body->SetUserData(this);
 
 }
@@ -134,16 +138,17 @@ void Player::setElement(Element e){
     
     switch(e){
         case Element::Grass:
-            _animationNode->setFrame(4);
+//            _animationNode->setFrame(4);
+            _colorNode->setFrame(4);
             break;
         case Element::Fire:
-            _animationNode->setFrame(3);
+            _colorNode->setFrame(0);
             break;
         case Element::Water:
-            _animationNode->setFrame(0);
+            _colorNode->setFrame(8);
             break;
         case Element::None:
-            _animationNode->setFrame(6);
+            _colorNode->setFrame(12);
             break;
     }
     
@@ -187,12 +192,14 @@ void Player::dispose() {
     _bodyNode = nullptr;
     _hatNode = nullptr;
     _staffNode = nullptr;
+    _ringNode = nullptr;
     _skinKey = "";
     _colorKey = "";
     _faceKey = "";
     _bodyKey = "";
     _hatKey = "";
     _staffKey = "";
+    _ringKey = "";
 }
 
 /**
@@ -278,6 +285,11 @@ void Player::update(float delta) {
         adjust.scale(SPEEDING_DRAG + THRESHOLD_VELOCITY * (1 - SPEEDING_DRAG) / adjust.length());
     }
     
+    if (_ringNode != nullptr) {
+        _ringNode->setAngle(getDirection()-.25*M_PI);
+    }
+    _colorNode->setPosition(getPosition());
+    
     if (_isTagged) {
         _isInvisible = true;
         _isIntangible = true;
@@ -339,7 +351,7 @@ void Player::animateMovement() {
 
 
 void Player::animationCycle(scene2::AnimationNode* node, bool* cycle) {
-    if (node->getFrame() == 3) {
+    if (node->getFrame()%4 == 3) {
         *cycle = false;
     } else {
         *cycle = true;
