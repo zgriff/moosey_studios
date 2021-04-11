@@ -136,10 +136,15 @@ namespace NetworkController {
                     world->getSwapStation(nd.swapData.swapId)->setActive(false);
                     break;
                 case ND::NetworkData::EGG_CAPTURED:
-                    world->getPlayer(nd.eggCapData.playerId)->setElement(Element::None);
-                    world->getPlayer(nd.eggCapData.playerId)->setEggId(nd.eggCapData.eggId);
+                {
+                    auto p = world->getPlayer(nd.eggCapData.playerId);
+                    p->setElement(Element::None);
+                    p->setEggId(nd.eggCapData.eggId);
+                    p->setHoldingEgg(true);
                     world->getEgg(nd.eggCapData.eggId)->setCollected(true);
                     world->getEgg(nd.eggCapData.eggId)->setPID(nd.eggCapData.playerId);
+                    
+                }
                     break;
                 case ND::NetworkData::ORB_RESPAWN:
                 {
