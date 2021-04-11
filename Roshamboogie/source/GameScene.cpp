@@ -366,9 +366,9 @@ void GameScene::update(float timestep) {
         }
         
         //egg spawning
-        if (world->getCurrEggCount() < 2) {
-            SpawnController::spawnEggs();
-            }
+//        if (world->getCurrEggCount() < 2) {
+//            SpawnController::spawnEggs();
+//            }
     
     }
     
@@ -390,7 +390,7 @@ void GameScene::update(float timestep) {
                 _hatchedTime = time(NULL);
                 _egg->setHatched(true);
                 world->setCurrEggCount(world->getCurrEggCount() - 1);
-//                _egg->dispose();
+                _egg->dispose();
                 _player->setElement(_player->getPrevElement());
                 _player->incScore(10);
             }
