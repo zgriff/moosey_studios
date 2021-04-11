@@ -24,6 +24,7 @@
 
 #define TYPE_FIELD          "type"
 #define SWAP_STATION        "swap_station"
+#define BOOSTER             "booster"
 #define EGG_SPAWN           "egg_spawn"
 #define ORB_SPAWN           "active_orb"
 #define ORB_LOCATION        "inactive_orb"
@@ -36,7 +37,7 @@
 
 
 enum class GameObjectType {
-    PlayerSpawn, OrbSpawn, OrbLocation, Station, EggSpawn
+    PlayerSpawn, OrbSpawn, OrbLocation, Station, EggSpawn, Booster
 };
 
 
