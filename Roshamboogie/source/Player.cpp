@@ -8,28 +8,37 @@
 
 #include "Player.h"
 #include "Element.h"
+#include "Projectile.h"
 #include "NetworkController.h"
 
 using namespace cugl;
 
 // Default physics values
-/** The density of this rocket */
+/** The density of the player */
 #define DEFAULT_DENSITY 1.0f
-/** The friction of this rocket */
-#define DEFAULT_FRICTION 0.5f
+/** The friction of the player */
+#define DEFAULT_FRICTION 0.0f
+/** The minimum total velocity for drag to apply */
+#define THRESHOLD_VELOCITY 30.0f
+/** The how much the player is slowed down to minimum velocity per frame*/
+#define SPEEDING_DRAG 0.90f
 
 /** The restitution of this rocket */
 #define DEFAULT_RESTITUTION 0.4f
 /** The constant force applied to this rocket */
 #define DEFAULT_PLAYER_FORCE Vec2(0.0f, 8.3f)
 /** Number of rows in the player image filmstrip */
-#define PLAYER_ROWS       3
+#define PLAYER_ROWS       1
 /** Number of columns in this player image filmstrip */
-#define PLAYER_COLS       1
+#define PLAYER_COLS       8
 /** Number of elements in this player image filmstrip */
-#define PLAYER_FRAMES     3
+#define PLAYER_FRAMES     8
 /** How fast a player recovers from screen shake*/
 #define TRAUMA_RECOVERY   .005f
+/** How fast a player moves to physics body location. Between 0 and 1 */
+#define INTERPOLATION_AMOUNT 0.9f
+
+
 
 /**
  * Sets the textures for this player.
@@ -52,27 +61,29 @@ void Player::setTextures(const std::shared_ptr<Texture>& player) {
 
 }
 
-
 void Player::setElement(Element e){
-    _prevElt = _currElt;
+    // this is so if you collect the egg as Aether, it will revert back to your orignal color
+    // since keeping track that prev element is Aether doesn't seem to have any use atm
+    if (_currElt != Element::Aether) {
+        _prevElt = _currElt;
+    }
     _currElt = e;
     
     switch(e){ 
         case Element::Grass:
-            _animationNode->setFrame(2);
-            _sceneNode->setColor(Color4(255, 255, 255));
+            _animationNode->setFrame(4);
             break;
         case Element::Fire:
-            _animationNode->setFrame(0);
-            _sceneNode->setColor(Color4(255, 255, 255));
+            _animationNode->setFrame(3);
             break;
         case Element::Water:
-            _animationNode->setFrame(1);
-            _sceneNode->setColor(Color4(255, 255, 255));
+            _animationNode->setFrame(0);
             break;
         case Element::None:
-            _sceneNode->setColor(Color4(0, 0, 0));
+            _animationNode->setFrame(6);
             break;
+        case Element::Aether:
+            _sceneNode->setColor(Color4(0, 0, 0));
     }
     
 }
@@ -87,6 +98,9 @@ Element Player::getPreyElement() {
             return Element::Fire;
         case Element::None:
             return Element::None;
+        case Element::Aether:
+            //All three elements are prey, so this gets handled seperately in collision controller
+            return Element::None;
     }
 }
 
@@ -98,6 +112,18 @@ void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     CULog("sceneNode width %d", _sceneNode->getContentWidth());
     CULog("animationNode width %d", _animationNode->getContentWidth());*/
     _sceneNode->addChild(_usernameNode);
+    
+}
+
+void Player::allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale, 
+                            std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld) {
+    Size projSize(projectileTexture->getSize() / scale);
+    _projectile = Projectile::alloc(Vec2(0, 0), projSize, _id);
+    physicsWorld->addObstacle(_projectile);
+    _projectile->setTextures(projectileTexture);
+    _projectile->setTextures(projectileTexture);
+    _projectile->setDrawScale(scale);
+    _projectile->setActive(false);
 }
 
 /**
@@ -108,6 +134,7 @@ void Player::dispose() {
     _sceneNode = nullptr;
     _animationNode = nullptr;
     _texture = nullptr;
+    _projectile = nullptr;
 }
 
 /**
@@ -123,7 +150,7 @@ void Player::dispose() {
  * @return true if the initialization was successful
  */
 bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
-    if(physics2::BoxObstacle::init(pos,size)){
+    if(physics2::CapsuleObstacle::init(pos,size)){
         std::string name("player");
         setName(name);
         setDensity(DEFAULT_DENSITY);
@@ -133,12 +160,22 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         setForce(DEFAULT_PLAYER_FORCE);
         _currElt = elt;
         _prevElt = elt;
+        _score = 0;
+        _tagCooldown = 0;
         _isTagged = false;
         _didTag = false;
         _sceneNode = nullptr;
+        _positionError = Vec2::ZERO;
         return true;
     }
     return false;
+}
+
+/** sets the players direction
+ *  don't use values outside of the range (-2 * PI, 4 * PI)
+ */
+void Player::setDirection(double d) {
+    _direct = d > 2.0 * M_PI ? d - 2.0 * M_PI : (d < 0.0 ? d + 2.0 * M_PI : d);
 }
 
 /**
@@ -157,10 +194,47 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
 void Player::update(float delta) {
     Obstacle::update(delta);
     if (_sceneNode != nullptr) {
-        _sceneNode->setPosition(getPosition()*_drawscale);
+        //interp
+//        auto dest = (getPosition()*_drawscale) + _positionError;
+//        CULog("%s\n", _positionError.toString().c_str());
+//        _positionError *= INTERPOLATION_AMOUNT;
+        if(_positionError.length() < 0.00001f){
+            _positionError.setZero();
+        }
+        _sceneNode->setPosition((getPosition() + _positionError) * _drawscale);
         _sceneNode->setAngle(getAngle());
+        
+        _positionError *= INTERPOLATION_AMOUNT;
     }
+//    CULog("play pos: x: %f  y:%f",getPosition().x,getPosition().y);
     _trauma = max(0.0f, _trauma - TRAUMA_RECOVERY);
+
+    if (getLinearVelocity().length() > THRESHOLD_VELOCITY) {
+        auto adjust = getLinearVelocity();
+        adjust.scale(SPEEDING_DRAG + THRESHOLD_VELOCITY * (1 - SPEEDING_DRAG) / adjust.length());
+    }
+    
+    if (_isTagged) {
+        _isInvisible = true;
+        _isIntangible = true;
+        _sceneNode->setColor(Color4(255,255,255,50));
+    }
+    else {
+        _isInvisible = false;
+        _isIntangible = false;
+        if (_currElt != Element::Aether) {
+            _sceneNode->setColor(Color4(255, 255, 255, 255));
+        }
+    }
+    
+    if (_isInvisible) {
+        //set invisible for other players
+        if(! _isLocal){
+            _sceneNode->setVisible(false);
+        }
+    } else {
+        _sceneNode->setVisible(true);
+    }
 }
 
 void Player::addTrauma(float t) {
@@ -174,7 +248,7 @@ void Player::applyForce() {
     
     // Orient the force with rotation.
     Vec4 netforce(_force.x,_force.y,0.0f,1.0f);
-    Mat4::createRotationZ(getAngle(),&_affine);
+    Mat4::createRotationZ(getAngle(), &_affine);
     netforce *= _affine;
     
     // Apply force to the rocket BODY, not the rocket

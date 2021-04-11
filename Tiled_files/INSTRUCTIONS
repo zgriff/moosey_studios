@@ -1,0 +1,17 @@
+First time use:
+
+1. Download the Tiled editor
+2. Open Tiled. Open Preferences. Click Plugins. Open the Extensions directory.
+3. COPY the file "custom-map.js" into the extension directory
+4. Restart Tiled
+
+Subsequent use:
+
+1. open the project "template.tiled-project"
+2. in the maps folder, create a copy of "untitled.tmx" and name it something else
+3. open that map in Tiled.
+4. to add background tiles, make sure you're in the Background layer, using the tileset "tiles". use the tile tools, such as "Stamp Brush" (B)
+5. to add decorations (trees and such), make sure you're in the Decorations layer, using the tileset "decorations". Use the "Insert Tile" tool (T)
+6. to add hitboxes (only for boundaries), make sure you're in the Hitboxes layer. Use the Polygon tool (P) or the Rectangle tool (R) to draw boundaries
+7. to add game objects (spawns, swaps, etc), make sure you're in the GameObjects layer. open the "templates" folder in the project sidebar. drag in the game object you want into the map
+8. When done with a map, save it in the maps folder. you can edit it again later. to export the map, go to File > Export (or whatever it is on windows), and choose the "Roshamboogie map format" file format. Name the file whatever.json and put it in the Roshamboogie/assets/maps folder.

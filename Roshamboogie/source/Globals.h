@@ -23,6 +23,19 @@ constexpr uint8_t MAX_ORBS = 20;
 /** Maximum number of swap stations per game */
 constexpr uint8_t MAX_SWAP_STATIONS = 5;
 
+constexpr int TAG_SCORE = 15;
+
+/**convert Tiled coords to box2d w/ scalar*/
+constexpr float  TILE_TO_BOX2D = 50.0f/40.0f;
+
+constexpr float  TILE_TO_SCENE = 50.0f;
+
+/** roughly 40 pixels to 1 box2d unit */
+constexpr float  SCENE_TO_BOX2D = 1.0f/40.0f;
+
+constexpr float  BOX2D_TO_SCENE = 40.0f;
+
+
 }
 
 #endif /* Globals_h */

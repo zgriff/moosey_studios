@@ -12,6 +12,8 @@
 #include "GameScene.h"
 #include "LoadingScene.h"
 #include "MenuScene.h"
+#include "EndScene.h"
+#include "LobbyScene.h"
 
 /**
  * This class represents the application root for the project.
@@ -30,11 +32,19 @@ protected:
     LoadingScene _loading;
     /** The controller for the main menu  */
     MenuScene _menu;
+    /** The controller for the player lobby  */
+    LobbyScene _lobby;
+    /** The controller for the ending results screen  */
+    EndScene _results;
 
     /** Whether or not we have finished loading all assets */
     enum class SceneSelect {
-        Loading, Menu, Game
+        Loading, Menu, Game, Lobby, Results
     };
+    
+    
+    clock_t gameTimer = 1000 * CLOCKS_PER_SEC;
+    clock_t startTimer;
     
     SceneSelect _currentScene;
     

@@ -4,6 +4,8 @@
 #include <cugl/cugl.h>
 #include "World.h"
 
+#define NETWORK_FRAMERATE 6
+
 namespace NetworkController {
 
 	void createGame();
@@ -18,6 +20,8 @@ namespace NetworkController {
     std::string getRoomId();
 
     uint8_t getNumPlayers();
+    
+    cugl::CUNetworkConnection::NetStatus getStatus();
 
     void step();
     
@@ -31,12 +35,23 @@ namespace NetworkController {
     void sendPlayerColorSwap(int playerId, Element newElement, int swapId);
     void sendEggCollected(int playerId, int eggId);
     void sendOrbRespawn(int orbId, Vec2 orbPosition);
+    void sendTag(int taggedId, int taggerId, time_t timestamp);
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);
 
     std::string getUsername();
 
     void setUsername(std::string name);
+
+    void setReadyCallback(std::function<void(uint8_t, bool)> cb);
+    void setStartCallback (std::function<void(void)> cb);
+
+    //called by a client when they are ready
+    void ready();
+    //called by client if they were ready but are no longer ready
+    void unready();
+    //Called by the host when the game is ready to start
+    void startGame();
 
 };
 

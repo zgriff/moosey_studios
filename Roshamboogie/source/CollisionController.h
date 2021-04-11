@@ -12,6 +12,7 @@
 #include <Box2D/Dynamics/b2World.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
+#include "World.h"
 
 #include <cugl/cugl.h>
 
@@ -20,11 +21,17 @@ using namespace cugl;
 
 namespace CollisionController {
 
+    namespace {
+        std::shared_ptr<World> world;
+    }
+
     void beginContact(b2Contact* contact);
 
     void endContact(b2Contact* contact);
     
     void beforeSolve(b2Contact* contact, const b2Manifold* oldManifold);
+
+    void setWorld(std::shared_ptr<World> w);
 };
 
 

@@ -14,6 +14,8 @@
 
 #include "NetworkController.h"
 #include "InputController.h"
+#include "World.h"
+#include "Globals.h"
 
 /**
  * This class is a simple loading screen for asychronous asset loading.

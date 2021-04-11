@@ -10,7 +10,7 @@
 #define MovementStyle_h
 
 enum class Movement {
-    AlwaysForward, SwipeForce, TiltMove
+    AlwaysForward, SwipeForce, TiltMove, GolfMove
 };
 
 #endif /* MovementStyle_h */

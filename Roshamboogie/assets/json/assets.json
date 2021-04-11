@@ -3,29 +3,44 @@
         "background": {
             "file": "textures/background.png"
         },
-        "photon": {
+        "orb": {
             "file": "textures/photon.png"
         },
         "ship": {
             "file": "textures/ships.png"
         },
         "player": {
-            "file": "textures/player.png"
+            "file": "textures/character_sprite.png"
         },
         "rocket": {
             "file": "textures/rocket.png"
         },
-        "target": {
-            "file": "textures/target.png"
+        "projectile": {
+            "file": "textures/projectile.png"
+        },
+        "egg": {
+            "file": "textures/egg.png"
         },
         "grass": {
-            "file":  "textures/grass.png"
+            "file":  "textures/grass_texture.png"
+        },
+        "booster": {
+            "file": "textures/sped.png"
         },
         "swapstation": {
-            "file": "textures/swapst.png"
+            "file": "textures/swapst_two.png"
         },
         "wall": {
             "file": "textures/barrier.png"
+        },
+        "tree": {
+            "file": "textures/tree1.png"
+        },
+        "tree2": {
+            "file": "textures/tree2.png"
+        },
+        "tree3": {
+            "file": "textures/tree3.png"
         },
         "earth": {
             "file": "textures/earthtile.png",
@@ -41,6 +56,20 @@
         },
         "join": {
             "file": "textures/join.png",
+            "wrapS": "clamp",
+            "wrapT": "clamp",
+            "minfilter": "linear",
+            "magfilter": "linear"
+        },
+        "play_again": {
+            "file": "textures/play_again.png",
+            "wrapS": "clamp",
+            "wrapT": "clamp",
+            "minfilter": "linear",
+            "magfilter": "linear"
+        },
+        "quit": {
+            "file": "textures/quit.png",
             "wrapS": "clamp",
             "wrapT": "clamp",
             "minfilter": "linear",
@@ -150,7 +179,7 @@
                     "type"   : "Slider",
                     "data"   : {
                         "bounds" : [0,10,0,200],
-                        "range"  : [0,2],
+                        "range"  : [0,3],
                         "value"  : 0,
                         "tick"   : 1,
                         "snap"   : true,
@@ -227,7 +256,260 @@
                     }
                 }
             }
-        }, 
+        },
+        "lobby" : {
+            "type"      : "Node",
+            "format"    : {
+                "type" : "Anchored"
+            },
+            "data" : {
+                "anchor" :[0.5,0.5]
+            },
+            "layout" : {
+                "x_anchor" : "center",
+                "y_anchor" : "middle"
+            },
+            "children": {
+                "roomId": {
+                    "type": "Label",
+                    "data": {
+                        "font": "retro",
+                        "text": "",
+                        "foreground": [ 0, 0, 0, 255 ],
+                        "size": [ 100, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": -0.4,
+                        "y_offset": 0.35
+                    }
+                },
+                "players" : {
+                    "type": "Node",
+                    "format" : {
+                        "type" : "Anchored"
+                    },
+                    "data" : {
+                        "anchor" :[0.5,0.5]
+                    },
+                    "layout" : {
+                        "x_anchor" : "fill",
+                        "y_anchor" : "fill"
+                    },
+                    "children": {
+                        "player1" : {
+                            "type"   : "Label",
+                            "data"   : {
+                                "font"       : "username",
+                                "text"       : "Player 1",
+                                "foreground" : [255,255,255,255],
+                                "size"       : [600,70],
+                                "valign"     : "middle",
+                                "halign"     : "center",
+                                "anchor"     : [0.5,0.5]
+                            },
+                            "layout" : {
+                                "x_anchor" : "center",
+                                "y_anchor" : "middle",
+                                "x_offset" : -0.2,
+                                "y_offset" : 0.30
+                            }
+                        },
+                        "player2" : {
+                            "type"   : "Label",
+                            "data"   : {
+                                "font"       : "username",
+                                "text"       : "Player 2",
+                                "foreground" : [255,255,255,255],
+                                "size"       : [600,70],
+                                "valign"     : "middle",
+                                "halign"     : "center",
+                                "anchor"     : [0.5,0.5]
+                            },
+                            "layout" : {
+                                "x_anchor" : "center",
+                                "y_anchor" : "middle",
+                                "x_offset" : 0.2,
+                                "y_offset" : 0.30
+                            }
+                        },
+                        "player3" : {
+                            "type"   : "Label",
+                            "data"   : {
+                                "font"       : "username",
+                                "text"       : "Player 3",
+                                "foreground" : [255,255,255,255],
+                                "size"       : [600,70],
+                                "valign"     : "middle",
+                                "halign"     : "center",
+                                "anchor"     : [0.5,0.5]
+                            },
+                            "layout" : {
+                                "x_anchor" : "center",
+                                "y_anchor" : "middle",
+                                "x_offset" : -0.2,
+                                "y_offset" : 0.1
+                            }
+                        },
+                        "player4" : {
+                            "type"   : "Label",
+                            "data"   : {
+                                "font"       : "username",
+                                "text"       : "Player 4",
+                                "foreground" : [255,255,255,255],
+                                "size"       : [600,70],
+                                "valign"     : "middle",
+                                "halign"     : "center",
+                                "anchor"     : [0.5,0.5]
+                            },
+                            "layout" : {
+                                "x_anchor" : "center",
+                                "y_anchor" : "middle",
+                                "x_offset" : 0.2,
+                                "y_offset" : 0.1
+                            }
+                        },
+                        "player5" : {
+                            "type"   : "Label",
+                            "data"   : {
+                                "font"       : "username",
+                                "text"       : "Player 5",
+                                "foreground" : [255,255,255,255],
+                                "size"       : [600,70],
+                                "valign"     : "middle",
+                                "halign"     : "center",
+                                "anchor"     : [0.5,0.5]
+                            },
+                            "layout" : {
+                                "x_anchor" : "center",
+                                "y_anchor" : "middle",
+                                "x_offset" : -0.2,
+                                "y_offset" : -0.1
+                            }
+                        },
+                        "player6" : {
+                            "type"   : "Label",
+                            "data"   : {
+                                "font"       : "username",
+                                "text"       : "Player 6",
+                                "foreground" : [255,255,255,255],
+                                "size"       : [600,70],
+                                "valign"     : "middle",
+                                "halign"     : "center",
+                                "anchor"     : [0.5,0.5]
+                            },
+                            "layout" : {
+                                "x_anchor" : "center",
+                                "y_anchor" : "middle",
+                                "x_offset" : 0.2,
+                                "y_offset" : -0.1
+                            }
+                        },
+                        "player7" : {
+                            "type"   : "Label",
+                            "data"   : {
+                                "font"       : "username",
+                                "text"       : "Player 7",
+                                "foreground" : [255,255,255,255],
+                                "size"       : [600,70],
+                                "valign"     : "middle",
+                                "halign"     : "center",
+                                "anchor"     : [0.5,0.5]
+                            },
+                            "layout" : {
+                                "x_anchor" : "center",
+                                "y_anchor" : "middle",
+                                "x_offset" : -0.2,
+                                "y_offset" : -0.3
+                            }
+                        },
+                        "player8" : {
+                            "type"   : "Label",
+                            "data"   : {
+                                "font"       : "username",
+                                "text"       : "Player 8",
+                                "foreground" : [255,255,255,255],
+                                "size"       : [600,70],
+                                "valign"     : "middle",
+                                "halign"     : "center",
+                                "anchor"     : [0.5,0.5]
+                            },
+                            "layout" : {
+                                "x_anchor" : "center",
+                                "y_anchor" : "middle",
+                                "x_offset" : 0.2,
+                                "y_offset" : -0.3
+                            }
+                        }
+                    }
+                },
+                "start": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                        "visible": true,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 0.8
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "host"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "right",
+                        "y_anchor": "bottom",
+                        "x_offset": -100,
+                        "y_offset": 100,
+                        "absolute": true
+                    }
+                }
+            }
+        },
+        "end" : {
+            "type"      : "Solid",
+            "format"    : {
+                "type" : "Anchored"
+            },
+            "data" : {
+                "color": [239,61,49,255]
+            },
+            "children": {
+                "playagain": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                        "visible": true,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 0.8
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "play_again"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": 115,
+                        "absolute": true
+                    }
+                }
+            }
+        },
         "background": {
             "comment": "Scene for all background elements",
             "type": "Node",
@@ -254,6 +536,10 @@
             "format": {
                 "type": "Anchored"
             },
+            "layout" : {
+                "x_anchor" : "fill",
+                "y_anchor" : "fill"
+            },
             "children": {
                 "roomId": {
                     "type": "Label",
@@ -273,57 +559,89 @@
                         "absolute": true
                     }
                 },
-                "hud" : {
+                "hud": {
                     "type": "Label",
                     "data": {
-                        "font"       : "retro",
-                        "text"       : "Score: 0",
-                        "foreground" : [255,255,255,255],
-                        "size"       : [500,70],
-                        "valign"     : "bottom",
-                        "halign"     : "left"
+                        "font": "retro",
+                        "text": "Score: 0",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 500, 70 ],
+                        "valign": "bottom",
+                        "halign": "left"
                     },
-                    "layout" : {
-                        "x_anchor" : "left",
-                        "y_anchor" : "bottom",
-                        "x_offset" : 80,
-                        "y_offset" : 100,
-                        "absolute" : true
+                    "layout": {
+                        "x_anchor": "right",
+                        "y_anchor": "top",
+                        "x_offset": -0.2,
+                        "y_offset": -0.2
                     }
                 },
-                "bar"  : {
-                    "type"   : "Progress",
-                    "data"   : {
-                        "anchor"     : [0.5,0.5],
-                        "background" : "progress_background",
-                        "foreground" : "progress_foreground",
-                        "left_cap"   : "progress_leftcap",
-                        "right_cap"  : "progress_rightcap"
+                "bar": {
+                    "type": "Progress",
+                    "data": {
+                        "anchor": [ 0.5, 0.5 ],
+                        "background": "progress_background",
+                        "foreground": "progress_foreground",
+                        "left_cap": "progress_leftcap",
+                        "right_cap": "progress_rightcap"
                     },
-                    "layout" : {
-                        "x_anchor" : "right",
-                        "y_anchor" : "top",
-                        "x_offset" : -300,
-                        "y_offset" : -150,
-                        "absolute" : true
+                    "layout": {
+                        "x_anchor": "right",
+                        "y_anchor": "top",
+                        "x_offset": -0.2,
+                        "y_offset": -0.2
                     }
                 },
-                "hatched":{
+                "hatched": {
                     "type": "label",
                     "data": {
-                        "font"       : "retro",
-                        "text"       : "Egg hatched!",
-                        "foreground" : [255,255,255,255],
-                        "size"       : [500,70],
-                        "valign"     : "bottom",
-                        "halign"     : "left"
+                        "font": "retro",
+                        "text": "Egg hatched!",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 500, 70 ],
+                        "valign": "bottom",
+                        "halign": "left"
                     },
-                    "layout" : {
-                        "x_anchor" : "right",
-                        "y_anchor" : "top",
-                        "x_offset" : -650,
-                        "y_offset" : -200,
-                        "absolute" : true
+                    "layout": {
+                        "x_anchor": "right",
+                        "y_anchor": "top",
+                        "x_offset": -0.2,
+                        "y_offset": -0.4
+                    }
+                },
+                "abilityBar": {
+                    "type": "Progress",
+                    "data": {
+                        "anchor": [ 0.5, 0.5 ],
+                        "background": "progress_background",
+                        "foreground": "progress_foreground",
+                        "left_cap": "progress_leftcap",
+                        "right_cap": "progress_rightcap"
+                    },
+                    "layout": {
+                        "x_anchor": "right",
+                        "y_anchor": "top",
+                        "x_offset": -0.4,
+                        "y_offset": -0.2
+                    },
+                    "children": {
+                        "abilityName": {
+                            "type": "label",
+                            "data": {
+                                "font": "username",
+                                "text": "Test",
+                                "foreground": [ 0, 0, 0, 255 ],
+                                "size": [ 500, 70 ],
+                                "valign": "bottom",
+                                "halign": "left"
+                            },
+                            "layout": {
+                                "x_anchor": "left",
+                                "y_anchor": "top",
+                                "x_offset": 0,
+                                "y_offset": 0
+                            }
+                        }
                     }
                 }
             }
