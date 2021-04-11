@@ -12,6 +12,7 @@
 #include "Egg.h"
 #include "Element.h"
 #include "Orb.h"
+#include "Booster.h"
 #include "SwapStation.h"
 #include "World.h"
 #include <Box2D/Dynamics/b2World.h>
@@ -32,7 +33,11 @@ void CollisionController::beginContact(b2Contact* contact){
     
     cugl::physics2::Obstacle* bd1 = (cugl::physics2::Obstacle*) bodyA->GetUserData();
     cugl::physics2::Obstacle* bd2 = (cugl::physics2::Obstacle*) bodyB->GetUserData();
-    
+    if (bd1->getName() > bd2->getName()) {
+        std::swap(bd1, bd2);
+    }
+    //object that comes first lexograpically
+
     //orb and player collision
     if(bd1->getName() == "orb" && bd2->getName() == "player") {
         Orb* o = (Orb*) bd1;
@@ -44,30 +49,8 @@ void CollisionController::beginContact(b2Contact* contact){
             NetworkController::sendOrbCaptured(o->getID(), p->getID());
         }
     }
-    else if (bd2->getName() == "orb" && bd1->getName() == "player") {
-        Orb* o = (Orb*) bd2;
-        Player* p = (Player*) bd1;
-        if (!o->getCollected() && p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
-            o->setCollected(true);
-            p->setOrbScore(p->getOrbScore() + 1);
-            world->setOrbCount(world->getCurrOrbCount() - 1);
-            NetworkController::sendOrbCaptured(o->getID(), p->getID());
-        }
-    }
-       
+          
     //swap station and player collision
-   else if (bd1->getName() == "swapstation" && bd2->getName() == "player") {
-        Player* p = (Player*) bd2;
-        SwapStation* s = (SwapStation*) bd1;
-        if (p->getCurrElement() != Element::None && p->getCurrElement() != Element::Aether && p->getIsIntangible() == false) {
-            if (s->getActive()) {
-                s->setLastUsed(time(NULL));
-                p->setElement(p->getPreyElement());
-                s->setActive(false);
-                NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
-            }
-        }
-    }
     else if(bd1->getName() == "player" && bd2->getName() == "swapstation") {
         Player* p = (Player*) bd1;
         SwapStation* s = (SwapStation*) bd2;
@@ -94,21 +77,15 @@ void CollisionController::beginContact(b2Contact* contact){
             CULog("egg collected");
             NetworkController::sendEggCollected(p->getID(), e->getID());
         }
+    }
+
+    //booster and player collision
+    else if (bd1->getName() == "booster" && bd2->getName() == "player") {
+        Player* p = (Player*)bd2;
+        auto adjust = p->getLinearVelocity();
+        p->setLinearVelocity(adjust.scale(50.0f / adjust.length()));
+    }
         
-    }
-    else if (bd2->getName() == "egg" && bd1->getName() == "player") {
-        Egg* e = (Egg*) bd2;
-        Player* p = (Player*) bd1;
-        if (e->getCollected() == false && p->getIsIntangible() == false) {
-            p->setElement(Element::None);
-            e->setCollected(true);
-            e->setPID(p->getID());
-            p->setEggId(e->getID());
-            CULog("egg collected");
-            NetworkController::sendEggCollected(p->getID(), e->getID());
-        }
-    }
-    
     //player and player collision (tagging)
     else if ((bd1->getName() == "player" && bd2->getName() == "player") || (bd2->getName() == "player" && bd1->getName() == "player")) {
         Player* p1 = (Player*) bd1;

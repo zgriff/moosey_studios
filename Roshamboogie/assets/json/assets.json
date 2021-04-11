@@ -24,6 +24,9 @@
         "grass": {
             "file":  "textures/grass_texture.png"
         },
+        "booster": {
+            "file": "textures/sped.png"
+        },
         "swapstation": {
             "file": "textures/swapst_two.png"
         },
