@@ -55,23 +55,28 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     
     _startButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_start"));
     
-    if(NetworkController::isHost()){
-        _startButton->addListener([&](const std::string& name, bool down) {
-            if(true){ //TODO: if everyone ready
-                NetworkController::startGame();
-                _active = down;
-            }
-        });
-    }else{
-        _startButton->addListener([&](const std::string& name, bool down) {
-            if(clientReady){
-                NetworkController::unready();
-            }else{
-                NetworkController::ready();
-            }
-            clientReady = !clientReady;
-        });
-    }
+//    if(NetworkController::isHost()){
+//        _startButton->addListener([&](const std::string& name, bool down) {
+//            if(true){ //TODO: if everyone ready
+//                NetworkController::startGame();
+//                _active = down;
+//            }
+//        });
+//    }else{
+//        _startButton->addListener([&](const std::string& name, bool down) {
+//            if(clientReady){
+//                NetworkController::unready();
+//            }else{
+//                NetworkController::ready();
+//            }
+//            clientReady = !clientReady;
+//        });
+//    }
+    _startButton->addListener([&](const std::string& name, bool down) {
+        if(true){ //TODO: if everyone ready
+            _active = down;
+        }
+    });
     
     _roomId = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("lobby_roomId"));
     
@@ -90,13 +95,13 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     }
 
     Application::get()->setClearColor(Color4(192,192,192,255));
-    NetworkController::setStartCallback([&](){
-        CULog("called !!!!!");
-        this->setActive(false);
-    });
-    NetworkController::setReadyCallback([&](uint8_t playerid, bool r){
-        return;
-    });
+//    NetworkController::setStartCallback([&](){
+//        CULog("called !!!!!");
+//        this->setActive(false);
+//    });
+//    NetworkController::setReadyCallback([&](uint8_t playerid, bool r){
+//        return;
+//    });
     return true;
 }
 
