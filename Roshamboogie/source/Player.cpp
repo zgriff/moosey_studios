@@ -10,7 +10,13 @@
 #include "Element.h"
 #include "NetworkController.h"
 
+
+
+
 using namespace cugl;
+
+#pragma mark -
+#pragma mark Physics Constants
 
 // Default physics values
 /** The density of the player */
@@ -37,6 +43,34 @@ using namespace cugl;
 /** How fast a player moves to physics body location. Between 0 and 1 */
 #define INTERPOLATION_AMOUNT 0.9f
 
+#pragma mark -
+#pragma mark Animation Constants
+
+#define SKIN_ROWS           1
+#define SKIN_COLS           4
+#define SKIN_FRAMES         4
+
+#define COLOR_ROWS          1
+#define COLOR_COLS          4
+#define COLOR_FRAMES        4
+
+#define FACE_ROWS           1
+#define FACE_COLS           4
+#define FACE_FRAMES         4
+
+#define BODY_ROWS           1
+#define BODY_COLS           4
+#define BODY_FRAMES         4
+
+#define HAT_ROWS            1
+#define HAT_COLS            4
+#define HAT_FRAMES          4
+
+#define STAFF_ROWS          1
+#define STAFF_COLS          4
+#define STAFF_FRAMES        4
+
+#define MOVEMENT_ANIM_RATE  .001
 
 
 /**
@@ -44,17 +78,51 @@ using namespace cugl;
  *
  * @param player      The texture for the player filmstrip
  */
-void Player::setTextures(const std::shared_ptr<Texture>& player) {
+void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
 
     _sceneNode = scene2::PolygonNode::alloc();
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
-    _animationNode = scene2::AnimationNode::alloc(player, PLAYER_ROWS, PLAYER_COLS, PLAYER_FRAMES);
-    _animationNode->setAnchor(Vec2::ANCHOR_CENTER);
-//    _animationNode->setFrame(0);
-    _animationNode->setPosition(0,0);
-    _sceneNode->addChild(_animationNode);
+    _texture = assets->get<Texture>("player");
     
-    _texture = player;
+    _animationNode = scene2::AnimationNode::alloc(_texture, PLAYER_ROWS, PLAYER_COLS, PLAYER_FRAMES);
+    
+    _skinNode = scene2::AnimationNode::alloc(assets->get<Texture>(_skinKey), SKIN_ROWS, SKIN_COLS, SKIN_FRAMES);
+    _colorNode = scene2::AnimationNode::alloc(assets->get<Texture>(_colorKey), COLOR_ROWS, COLOR_COLS, COLOR_FRAMES);
+    _faceNode = scene2::AnimationNode::alloc(assets->get<Texture>(_faceKey), FACE_ROWS, FACE_COLS, FACE_FRAMES);
+    _bodyNode = scene2::AnimationNode::alloc(assets->get<Texture>(_colorKey), BODY_ROWS, BODY_COLS, BODY_FRAMES);
+    _hatNode = scene2::AnimationNode::alloc(assets->get<Texture>(_colorKey), HAT_ROWS, HAT_COLS, HAT_FRAMES);
+    _staffNode = scene2::AnimationNode::alloc(assets->get<Texture>(_staffKey), STAFF_ROWS, STAFF_COLS, STAFF_FRAMES);
+    
+    _skinNode->setContentSize(_animationNode->SceneNode::getSize());
+    _colorNode->setContentSize(_animationNode->SceneNode::getSize());
+    _faceNode->setContentSize(_animationNode->SceneNode::getSize());
+    _bodyNode->setContentSize(_animationNode->SceneNode::getSize());
+    _hatNode->setContentSize(_animationNode->SceneNode::getSize());
+    _staffNode->setContentSize(_animationNode->SceneNode::getSize());
+    
+    _skinNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _colorNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _faceNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _bodyNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _hatNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _staffNode->setAnchor(Vec2::ANCHOR_CENTER);
+    
+    _skinNode->setPosition(0,0);
+    _colorNode->setPosition(0,0);
+    _faceNode->setPosition(0,0);
+    _bodyNode->setPosition(0,0);
+    _hatNode->setPosition(0,0);
+    _staffNode->setPosition(0,0);
+    
+    _sceneNode->addChild(_skinNode);
+    _sceneNode->addChild(_colorNode);
+    _sceneNode->addChild(_faceNode);
+    _sceneNode->addChild(_bodyNode);
+    _sceneNode->addChild(_hatNode);
+    _sceneNode->addChild(_staffNode);
+    
+    _animationTimer = time(NULL);
+
     setElement(_currElt);
     _body->SetUserData(this);
 
@@ -64,7 +132,7 @@ void Player::setElement(Element e){
     _prevElt = _currElt;
     _currElt = e;
     
-    switch(e){ 
+    switch(e){
         case Element::Grass:
             _animationNode->setFrame(4);
             break;
@@ -113,6 +181,18 @@ void Player::dispose() {
     _sceneNode = nullptr;
     _animationNode = nullptr;
     _texture = nullptr;
+    _skinNode = nullptr;
+    _colorNode = nullptr;
+    _faceNode  = nullptr;
+    _bodyNode = nullptr;
+    _hatNode = nullptr;
+    _staffNode = nullptr;
+    _skinKey = "";
+    _colorKey = "";
+    _faceKey = "";
+    _bodyKey = "";
+    _hatKey = "";
+    _staffKey = "";
 }
 
 /**
@@ -143,6 +223,12 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         _isTagged = false;
         _didTag = false;
         _sceneNode = nullptr;
+        _skinNode = nullptr;
+        _colorNode = nullptr;
+        _faceNode  = nullptr;
+        _bodyNode = nullptr;
+        _hatNode = nullptr;
+        _staffNode = nullptr;
         _positionError = Vec2::ZERO;
         return true;
     }
@@ -237,3 +323,33 @@ void Player::setDrawScale(float scale) {
         _sceneNode->setPosition(getPosition()*_drawscale);
     }
 }
+
+void Player::animateMovement() {
+    //TODO: change this to be more elegant
+    if (time(NULL) - _animationTimer  >= MOVEMENT_ANIM_RATE) {
+        animationCycle(_skinNode.get(), &_skinCycle);
+        animationCycle(_colorNode.get(), &_colorCycle);
+        animationCycle(_faceNode.get(), &_faceCycle);
+        animationCycle(_bodyNode.get(), &_bodyCycle);
+        animationCycle(_hatNode.get(), &_hatCycle);
+        animationCycle(_staffNode.get(), &_staffCycle);
+        _animationTimer = time(NULL);
+    }
+}
+
+
+void Player::animationCycle(scene2::AnimationNode* node, bool* cycle) {
+    if (node->getFrame() == 3) {
+        *cycle = false;
+    } else {
+        *cycle = true;
+    }
+    // Increment
+    if (*cycle) {
+        node->setFrame(node->getFrame()+1);
+    } else {
+        //TODO: change 3 to num frames
+        node->setFrame(node->getFrame()-3);
+    }
+}
+

@@ -39,6 +39,69 @@
         "tree3": {
             "file": "textures/tree3.png"
         },
+        "skin1":{
+            "file": "textures/Character1_Skin1.png"
+        },
+        "skin2":{
+            "file": "textures/Character1_Skin2.png"
+        },
+        "aether":{
+            "file": "textures/Character2_ColorAether.png"
+        },
+        "egg_color":{
+            "file": "textures/Character2_ColorEgg.png"
+        },
+        "fire_color":{
+            "file": "textures/Character2_ColorFire.png"
+        },
+        "grass_color":{
+            "file": "textures/Character2_ColorGrass.png"
+        },
+        "water_color":{
+            "file": "textures/Character2_ColorWater.png"
+        },
+        "face1":{
+            "file": "textures/Character3_Face1.png"
+        },
+        "face_tag":{
+            "file": "textures/Character3_Face2Tag.png"
+        },
+        "body_line":{
+            "file": "textures/Character4_BodyLine.png"
+        },
+        "hat_star":{
+            "file": "textures/Character5_PersonalizationStar.png"
+        },
+        "hat_swirl":{
+            "file": "textures/Character5_PersonalizationSwirl.png"
+        },
+        "staff_aether":{
+            "file": "textures/Character7_StaffAetherState.png"
+        },
+        "staff_egg":{
+            "file": "textures/Character7_StaffEggState.png"
+        },
+        "staff_fire":{
+            "file": "textures/Character7_StaffFire.png"
+        },
+        "staff_grass":{
+            "file": "textures/Character7_StaffGrass.png"
+        },
+        "staff_water":{
+            "file": "textures/Character7_StaffWater.png"
+        },
+        "staff_tag_aether":{
+            "file": "textures/Character7_TagAether.png"
+        },
+        "staff_tag_fire":{
+            "file": "textures/Character7_TagFire.png"
+        },
+        "staff_tag_aether":{
+            "file": "textures/Character7_TagGrass.png"
+        },
+        "staff_tag_water":{
+            "file": "textures/Character7_TagWater.png"
+        },
         "earth": {
             "file": "textures/earthtile.png",
             "wrapS": "repeat",

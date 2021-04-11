@@ -140,7 +140,6 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size playerSize(1, 2);
-//    _numPlayers = 4;//TODO: delete once _numPlayers is locked in by lobby
     for(int i = 0; i < _numPlayers; ++i){
         if (_playerSpawns.size()-1>=i) {
             playerPos = _playerSpawns[i];
@@ -148,8 +147,15 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
             playerPos = ((Vec2)PLAYER_POS);
         }
         auto player = Player::alloc(playerPos, playerSize, Element::Water);
+        player->setSkinKey("skin1");
+        player->setColorKey("egg_color");
+        player->setFaceKey("face1");
+        player->setBodyKey("body_line");
+        player->setHatKey("hat_star");
+        player->setStaffKey("staff_egg");
+        
         _physicsWorld->addObstacle(player);
-        player->setTextures(playerTexture);
+        player->setTextures(_assets);
         player->setID(i);
         player->setDrawScale(_scale);
         player->setDebugColor(Color4::YELLOW);

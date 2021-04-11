@@ -10,6 +10,7 @@
 #define __PLAYER_H__
 
 #include <cugl/cugl.h>
+#include <time.h>
 #include "Element.h"
 
 class Player : public cugl::physics2::CapsuleObstacle{
@@ -31,6 +32,33 @@ private:
     int _eggID; //id of the egg that the player is holding, if any
     cugl::Vec2 _positionError;
     
+    /** Animation Nodes :o */
+    std::string _skinKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _skinNode;
+    bool _skinCycle;
+    
+    std::string _colorKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _colorNode;
+    bool _colorCycle;
+    
+    std::string _faceKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _faceNode;
+    bool _faceCycle;
+    
+    std::string _bodyKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _bodyNode;
+    bool _bodyCycle;
+    
+    std::string _hatKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _hatNode;
+    bool _hatCycle;
+    
+    std::string _staffKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _staffNode;
+    bool _staffCycle;
+    
+    time_t _animationTimer;
+        
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
     float _drawscale;
@@ -55,6 +83,11 @@ private:
 
 public:
 #pragma mark Properties
+    enum class AssetNodes {
+        SKIN, COLOR, FACE, BODY, HAT, STAFF
+    };
+    
+    
     /**
      * Returns the id of the player.
      *
@@ -156,12 +189,37 @@ public:
      *
      * @param player      The texture for the player filmstrip
      */
-    void setTextures(const std::shared_ptr<cugl::Texture>& player);
+    void setTextures(const std::shared_ptr<cugl::AssetManager>& assets);
     
     
     const std::shared_ptr<cugl::Texture> getTexture() const {
         return _texture;
     }
+    
+    void setSkinKey(std::string skin) {
+        _skinKey = skin;
+    }
+    
+    void setColorKey(std::string color) {
+        _colorKey = color;
+    }
+    
+    void setFaceKey(std::string face) {
+        _faceKey = face;
+    }
+    
+    void setBodyKey(std::string body) {
+        _bodyKey = body;
+    }
+    
+    void setHatKey(std::string hat) {
+        _hatKey = hat;
+    }
+    
+    void setStaffKey(std::string staff) {
+        _staffKey = staff;
+    }
+    
     
 #pragma mark Constructors
     /**
@@ -206,14 +264,14 @@ public:
     }
     
 #pragma mark -
-    /** 
+    /**
     * Returns the Player's current trauma value
     */
     float getTrauma() { return _trauma; }
 
     /**
     * Increases the Player's current trauma by t
-    * 
+    *
     * Trauma cannot exceed a threshold of 1.0f
     */
     void addTrauma(float t);
@@ -240,6 +298,8 @@ public:
      */
     virtual void update(float delta) override;
     
+#pragma mark -
+#pragma mark Animation
     /**
      * Sets the ratio of the player sprite to the physics body
      *
@@ -267,6 +327,11 @@ public:
      * @return the ratio of the player sprite to the physics body
      */
     float getDrawScale() const { return _drawscale; }
+    
+    void animateMovement();
+    
+    void animationCycle(cugl::scene2::AnimationNode* node, bool* cycle);
+    
     
 };
 
