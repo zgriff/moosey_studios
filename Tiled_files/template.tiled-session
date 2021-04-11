@@ -1,11 +1,19 @@
 {
-    "activeFile": "maps/untitled.tmx",
+    "activeFile": "maps/forest.tmx",
     "expandedProjectPaths": [
         "maps",
-        "templates",
-        "tilesets"
+        "tilesets",
+        "templates"
     ],
     "fileStates": {
+        "maps/forest.tmx": {
+            "scale": 0.3139,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 463.52341510035035,
+                "y": 942.9754698948709
+            }
+        },
         "maps/untitled.tmx": {
             "scale": 0.3612,
             "selectedLayer": 2,
@@ -29,11 +37,12 @@
     "last.objectTemplatePath": "/Users/joshuakaplan/Documents/School Stuff/2020-2021/Spring Semester/game design/moosey_studios/Tiled_files/templates",
     "map.lastUsedExportFilter": "Roshamboogie map format (*.json)",
     "openFiles": [
-        "maps/untitled.tmx"
+        "maps/forest.tmx"
     ],
     "project": "template.tiled-project",
     "recentFiles": [
+        "maps/forest.tmx",
         "maps/untitled.tmx"
     ],
-    "resizeMap.removeObjects": false
+    "resizeMap.removeObjects": true
 }
