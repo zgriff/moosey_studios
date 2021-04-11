@@ -536,6 +536,10 @@
             "format": {
                 "type": "Anchored"
             },
+            "layout" : {
+                "x_anchor" : "fill",
+                "y_anchor" : "fill"
+            },
             "children": {
                 "roomId": {
                     "type": "Label",
@@ -566,11 +570,10 @@
                         "halign": "left"
                     },
                     "layout": {
-                        "x_anchor": "left",
-                        "y_anchor": "bottom",
-                        "x_offset": 80,
-                        "y_offset": 100,
-                        "absolute": true
+                        "x_anchor": "right",
+                        "y_anchor": "top",
+                        "x_offset": -0.2,
+                        "y_offset": -0.2
                     }
                 },
                 "bar": {
@@ -585,9 +588,8 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset": -300,
-                        "y_offset": -150,
-                        "absolute": true
+                        "x_offset": -0.2,
+                        "y_offset": -0.2
                     }
                 },
                 "hatched": {
@@ -603,9 +605,8 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset": -650,
-                        "y_offset": -200,
-                        "absolute": true
+                        "x_offset": -0.2,
+                        "y_offset": -0.4
                     }
                 },
                 "abilityBar": {
@@ -620,9 +621,8 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset": -300,
-                        "y_offset": -250,
-                        "absolute": true
+                        "x_offset": -0.4,
+                        "y_offset": -0.2
                     }
                 },
                 "abilityName": {
@@ -638,10 +638,8 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset": -350,
-                        "y_offset": -270,
-                        "absolute": true
-                    }
+                        "x_offset": -0.4,
+                        "y_offset": -0.5                    }
                 }
             }
         }
