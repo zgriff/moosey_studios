@@ -164,16 +164,20 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _rootnode = scene2::SceneNode::alloc();
     _rootnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
     _rootnode->setPosition(offset);
+
+    _UInode->setAnchor(Vec2::ANCHOR_CENTER);
+    
     
     _debugnode = _world->getDebugNode();
 //    addChild(scene_background);
     addChild(_rootnode);
+    addChild(_UInode);
+    _UInode->setContentSize(Size(w,h));
     _rootnode->setContentSize(Size(w,h));
     
     _world->setAssets(_assets);
     
 
-    addChild(_UInode);
     reset();
     return true;
 }
