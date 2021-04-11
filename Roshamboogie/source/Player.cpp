@@ -66,6 +66,7 @@ using namespace cugl;
 #define STAFF_COLS          4
 #define STAFF_FRAMES        4
 
+#define MOVEMENT_ANIM_RATE  .001
 
 
 /**
@@ -116,6 +117,7 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _sceneNode->addChild(_hatNode);
     _sceneNode->addChild(_staffNode);
     
+    _animationTimer = time(NULL);
 
     setElement(_currElt);
     _body->SetUserData(this);
@@ -309,17 +311,21 @@ void Player::setDrawScale(float scale) {
 }
 
 void Player::animateMovement() {
-    animationCycle(_skinNode.get(), &_skinCycle);
-    animationCycle(_colorNode.get(), &_colorCycle);
-    animationCycle(_faceNode.get(), &_faceCycle);
-    animationCycle(_bodyNode.get(), &_bodyCycle);
-    animationCycle(_hatNode.get(), &_hatCycle);
-    animationCycle(_staffNode.get(), &_staffCycle);    
+    //TODO: change this to be more elegant
+    if (time(NULL) - _animationTimer  >= MOVEMENT_ANIM_RATE) {
+        animationCycle(_skinNode.get(), &_skinCycle);
+        animationCycle(_colorNode.get(), &_colorCycle);
+        animationCycle(_faceNode.get(), &_faceCycle);
+        animationCycle(_bodyNode.get(), &_bodyCycle);
+        animationCycle(_hatNode.get(), &_hatCycle);
+        animationCycle(_staffNode.get(), &_staffCycle);
+        _animationTimer = time(NULL);
+    }
 }
 
 
 void Player::animationCycle(scene2::AnimationNode* node, bool* cycle) {
-    if (node->getFrame() == node->getSize()-1) {
+    if (node->getFrame() == 3) {
         *cycle = false;
     } else {
         *cycle = true;
@@ -328,7 +334,8 @@ void Player::animationCycle(scene2::AnimationNode* node, bool* cycle) {
     if (*cycle) {
         node->setFrame(node->getFrame()+1);
     } else {
-        node->setFrame(0);
+        //TODO: change 3 to num frames
+        node->setFrame(node->getFrame()-3);
     }
 }
 

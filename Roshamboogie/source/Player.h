@@ -10,6 +10,7 @@
 #define __PLAYER_H__
 
 #include <cugl/cugl.h>
+#include <time.h>
 #include "Element.h"
 
 class Player : public cugl::physics2::CapsuleObstacle{
@@ -55,6 +56,8 @@ private:
     std::string _staffKey;
     std::shared_ptr<cugl::scene2::AnimationNode> _staffNode;
     bool _staffCycle;
+    
+    time_t _animationTimer;
         
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
