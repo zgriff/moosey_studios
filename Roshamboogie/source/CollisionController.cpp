@@ -39,7 +39,7 @@ void CollisionController::beginContact(b2Contact* contact){
         Player* p = (Player*) bd2;
         if (!o->getCollected() && p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
             o->setCollected(true);
-//            p->incScore(1);
+            p->setOrbScore(p->getOrbScore() + 1);
             world->setOrbCount(world->getCurrOrbCount() - 1);
             NetworkController::sendOrbCaptured(o->getID(), p->getID());
         }
@@ -49,7 +49,7 @@ void CollisionController::beginContact(b2Contact* contact){
         Player* p = (Player*) bd1;
         if (!o->getCollected() && p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
             o->setCollected(true);
-//            p->incScore(1);
+            p->setOrbScore(p->getOrbScore() + 1);
             world->setOrbCount(world->getCurrOrbCount() - 1);
             NetworkController::sendOrbCaptured(o->getID(), p->getID());
         }
@@ -59,7 +59,7 @@ void CollisionController::beginContact(b2Contact* contact){
    else if (bd1->getName() == "swapstation" && bd2->getName() == "player") {
         Player* p = (Player*) bd2;
         SwapStation* s = (SwapStation*) bd1;
-        if (p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
+        if (p->getCurrElement() != Element::None && p->getCurrElement() != Element::Aether && p->getIsIntangible() == false) {
             if (s->getActive()) {
                 s->setLastUsed(time(NULL));
                 p->setElement(p->getPreyElement());
@@ -71,7 +71,8 @@ void CollisionController::beginContact(b2Contact* contact){
     else if(bd1->getName() == "player" && bd2->getName() == "swapstation") {
         Player* p = (Player*) bd1;
         SwapStation* s = (SwapStation*) bd2;
-        if (p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
+
+        if (p->getCurrElement() != Element::None && p->getCurrElement() != Element::Aether && p->getIsIntangible() == false) {
             if (s->getActive()) {
                 s->setLastUsed(time(NULL));
                 p->setElement(p->getPreyElement());
@@ -115,7 +116,9 @@ void CollisionController::beginContact(b2Contact* contact){
 
         if (p1->getIsTagged() == false && p2->getIsTagged() == false && p1->getIsIntangible() == false && p2->getIsIntangible() == false) {
             //p2 tags p1
-            if ((p1->getCurrElement() == p2->getPreyElement()) || (p1->getCurrElement() == Element::None && p2->getCurrElement() != Element::None)) {
+            if ((p1->getCurrElement() == p2->getPreyElement()) || (p1->getCurrElement() == Element::None 
+                && p2->getCurrElement() != Element::None ) ||
+                (p2->getCurrElement() == Element::Aether && p1->getCurrElement() != Element::Aether)) {
                 CULog("tagged");
                 p1->setIsTagged(true);
                 time_t timestamp = time(NULL);
@@ -133,7 +136,9 @@ void CollisionController::beginContact(b2Contact* contact){
                 }
             }
             //p1 tags p2
-            else if ((p2->getCurrElement() == p1->getPreyElement()) || (p2->getCurrElement() == Element::None && p1->getCurrElement() != Element::None)) {
+            else if ((p2->getCurrElement() == p1->getPreyElement()) || (p2->getCurrElement() == Element::None 
+                && p1->getCurrElement() != Element::None) ||
+                (p2->getCurrElement() == Element::Aether && p1->getCurrElement() != Element::Aether)) {
                 CULog("tagged");
                 p2->setIsTagged(true);
                 time_t timestamp = time(NULL);

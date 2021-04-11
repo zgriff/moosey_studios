@@ -8,6 +8,7 @@
 
 #include "Player.h"
 #include "Element.h"
+#include "Projectile.h"
 #include "NetworkController.h"
 
 using namespace cugl;
@@ -56,7 +57,11 @@ void Player::setTextures(const std::shared_ptr<Texture>& player) {
 
 
 void Player::setElement(Element e){
-    _prevElt = _currElt;
+    // this is so if you collect the egg as Aether, it will revert back to your orignal color
+    // since keeping track that prev element is Aether doesn't seem to have any use atm
+    if (_currElt != Element::Aether) {
+        _prevElt = _currElt;
+    }
     _currElt = e;
     
     switch(e){ 
@@ -72,6 +77,8 @@ void Player::setElement(Element e){
         case Element::None:
             _animationNode->setFrame(6);
             break;
+        case Element::Aether:
+            _sceneNode->setColor(Color4(0, 0, 0));
     }
     
 }
@@ -85,6 +92,9 @@ Element Player::getPreyElement() {
         case Element::Water:
             return Element::Fire;
         case Element::None:
+            return Element::None;
+        case Element::Aether:
+            //All three elements are prey, so this gets handled seperately in collision controller
             return Element::None;
     }
 }
@@ -100,6 +110,17 @@ void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     
 }
 
+void Player::allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale, 
+                            std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld) {
+    Size projSize(projectileTexture->getSize() / scale);
+    _projectile = Projectile::alloc(Vec2(0, 0), projSize, _id);
+    physicsWorld->addObstacle(_projectile);
+    _projectile->setTextures(projectileTexture);
+    _projectile->setTextures(projectileTexture);
+    _projectile->setDrawScale(scale);
+    _projectile->setActive(false);
+}
+
 /**
  * Disposes the player, releasing all resources.
  */
@@ -108,6 +129,7 @@ void Player::dispose() {
     _sceneNode = nullptr;
     _animationNode = nullptr;
     _texture = nullptr;
+    _projectile = nullptr;
 }
 
 /**
@@ -184,7 +206,9 @@ void Player::update(float delta) {
     else {
         _isInvisible = false;
         _isIntangible = false;
-        _sceneNode->setColor(Color4(255,255,255,255));
+        if (_currElt != Element::Aether) {
+            _sceneNode->setColor(Color4(255, 255, 255, 255));
+        }
     }
     
     if (_isInvisible) {

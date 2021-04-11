@@ -10,7 +10,7 @@
 #define Element_h
 
 enum Element {
-    Grass, Water, Fire, None
+    Grass, Water, Fire, None, Aether
 };
 
 #endif /* Element_h */
