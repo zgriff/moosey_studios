@@ -91,7 +91,8 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
 
     Application::get()->setClearColor(Color4(192,192,192,255));
     NetworkController::setStartCallback([&](){
-        setActive(false);
+        CULog("called !!!!!");
+        this->setActive(false);
     });
     NetworkController::setReadyCallback([&](uint8_t playerid, bool r){
         return;
