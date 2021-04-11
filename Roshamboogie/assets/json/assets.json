@@ -623,23 +623,26 @@
                         "y_anchor": "top",
                         "x_offset": -0.4,
                         "y_offset": -0.2
-                    }
-                },
-                "abilityName": {
-                    "type": "label",
-                    "data": {
-                        "font": "username",
-                        "text": "Test",
-                        "foreground": [ 0, 0, 0, 255 ],
-                        "size": [ 500, 70 ],
-                        "valign": "bottom",
-                        "halign": "left"
                     },
-                    "layout": {
-                        "x_anchor": "right",
-                        "y_anchor": "top",
-                        "x_offset": -0.4,
-                        "y_offset": -0.5                    }
+                    "children": {
+                        "abilityName": {
+                            "type": "label",
+                            "data": {
+                                "font": "username",
+                                "text": "Test",
+                                "foreground": [ 0, 0, 0, 255 ],
+                                "size": [ 500, 70 ],
+                                "valign": "bottom",
+                                "halign": "left"
+                            },
+                            "layout": {
+                                "x_anchor": "left",
+                                "y_anchor": "top",
+                                "x_offset": 0,
+                                "y_offset": 0
+                            }
+                        }
+                    }
                 }
             }
         }
