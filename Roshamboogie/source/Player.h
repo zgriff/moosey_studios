@@ -31,6 +31,25 @@ private:
     int _eggID; //id of the egg that the player is holding, if any
     cugl::Vec2 _positionError;
     
+    /** Animation Nodes :o */
+    std::string _skinKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _skinNode;
+    
+    std::string _colorKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _colorNode;
+    
+    std::string _faceKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _faceNode;
+    
+    std::string _bodyKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _bodyNode;
+    
+    std::string _hatKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _hatNode;
+    
+    std::string _staffKey;
+    std::shared_ptr<cugl::scene2::AnimationNode> _staffNode;
+        
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
     float _drawscale;
@@ -51,6 +70,11 @@ private:
 
 public:
 #pragma mark Properties
+    enum class AssetNodes {
+        SKIN, COLOR, FACE, BODY, HAT, STAFF
+    };
+    
+    
     /**
      * Returns the id of the player.
      *
@@ -148,12 +172,37 @@ public:
      *
      * @param player      The texture for the player filmstrip
      */
-    void setTextures(const std::shared_ptr<cugl::Texture>& player);
+    void setTextures(const std::shared_ptr<cugl::AssetManager>& assets);
     
     
     const std::shared_ptr<cugl::Texture> getTexture() const {
         return _texture;
     }
+    
+    void setSkinKey(std::string skin) {
+        _skinKey = skin;
+    }
+    
+    void setColorKey(std::string color) {
+        _colorKey = color;
+    }
+    
+    void setFaceKey(std::string face) {
+        _faceKey = face;
+    }
+    
+    void setBodyKey(std::string body) {
+        _bodyKey = body;
+    }
+    
+    void setHatKey(std::string hat) {
+        _hatKey = hat;
+    }
+    
+    void setStaffKey(std::string staff) {
+        _staffKey = staff;
+    }
+    
     
 #pragma mark Constructors
     /**
@@ -198,14 +247,14 @@ public:
     }
     
 #pragma mark -
-    /** 
+    /**
     * Returns the Player's current trauma value
     */
     float getTrauma() { return _trauma; }
 
     /**
     * Increases the Player's current trauma by t
-    * 
+    *
     * Trauma cannot exceed a threshold of 1.0f
     */
     void addTrauma(float t);
