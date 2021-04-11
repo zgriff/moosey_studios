@@ -13,5 +13,3 @@ Swap colors by colliding with swap stations which change player color to prey el
 --Fire(red) changes to grass(green)
 --Grass(green) →  water(blue)
 --Water(blue) → fire(red)
-The play again button is not currently functional on the end screen
-The game currently ends after 3 minutes
