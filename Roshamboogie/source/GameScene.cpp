@@ -420,46 +420,12 @@ void GameScene::update(float timestep) {
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
     
+    _player->animateMovement();
     //send new position
     //TODO: only every few frames
     NetworkController::sendPosition();
 }
 
-
-void GameScene::populate() {
-    std::shared_ptr<Texture> image = _assets->get<Texture>("earth");
-    std::shared_ptr<scene2::PolygonNode> sprite;
-    std::shared_ptr<scene2::WireNode> draw;
-    std::string wname = "wall";
-    for (int ii = 0; ii<WALL_COUNT; ii++) {
-        std::shared_ptr<physics2::PolygonObstacle> wallobj;
-
-        Poly2 wall(WALL[ii],WALL_VERTS);
-        // Call this on a polygon to get a solid shape
-        SimpleTriangulator triangulator;
-        triangulator.set(wall);
-        triangulator.calculate();
-        wall.setIndices(triangulator.getTriangulation());
-        wall.setGeometry(Geometry::SOLID);
-
-        wallobj = physics2::PolygonObstacle::alloc(wall);
-        wallobj->setDebugColor(Color4::WHITE);
-        // You cannot add constant "".  Must stringify
-        wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
-        wallobj->setName(wname);
-
-        // Set the physics attributes
-        wallobj->setBodyType(b2_staticBody);
-        wallobj->setDensity(BASIC_DENSITY);
-        wallobj->setFriction(BASIC_FRICTION);
-        wallobj->setRestitution(BASIC_RESTITUTION);
-
-        wall *= _scale;
-        sprite = scene2::PolygonNode::allocWithTexture(image,wall);
-        addObstacle(wallobj,sprite,2);
-    }
-
-}
 
 
 void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj,

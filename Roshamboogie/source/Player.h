@@ -34,21 +34,27 @@ private:
     /** Animation Nodes :o */
     std::string _skinKey;
     std::shared_ptr<cugl::scene2::AnimationNode> _skinNode;
+    bool _skinCycle;
     
     std::string _colorKey;
     std::shared_ptr<cugl::scene2::AnimationNode> _colorNode;
+    bool _colorCycle;
     
     std::string _faceKey;
     std::shared_ptr<cugl::scene2::AnimationNode> _faceNode;
+    bool _faceCycle;
     
     std::string _bodyKey;
     std::shared_ptr<cugl::scene2::AnimationNode> _bodyNode;
+    bool _bodyCycle;
     
     std::string _hatKey;
     std::shared_ptr<cugl::scene2::AnimationNode> _hatNode;
+    bool _hatCycle;
     
     std::string _staffKey;
     std::shared_ptr<cugl::scene2::AnimationNode> _staffNode;
+    bool _staffCycle;
         
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
@@ -281,6 +287,8 @@ public:
      */
     virtual void update(float delta) override;
     
+#pragma mark -
+#pragma mark Animation
     /**
      * Sets the ratio of the player sprite to the physics body
      *
@@ -308,6 +316,11 @@ public:
      * @return the ratio of the player sprite to the physics body
      */
     float getDrawScale() const { return _drawscale; }
+    
+    void animateMovement();
+    
+    void animationCycle(cugl::scene2::AnimationNode* node, bool* cycle);
+    
     
 };
 

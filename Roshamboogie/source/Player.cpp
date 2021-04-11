@@ -307,3 +307,28 @@ void Player::setDrawScale(float scale) {
         _sceneNode->setPosition(getPosition()*_drawscale);
     }
 }
+
+void Player::animateMovement() {
+    animationCycle(_skinNode.get(), &_skinCycle);
+    animationCycle(_colorNode.get(), &_colorCycle);
+    animationCycle(_faceNode.get(), &_faceCycle);
+    animationCycle(_bodyNode.get(), &_bodyCycle);
+    animationCycle(_hatNode.get(), &_hatCycle);
+    animationCycle(_staffNode.get(), &_staffCycle);    
+}
+
+
+void Player::animationCycle(scene2::AnimationNode* node, bool* cycle) {
+    if (node->getFrame() == node->getSize()-1) {
+        *cycle = false;
+    } else {
+        *cycle = true;
+    }
+    // Increment
+    if (*cycle) {
+        node->setFrame(node->getFrame()+1);
+    } else {
+        node->setFrame(0);
+    }
+}
+
