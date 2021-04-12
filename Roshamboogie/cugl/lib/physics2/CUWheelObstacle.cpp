@@ -95,7 +95,7 @@ void WheelObstacle::resetDebug() {
     PolyFactory factory;
     factory.setSegments(BODY_DEBUG_SEGS);
     factory.setGeometry(Geometry::PATH);
-    Poly2 poly = factory.makeCircle(Vec2::ZERO,2*getRadius());
+    Poly2 poly = factory.makeCircle(Vec2::ZERO,getRadius());
     
     if (_debug == nullptr) {
         _debug = scene2::WireNode::allocWithTraversal(poly,poly2::Traversal::CLOSED);
