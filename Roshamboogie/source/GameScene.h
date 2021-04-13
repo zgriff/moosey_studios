@@ -23,18 +23,23 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
 #include "World.h"
+#include "AbilityController.h"
 
 class GameScene : public cugl::Scene2 {
 protected:
     /** The asset manager for this game mode. */
     std::shared_ptr<cugl::AssetManager> _assets;
+    
+    /** Reference to the physics root of the scene graph */
+    std::shared_ptr<cugl::scene2::SceneNode> _rootnode;
 
     /** Reference to the physics root of the scene graph */
 //    std::shared_ptr<cugl::scene2::SceneNode> _worldnode;
     /** The Box2D world */
 //    std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
     
-    std::shared_ptr<World> world;
+    
+    std::shared_ptr<World> _world;
     
     /** Reference to the UI node that moves synchronously with the camera */
     std::shared_ptr<cugl::scene2::SceneNode> _UInode;
@@ -46,6 +51,10 @@ protected:
     float _scale;
 
     std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
+	
+	std::shared_ptr<cugl::scene2::ProgressBar>  _abilitybar;
+    std::shared_ptr<cugl::scene2::Label> _abilityname;
+    AbilityController _abilityController;
 
     std::shared_ptr<cugl::scene2::Label> _hatchnode;
 
@@ -203,7 +212,7 @@ public:
      * This method is for graceful handling of different aspect
      * ratios
      */
-    cugl::Size computeActiveSize() const;
+    cugl::Size computeActiveSize(float w, float h) const;
     
     void setMovementStyle(int m);
     

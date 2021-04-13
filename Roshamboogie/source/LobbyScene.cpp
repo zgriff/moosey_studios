@@ -15,6 +15,8 @@ using namespace cugl;
 /** This is the ideal size of the logo */
 #define SCENE_SIZE  1024
 
+bool clientReady;
+
 #pragma mark -
 #pragma mark Constructors
 
@@ -33,6 +35,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     // Initialize the scene to a locked width
     Size dimen = Application::get()->getDisplaySize();
     // Lock the scene to a reasonable resolution
+    clientReady = false;
     if (dimen.width > dimen.height) {
         dimen *= SCENE_SIZE/dimen.width;
     } else {
@@ -51,9 +54,28 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     addChild(layer);
     
     _startButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_start"));
-    _startButton->addListener([=](const std::string& name, bool down) {
-//        _joinButton->dispose();
-        this->_active = down;
+    
+//    if(NetworkController::isHost()){
+//        _startButton->addListener([&](const std::string& name, bool down) {
+//            if(true){ //TODO: if everyone ready
+//                NetworkController::startGame();
+//                _active = down;
+//            }
+//        });
+//    }else{
+//        _startButton->addListener([&](const std::string& name, bool down) {
+//            if(clientReady){
+//                NetworkController::unready();
+//            }else{
+//                NetworkController::ready();
+//            }
+//            clientReady = !clientReady;
+//        });
+//    }
+    _startButton->addListener([&](const std::string& name, bool down) {
+        if(true){ //TODO: if everyone ready
+            _active = down;
+        }
     });
     
     _roomId = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("lobby_roomId"));
@@ -73,6 +95,13 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     }
 
     Application::get()->setClearColor(Color4(192,192,192,255));
+//    NetworkController::setStartCallback([&](){
+//        CULog("called !!!!!");
+//        this->setActive(false);
+//    });
+//    NetworkController::setReadyCallback([&](uint8_t playerid, bool r){
+//        return;
+//    });
     return true;
 }
 
@@ -96,6 +125,8 @@ void LobbyScene::dispose() {
  * @param timestep  The amount of time (in seconds) since the last frame
  */
 void LobbyScene::update(float progress) {
+//    NetworkController::update(progress);
+    NetworkController::step();
     if (_currRoomId == "") {
         _currRoomId = NetworkController::getRoomId();
         stringstream ss;

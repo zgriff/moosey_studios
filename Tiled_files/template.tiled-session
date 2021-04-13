@@ -1,32 +1,48 @@
 {
-    "activeFile": "maps/untitled.tmx",
+    "activeFile": "maps/forest.tmx",
     "expandedProjectPaths": [
         "templates",
+        "tilesets",
         "maps"
     ],
     "fileStates": {
-        "maps/untitled.tmx": {
-            "scale": 0.7725,
-            "selectedLayer": 2,
+        "maps/forest.tmx": {
+            "scale": 0.2485,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 683.495145631068,
-                "y": 442.7184466019418
+                "x": 1410.4627766599597,
+                "y": 1513.0784708249498
             }
         },
-        "tilesets/tiles.tsx": {
-            "dynamicWrapping": false,
-            "scaleInDock": 1
+        "maps/untitled.tmx": {
+            "scale": 0.3612,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 692.1373200442966,
+                "y": 607.6965669988924
+            }
         },
-        "tilesets/tree.tsx": {
+        "tilesets/decorations.tsx": {
             "dynamicWrapping": true,
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 0.67
+        },
+        "tilesets/tiles.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 0.67
         }
     },
+    "last.exportedFilePath": "/Users/joshuakaplan/Downloads",
+    "last.objectTemplatePath": "/Users/joshuakaplan/Documents/School Stuff/2020-2021/Spring Semester/game design/moosey_studios/Tiled_files/templates",
+    "map.lastUsedExportFilter": "Roshamboogie map format (*.json)",
     "openFiles": [
-        "maps/untitled.tmx"
+        "maps/forest.tmx"
     ],
     "project": "template.tiled-project",
     "recentFiles": [
+        "maps/forest.tmx",
         "maps/untitled.tmx"
-    ]
+    ],
+    "resizeMap.removeObjects": true
 }

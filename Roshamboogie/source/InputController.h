@@ -18,6 +18,8 @@ private:
     cugl::Timestamp _timestamp;
     bool processed;
 
+    bool _abilityPressed = false;
+
     cugl::Vec2 mov;
     
     bool _keydown;
@@ -37,6 +39,8 @@ public:
     cugl::Vec3 getTiltVec(){
         return _tiltVec;
     }
+
+    bool isAbilityPressed() { return _abilityPressed; };
 
 
     /**

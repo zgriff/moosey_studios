@@ -12,7 +12,7 @@
 
 namespace ND{
 //TODO: generate these from global maximums
-#define TYPE_BITS 3
+#define TYPE_BITS 4
 #define PLAYER_ID_BITS 3
 #define SWAP_ID_BITS 4
 #define ORB_ID_BITS 5
@@ -220,6 +220,11 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
         case NetworkData::ORB_RESPAWN:
             dest.orbRespawnData.orbId = readBits(bytes, ORB_ID_BITS);
             dest.orbRespawnData.position = readVec2(bytes);
+            break;
+        case NetworkData::CLIENT_READY:
+        case NetworkData::CLIENT_UNREADY:
+            dest.readyData.player_id = readBits(bytes, PLAYER_ID_BITS);
+            break;
     }
     return true;
 }
@@ -258,6 +263,11 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
         case NetworkData::ORB_RESPAWN:
             writeBits(dest, src.orbRespawnData.orbId, ORB_ID_BITS);
             writeVec2(dest, src.orbRespawnData.position);
+            break;
+        case NetworkData::CLIENT_READY:
+        case NetworkData::CLIENT_UNREADY:
+            writeBits(dest, src.readyData.player_id, PLAYER_ID_BITS);
+            break;
     }
     flush(dest);
     return true;
