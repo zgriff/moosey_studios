@@ -14,6 +14,7 @@
 #include "NetworkController.h"
 #include "NetworkData.h"
 #include "CollisionController.h"
+#include "AbilityController.h"
 #include "MapConstants.h"
 
 #include <cugl/cugl.h>
@@ -134,6 +135,12 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _hatchnode = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_hatched"));
     _hatchnode->setVisible(false);
+
+    _abilityname = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_abilityBar_abilityName"));
+    _abilityname->setVisible(false);
+
+    _abilitybar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_abilityBar"));
+    _abilitybar->setForegroundColor(Color4(255, 255, 0));
     
 //    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
     
@@ -157,15 +164,19 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _rootnode = scene2::SceneNode::alloc();
     _rootnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
     _rootnode->setPosition(offset);
+
+    _UInode->setAnchor(Vec2::ANCHOR_CENTER);
+    
     
     _debugnode = _world->getDebugNode();
 //    addChild(scene_background);
     addChild(_rootnode);
+    addChild(_UInode);
+    _UInode->setContentSize(Size(w,h));
     _rootnode->setContentSize(Size(w,h));
     
     _world->setAssets(_assets);
 
-    addChild(_UInode);
     reset();
     return true;
 }
@@ -180,6 +191,8 @@ void GameScene::dispose() {
         _scoreHUD = nullptr;
         _hatchnode = nullptr;
         _hatchbar = nullptr;
+        _abilitybar = nullptr;
+        _abilityname = nullptr;
         _active = false;
         _debug = false;
         Scene2::dispose();
@@ -195,6 +208,7 @@ void GameScene::dispose() {
  */
 void GameScene::reset() {
     _world->setRootNode(_rootnode,_scale);
+    NetworkController::setWorld(_world);
     
     auto idopt = NetworkController::getPlayerId();
     if(idopt.has_value()){
@@ -241,27 +255,38 @@ void GameScene::update(float timestep) {
     _playerController.readInput();
     switch (_playerController.getMoveStyle()) {
         case Movement::AlwaysForward: {
-            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0 * M_PI / TURNS_PER_SPIN;
-            //x_player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
+            if (_abilityController.getActiveAbility() == AbilityController::Ability::SpeedBoost) {
+                break;
+            }
+            /* auto ang = _player->getDirection() + _playerController.getMov().x * -2.0 * M_PI / TURNS_PER_SPIN;
+            //_player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
             _player->setDirection(ang);
 
             auto vel = _player->getLinearVelocity();
             //Please don't delete this comment, angles were difficult to derive and easy to forget
             //vel angle originates from y axis, player angle orginates from x axis
             auto offset = (vel.getAngle() + M_PI/2.0) - _player->getDirection();
+            offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset); */
+
+            auto ang = _player->getAngle() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
+            _player->setAngle(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
+
+            auto vel = _player->getLinearVelocity();
+            //Please don't delete this comment, angles were difficult to derive and easy to forget
+            //vel angle originates from x axis, player angle orginates from y axis
+            auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
             auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset));
             if (correction.length() > KINETIC_FRICTION) {
-                correction.scale( KINETIC_FRICTION / correction.length());
+                correction.scale(KINETIC_FRICTION / correction.length());
             }
-            vel.add(correction);
+            _player->setLinearVelocity(vel.add(correction));
 
             //apply friction if going backwards IE braking
             if (abs(offset) > M_PI / 2.0) {
 
             }
-            _player->setLinearVelocity(vel);
 
             if (_playerController.getMov().x == 0) {
 
@@ -420,6 +445,18 @@ void GameScene::update(float timestep) {
         }
     }
     
+    // ability stuff here
+    _abilitybar->setProgress(_player->getOrbScore() * 0.2);
+    if (_player->getOrbScore() == 5 && _abilityController.getQueuedAbility() == AbilityController::Ability::NoAbility) {
+        _abilityController.updateAbility(_abilityname);
+        _abilityname->setVisible(true); 
+    }
+    if (_playerController.isAbilityPressed()) {
+        _abilityController.activateAbility(_player);
+    }
+    _abilityController.deactivateAbility(_player, _abilityname);
+
+  
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
     

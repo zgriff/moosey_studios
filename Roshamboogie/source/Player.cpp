@@ -8,6 +8,7 @@
 
 #include "Player.h"
 #include "Element.h"
+#include "Projectile.h"
 #include "NetworkController.h"
 
 
@@ -22,9 +23,9 @@ using namespace cugl;
 /** The density of the player */
 #define DEFAULT_DENSITY 1.0f
 /** The friction of the player */
-#define DEFAULT_FRICTION 0.5f
+#define DEFAULT_FRICTION 0.0f
 /** The minimum total velocity for drag to apply */
-#define THRESHOLD_VELOCITY 35.0f
+#define THRESHOLD_VELOCITY 30.0f
 /** The how much the player is slowed down to minimum velocity per frame*/
 #define SPEEDING_DRAG 0.90f
 
@@ -99,16 +100,17 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _staffNode = scene2::AnimationNode::alloc(assets->get<Texture>(_staffKey), STAFF_ROWS, STAFF_COLS, STAFF_FRAMES);
     _ringNode = scene2::AnimationNode::alloc(assets->get<Texture>(_ringKey), RING_ROWS, RING_COLS, RING_FRAMES);
     
-    _skinNode->setContentSize(_animationNode->SceneNode::getSize());
-    _colorNode->setContentSize(_animationNode->SceneNode::getSize());
-    _faceNode->setContentSize(_animationNode->SceneNode::getSize());
-    _bodyNode->setContentSize(_animationNode->SceneNode::getSize());
-    _hatNode->setContentSize(_animationNode->SceneNode::getSize());
-    _staffNode->setContentSize(_animationNode->SceneNode::getSize());
-    _ringNode->setContentSize(_animationNode->SceneNode::getSize());
+    
+//    _skinNode->setScale(0.1f);
+//    _colorNode->setScale(0.1f);
+//    _faceNode->setScale(0.1f);
+//    _bodyNode->setScale(0.1f);
+//    _hatNode->setScale(0.1f);
+//    _staffNode->setScale(0.1f);
+//    _ringNode->setScale(0.1f);
     
     _skinNode->setPosition(0,0);
-//    _colorNode->setPosition(0,0);
+    _colorNode->setPosition(0,0);
     _faceNode->setPosition(0,0);
     _bodyNode->setPosition(0,0);
     _hatNode->setPosition(0,0);
@@ -124,6 +126,8 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _sceneNode->addChild(_staffNode);
     _sceneNode->addChild(_ringNode);
     
+    _sceneNode->setScale(0.1f);
+    
     _animationTimer = time(NULL);
     
     setElement(_currElt);
@@ -133,7 +137,11 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
 }
 
 void Player::setElement(Element e){
-    _prevElt = _currElt;
+    // this is so if you collect the egg as Aether, it will revert back to your orignal color
+    // since keeping track that prev element is Aether doesn't seem to have any use atm
+    if (_currElt != Element::Aether) {
+        _prevElt = _currElt;
+    }
     _currElt = e;
     
     switch(e){
@@ -150,6 +158,8 @@ void Player::setElement(Element e){
         case Element::None:
             _colorNode->setFrame(12);
             break;
+        case Element::Aether:
+            _sceneNode->setColor(Color4(0, 0, 0));
     }
     
 }
@@ -164,6 +174,9 @@ Element Player::getPreyElement() {
             return Element::Fire;
         case Element::None:
             return Element::None;
+        case Element::Aether:
+            //All three elements are prey, so this gets handled seperately in collision controller
+            return Element::None;
     }
 }
 
@@ -176,6 +189,17 @@ void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     CULog("animationNode width %d", _animationNode->getContentWidth());*/
     _sceneNode->addChild(_usernameNode);
     
+}
+
+void Player::allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale, 
+                            std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld) {
+    Size projSize(projectileTexture->getSize() / scale);
+    _projectile = Projectile::alloc(Vec2(0, 0), projSize, _id);
+    physicsWorld->addObstacle(_projectile);
+    _projectile->setTextures(projectileTexture);
+    _projectile->setTextures(projectileTexture);
+    _projectile->setDrawScale(scale);
+    _projectile->setActive(false);
 }
 
 /**
@@ -200,6 +224,7 @@ void Player::dispose() {
     _hatKey = "";
     _staffKey = "";
     _ringKey = "";
+    _projectile = nullptr;
 }
 
 /**
@@ -278,6 +303,7 @@ void Player::update(float delta) {
         _positionError *= INTERPOLATION_AMOUNT;
     }
 //    CULog("play pos: x: %f  y:%f",getPosition().x,getPosition().y);
+//    CULog("node pos: x: %f  y:%f",_colorNode->getPosition().x,_colorNode->getPosition().y);
     _trauma = max(0.0f, _trauma - TRAUMA_RECOVERY);
 
     if (getLinearVelocity().length() > THRESHOLD_VELOCITY) {
@@ -288,7 +314,6 @@ void Player::update(float delta) {
     if (_ringNode != nullptr) {
         _ringNode->setAngle(getDirection()-.25*M_PI);
     }
-    _colorNode->setPosition(getPosition());
     
     if (_isTagged) {
         _isInvisible = true;
@@ -298,7 +323,9 @@ void Player::update(float delta) {
     else {
         _isInvisible = false;
         _isIntangible = false;
-        _sceneNode->setColor(Color4(255,255,255,255));
+        if (_currElt != Element::Aether) {
+            _sceneNode->setColor(Color4(255, 255, 255, 255));
+        }
     }
     
     if (_isInvisible) {
@@ -322,7 +349,7 @@ void Player::applyForce() {
     
     // Orient the force with rotation.
     Vec4 netforce(_force.x,_force.y,0.0f,1.0f);
-    Mat4::createRotationZ(_direct, &_affine);
+    Mat4::createRotationZ(getAngle(), &_affine);
     netforce *= _affine;
     
     // Apply force to the rocket BODY, not the rocket

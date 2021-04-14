@@ -43,6 +43,16 @@ namespace NetworkController {
 
     void setUsername(std::string name);
 
+    void setReadyCallback(std::function<void(uint8_t, bool)> cb);
+    void setStartCallback (std::function<void(void)> cb);
+
+    //called by a client when they are ready
+    void ready();
+    //called by client if they were ready but are no longer ready
+    void unready();
+    //Called by the host when the game is ready to start
+    void startGame();
+
 };
 
 #endif

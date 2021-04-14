@@ -23,6 +23,7 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
 #include "World.h"
+#include "AbilityController.h"
 
 class GameScene : public cugl::Scene2 {
 protected:
@@ -37,6 +38,7 @@ protected:
     /** The Box2D world */
 //    std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
     
+    
     std::shared_ptr<World> _world;
     
     /** Reference to the UI node that moves synchronously with the camera */
@@ -49,6 +51,10 @@ protected:
     float _scale;
 
     std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
+	
+	std::shared_ptr<cugl::scene2::ProgressBar>  _abilitybar;
+    std::shared_ptr<cugl::scene2::Label> _abilityname;
+    AbilityController _abilityController;
 
     std::shared_ptr<cugl::scene2::Label> _hatchnode;
 

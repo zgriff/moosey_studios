@@ -119,6 +119,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         _physicsWorld->addObstacle(station);
         station->setDrawScale(_scale);
         station->setActive(true);
+        station->setLastUsed(time(NULL));
         station->setDebugColor(Color4::YELLOW);
         station->setDebugScene(_debugNode);
         station->setID(0);
@@ -157,10 +158,11 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         
         _physicsWorld->addObstacle(player);
         player->setTextures(_assets);
-        player->setID(i);
         player->setDrawScale(_scale);
-        player->setDebugColor(Color4::YELLOW);
         player->setDebugScene(_debugNode);
+        player->setID(i);
+        player->setDebugColor(Color4::YELLOW);
+        player->allocProjectile(_assets->get<Texture>("projectile"), _scale, _physicsWorld);
         player->allocUsernameNode(_assets->get<Font>("username"));
         _worldNode->addChild(player->getSceneNode(),1);
         _players.push_back(player);
@@ -385,6 +387,7 @@ bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
         // You cannot add constant "".  Must stringify
         wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
         wallobj->setName(wname);
+        wallobj->setFriction(0);
 
         // Set the physics attributes
         wallobj->setBodyType(b2_staticBody);

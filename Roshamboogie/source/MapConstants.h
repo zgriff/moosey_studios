@@ -30,9 +30,9 @@
 #define ORB_LOCATION        "inactive_orb"
 #define PLAYER_SPAWN        "player_spawn"
 
-#define TILE_SIZE           30.0f
+#define TILE_SIZE           50.0f
 
-#define GRASS_MAP_JSON      "json/grass_map.json"
+#define GRASS_MAP_JSON      "json/forest.json"
 #define GRASS_MAP_KEY       "grass_map"
 
 
