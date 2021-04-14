@@ -87,8 +87,8 @@ void SpawnController::spawnEggs() {
     int rows = 4;
     int cols = 4;
     
-    float roomWidth = 36.0f / cols;
-    float roomHeight = 18.0f / rows;
+    float roomWidth = world->getPhysicsWorld()->getBounds().getMaxX() / cols;
+    float roomHeight = world->getPhysicsWorld()->getBounds().getMaxY() / rows;
     
     std::vector<std::shared_ptr<Player>> players = world->getPlayers();
     std::vector<std::shared_ptr<Egg>> eggs = world->getEggs();
@@ -137,13 +137,13 @@ void SpawnController::spawnEggs() {
     for (int i = 0; i < eggs.size(); i++) {
         std::shared_ptr<Egg> egg = world->getEgg(i);
         if (egg->getHatched()) {
-            egg->setPosition(Vec2(rand_x(e1), rand_y(e1)));
+//            egg->setPosition(Vec2(rand_x(e1), rand_y(e1)));
+            egg->setPosition(10, 10); //TODO: change -- just for testing now
             egg->setHatched(false);
             egg->setCollected(false);
             egg->incDistanceWalked(-1 * egg->getDistanceWalked());
             world->setCurrEggCount(world->getCurrEggCount() + 1);
-//            NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
-            //INLCLUDE NETWORK STUFF
+            NetworkController::sendEggRespawn(egg->getID(), egg->getPosition());
         }
     }
     

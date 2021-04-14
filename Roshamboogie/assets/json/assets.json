@@ -570,10 +570,10 @@
                            "halign"     : "left"
                        },
                        "layout" : {
-                           "x_anchor" : "left",
+                           "x_anchor" : "right",
                            "y_anchor" : "top",
-                           "x_offset" : 80,
-                           "y_offset" : -150,
+                           "x_offset" : -0.2,
+                           "y_offset" : -0.2,
                            "absolute" : true
                        }
                    },

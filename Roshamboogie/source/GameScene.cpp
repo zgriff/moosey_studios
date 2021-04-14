@@ -387,10 +387,10 @@ void GameScene::update(float timestep) {
         }
         
         //egg spawning
-//        if (world->getCurrEggCount() < 2) {
-//            SpawnController::spawnEggs();
-//            }
-    
+        if (_world->getCurrEggCount() < 1) {
+            CULog("egg respawn");
+            SpawnController::spawnEggs();
+        }
     }
     
     //egg hatch logic
@@ -411,9 +411,10 @@ void GameScene::update(float timestep) {
                 _hatchedTime = time(NULL);
                 _egg->setHatched(true);
                 _world->setCurrEggCount(_world->getCurrEggCount() - 1);
-                _egg->dispose();
+//                _egg->dispose();
                 _player->setElement(_player->getPrevElement());
                 _player->incScore(10);
+                NetworkController::sendEggHatched(_player->getID(), _egg->getID());
             }
         
         }

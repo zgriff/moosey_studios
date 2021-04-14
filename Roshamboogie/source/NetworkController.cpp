@@ -170,11 +170,30 @@ namespace NetworkController {
                     
                 }
                     break;
+                case ND::NetworkData::EGG_HATCHED:
+                {
+                    auto p = world->getPlayer(nd.eggHatchData.playerId);
+                    p->setElement(p->getPrevElement());
+                    p->setHoldingEgg(false);
+                    world->getEgg(nd.eggCapData.eggId)->setHatched(true);
+                    world->setCurrEggCount(world->getCurrEggCount() - 1);
+                    
+                }
+                    break;
                 case ND::NetworkData::ORB_RESPAWN:
                 {
                     auto orb = world->getOrb(nd.orbRespawnData.orbId);
                     orb->setPosition(nd.orbRespawnData.position);
                     orb->setCollected(false);
+                }
+                    break;
+                case ND::NetworkData::EGG_RESPAWN:
+                {
+                    auto egg = world->getEgg(nd.eggRespawnData.eggId);
+                    egg->setPosition(nd.eggRespawnData.position);
+                    egg->setCollected(false);
+                    egg->setHatched(false);
+                    egg->incDistanceWalked(-1*egg->getDistanceWalked());
                 }
                     break;
             }
@@ -235,6 +254,26 @@ namespace NetworkController {
         nd.packetType = ND::NetworkData::PacketType::ORB_RESPAWN;
         nd.orbRespawnData.orbId = orbId;
         nd.orbRespawnData.position = orbPosition;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void sendEggRespawn(int eggId, Vec2 eggPosition){
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::EGG_RESPAWN;
+        nd.eggRespawnData.eggId = eggId;
+        nd.eggRespawnData.position = eggPosition;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void sendEggHatched(int playerId, int eggId) {
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::EGG_HATCHED;
+        nd.eggHatchData.eggId = eggId;
+        nd.eggHatchData.playerId = playerId;
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
         network->send(bytes);

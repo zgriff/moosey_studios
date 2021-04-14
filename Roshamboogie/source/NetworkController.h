@@ -34,7 +34,9 @@ namespace NetworkController {
     void sendOrbCaptured(int orbId, int playerId);
     void sendPlayerColorSwap(int playerId, Element newElement, int swapId);
     void sendEggCollected(int playerId, int eggId);
+    void sendEggHatched(int playerId, int eggId);
     void sendOrbRespawn(int orbId, Vec2 orbPosition);
+    void sendEggRespawn(int eggId, Vec2 eggPosition);
     void sendTag(int taggedId, int taggerId, time_t timestamp);
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);

@@ -221,6 +221,14 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
             dest.orbRespawnData.orbId = readBits(bytes, ORB_ID_BITS);
             dest.orbRespawnData.position = readVec2(bytes);
             break;
+        case NetworkData::EGG_RESPAWN:
+            dest.eggRespawnData.eggId = readBits(bytes, EGG_ID_BITS);
+            dest.eggRespawnData.position = readVec2(bytes);
+            break;
+        case NetworkData::EGG_HATCHED:
+            dest.eggHatchData.playerId = readBits(bytes, PLAYER_ID_BITS);
+            dest.eggHatchData.eggId = readBits(bytes, EGG_ID_BITS);
+            break;
         case NetworkData::CLIENT_READY:
         case NetworkData::CLIENT_UNREADY:
             dest.readyData.player_id = readBits(bytes, PLAYER_ID_BITS);
@@ -248,7 +256,6 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
         case NetworkData::EGG_CAPTURED:
             writeBits(dest, src.eggCapData.playerId, PLAYER_ID_BITS);
             writeBits(dest, src.eggCapData.eggId, EGG_ID_BITS);
-            
             break;
         case NetworkData::SWAP_PACKET:
             writeBits(dest, src.swapData.swapId, SWAP_ID_BITS);
@@ -263,6 +270,14 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
         case NetworkData::ORB_RESPAWN:
             writeBits(dest, src.orbRespawnData.orbId, ORB_ID_BITS);
             writeVec2(dest, src.orbRespawnData.position);
+            break;
+        case NetworkData::EGG_RESPAWN:
+            writeBits(dest, src.eggRespawnData.eggId, EGG_ID_BITS);
+            writeVec2(dest, src.eggRespawnData.position);
+            break;
+        case NetworkData::EGG_HATCHED:
+            writeBits(dest, src.eggHatchData.playerId, PLAYER_ID_BITS);
+            writeBits(dest, src.eggHatchData.eggId, EGG_ID_BITS);
             break;
         case NetworkData::CLIENT_READY:
         case NetworkData::CLIENT_UNREADY:

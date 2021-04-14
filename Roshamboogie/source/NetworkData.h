@@ -17,7 +17,7 @@ namespace ND{
 
 struct NetworkData {
     enum PacketType {
-        TAG_PACKET, ORB_RESPAWN, ORB_CAPTURED, EGG_CAPTURED, SWAP_PACKET, POSITION_PACKET,
+        TAG_PACKET, ORB_RESPAWN, EGG_RESPAWN, ORB_CAPTURED, EGG_CAPTURED, EGG_HATCHED, SWAP_PACKET, POSITION_PACKET,
         CLIENT_READY, CLIENT_UNREADY, HOST_STARTGAME
     };
     uint8_t packetType;
@@ -35,9 +35,17 @@ struct NetworkData {
             cugl::Vec2 position;
         } orbRespawnData;
         struct {
+            uint8_t eggId;
+            cugl::Vec2 position;
+        } eggRespawnData;
+        struct {
             uint8_t playerId;
             uint8_t eggId;
         } eggCapData;
+        struct {
+            uint8_t playerId;
+            uint8_t eggId;
+        } eggHatchData;
         struct {
             uint8_t orbId;
             uint8_t playerId;
