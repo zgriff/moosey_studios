@@ -268,13 +268,13 @@ void GameScene::update(float timestep) {
             auto offset = (vel.getAngle() + M_PI/2.0) - _player->getDirection();
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset); */
 
-            auto ang = _player->getAngle() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
-            _player->setAngle(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
+            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
+            _player->setDirection(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
 
             auto vel = _player->getLinearVelocity();
             //Please don't delete this comment, angles were difficult to derive and easy to forget
             //vel angle originates from x axis, player angle orginates from y axis
-            auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
+            auto offset = vel.getAngle() - _player->getDirection() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
             auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset));
