@@ -399,10 +399,11 @@ void GameScene::update(float timestep) {
         if (_egg->getHatched() == false) {
             _egg->setPosition(_player->getPosition());
             _hatchbar->setVisible(true);
+//            CULog("egg distance %f", _egg->getDistanceWalked());
             _hatchbar->setProgress(_egg->getDistanceWalked()/80);
             Vec2 diff = _player->getPosition() - _egg->getInitPos();
             float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
-            _egg->incDistanceWalked(dist);
+            _egg->setDistanceWalked(_egg->getDistanceWalked() + dist);
             _egg->setInitPos(_player->getPosition());
             if (_egg->getDistanceWalked() >= 80) {
                 _player->setHoldingEgg(false);
@@ -410,14 +411,17 @@ void GameScene::update(float timestep) {
                 _hatchbar->setProgress(0.0);
                 _hatchedTime = time(NULL);
                 _egg->setHatched(true);
+                _egg->setDistanceWalked(0);
                 _world->setCurrEggCount(_world->getCurrEggCount() - 1);
 //                _egg->dispose();
                 _player->setElement(_player->getPrevElement());
-                _player->incScore(10);
+                _player->incScore(globals::HATCH_SCORE);
                 NetworkController::sendEggHatched(_player->getID(), _egg->getID());
             }
-        
         }
+    }
+    else if (_hatchbar->isVisible()){
+        _hatchbar->setVisible(false);
     }
     
     if (time(NULL) - _hatchedTime >= _hatchTextTimer) {

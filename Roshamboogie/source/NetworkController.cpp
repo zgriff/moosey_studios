@@ -132,9 +132,11 @@ namespace NetworkController {
                         auto egg = world->getEgg(tagged->getEggId());
                         egg->setPID(tagger->getID());
                         tagged->setElement(tagged->getPrevElement());
-                        egg->incDistanceWalked(-1*egg->getDistanceWalked());
+                        tagged->setHoldingEgg(false);
+                        egg->setDistanceWalked(0);
                         tagger->setElement(Element::None);
                         tagger->setEggId(egg->getID());
+                        tagger->setHoldingEgg(true);
                     }
                 }
                     break;
@@ -193,7 +195,8 @@ namespace NetworkController {
                     egg->setPosition(nd.eggRespawnData.position);
                     egg->setCollected(false);
                     egg->setHatched(false);
-                    egg->incDistanceWalked(-1*egg->getDistanceWalked());
+                    egg->setDistanceWalked(0);
+                    egg->setInitPos(Vec2(10,10));
                 }
                     break;
             }

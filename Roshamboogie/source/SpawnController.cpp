@@ -139,9 +139,11 @@ void SpawnController::spawnEggs() {
         if (egg->getHatched()) {
 //            egg->setPosition(Vec2(rand_x(e1), rand_y(e1)));
             egg->setPosition(10, 10); //TODO: change -- just for testing now
+            egg->setInitPos(Vec2(10,10));
             egg->setHatched(false);
             egg->setCollected(false);
-            egg->incDistanceWalked(-1 * egg->getDistanceWalked());
+            egg->setDistanceWalked(0);
+            CULog("egg distance %f", egg->getDistanceWalked());
             world->setCurrEggCount(world->getCurrEggCount() + 1);
             NetworkController::sendEggRespawn(egg->getID(), egg->getPosition());
         }

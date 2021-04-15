@@ -108,7 +108,7 @@ void CollisionController::beginContact(b2Contact* contact){
                     auto egg = world->getEgg(p1->getEggId());
                     egg->setPID(p2->getID());
                     p1->setElement(p1->getPrevElement());
-                    egg->incDistanceWalked(-1*egg->getDistanceWalked());
+                    egg->setDistanceWalked(0);
                     p2->setElement(Element::None);
                     p2->setEggId(egg->getID());
                     p1->setHoldingEgg(false);
@@ -130,7 +130,7 @@ void CollisionController::beginContact(b2Contact* contact){
                     auto egg = world->getEgg(p2->getEggId());
                     egg->setPID(p1->getID());
                     p2->setElement(p2->getPrevElement());
-                    egg->incDistanceWalked(-1*egg->getDistanceWalked());
+                    egg->setDistanceWalked(0);
                     p1->setElement(Element::None);
                     p1->setEggId(egg->getID());
                     p2->setHoldingEgg(false);
