@@ -11,25 +11,25 @@
 #include "SwapStation.h"
 #include "Element.h"
 
-/** Number of rows in the image filmstrip */
-#define SWAPST_ROWS       1
-/** Number of columns in this image filmstrip */
-#define SWAPST_COLS       2
-/** Number of elements in this image filmstrip */
-#define SWAPST_FRAMES     2
+///** Number of rows in the image filmstrip */
+//#define SWAPST_ROWS       1
+///** Number of columns in this image filmstrip */
+//#define SWAPST_COLS       2
+///** Number of elements in this image filmstrip */
+//#define SWAPST_FRAMES     2
 #define SWAPST_RADIUS     0.7
 
 using namespace cugl;
 
 void SwapStation::setTextures(const std::shared_ptr<Texture>& swapText) {
 
-    _sceneNode = scene2::PolygonNode::alloc();
+    _sceneNode = scene2::PolygonNode::allocWithTexture(swapText);
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
-    _animationNode = scene2::AnimationNode::alloc(swapText, SWAPST_ROWS, SWAPST_COLS, SWAPST_FRAMES);
-    _animationNode->setAnchor(Vec2::ANCHOR_CENTER);
+//    _animationNode = scene2::AnimationNode::alloc(swapText, SWAPST_ROWS, SWAPST_COLS, SWAPST_FRAMES);
+//    _animationNode->setAnchor(Vec2::ANCHOR_CENTER);
 //    _animationNode->setFrame(0);
-    _animationNode->setPosition(0,0);
-    _sceneNode->addChild(_animationNode);
+//    _animationNode->setPosition(0,0);
+//    _sceneNode->addChild(_animationNode);
     _texture = swapText;
     _body->SetUserData(this);
 }
@@ -64,10 +64,10 @@ void SwapStation::update(float delta) {
     }
     if (time(NULL) - _lastUsed >= _coolDownSecs) {
         _active = true;
-        _animationNode->setFrame(0);
+        _sceneNode->setColor(Color4(255, 255, 255, 255));
     }
     else {
         _active = false;
-        _animationNode->setFrame(1);
+        _sceneNode->setColor(Color4(255, 255, 255, 100));
     }
 }
