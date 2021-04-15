@@ -41,11 +41,19 @@
             "wrapS": "repeat",
             "wrapT": "repeat"
         },
-        "ability_bar": {
-            "file": "textures/ability_bar.png"
+        "ability-bar": {
+            "file": "textures/ability_bar.png",
+            "wrapS": "clamp",
+            "wrapT": "clamp",
+            "minfilter": "linear",
+            "magfilter": "linear"
         },
-        "ability_bar_fill": {
-            "file": "textures/ability_bar_fill.png"
+        "ability-bar-fill": {
+            "file": "textures/ability_bar_fill.png",
+            "wrapS":     "clamp",
+            "wrapT":     "clamp",
+            "minfilter": "linear",
+            "magfilter": "linear"
         },
         "host": {
             "file": "textures/create_game.png",
@@ -620,9 +628,8 @@
                     "type": "Progress",
                     "data": {
                         "anchor": [ 0.5, 0.5 ],
-                        "background": "ability_bar",
-                        "foreground": "ability_bar_fill"
-                            
+                        "background": "ability-bar",
+                        "foreground": "ability-bar-fill"
                     },
                     "layout": {
                         "x_anchor": "right",
