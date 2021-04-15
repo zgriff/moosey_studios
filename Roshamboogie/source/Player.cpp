@@ -115,15 +115,17 @@ void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     
 }
 
-void Player::allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale, 
-                            std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld) {
+//Comment out/remove if we move projectile alloc to world.
+void Player::allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale,
+    std::shared_ptr<cugl::scene2::SceneNode> worldNode,
+    std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld) {
     Size projSize(projectileTexture->getSize() / scale);
     _projectile = Projectile::alloc(Vec2(0, 0), projSize, _id);
     physicsWorld->addObstacle(_projectile);
     _projectile->setTextures(projectileTexture);
-    _projectile->setTextures(projectileTexture);
     _projectile->setDrawScale(scale);
     _projectile->setActive(false);
+    worldNode->addChild(_projectile->getSceneNode());
 }
 
 /**

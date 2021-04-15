@@ -20,6 +20,8 @@ public:
 		return _sceneNode;
 	}
 
+    int getPlayerID() { return _playerID; };
+
     void update(float delta) override;
 
 #pragma mark Constructors

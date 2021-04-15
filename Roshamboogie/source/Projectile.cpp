@@ -17,6 +17,7 @@ bool Projectile::init(const cugl::Vec2 pos, const cugl::Size size, int playerId)
         setSensor(true);
         setName("projectile");
         _playerID = playerId;
+        CULog("player id is %d", _playerID);
         return true;
     }
     return false;

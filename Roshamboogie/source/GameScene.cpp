@@ -447,7 +447,7 @@ void GameScene::update(float timestep) {
     
     // ability stuff here
     _abilitybar->setProgress(_player->getOrbScore() * 0.2);
-    if (_player->getOrbScore() == 5 && _abilityController.getQueuedAbility() == AbilityController::Ability::NoAbility) {
+    if (_player->getOrbScore() == 1 && _abilityController.getQueuedAbility() == AbilityController::Ability::NoAbility) {
         _abilityController.updateAbility(_abilityname);
         _abilityname->setVisible(true); 
     }

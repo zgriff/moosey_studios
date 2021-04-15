@@ -79,9 +79,6 @@ public:
         _id = id;
     }
 
-    void allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale,
-        std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld);
-
     const cugl::Vec2& getForce() const { return _force; }
     
     void setForce(const cugl::Vec2& value) { _force.set(value); }
@@ -146,6 +143,13 @@ public:
     int getOrbScore() { return _orbScore; };
 
     std::shared_ptr<Projectile> getProjectile() { return _projectile; };
+
+    void setProjectile(std::shared_ptr<Projectile> projectile) { _projectile = projectile; };
+
+    // Comment out if we move projectile to world
+    void Player::allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale,
+        std::shared_ptr<cugl::scene2::SceneNode> worldNode,
+        std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld);
 
     /**
     * Creates the username Label node with the font

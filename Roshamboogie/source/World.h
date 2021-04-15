@@ -18,6 +18,7 @@
 #include "Egg.h"
 #include "MapConstants.h"
 #include "Booster.h"
+#include "Projectile.h"
 
 
 class World : public Asset {
@@ -51,6 +52,8 @@ protected:
     std::vector<std::shared_ptr<Player>> _players;
     
     std::vector<Vec2> _playerSpawns;
+
+    std::vector<std::shared_ptr<Projectile>> _projectiles;
     
     std::vector<std::shared_ptr<Orb>> _orbs;
     
