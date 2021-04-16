@@ -34,37 +34,20 @@ private:
     int _eggID; //id of the egg that the player is holding, if any
     cugl::Vec2 _positionError;
     
+    std::unordered_map<std::string,std::shared_ptr<cugl::scene2::AnimationNode>> _animNodes;
+    std::unordered_map<std::string,bool> _animCycles;
+    
     /** Animation Nodes :o */
     std::string _skinKey;
-    std::shared_ptr<cugl::scene2::AnimationNode> _skinNode;
-    bool _skinCycle;
-    
     std::string _colorKey;
-    std::shared_ptr<cugl::scene2::AnimationNode> _colorNode;
-    bool _colorCycle;
-    
     std::string _faceKey;
-    std::shared_ptr<cugl::scene2::AnimationNode> _faceNode;
-    bool _faceCycle;
-    
     std::string _bodyKey;
-    std::shared_ptr<cugl::scene2::AnimationNode> _bodyNode;
-    bool _bodyCycle;
-    
     std::string _hatKey;
-    std::shared_ptr<cugl::scene2::AnimationNode> _hatNode;
-    bool _hatCycle;
-    
     std::string _staffKey;
-    std::shared_ptr<cugl::scene2::AnimationNode> _staffNode;
-    bool _staffCycle;
-    
     std::string _ringKey;
-    std::shared_ptr<cugl::scene2::AnimationNode> _ringNode;
-    bool _ringCycle;
     
     clock_t _animationTimer;
-    clock_t _animationRate = 0.5 * CLOCKS_PER_SEC;
+    clock_t _animationRate = 0.1 * CLOCKS_PER_SEC;
         
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
@@ -202,10 +185,6 @@ public:
      */
     const std::shared_ptr<cugl::scene2::SceneNode> getSceneNode() const {
         return _sceneNode;
-    }
-    
-    const std::shared_ptr<cugl::scene2::AnimationNode>& getColorNode() const {
-        return _colorNode;
     }
     
     
