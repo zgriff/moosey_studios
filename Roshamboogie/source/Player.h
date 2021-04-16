@@ -146,11 +146,6 @@ public:
 
     void setProjectile(std::shared_ptr<Projectile> projectile) { _projectile = projectile; };
 
-    // Comment out if we move projectile to world
-    void Player::allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale,
-        std::shared_ptr<cugl::scene2::SceneNode> worldNode,
-        std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld);
-
     /**
     * Creates the username Label node with the font
     *

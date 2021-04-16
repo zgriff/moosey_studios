@@ -223,6 +223,10 @@ public:
     std::vector<std::shared_ptr<Player>> getPlayers(){
         return _players;
     }
+
+    std::shared_ptr<Projectile> getProjectile(int id) {
+        return _projectiles[id];
+    }
     
     std::shared_ptr<Orb> getOrb(int id){
         return _orbs[id];

@@ -84,7 +84,7 @@ void writeBool(std::vector<uint8_t> & buffer, bool b){
 }
 
 void writeElement(std::vector<uint8_t> & buffer, Element e){
-    writeBits(buffer, e, 2);
+    writeBits(buffer, e, 3);
 }
 
 void writeTimestamp(std::vector<uint8_t> & buffer, time_t timestamp){
@@ -172,7 +172,7 @@ time_t readTimestamp(const std::vector<uint8_t>& bytes){
 }
 
 Element readElement(const std::vector<uint8_t>& bytes){
-    uint32_t e = readBits(bytes, 2);
+    uint32_t e = readBits(bytes, 3);
     return (Element) e;
 }
 
@@ -221,6 +221,16 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
             dest.orbRespawnData.orbId = readBits(bytes, ORB_ID_BITS);
             dest.orbRespawnData.position = readVec2(bytes);
             break;
+        case NetworkData::ELEMENT_CHANGE:
+            dest.elementChangeData.playerId = readBits(bytes, PLAYER_ID_BITS);
+            dest.elementChangeData.newElement = readElement(bytes);
+            break;
+        case NetworkData::PROJECTILE_FIRED:
+            dest.projectileFiredData.projectileId = readBits(bytes, PLAYER_ID_BITS); //num of proj the same as players
+            dest.projectileFiredData.projectilePos = readVec2(bytes);
+            dest.projectileFiredData.projectileAngle = readFloat(bytes);
+            dest.projectileFiredData.preyElement = readElement(bytes);
+            break;
         case NetworkData::CLIENT_READY:
         case NetworkData::CLIENT_UNREADY:
             dest.readyData.player_id = readBits(bytes, PLAYER_ID_BITS);
@@ -263,6 +273,16 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
         case NetworkData::ORB_RESPAWN:
             writeBits(dest, src.orbRespawnData.orbId, ORB_ID_BITS);
             writeVec2(dest, src.orbRespawnData.position);
+            break;
+        case NetworkData::ELEMENT_CHANGE:
+            writeBits(dest, src.elementChangeData.playerId, PLAYER_ID_BITS);
+            writeElement(dest, src.elementChangeData.newElement);
+            break;
+        case NetworkData::PROJECTILE_FIRED:
+            writeBits(dest, src.projectileFiredData.projectileId, PLAYER_ID_BITS);
+            writeVec2(dest, src.projectileFiredData.projectilePos);
+            writeFloat(dest, src.projectileFiredData.projectileAngle);
+            writeElement(dest, src.projectileFiredData.preyElement);
             break;
         case NetworkData::CLIENT_READY:
         case NetworkData::CLIENT_UNREADY:

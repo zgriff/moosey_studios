@@ -149,6 +149,9 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         projectile->setTextures(projectileTexture);
         projectile->setDrawScale(_scale);
         projectile->setActive(false);
+        projectile->getSceneNode()->setVisible(false);
+        projectile->setDebugColor(Color4::YELLOW);
+        projectile->setDebugScene(_debugNode);
         _worldNode->addChild(projectile->getSceneNode());
         _projectiles.push_back(projectile);
     }
@@ -171,12 +174,6 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->setDebugScene(_debugNode);
         //player id is set to i right now, if that is changed, projectile's associated userid needs to change too
         player->setProjectile(_projectiles[i]);
-        //use set if we move projectile to world instead of alloc
-        //player->allocProjectile(_assets->get<Texture>("projectile"), _scale, _worldNode, _physicsWorld);
-        auto projectile = player->getProjectile();
-        int id = projectile->getPlayerID();
-        projectile->setDebugColor(Color4::YELLOW);
-        projectile->setDebugScene(_debugNode);
         player->allocUsernameNode(_assets->get<Font>("username"));
         _worldNode->addChild(player->getSceneNode(),1);
         _players.push_back(player);

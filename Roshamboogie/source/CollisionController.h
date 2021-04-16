@@ -32,6 +32,8 @@ namespace CollisionController {
     void beforeSolve(b2Contact* contact, const b2Manifold* oldManifold);
 
     void setWorld(std::shared_ptr<World> w);
+
+    void helperTag(Player* tagged, Player* tagger, std::shared_ptr<World> world, bool dropEgg);
 };
 
 

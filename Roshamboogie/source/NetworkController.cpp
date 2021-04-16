@@ -172,6 +172,23 @@ namespace NetworkController {
                     orb->setCollected(false);
                 }
                     break;
+                case ND::NetworkData::ELEMENT_CHANGE:
+                    world->getPlayer(nd.elementChangeData.playerId)->setElement(nd.elementChangeData.newElement);
+                    break;
+                case ND::NetworkData::PROJECTILE_FIRED:
+                {
+                    auto projectile = world->getProjectile(nd.projectileFiredData.projectileId);
+                    auto pos = nd.projectileFiredData.projectilePos;
+                    auto angle = nd.projectileFiredData.projectileAngle;
+                    projectile->setActive(true);
+                    projectile->setPreyElement(nd.projectileFiredData.preyElement);
+                    projectile->setPosition(pos);
+                    projectile->getSceneNode()->setVisible(true);
+                    projectile->setLinearVelocity(Vec2::forAngle(angle + M_PI / 2) * 25);
+                    projectile->setAngle(angle);
+                    projectile->getSceneNode()->setAngle(angle + M_PI);
+                }
+                    break;
             }
         });
     }
@@ -230,6 +247,28 @@ namespace NetworkController {
         nd.packetType = ND::NetworkData::PacketType::ORB_RESPAWN;
         nd.orbRespawnData.orbId = orbId;
         nd.orbRespawnData.position = orbPosition;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void sendElementChange(int playerId, Element newElement) {
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::ELEMENT_CHANGE;
+        nd.elementChangeData.playerId = playerId;
+        nd.elementChangeData.newElement = newElement;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void sendProjectileFired(int projectileId, Vec2 projectilePos, float projectileAngle, Element preyElement) {
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::PROJECTILE_FIRED;
+        nd.projectileFiredData.projectileId = projectileId;
+        nd.projectileFiredData.projectilePos = projectilePos;
+        nd.projectileFiredData.projectileAngle = projectileAngle;
+        nd.projectileFiredData.preyElement = preyElement;
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
         network->send(bytes);

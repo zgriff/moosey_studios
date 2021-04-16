@@ -17,7 +17,8 @@ namespace ND{
 
 struct NetworkData {
     enum PacketType {
-        TAG_PACKET, ORB_RESPAWN, ORB_CAPTURED, EGG_CAPTURED, SWAP_PACKET, POSITION_PACKET,
+        TAG_PACKET, ORB_RESPAWN, ORB_CAPTURED, EGG_CAPTURED, SWAP_PACKET, POSITION_PACKET, ELEMENT_CHANGE, 
+        PROJECTILE_FIRED,
         CLIENT_READY, CLIENT_UNREADY, HOST_STARTGAME
     };
     uint8_t packetType;
@@ -52,6 +53,16 @@ struct NetworkData {
             cugl::Vec2 playerVelocity;
             uint8_t playerId;
         } positionData;
+        struct {
+            uint8_t playerId;
+            Element newElement;
+        } elementChangeData;
+        struct {
+            uint8_t projectileId;
+            cugl::Vec2 projectilePos;
+            float projectileAngle;
+            Element preyElement;
+        } projectileFiredData;
     };
     
 };

@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Element.h"
 #include "Projectile.h"
+#include "NetworkController.h"
 #include <stdlib.h>
 #include <chrono>
 #include <ctime> 
@@ -40,6 +41,7 @@ void AbilityController::activateAbility(std::shared_ptr<Player> player) {
 		switch (_queuedAbility) {
 			case Ability::AetherAbility:
 				player->setElement(Element::Aether);
+				NetworkController::sendElementChange(player->getID(), Element::Aether);
 				_activeAbility = Ability::AetherAbility;
 				_queuedAbility = Ability::NoAbility;
 				break;
@@ -51,20 +53,24 @@ void AbilityController::activateAbility(std::shared_ptr<Player> player) {
 			case Ability::Projectile:
 				auto projectile = player->getProjectile();
 				projectile->setActive(true);
+				//projectile->setElement(player->getCurrElement());
+				//Aether projectile for now, so prey is everything
+				projectile->setPreyElement(Element::None);
 				projectile->setPosition(player->getPosition());
-				//projectile->setPosition(Vec2(0, 0));
-				projectile->setLinearVelocity(player->getLinearVelocity().normalize() * 10);
+				projectile->getSceneNode()->setVisible(true);
+				projectile->setLinearVelocity(Vec2::forAngle(player->getAngle() + M_PI/2) * 25);
 				projectile->setAngle(player->getAngle());
 				projectile->getSceneNode()->setAngle(player->getAngle() + M_PI);
+				NetworkController::sendProjectileFired(projectile->getPlayerID(), player->getPosition(), player->getAngle(), Element::None);
 
 
 				CULog("player speed is %f, %f", player->getLinearVelocity().x, player->getLinearVelocity().y);
 
-				CULog("player angle is %f", player->getAngle());
+				/*CULog("player angle is %f", player->getAngle());
 				CULog("projectile angle is %f", projectile->getAngle());
 
 				CULog("player position is %f , %f", player->getPosition().x, player->getPosition().y);
-				CULog("projectile position is %f , %f", projectile->getPosition().x, projectile->getPosition().y);
+				CULog("projectile position is %f , %f", projectile->getPosition().x, projectile->getPosition().y);*/
 				_activeAbility = Ability::Projectile;
 				_queuedAbility = Ability::NoAbility;
 				break;
@@ -83,6 +89,7 @@ void AbilityController::deactivateAbility(std::shared_ptr<Player> player, std::s
 				if (timePassed.count() >= 3.0) {
 					if (player->getCurrElement() != Element::None) {
 						player->setElement(player->getPrevElement());
+						NetworkController::sendElementChange(player->getID(), player->getPrevElement());
 					}
 					// might want to replace below two lines with abilityOver = true depending on functionality
 					_activeAbility = Ability::NoAbility;
@@ -97,9 +104,10 @@ void AbilityController::deactivateAbility(std::shared_ptr<Player> player, std::s
 				}
 				break;
 			case Ability::Projectile:
-				if (timePassed.count() >= 3) {
+				if (timePassed.count() >= 1) {
 					auto projectile = player->getProjectile();
 					projectile->setActive(false);
+					projectile->getSceneNode()->setVisible(false);
 					projectile->setLinearVelocity(Vec2(0, 0));
 					projectile->setPosition(Vec2(0, 0));
 					_activeAbility = Ability::NoAbility;

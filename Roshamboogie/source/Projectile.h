@@ -2,6 +2,7 @@
 #define PROJECTILE_H
 
 #include <cugl/cugl.h>
+#include "Element.h"
 using namespace cugl;
 
 class Projectile : public cugl::physics2::BoxObstacle {
@@ -11,7 +12,8 @@ private:
 
 	std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
 	std::shared_ptr<cugl::Texture> _texture;
-	int _playerID; //id of the player who activated/shot the projectile
+	int _playerID; //id of the player who activated/shot the projectile, also id of projectile since each player has proj
+    Element _preyElement;
 
 public:
 	void setTextures(const std::shared_ptr<cugl::Texture>& projectileTexture);
@@ -21,6 +23,10 @@ public:
 	}
 
     int getPlayerID() { return _playerID; };
+
+    Element getPreyElement() { return _preyElement; };
+
+    void setPreyElement(Element element) { _preyElement = element; };
 
     void update(float delta) override;
 
