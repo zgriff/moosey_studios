@@ -268,13 +268,13 @@ void GameScene::update(float timestep) {
             auto offset = (vel.getAngle() + M_PI/2.0) - _player->getDirection();
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset); */
 
-            auto ang = _player->getAngle() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
-            _player->setAngle(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
+            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
+            _player->setDirection(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
 
             auto vel = _player->getLinearVelocity();
             //Please don't delete this comment, angles were difficult to derive and easy to forget
             //vel angle originates from x axis, player angle orginates from y axis
-            auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
+            auto offset = vel.getAngle() - _player->getDirection() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
             auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset));
@@ -460,46 +460,12 @@ void GameScene::update(float timestep) {
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
     
+    _player->animateMovement();
     //send new position
     //TODO: only every few frames
     NetworkController::sendPosition();
 }
 
-
-void GameScene::populate() {
-    std::shared_ptr<Texture> image = _assets->get<Texture>("earth");
-    std::shared_ptr<scene2::PolygonNode> sprite;
-    std::shared_ptr<scene2::WireNode> draw;
-    std::string wname = "wall";
-    for (int ii = 0; ii<WALL_COUNT; ii++) {
-        std::shared_ptr<physics2::PolygonObstacle> wallobj;
-
-        Poly2 wall(WALL[ii],WALL_VERTS);
-        // Call this on a polygon to get a solid shape
-        SimpleTriangulator triangulator;
-        triangulator.set(wall);
-        triangulator.calculate();
-        wall.setIndices(triangulator.getTriangulation());
-        wall.setGeometry(Geometry::SOLID);
-
-        wallobj = physics2::PolygonObstacle::alloc(wall);
-        wallobj->setDebugColor(Color4::WHITE);
-        // You cannot add constant "".  Must stringify
-        wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
-        wallobj->setName(wname);
-
-        // Set the physics attributes
-        wallobj->setBodyType(b2_staticBody);
-        wallobj->setDensity(BASIC_DENSITY);
-        wallobj->setFriction(BASIC_FRICTION);
-        wallobj->setRestitution(BASIC_RESTITUTION);
-
-        wall *= _scale;
-        sprite = scene2::PolygonNode::allocWithTexture(image,wall);
-        addObstacle(wallobj,sprite,2);
-    }
-
-}
 
 
 void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj,

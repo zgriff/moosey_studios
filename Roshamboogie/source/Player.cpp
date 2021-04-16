@@ -11,7 +11,13 @@
 #include "Projectile.h"
 #include "NetworkController.h"
 
+
+
+
 using namespace cugl;
+
+#pragma mark -
+#pragma mark Physics Constants
 
 // Default physics values
 /** The density of the player */
@@ -38,25 +44,84 @@ using namespace cugl;
 /** How fast a player moves to physics body location. Between 0 and 1 */
 #define INTERPOLATION_AMOUNT 0.9f
 
+#pragma mark -
+#pragma mark Animation Constants
 
+#define SKIN_ROWS           1
+#define SKIN_COLS           4
+#define SKIN_FRAMES         4
+
+#define COLOR_ROWS          4
+#define COLOR_COLS          4
+#define COLOR_FRAMES        16
+
+#define FACE_ROWS           1
+#define FACE_COLS           4
+#define FACE_FRAMES         4
+
+#define BODY_ROWS           1
+#define BODY_COLS           4
+#define BODY_FRAMES         4
+
+#define HAT_ROWS            1
+#define HAT_COLS            4
+#define HAT_FRAMES          4
+
+#define STAFF_ROWS          1
+#define STAFF_COLS          4
+#define STAFF_FRAMES        4
+
+#define RING_ROWS           1
+#define RING_COLS           2
+#define RING_FRAMES         2
+
+#define PLAYER_ANIM_FRAMES  4
+
+#define WALKING_VELOCITY    0.5f
+#define RUNNING_VELOCITY    7.0F
 
 /**
  * Sets the textures for this player.
  *
  * @param player      The texture for the player filmstrip
  */
-void Player::setTextures(const std::shared_ptr<Texture>& player) {
+void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
 
     _sceneNode = scene2::PolygonNode::alloc();
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
-    _animationNode = scene2::AnimationNode::alloc(player, PLAYER_ROWS, PLAYER_COLS, PLAYER_FRAMES);
-    _animationNode->setAnchor(Vec2::ANCHOR_CENTER);
-//    _animationNode->setFrame(0);
-    _animationNode->setPosition(0,0);
-    _sceneNode->addChild(_animationNode);
+    _texture = assets->get<Texture>("player");
     
-    _texture = player;
+    _animationNode = scene2::AnimationNode::alloc(_texture, PLAYER_ROWS, PLAYER_COLS, PLAYER_FRAMES);
+    
+    std::shared_ptr<scene2::AnimationNode>  skinNode = scene2::AnimationNode::alloc(assets->get<Texture>(_skinKey), SKIN_ROWS, SKIN_COLS, SKIN_FRAMES);
+    std::shared_ptr<scene2::AnimationNode>  colorNode = scene2::AnimationNode::alloc(assets->get<Texture>(_colorKey), COLOR_ROWS, COLOR_COLS, COLOR_FRAMES);
+    std::shared_ptr<scene2::AnimationNode>  faceNode = scene2::AnimationNode::alloc(assets->get<Texture>(_faceKey), FACE_ROWS, FACE_COLS, FACE_FRAMES);
+    std::shared_ptr<scene2::AnimationNode>  bodyNode = scene2::AnimationNode::alloc(assets->get<Texture>(_bodyKey), BODY_ROWS, BODY_COLS, BODY_FRAMES);
+    std::shared_ptr<scene2::AnimationNode>  hatNode = scene2::AnimationNode::alloc(assets->get<Texture>(_hatKey), HAT_ROWS, HAT_COLS, HAT_FRAMES);
+    std::shared_ptr<scene2::AnimationNode>  staffNode = scene2::AnimationNode::alloc(assets->get<Texture>(_staffKey), STAFF_ROWS, STAFF_COLS, STAFF_FRAMES);
+    std::shared_ptr<scene2::AnimationNode>  ringNode = scene2::AnimationNode::alloc(assets->get<Texture>(_ringKey), RING_ROWS, RING_COLS, RING_FRAMES);
+    
+    _animNodes[_skinKey] = skinNode;
+    _animNodes[_colorKey] = colorNode;
+    _animNodes[_faceKey] = faceNode;
+    _animNodes[_bodyKey] = bodyNode;
+    _animNodes[_hatKey] = hatNode;
+    _animNodes[_staffKey] = staffNode;
+    _animNodes[_ringKey] = ringNode;
+    
+    for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
+        (*it).second->setAnchor(Vec2::ANCHOR_CENTER);
+        (*it).second->setPosition(0,0);
+        _sceneNode->addChild((*it).second);
+        _animCycles[(*it).first] = true;
+    }
+    
+    _sceneNode->setScale(0.1f);
+    
+    _animationTimer = time(NULL);
+    
     setElement(_currElt);
+
     _body->SetUserData(this);
 
 }
@@ -69,21 +134,32 @@ void Player::setElement(Element e){
     }
     _currElt = e;
     
-    switch(e){ 
+    //Need to flip before and after setting frame bc bug with texture on polygon
+    bool flip = _animNodes[_colorKey]->isFlipHorizontal();
+    if (flip) {
+        _animNodes[_colorKey]->flipHorizontal(false);
+    }
+    
+    switch(e){
         case Element::Grass:
-            _animationNode->setFrame(4);
+//            _animationNode->setFrame(4);
+            _animNodes[_colorKey]->setFrame(4);
             break;
         case Element::Fire:
-            _animationNode->setFrame(3);
+            _animNodes[_colorKey]->setFrame(0);
             break;
         case Element::Water:
-            _animationNode->setFrame(0);
+            _animNodes[_colorKey]->setFrame(8);
             break;
         case Element::None:
-            _animationNode->setFrame(6);
+            _animNodes[_colorKey]->setFrame(12);
             break;
         case Element::Aether:
             _sceneNode->setColor(Color4(0, 0, 0));
+    }
+    
+    if (flip) {
+        _animNodes[_colorKey]->flipHorizontal(true);
     }
     
 }
@@ -134,6 +210,15 @@ void Player::dispose() {
     _sceneNode = nullptr;
     _animationNode = nullptr;
     _texture = nullptr;
+    _animNodes.clear();
+    _animCycles.clear();
+    _skinKey = "";
+    _colorKey = "";
+    _faceKey = "";
+    _bodyKey = "";
+    _hatKey = "";
+    _staffKey = "";
+    _ringKey = "";
     _projectile = nullptr;
 }
 
@@ -164,7 +249,6 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         _tagCooldown = 0;
         _isTagged = false;
         _didTag = false;
-        _sceneNode = nullptr;
         _positionError = Vec2::ZERO;
         return true;
     }
@@ -206,7 +290,7 @@ void Player::update(float delta) {
         
         _positionError *= INTERPOLATION_AMOUNT;
     }
-//    CULog("play pos: x: %f  y:%f",getPosition().x,getPosition().y);
+
     _trauma = max(0.0f, _trauma - TRAUMA_RECOVERY);
 
     if (getLinearVelocity().length() > THRESHOLD_VELOCITY) {
@@ -248,7 +332,7 @@ void Player::applyForce() {
     
     // Orient the force with rotation.
     Vec4 netforce(_force.x,_force.y,0.0f,1.0f);
-    Mat4::createRotationZ(getAngle(), &_affine);
+    Mat4::createRotationZ(getDirection(), &_affine);
     netforce *= _affine;
     
     // Apply force to the rocket BODY, not the rocket
@@ -261,3 +345,76 @@ void Player::setDrawScale(float scale) {
         _sceneNode->setPosition(getPosition()*_drawscale);
     }
 }
+
+void Player::animateMovement() {
+    //TODO: change this to be more elegant
+    //Rotates directional ring around player, offset by orientation in png
+    if (getLinearVelocity().length() < WALKING_VELOCITY)  {
+        _animationRate = 1.5f * CLOCKS_PER_SEC;
+    } else if (getLinearVelocity().length() < RUNNING_VELOCITY) {
+        _animationRate = 0.5f * CLOCKS_PER_SEC;
+    } else {
+        _animationRate = 0.075f * CLOCKS_PER_SEC;
+    }
+    
+    
+    if (_animNodes[_ringKey] != nullptr) {
+        _animNodes[_ringKey]->setAngle(getDirection()-.25*M_PI);
+    }
+    
+    //Check to see if player is going right or left and flip sprite
+    if (getDirection() >= M_PI)  {
+        flipHorizontal(true);
+    } else if (getDirection() < M_PI) {
+        flipHorizontal(false);
+    }
+    
+    //iterate through nodes and animate at animation rate
+    if (clock() - _animationTimer  >= _animationRate) {
+        for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
+            if ((*it).first != _ringKey) {
+                animationCycle((*it).second.get(), &_animCycles[(*it).first]);
+            }
+        }
+        _animationTimer = clock();
+    }
+}
+
+
+void Player::animationCycle(scene2::AnimationNode* node, bool* cycle) {
+    if (node->getFrame()%PLAYER_ANIM_FRAMES == PLAYER_ANIM_FRAMES-1) {
+        *cycle = false;
+    } else {
+        *cycle = true;
+    }
+    
+    //Need to flip before and after setting frame bc bug with texture on polygon
+    bool flip = node->isFlipHorizontal();
+    if (flip) {
+        node->flipHorizontal(false);
+    }
+    
+    // Increment
+    if (*cycle) {
+        node->setFrame(node->getFrame()+1);
+    } else {
+        //TODO: change 3 to num frames
+        node->setFrame(node->getFrame()-(PLAYER_ANIM_FRAMES-1));
+    }
+    
+    if (flip) {
+        node->flipHorizontal(true);
+    }
+}
+
+//iterate through animation nodes and flip if not ring
+void Player::flipHorizontal(bool flip) {
+    for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
+        if ((*it).second->isFlipHorizontal()!=flip) {
+            if ((*it).first != _ringKey) {
+                (*it).second->flipHorizontal(flip);
+            }
+        }
+    }
+}
+
