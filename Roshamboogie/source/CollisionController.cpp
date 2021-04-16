@@ -43,6 +43,7 @@ void CollisionController::beginContact(b2Contact* contact){
         Orb* o = (Orb*) bd1;
         Player* p = (Player*) bd2;
         if (!o->getCollected() && p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
+            world->addOrbSpawn(o->getPosition());
             o->setCollected(true);
             p->setOrbScore(p->getOrbScore() + 1);
             world->setOrbCount(world->getCurrOrbCount() - 1);

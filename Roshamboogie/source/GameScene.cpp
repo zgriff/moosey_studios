@@ -381,7 +381,7 @@ void GameScene::update(float timestep) {
 //        CULog("prob %d", prob(e1));
         // orb spawning
         if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
-            if (_world->getCurrOrbCount() < _world->getNumOrbs()) {
+            if (_world->getOrbSpawns().size() > 5) {
                 SpawnController::spawnOrbs();
             }
         }

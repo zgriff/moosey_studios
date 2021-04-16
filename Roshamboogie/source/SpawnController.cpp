@@ -28,6 +28,8 @@ void SpawnController::spawnOrbs() {
     float roomWidth = world->getPhysicsWorld()->getBounds().getMaxX() / cols;
     float roomHeight = world->getPhysicsWorld()->getBounds().getMaxY() / rows;
     
+    auto spawnLocs = world->getOrbSpawns();
+    
     std::vector<std::shared_ptr<Player>> players = world->getPlayers();
     
     std::vector<std::vector<int>> spaces (cols , vector<int> (rows, 0));
@@ -36,12 +38,6 @@ void SpawnController::spawnOrbs() {
         Vec2 playerPos = players[k]->getPosition();
         int j = (int) playerPos.x / roomWidth;
         int i = (int) playerPos.y / roomHeight;
-        
-//        CULog("player pos (x, y) : %f, %f", playerPos.x, playerPos.y);
-//        CULog("player loc (col, row) : %d, %d", j, i);
-        
-//        CULog("i %d", i);
-//        CULog("j %d", j);
         spaces[i][j] += 1;
     }
     
@@ -60,22 +56,35 @@ void SpawnController::spawnOrbs() {
     //get which room to spawn orb in
     std::uniform_int_distribution<int> rand_int(0, (int)emptySpaces.size()-1);
     int randRoom = rand_int(e1);
-    
-//    CULog("randroom %d", randRoom);
-    //get rand position of orb
-//    CULog("randroom x %f", emptySpaces[randRoom].x);
-//    CULog("randroom y %f", emptySpaces[randRoom].y);
+
     std::uniform_int_distribution<long> rand_x(emptySpaces[randRoom].x * roomWidth, emptySpaces[randRoom].x * roomWidth + roomWidth);
     std::uniform_int_distribution<long> rand_y(emptySpaces[randRoom].y * roomHeight, emptySpaces[randRoom].y * roomHeight + roomHeight);
-//    CULog("new pos %f %f", rand_x(e1), rand_y(e1));
+    
+    Vec2 orbPos = Vec2(rand_x(e1), rand_y(e1));
+    
+    int minIdx = -1; //saves which valid spawn location is closest to the generated one
+    int minDist = INT_MAX;
+    for (int i = 0; i < spawnLocs.size(); i++) {
+        int dist = orbPos.distanceSquared(spawnLocs[i]);
+        if (dist < minDist) {
+            minDist = dist;
+            minIdx = i;
+        }
+    }
+    
+    if (minIdx == -1) { //currently no available spawn locations
+        return;
+    }
     
     for (int i = 0; i < world->getNumOrbs(); i++) {
         std::shared_ptr<Orb> orb = world->getOrb(i);
         if (orb->getCollected()) {
-            orb->setPosition(Vec2(rand_x(e1), rand_y(e1)));
+            world->removeOrbSpawn(minIdx);
+            orb->setPosition(spawnLocs[minIdx]);
             orb->setCollected(false);
             world->setOrbCount(world->getCurrOrbCount()+1);
             NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
+            return;
         }
     }
     
@@ -126,13 +135,8 @@ void SpawnController::spawnEggs() {
     std::uniform_int_distribution<int> rand_int(0, (int)emptySpaces.size()-1);
     int randRoom = rand_int(e1);
     
-//    CULog("randroom %d", randRoom);
-    //get rand position of orb
-//    CULog("randroom x %f", emptySpaces[randRoom].x);
-//    CULog("randroom y %f", emptySpaces[randRoom].y);
     std::uniform_int_distribution<long> rand_x(emptySpaces[randRoom].x * roomWidth, emptySpaces[randRoom].x * roomWidth + roomWidth);
     std::uniform_int_distribution<long> rand_y(emptySpaces[randRoom].y * roomHeight, emptySpaces[randRoom].y * roomHeight + roomHeight);
-//    CULog("new pos %f %f", rand_x(e1), rand_y(e1));
     
     for (int i = 0; i < eggs.size(); i++) {
         std::shared_ptr<Egg> egg = world->getEgg(i);
@@ -143,7 +147,6 @@ void SpawnController::spawnEggs() {
             egg->setHatched(false);
             egg->setCollected(false);
             egg->setDistanceWalked(0);
-            CULog("egg distance %f", egg->getDistanceWalked());
             world->setCurrEggCount(world->getCurrEggCount() + 1);
             NetworkController::sendEggRespawn(egg->getID(), egg->getPosition());
         }

@@ -234,6 +234,18 @@ public:
         return _orbs;
     }
     
+    std::vector<Vec2> getOrbSpawns() {
+        return _orbSpawns;
+    }
+    
+    void addOrbSpawn(Vec2 orbSpawnPos) {
+        _orbSpawns.push_back(orbSpawnPos);
+    }
+    
+    void removeOrbSpawn(int pos) {
+        _orbSpawns.erase(_orbSpawns.begin() + pos);
+    }
+
     uint8_t getCurrOrbCount() {
         return _currOrbCount;
     }
