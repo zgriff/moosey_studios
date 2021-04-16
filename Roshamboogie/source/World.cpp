@@ -284,7 +284,7 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
 void World::unload()  {
     CULog("Unloading world");
     for (auto it = _players.begin(); it != _players.end(); ++it)  {
-        if (_physicsWorld != nullptr) {
+        if (_physicsWorld != nullptr  && (*it).get()->getBody() != nullptr) {
             _physicsWorld->removeObstacle((*it).get());
         }
         (*it) = nullptr;
@@ -292,7 +292,7 @@ void World::unload()  {
     _players.clear();
     
     for (auto it = _swapStations.begin(); it != _swapStations.end(); ++it)  {
-        if (_physicsWorld != nullptr) {
+        if (_physicsWorld != nullptr && (*it).get()->getBody() != nullptr) {
             _physicsWorld->removeObstacle((*it).get());
         }
         (*it) = nullptr;
@@ -300,7 +300,7 @@ void World::unload()  {
     _swapStations.clear();
 
     for (auto it = _boosters.begin(); it != _boosters.end(); ++it) {
-        if (_physicsWorld != nullptr) {
+        if (_physicsWorld != nullptr && (*it).get()->getBody() != nullptr) {
             _physicsWorld->removeObstacle((*it).get());
         }
         (*it) = nullptr;
@@ -308,7 +308,7 @@ void World::unload()  {
     _boosters.clear();
     
     for (auto it = _eggs.begin(); it != _eggs.end(); ++it)  {
-        if (_physicsWorld != nullptr) {
+        if (_physicsWorld != nullptr && (*it).get()->getBody() != nullptr) {
             _physicsWorld->removeObstacle((*it).get());
         }
         (*it) = nullptr;
@@ -316,7 +316,7 @@ void World::unload()  {
     _eggs.clear();
     
     for (auto it = _orbs.begin(); it != _orbs.end(); ++it)  {
-        if (_physicsWorld != nullptr) {
+        if (_physicsWorld != nullptr && (*it).get()->getBody() != nullptr) {
             _physicsWorld->removeObstacle((*it).get());
         }
         (*it) = nullptr;
@@ -324,7 +324,7 @@ void World::unload()  {
     _orbs.clear();
     
     for (auto it = _walls.begin(); it != _walls.end(); ++it)  {
-        if (_physicsWorld != nullptr) {
+        if (_physicsWorld != nullptr && (*it).get()->getBody() != nullptr) {
             _physicsWorld->removeObstacle((*it).get());
         }
         (*it) = nullptr;
