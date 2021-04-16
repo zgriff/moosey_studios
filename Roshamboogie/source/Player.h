@@ -63,7 +63,8 @@ private:
     std::shared_ptr<cugl::scene2::AnimationNode> _ringNode;
     bool _ringCycle;
     
-    time_t _animationTimer;
+    clock_t _animationTimer;
+    clock_t _animationRate = 0.5 * CLOCKS_PER_SEC;
         
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;

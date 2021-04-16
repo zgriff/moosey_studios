@@ -78,9 +78,6 @@ using namespace cugl;
 #define PLAYER_ANIM_FRAMES  4
 
 
-#define MOVEMENT_ANIM_RATE  .001
-
-
 /**
  * Sets the textures for this player.
  *
@@ -383,7 +380,7 @@ void Player::animateMovement() {
         flipHorizontal(false);
     }
     
-    if (time(NULL) - _animationTimer  >= MOVEMENT_ANIM_RATE) {
+    if (clock() - _animationTimer  >= _animationRate) {
         animationCycle(_skinNode.get(), &_skinCycle);
         animationCycle(_colorNode.get(), &_colorCycle);
         animationCycle(_faceNode.get(), &_faceCycle);
