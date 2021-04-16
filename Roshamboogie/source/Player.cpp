@@ -71,9 +71,11 @@ using namespace cugl;
 #define STAFF_COLS          4
 #define STAFF_FRAMES        4
 
-#define RING_ROWS          1
-#define RING_COLS          2
-#define RING_FRAMES        2
+#define RING_ROWS           1
+#define RING_COLS           2
+#define RING_FRAMES         2
+
+#define PLAYER_ANIM_FRAMES  4
 
 
 #define MOVEMENT_ANIM_RATE  .001
@@ -100,14 +102,13 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _staffNode = scene2::AnimationNode::alloc(assets->get<Texture>(_staffKey), STAFF_ROWS, STAFF_COLS, STAFF_FRAMES);
     _ringNode = scene2::AnimationNode::alloc(assets->get<Texture>(_ringKey), RING_ROWS, RING_COLS, RING_FRAMES);
     
-    
-//    _skinNode->setScale(0.1f);
-//    _colorNode->setScale(0.1f);
-//    _faceNode->setScale(0.1f);
-//    _bodyNode->setScale(0.1f);
-//    _hatNode->setScale(0.1f);
-//    _staffNode->setScale(0.1f);
-//    _ringNode->setScale(0.1f);
+    _skinNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _colorNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _faceNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _bodyNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _hatNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _staffNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _ringNode->setAnchor(Vec2::ANCHOR_CENTER);
     
     _skinNode->setPosition(0,0);
     _colorNode->setPosition(0,0);
@@ -144,6 +145,12 @@ void Player::setElement(Element e){
     }
     _currElt = e;
     
+    
+    bool flip = _colorNode->isFlipHorizontal();
+    if (flip) {
+        _colorNode->flipHorizontal(false);
+    }
+    
     switch(e){
         case Element::Grass:
 //            _animationNode->setFrame(4);
@@ -160,6 +167,10 @@ void Player::setElement(Element e){
             break;
         case Element::Aether:
             _sceneNode->setColor(Color4(0, 0, 0));
+    }
+    
+    if (flip) {
+        _colorNode->flipHorizontal(true);
     }
     
 }
@@ -302,8 +313,7 @@ void Player::update(float delta) {
         
         _positionError *= INTERPOLATION_AMOUNT;
     }
-//    CULog("play pos: x: %f  y:%f",getPosition().x,getPosition().y);
-//    CULog("node pos: x: %f  y:%f",_colorNode->getPosition().x,_colorNode->getPosition().y);
+
     _trauma = max(0.0f, _trauma - TRAUMA_RECOVERY);
 
     if (getLinearVelocity().length() > THRESHOLD_VELOCITY) {
@@ -311,9 +321,6 @@ void Player::update(float delta) {
         adjust.scale(SPEEDING_DRAG + THRESHOLD_VELOCITY * (1 - SPEEDING_DRAG) / adjust.length());
     }
     
-    if (_ringNode != nullptr) {
-        _ringNode->setAngle(getDirection()-.25*M_PI);
-    }
     
     if (_isTagged) {
         _isInvisible = true;
@@ -365,6 +372,17 @@ void Player::setDrawScale(float scale) {
 
 void Player::animateMovement() {
     //TODO: change this to be more elegant
+    //Rotates directional ring around player, offset by orientation in png
+    if (_ringNode != nullptr) {
+        _ringNode->setAngle(getDirection()-.25*M_PI);
+    }
+    
+    if (getDirection() >= M_PI)  {
+        flipHorizontal(true);
+    } else if (getDirection() < M_PI) {
+        flipHorizontal(false);
+    }
+    
     if (time(NULL) - _animationTimer  >= MOVEMENT_ANIM_RATE) {
         animationCycle(_skinNode.get(), &_skinCycle);
         animationCycle(_colorNode.get(), &_colorCycle);
@@ -378,17 +396,50 @@ void Player::animateMovement() {
 
 
 void Player::animationCycle(scene2::AnimationNode* node, bool* cycle) {
-    if (node->getFrame()%4 == 3) {
+    if (node->getFrame()%PLAYER_ANIM_FRAMES == PLAYER_ANIM_FRAMES-1) {
         *cycle = false;
     } else {
         *cycle = true;
     }
+    
+    bool flip = node->isFlipHorizontal();
+    if (flip) {
+        node->flipHorizontal(false);
+    }
+    
+    
     // Increment
     if (*cycle) {
         node->setFrame(node->getFrame()+1);
     } else {
         //TODO: change 3 to num frames
-        node->setFrame(node->getFrame()-3);
+        node->setFrame(node->getFrame()-(PLAYER_ANIM_FRAMES-1));
+    }
+    
+    if (flip) {
+        node->flipHorizontal(true);
+    }
+}
+
+
+void Player::flipHorizontal(bool flip) {
+    if (_skinNode->isFlipHorizontal()!=flip) {
+        _skinNode->flipHorizontal(flip);
+    }
+    if (_colorNode->isFlipHorizontal()!=flip) {
+        _colorNode->flipHorizontal(flip);
+    }
+    if (_faceNode->isFlipHorizontal()!=flip) {
+        _faceNode->flipHorizontal(flip);
+    }
+    if (_bodyNode->isFlipHorizontal()!=flip) {
+        _bodyNode->flipHorizontal(flip);
+    }
+    if (_hatNode->isFlipHorizontal()!=flip) {
+        _hatNode->flipHorizontal(flip);
+    }
+    if (_staffNode->isFlipHorizontal()!=flip) {
+        _staffNode->flipHorizontal(flip);
     }
 }
 

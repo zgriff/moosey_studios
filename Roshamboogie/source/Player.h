@@ -77,7 +77,7 @@ private:
     
     // Asset references.  These should be set by GameMode
     /** Reference to the node for the player */
-    std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
+    std::shared_ptr<cugl::scene2::PolygonNode> _sceneNode;
     /** Reference to player's sprite for drawing */
     std::shared_ptr<cugl::scene2::AnimationNode> _animationNode;
 
@@ -361,6 +361,8 @@ public:
     void animateMovement();
     
     void animationCycle(cugl::scene2::AnimationNode* node, bool* cycle);
+    
+    void flipHorizontal(bool flip);
     
     
 };
