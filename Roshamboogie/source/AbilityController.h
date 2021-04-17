@@ -13,7 +13,7 @@ class AbilityController {
 
 public:
 	enum Ability {
-		AetherAbility, SpeedBoost, NoAbility
+		AetherAbility, SpeedBoost, Projectile, NoAbility
 	};
 
 private:

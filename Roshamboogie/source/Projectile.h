@@ -2,16 +2,19 @@
 #define PROJECTILE_H
 
 #include <cugl/cugl.h>
+#include "Element.h"
 using namespace cugl;
 
-class Projectile : public cugl::physics2::BoxObstacle {
+class Projectile : public cugl::physics2::CapsuleObstacle {
 private:
 
     float _drawscale;
 
 	std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
 	std::shared_ptr<cugl::Texture> _texture;
-	int _playerID; //id of the player who activated/shot the projectile
+	int _playerID; //id of the player who activated/shot the projectile, also id of projectile since each player has proj
+    Element _preyElement;
+    bool _isGone;
 
 public:
 	void setTextures(const std::shared_ptr<cugl::Texture>& projectileTexture);
@@ -19,6 +22,15 @@ public:
 	std::shared_ptr<cugl::scene2::SceneNode> getSceneNode() {
 		return _sceneNode;
 	}
+
+    int getPlayerID() { return _playerID; };
+
+    Element getPreyElement() { return _preyElement; };
+
+    void setPreyElement(Element element) { _preyElement = element; };
+
+    void setIsGone(bool gone) { _isGone = gone; };
+    bool getIsGone() { return _isGone; };
 
     void update(float delta) override;
 
@@ -29,7 +41,7 @@ public:
      * To properly initialize the projectile, you should call the init
      * method.
      */
-    Projectile(void) : BoxObstacle(), _drawscale(1.0f) { }
+    Projectile(void) : CapsuleObstacle(), _drawscale(1.0f) { }
 
     /**
      * Disposes the projectile, releasing all resources.

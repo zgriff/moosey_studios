@@ -30,6 +30,7 @@ private:
     bool _isIntangible; //can't interact with any object (can't tag and nobody can tag you)
     time_t _tagCooldown;
     bool _holdingEgg;
+    bool _justHitByProjectile = false;
     bool _isLocal; // true if the player is the one running on this system
     int _eggID; //id of the egg that the player is holding, if any
     cugl::Vec2 _positionError;
@@ -100,9 +101,6 @@ public:
         _id = id;
     }
 
-    void allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale,
-        std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld);
-
     const cugl::Vec2& getForce() const { return _force; }
     
     void setForce(const cugl::Vec2& value) { _force.set(value); }
@@ -147,6 +145,9 @@ public:
     bool getHoldingEgg() { return _holdingEgg; }
     
     void setHoldingEgg(bool b) { _holdingEgg = b; }
+
+    bool getJustHitByProjectile() { return _justHitByProjectile; };
+    void setJustHitByProjectile(bool hit) { _justHitByProjectile = hit; };
     
     bool getIsLocal() { return _isLocal; }
     
@@ -167,6 +168,8 @@ public:
     int getOrbScore() { return _orbScore; };
 
     std::shared_ptr<Projectile> getProjectile() { return _projectile; };
+
+    void setProjectile(std::shared_ptr<Projectile> projectile) { _projectile = projectile; };
 
     /**
     * Creates the username Label node with the font

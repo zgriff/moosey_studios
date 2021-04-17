@@ -97,6 +97,7 @@ void InputController::readInput() {
         default:
             _abilityPressed = false;
             if (_keydown && touch->touchCount() == 1) {
+                _abilityQueued = false;
                 if (_dtouch.x < 640) {
                     mov.x = -1;
                 }
@@ -106,8 +107,16 @@ void InputController::readInput() {
             }
             else {
                 mov.x = 0;
-                if (touch->touchCount() > 0) {
-                    _abilityPressed = true;
+                if (touch->touchCount() > 1) {
+                    cugl::Timestamp curr = Timestamp();
+                    if (_abilityQueued && curr.ellapsedMillis(_abilityTimestamp) > 100) {
+                        _abilityPressed = true;
+                        _abilityQueued = false;
+                    } else if (!_abilityQueued) {
+                        _abilityQueued = true;
+                        _abilityTimestamp.mark();
+                    }
+                    
                 }
             }
             break;

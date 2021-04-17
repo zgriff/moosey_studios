@@ -14,6 +14,7 @@
 #include "Orb.h"
 #include "Booster.h"
 #include "SwapStation.h"
+#include "Projectile.h"
 #include "World.h"
 #include <Box2D/Dynamics/b2World.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
@@ -43,6 +44,7 @@ void CollisionController::beginContact(b2Contact* contact){
         Orb* o = (Orb*) bd1;
         Player* p = (Player*) bd2;
         if (!o->getCollected() && p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
+            world->addOrbSpawn(o->getPosition());
             o->setCollected(true);
             p->setOrbScore(p->getOrbScore() + 1);
             world->setOrbCount(world->getCurrOrbCount() - 1);
@@ -69,11 +71,12 @@ void CollisionController::beginContact(b2Contact* contact){
     else if (bd1->getName() == "egg" && bd2->getName() == "player") {
         Egg* e = (Egg*) bd1;
         Player* p = (Player*) bd2;
-        if (e->getCollected() == false && p->getIsIntangible() == false) {
+        if (e->getCollected() == false && p->getIsIntangible() == false && !p->getHoldingEgg()) {
             p->setElement(Element::None);
             e->setCollected(true);
             e->setPID(p->getID());
             p->setEggId(e->getID());
+            p->setHoldingEgg(true);
             CULog("egg collected");
             NetworkController::sendEggCollected(p->getID(), e->getID());
         }
@@ -84,6 +87,19 @@ void CollisionController::beginContact(b2Contact* contact){
         Player* p = (Player*)bd2;
         auto adjust = p->getLinearVelocity();
         p->setLinearVelocity(adjust.scale(45.0f / adjust.length()));
+    }
+
+    //projectile and player collision (basically an ability tag)
+    else if (bd1->getName() == "player" && bd2->getName() == "projectile") {
+        Player* p1 = (Player*) bd1;
+        Projectile* proj = (Projectile*) bd2;
+        auto p2 = world->getPlayer(proj->getPlayerID());
+        if (p1->getIsTagged() == false && p1->getIsIntangible() == false && p1 != p2.get()) {
+            if (proj->getPreyElement() == Element::None || proj->getPreyElement() == p1->getCurrElement() 
+                || p1->getCurrElement() == Element::None) {
+                helperTag(p1, p2.get(), world, true);
+            }
+        }
     }
         
     //player and player collision (tagging)
@@ -96,42 +112,51 @@ void CollisionController::beginContact(b2Contact* contact){
             if ((p1->getCurrElement() == p2->getPreyElement()) || (p1->getCurrElement() == Element::None 
                 && p2->getCurrElement() != Element::None ) ||
                 (p2->getCurrElement() == Element::Aether && p1->getCurrElement() != Element::Aether)) {
-                CULog("tagged");
-                p1->setIsTagged(true);
-                time_t timestamp = time(NULL);
-                p1->setTagCooldown(timestamp);
-                p2->incScore(globals::TAG_SCORE);
-                NetworkController::sendTag(p1->getID(), p2->getID(), timestamp);
-                //p1 holding egg and p2 steals it
-                if (p1->getCurrElement() == Element::None) {
-                    auto egg = world->getEgg(p1->getEggId());
-                    egg->setPID(p2->getID());
-                    p1->setElement(p1->getPrevElement());
-                    egg->incDistanceWalked(-1*egg->getDistanceWalked());
-                    p2->setElement(Element::None);
-                    p2->setEggId(egg->getID());
-                }
+                helperTag(p1, p2, world, false);
             }
             //p1 tags p2
             else if ((p2->getCurrElement() == p1->getPreyElement()) || (p2->getCurrElement() == Element::None 
                 && p1->getCurrElement() != Element::None) ||
                 (p2->getCurrElement() == Element::Aether && p1->getCurrElement() != Element::Aether)) {
-                CULog("tagged");
-                p2->setIsTagged(true);
-                time_t timestamp = time(NULL);
-                p2->setTagCooldown(timestamp);
-                p1->incScore(globals::TAG_SCORE);
-                NetworkController::sendTag(p2->getID(), p1->getID(), timestamp);
-                //p2 holding egg and p1 steals it
-                if (p2->getCurrElement() == Element::None) {
-                    auto egg = world->getEgg(p2->getEggId());
-                    egg->setPID(p1->getID());
-                    p2->setElement(p2->getPrevElement());
-                    egg->incDistanceWalked(-1*egg->getDistanceWalked());
-                    p1->setElement(Element::None);
-                    p1->setEggId(egg->getID());
-                }
+                helperTag(p2, p1, world, false);
             }
+        }
+    }
+    // This is so projectiles can't be shot through walls, but we can change it.
+    else if (bd1->getName() == "projectile" && bd2->getName().find("wall") != string::npos) {
+        Projectile* proj = (Projectile*) bd1;
+        proj->setLinearVelocity(Vec2(0, 0));
+        proj->setIsGone(true);
+        NetworkController::sendProjectileGone(proj->getPlayerID());
+    }
+}
+
+void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_ptr<World> world, 
+                                        bool dropEgg) {
+    CULog("tagged");
+    tagged->setIsTagged(true);
+    time_t timestamp = time(NULL);
+    tagged->setTagCooldown(timestamp);
+    tagger->incScore(globals::TAG_SCORE);
+    NetworkController::sendTag(tagged->getID(), tagger->getID(), timestamp, dropEgg);
+    if (tagged->getCurrElement() == Element::None) {
+        auto egg = world->getEgg(tagged->getEggId());
+        tagged->setElement(tagged->getPrevElement());
+        egg->setDistanceWalked(0);
+        if (!dropEgg) {
+            //p1 holding egg and p2 steals it
+            egg->setPID(tagger->getID());
+            tagger->setElement(Element::None);
+            tagger->setEggId(egg->getID());
+            tagged->setHoldingEgg(false);
+            tagger->setHoldingEgg(true);
+
+        }
+        else {
+            //tagged hit by projectile so drops the egg
+            egg->setCollected(false);
+            egg->setInitPos(tagged->getPosition()); //this is because player tagged remains in same location and doens't respawn
+            tagged->setJustHitByProjectile(true);
         }
     }
 }

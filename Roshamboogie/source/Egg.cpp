@@ -53,4 +53,10 @@ void Egg::update(float delta) {
     if (_sceneNode != nullptr) {
         _sceneNode->setPosition(getPosition()*_drawscale);
     }
+    if (_collected) {
+        _sceneNode->setVisible(false);
+    }
+    else {
+        _sceneNode->setVisible(true);
+    }
 }

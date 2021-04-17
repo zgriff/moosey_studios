@@ -191,17 +191,6 @@ void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     
 }
 
-void Player::allocProjectile(std::shared_ptr<cugl::Texture> projectileTexture, float scale, 
-                            std::shared_ptr<cugl::physics2::ObstacleWorld> physicsWorld) {
-    Size projSize(projectileTexture->getSize() / scale);
-    _projectile = Projectile::alloc(Vec2(0, 0), projSize, _id);
-    physicsWorld->addObstacle(_projectile);
-    _projectile->setTextures(projectileTexture);
-    _projectile->setTextures(projectileTexture);
-    _projectile->setDrawScale(scale);
-    _projectile->setActive(false);
-}
-
 /**
  * Disposes the player, releasing all resources.
  */
@@ -250,6 +239,7 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         _isTagged = false;
         _didTag = false;
         _positionError = Vec2::ZERO;
+        _holdingEgg = false;
         return true;
     }
     return false;

@@ -55,6 +55,12 @@ void Orb::update(float delta) {
         _sceneNode->setPosition(getPosition()*_drawscale);
         _sceneNode->setAngle(getAngle());
     }
+    if (_collected){
+        _sceneNode->setVisible(false);
+    }
+    else {
+        _sceneNode->setVisible(true);
+    }
 }
 
 //TODO: delete since spawning of orbs is handled by spawncontroller now

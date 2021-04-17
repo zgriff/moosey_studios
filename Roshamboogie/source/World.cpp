@@ -68,6 +68,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     auto swapStTexture = _assets->get<Texture>("swapstation");
     auto eggTexture = _assets->get<Texture>("egg");
     auto boosterTexture = _assets->get<Texture>("booster");
+    auto projectileTexture = _assets->get<Texture>("projectile");
 //
     //Currently adding elements in back to front order
     //TODO create ordered nodes so if we need to change the order of layering
@@ -87,6 +88,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         wall->setName("wall");
     }
     
+    _currEggCount = 0;
     for(auto it = _eggs.begin(); it != _eggs.end(); ++it) {
         std::shared_ptr<Egg> egg = *it;
         _physicsWorld->addObstacle(egg);
@@ -95,7 +97,8 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         egg->setActive(true);
         egg->setDebugColor(Color4::YELLOW);
         egg->setDebugScene(_debugNode);
-        egg->setID(0);
+        egg->setID(_currEggCount);
+        _currEggCount = _currEggCount + 1;
         _worldNode->addChild(egg->getSceneNode(),1);
     }
     
@@ -139,6 +142,22 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         _worldNode->addChild(booster->getSceneNode(), 1);
     }
     
+
+    //this is for if we want to move projectile to world, but theres bug with this, with this being null for some reason
+    for (int i = 0; i < _numPlayers; ++i) {
+        Size projSize(projectileTexture->getSize() / _scale);
+        std::shared_ptr<Projectile> projectile = Projectile::alloc(Vec2(0, 0), projSize, i);
+        _physicsWorld->addObstacle(projectile);
+        projectile->setTextures(projectileTexture);
+        projectile->setDrawScale(_scale);
+        projectile->setActive(false);
+        projectile->getSceneNode()->setVisible(false);
+        projectile->setDebugColor(Color4::YELLOW);
+        projectile->setDebugScene(_debugNode);
+        _worldNode->addChild(projectile->getSceneNode());
+        _projectiles.push_back(projectile);
+    }
+    
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size playerSize(1, 2);
     for(int i = 0; i < _numPlayers; ++i){
@@ -162,7 +181,8 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->setDebugScene(_debugNode);
         player->setID(i);
         player->setDebugColor(Color4::YELLOW);
-        player->allocProjectile(_assets->get<Texture>("projectile"), _scale, _physicsWorld);
+        //player id is set to i right now, if that is changed, projectile's associated userid needs to change too
+        player->setProjectile(_projectiles[i]);
         player->allocUsernameNode(_assets->get<Font>("username"));
         _worldNode->addChild(player->getSceneNode(),1);
         _players.push_back(player);
@@ -539,7 +559,6 @@ bool World::loadGameObject(const std::shared_ptr<JsonValue>& json) {
             return false;
             break;
     }
-    
     return success;
 }
 
