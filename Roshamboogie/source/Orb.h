@@ -17,6 +17,7 @@ class Orb : public cugl::physics2::WheelObstacle{
 private:
     float _drawscale;
     std::shared_ptr<cugl::scene2::SceneNode> _sceneNode;
+    std::shared_ptr<cugl::scene2::AnimationNode> _animationNode;
     std::shared_ptr<cugl::Texture> _texture;
     bool _collected;
     int _id;

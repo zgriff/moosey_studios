@@ -11,13 +11,24 @@
 #include <random>
 
 #define ORB_RADIUS 0.6
+/** Number of rows in the image filmstrip */
+#define ORB_ROWS       3
+/** Number of columns in this image filmstrip */
+#define ORB_COLS       7
+/** Number of elements in this image filmstrip */
+#define ORB_FRAMES     20
 
 using namespace cugl;
 
 void Orb::setTextures(const std::shared_ptr<Texture>& orb) {
 
-    _sceneNode = scene2::PolygonNode::allocWithTexture(orb);
-    _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
+    _sceneNode = scene2::PolygonNode::alloc();
+    _animationNode = scene2::AnimationNode::alloc(orb, ORB_ROWS, ORB_COLS, ORB_FRAMES);
+    _animationNode->setAnchor(Vec2::ANCHOR_CENTER);
+//        _animationNode->setFrame(0);
+    _animationNode->setPosition(0,0);
+    _sceneNode->addChild(_animationNode);
+//    _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
     _texture = orb;
     _body->SetUserData(this);
 }
@@ -60,6 +71,11 @@ void Orb::update(float delta) {
     }
     else {
         _sceneNode->setVisible(true);
+    }
+
+    //TODO: fix orb animation
+    for (int i = 0; i < ORB_FRAMES; i++) {
+        _animationNode->setFrame(i);
     }
 }
 
