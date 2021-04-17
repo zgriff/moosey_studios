@@ -43,8 +43,8 @@ protected:
     };
     
     
-    clock_t gameTimer = 1000 * CLOCKS_PER_SEC;
-    clock_t startTimer;
+    time_t gameTimer = 180;
+    time_t startTimer;
     
     SceneSelect _currentScene;
     

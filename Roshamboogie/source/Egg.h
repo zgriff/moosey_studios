@@ -73,7 +73,7 @@ public:
     
     float getDistanceWalked() { return _distanceWalked; }
     
-    void incDistanceWalked(float dist) { _distanceWalked += dist; }
+    void setDistanceWalked(float dist) { _distanceWalked = dist; }
     
     void update(float delta) override;
     

@@ -24,6 +24,7 @@ constexpr uint8_t MAX_ORBS = 20;
 constexpr uint8_t MAX_SWAP_STATIONS = 5;
 
 constexpr int TAG_SCORE = 15;
+constexpr int HATCH_SCORE = 10;
 
 /**convert Tiled coords to box2d w/ scalar*/
 constexpr float  TILE_TO_BOX2D = 50.0f/40.0f;

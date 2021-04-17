@@ -155,6 +155,7 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         _didTag = false;
         _sceneNode = nullptr;
         _positionError = Vec2::ZERO;
+        _holdingEgg = false;
         return true;
     }
     return false;

@@ -132,9 +132,11 @@ namespace NetworkController {
                         auto egg = world->getEgg(tagged->getEggId());
                         egg->setPID(tagger->getID());
                         tagged->setElement(tagged->getPrevElement());
-                        egg->incDistanceWalked(-1*egg->getDistanceWalked());
+                        tagged->setHoldingEgg(false);
+                        egg->setDistanceWalked(0);
                         tagger->setElement(Element::None);
                         tagger->setEggId(egg->getID());
+                        tagger->setHoldingEgg(true);
                     }
                 }
                     break;
@@ -160,10 +162,25 @@ namespace NetworkController {
                     world->getSwapStation(nd.swapData.swapId)->setActive(false);
                     break;
                 case ND::NetworkData::EGG_CAPTURED:
-                    world->getPlayer(nd.eggCapData.playerId)->setElement(Element::None);
-                    world->getPlayer(nd.eggCapData.playerId)->setEggId(nd.eggCapData.eggId);
+                {
+                    auto p = world->getPlayer(nd.eggCapData.playerId);
+                    p->setElement(Element::None);
+                    p->setEggId(nd.eggCapData.eggId);
+                    p->setHoldingEgg(true);
                     world->getEgg(nd.eggCapData.eggId)->setCollected(true);
                     world->getEgg(nd.eggCapData.eggId)->setPID(nd.eggCapData.playerId);
+                    
+                }
+                    break;
+                case ND::NetworkData::EGG_HATCHED:
+                {
+                    auto p = world->getPlayer(nd.eggHatchData.playerId);
+                    p->setElement(p->getPrevElement());
+                    p->setHoldingEgg(false);
+                    world->getEgg(nd.eggCapData.eggId)->setHatched(true);
+                    world->setCurrEggCount(world->getCurrEggCount() - 1);
+                    
+                }
                     break;
                 case ND::NetworkData::ORB_RESPAWN:
                 {
@@ -195,7 +212,17 @@ namespace NetworkController {
                     projectile->setActive(false);
                     projectile->getSceneNode()->setVisible(false);
                     projectile->setLinearVelocity(Vec2(0, 0));
-                    projectile->setPosition(Vec2(0, 0)); 
+                    projectile->setPosition(Vec2(0, 0));
+                }
+                    break;
+                case ND::NetworkData::EGG_RESPAWN:
+                {
+                    auto egg = world->getEgg(nd.eggRespawnData.eggId);
+                    egg->setPosition(nd.eggRespawnData.position);
+                    egg->setCollected(false);
+                    egg->setHatched(false);
+                    egg->setDistanceWalked(0);
+                    egg->setInitPos(Vec2(10,10));
                 }
                     break;
             }
@@ -269,6 +296,16 @@ namespace NetworkController {
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
         network->send(bytes);
+}
+
+    void sendEggRespawn(int eggId, Vec2 eggPosition){
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::EGG_RESPAWN;
+        nd.eggRespawnData.eggId = eggId;
+        nd.eggRespawnData.position = eggPosition;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
     }
 
     void sendProjectileFired(int projectileId, Vec2 projectilePos, float projectileAngle, Element preyElement) {
@@ -278,6 +315,16 @@ namespace NetworkController {
         nd.projectileFiredData.projectilePos = projectilePos;
         nd.projectileFiredData.projectileAngle = projectileAngle;
         nd.projectileFiredData.preyElement = preyElement;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void sendEggHatched(int playerId, int eggId) {
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::EGG_HATCHED;
+        nd.eggHatchData.eggId = eggId;
+        nd.eggHatchData.playerId = playerId;
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
         network->send(bytes);

@@ -44,6 +44,7 @@ void CollisionController::beginContact(b2Contact* contact){
         Orb* o = (Orb*) bd1;
         Player* p = (Player*) bd2;
         if (!o->getCollected() && p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
+            world->addOrbSpawn(o->getPosition());
             o->setCollected(true);
             p->setOrbScore(p->getOrbScore() + 1);
             world->setOrbCount(world->getCurrOrbCount() - 1);
@@ -70,11 +71,12 @@ void CollisionController::beginContact(b2Contact* contact){
     else if (bd1->getName() == "egg" && bd2->getName() == "player") {
         Egg* e = (Egg*) bd1;
         Player* p = (Player*) bd2;
-        if (e->getCollected() == false && p->getIsIntangible() == false) {
+        if (e->getCollected() == false && p->getIsIntangible() == false && !p->getHoldingEgg()) {
             p->setElement(Element::None);
             e->setCollected(true);
             e->setPID(p->getID());
             p->setEggId(e->getID());
+            p->setHoldingEgg(true);
             CULog("egg collected");
             NetworkController::sendEggCollected(p->getID(), e->getID());
         }
@@ -143,14 +145,17 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
             //p1 holding egg and p2 steals it
             egg->setPID(tagger->getID());
             tagged->setElement(tagged->getPrevElement());
-            egg->incDistanceWalked(-1 * egg->getDistanceWalked());
+            egg->setDistanceWalked(0);
             tagger->setElement(Element::None);
             tagger->setEggId(egg->getID());
+            tagged->setHoldingEgg(false);
+            tagger->setHoldingEgg(true);
+
         }
         else {
             //tagged hit by projectile so drops the egg
             tagged->setElement(tagged->getPrevElement());
-            egg->incDistanceWalked(-1 * egg->getDistanceWalked());
+            egg->setDistanceWalked(0);
             egg->setCollected(false);
         }
     }

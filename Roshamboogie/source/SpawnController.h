@@ -24,8 +24,7 @@ void setWorld(std::shared_ptr<World> w);
 
 void spawnOrbs();
 
-void initSpawn();
-
+void spawnEggs();
 }
 
 #endif /* SpawnController_h */

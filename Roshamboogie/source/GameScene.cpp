@@ -128,6 +128,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _UInode->doLayout(); // Repositions the HUD;
 
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
+    _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
     
     _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
 //    CULog("Hatchbar: %s", _hatchbar->get);
@@ -135,6 +136,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _hatchnode = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_hatched"));
     _hatchnode->setVisible(false);
+    _startTime = time(NULL);
 
     _abilityname = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_abilityBar_abilityName"));
     _abilityname->setVisible(false);
@@ -373,61 +375,53 @@ void GameScene::update(float timestep) {
 
     
     if(NetworkController::isHost()){
-
-//        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
-//            auto orb = world->getOrb(i);
-//            if(orb->getCollected()) {
-//                orb->respawn();
-//                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
-//            }
-//            orb->setCollected(false);
-//
-//        }
         std::random_device r;
         std::default_random_engine e1(r());
         std::uniform_int_distribution<int> prob(0,100);
 //        CULog("prob %d", prob(e1));
+        // orb spawning
         if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
-            if (_world->getCurrOrbCount() < _world->getNumOrbs()) {
+            if (_world->getOrbSpawns().size() > 5) {
                 SpawnController::spawnOrbs();
             }
         }
-    
+        
+        //egg spawning
+        if (_world->getCurrEggCount() < 1) {
+            CULog("egg respawn");
+            SpawnController::spawnEggs();
+        }
     }
     
-    
     //egg hatch logic
-
-    //TODO: change to allow multiple eggs
-    auto _egg = _world->getEgg(0);
-    if (_egg->getCollected() && _egg->getHatched() == false) {
-        std::shared_ptr<Player> _eggCollector = _world->getPlayer(_egg->getPID());
-        _egg->setPosition(_eggCollector->getPosition());
-        if (_egg->getPID() == _player->getID()) {
+    if (_player->getHoldingEgg()) {
+        auto _egg = _world->getEgg(_player->getEggId());
+        if (_egg->getHatched() == false) {
+            _egg->setPosition(_player->getPosition());
             _hatchbar->setVisible(true);
-        }
-        else {
-            _hatchbar->setVisible(false);
-        }
-        _hatchbar->setProgress(_egg->getDistanceWalked()/80);
-        Vec2 diff = _eggCollector->getPosition() - _egg->getInitPos();
-        float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
-        _egg->incDistanceWalked(dist);
-        _egg->setInitPos(_eggCollector->getPosition());
-        if (_egg->getDistanceWalked() >= 80) {
-            _hatchbar->dispose();
-            _hatchedTime = time(NULL);
-            _egg->setHatched(true);
-//            _egg->setCollected(false);
-            _eggCollector->setElement(_eggCollector->getPrevElement());
-            if (_egg->getPID() == _player->getID()) {
-                _hatchnode->setVisible(true);
-                _player->incScore(10);
+//            CULog("egg distance %f", _egg->getDistanceWalked());
+            _hatchbar->setProgress(_egg->getDistanceWalked()/80);
+            Vec2 diff = _player->getPosition() - _egg->getInitPos();
+            float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
+            _egg->setDistanceWalked(_egg->getDistanceWalked() + dist);
+            _egg->setInitPos(_player->getPosition());
+            if (_egg->getDistanceWalked() >= 80) {
+                _player->setHoldingEgg(false);
+                _hatchbar->setVisible(false);
+                _hatchbar->setProgress(0.0);
+                _hatchedTime = time(NULL);
+                _egg->setHatched(true);
+                _egg->setDistanceWalked(0);
+                _world->setCurrEggCount(_world->getCurrEggCount() - 1);
+//                _egg->dispose();
+                _player->setElement(_player->getPrevElement());
+                _player->incScore(globals::HATCH_SCORE);
+                NetworkController::sendEggHatched(_player->getID(), _egg->getID());
             }
-            _egg->dispose();
-
         }
-        
+    }
+    else if (_hatchbar->isVisible()){
+        _hatchbar->setVisible(false);
     }
     
     if (time(NULL) - _hatchedTime >= _hatchTextTimer) {
@@ -459,6 +453,7 @@ void GameScene::update(float timestep) {
   
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
+    _timerHUD->setText(updateTimerText(time(NULL)-_startTime));
     
     //send new position
     //TODO: only every few frames
@@ -554,5 +549,11 @@ Size GameScene::computeActiveSize(float w, float h) const {
 std::string GameScene::updateScoreText(const int score) {
     stringstream ss;
     ss << "Score: " << score;
+    return ss.str();
+}
+
+std::string GameScene::updateTimerText(const time_t time) {
+    stringstream ss;
+    ss << "Timer: " << (time / 60) << ":" << (time % 60);
     return ss.str();
 }

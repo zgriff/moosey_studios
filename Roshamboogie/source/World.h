@@ -72,6 +72,7 @@ protected:
     float _scale;
     uint8_t _numPlayers;
     uint8_t _currOrbCount;
+    uint8_t _currEggCount;
 
     
 #pragma mark Internal Helpers
@@ -240,12 +241,32 @@ public:
         return _orbs;
     }
     
+    std::vector<Vec2> getOrbSpawns() {
+        return _orbSpawns;
+    }
+    
+    void addOrbSpawn(Vec2 orbSpawnPos) {
+        _orbSpawns.push_back(orbSpawnPos);
+    }
+    
+    void removeOrbSpawn(int pos) {
+        _orbSpawns.erase(_orbSpawns.begin() + pos);
+    }
+
     uint8_t getCurrOrbCount() {
         return _currOrbCount;
     }
     
     void setOrbCount(int c) {
         _currOrbCount = c;
+    }
+    
+    uint8_t getCurrEggCount() {
+        return _currEggCount;
+    }
+    
+    void setCurrEggCount(int c) {
+        _currEggCount = c;
     }
     
     void addOrb(Vec2 pos);
@@ -255,6 +276,10 @@ public:
     
     std::shared_ptr<Egg> getEgg(int id){
         return _eggs[id];
+    }
+    
+    std::vector<std::shared_ptr<Egg>> getEggs(){
+        return _eggs;
     }
     
     std::shared_ptr<SwapStation> getSwapStation(int id){

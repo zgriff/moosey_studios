@@ -88,6 +88,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         wall->setName("wall");
     }
     
+    _currEggCount = 0;
     for(auto it = _eggs.begin(); it != _eggs.end(); ++it) {
         std::shared_ptr<Egg> egg = *it;
         _physicsWorld->addObstacle(egg);
@@ -96,7 +97,8 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         egg->setActive(true);
         egg->setDebugColor(Color4::YELLOW);
         egg->setDebugScene(_debugNode);
-        egg->setID(0);
+        egg->setID(_currEggCount);
+        _currEggCount = _currEggCount + 1;
         _worldNode->addChild(egg->getSceneNode(),1);
     }
     
@@ -550,7 +552,6 @@ bool World::loadGameObject(const std::shared_ptr<JsonValue>& json) {
             return false;
             break;
     }
-    
     return success;
 }
 
