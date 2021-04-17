@@ -140,7 +140,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _abilityname->setVisible(false);
 
     _abilitybar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_abilityBar"));
-//    _abilitybar->setForegroundColor(Color4(255, 255, 0));
+    _abilitybar->setForegroundColor(Color4(255, 255, 255, 100));
 //    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
     
     auto world = _world->getPhysicsWorld();
