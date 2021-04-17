@@ -387,10 +387,10 @@ void GameScene::update(float timestep) {
         }
         
         //egg spawning
-        if (_world->getCurrEggCount() < 1) {
-            CULog("egg respawn");
-            SpawnController::spawnEggs();
-        }
+//        if (_world->getCurrEggCount() < 1) {
+//            CULog("egg respawn");
+//            SpawnController::spawnEggs();
+//        }
     }
     
     //egg hatch logic
