@@ -394,6 +394,11 @@ void GameScene::update(float timestep) {
     }
     
     //egg hatch logic
+    if (_player->getJustHitByProjectile()) {
+        _player->setJustHitByProjectile(false);
+        auto _egg = _world->getEgg(_player->getEggId());
+        _egg->setPosition(_egg->getInitPos());
+    }
     if (_player->getHoldingEgg()) {
         auto _egg = _world->getEgg(_player->getEggId());
         if (_egg->getHatched() == false) {

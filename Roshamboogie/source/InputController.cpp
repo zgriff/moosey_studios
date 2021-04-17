@@ -108,8 +108,8 @@ void InputController::readInput() {
             else {
                 mov.x = 0;
                 if (touch->touchCount() > 1) {
-                    cugl::Timestamp curr = new Timestamp();
-                    if (_abilityQueued && _abilityTimestamp.ellapsedMillis(curr) > 250) {
+                    cugl::Timestamp curr = Timestamp();
+                    if (_abilityQueued && curr.ellapsedMillis(_abilityTimestamp) > 100) {
                         _abilityPressed = true;
                         _abilityQueued = false;
                     } else if (!_abilityQueued) {

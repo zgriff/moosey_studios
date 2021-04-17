@@ -156,7 +156,7 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
             //tagged hit by projectile so drops the egg
             egg->setCollected(false);
             egg->setInitPos(tagged->getPosition()); //this is because player tagged remains in same location and doens't respawn
-            egg->setPosition(tagged->getPosition()); // if player location is changed we need to be careful this is the tag location
+            tagged->setJustHitByProjectile(true);
             NetworkController::sendEggRespawn(egg->getID(), tagged->getPosition());
         }
     }
