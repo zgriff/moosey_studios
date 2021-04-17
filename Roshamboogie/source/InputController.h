@@ -16,6 +16,8 @@ class InputController {
 private:
     cugl::Vec2 moveVec;
     cugl::Timestamp _timestamp;
+    cugl::Timestamp _abilityTimestamp;
+    bool _abilityQueued = false;
     bool processed;
 
     bool _abilityPressed = false;

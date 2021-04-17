@@ -18,7 +18,7 @@ namespace ND{
 struct NetworkData {
     enum PacketType {
         TAG_PACKET, ORB_RESPAWN, ORB_CAPTURED, EGG_CAPTURED, SWAP_PACKET, POSITION_PACKET, ELEMENT_CHANGE, 
-        PROJECTILE_FIRED,
+        PROJECTILE_FIRED, PROJECTILE_GONE,
         CLIENT_READY, CLIENT_UNREADY, HOST_STARTGAME
     };
     uint8_t packetType;
@@ -30,6 +30,7 @@ struct NetworkData {
             uint8_t taggedId;
             uint8_t taggerId;
             time_t timestamp;
+            bool dropEgg;
         } tagData;
         struct {
             uint8_t orbId;
@@ -63,6 +64,9 @@ struct NetworkData {
             float projectileAngle;
             Element preyElement;
         } projectileFiredData;
+        struct {
+            uint8_t projectileId;
+        } projectileGoneData;
     };
     
 };

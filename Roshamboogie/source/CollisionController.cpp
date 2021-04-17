@@ -120,6 +120,13 @@ void CollisionController::beginContact(b2Contact* contact){
             }
         }
     }
+    // This is so projectiles can't be shot through walls, but we can change it.
+    else if (bd1->getName() == "projectile" && bd2->getName().find("wall") != string::npos) {
+        Projectile* proj = (Projectile*) bd1;
+        proj->setLinearVelocity(Vec2(0, 0));
+        proj->setIsGone(true);
+        NetworkController::sendProjectileGone(proj->getPlayerID());
+    }
 }
 
 void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_ptr<World> world, 
@@ -129,20 +136,22 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
     time_t timestamp = time(NULL);
     tagged->setTagCooldown(timestamp);
     tagger->incScore(globals::TAG_SCORE);
-    NetworkController::sendTag(tagged->getID(), tagger->getID(), timestamp);
-    if (!dropEgg) {
-        //p1 holding egg and p2 steals it
-        if (tagged->getCurrElement() == Element::None) {
-            auto egg = world->getEgg(tagged->getEggId());
+    NetworkController::sendTag(tagged->getID(), tagger->getID(), timestamp, dropEgg);
+    //p1 holding egg and p2 steals it
+    if (tagged->getCurrElement() == Element::None) {
+        auto egg = world->getEgg(tagged->getEggId());
+        if (!dropEgg) {
             egg->setPID(tagger->getID());
             tagged->setElement(tagged->getPrevElement());
             egg->incDistanceWalked(-1 * egg->getDistanceWalked());
             tagger->setElement(Element::None);
             tagger->setEggId(egg->getID());
         }
-    }
-    else {
-        //this is when projectile hits the egg player, and the egg should drop on the ground
+        else {
+            tagged->setElement(tagged->getPrevElement());
+            egg->incDistanceWalked(-1 * egg->getDistanceWalked());
+            egg->setCollected(false);
+        }
     }
 }
 

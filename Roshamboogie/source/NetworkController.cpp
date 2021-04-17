@@ -128,7 +128,7 @@ namespace NetworkController {
                     tagged->setIsTagged(true);
                     tagged->setTagCooldown(nd.tagData.timestamp);
                     tagger->incScore(globals::TAG_SCORE);
-                    if (tagged->getCurrElement() == Element::None) {
+                    if (tagged->getCurrElement() == Element::None && !nd.tagData.dropEgg) {
                         auto egg = world->getEgg(tagged->getEggId());
                         egg->setPID(tagger->getID());
                         tagged->setElement(tagged->getPrevElement());
@@ -187,6 +187,15 @@ namespace NetworkController {
                     projectile->setLinearVelocity(Vec2::forAngle(angle + M_PI / 2) * 25);
                     projectile->setAngle(angle);
                     projectile->getSceneNode()->setAngle(angle + M_PI);
+                }
+                    break;
+                case ND::NetworkData::PROJECTILE_GONE:
+                {
+                    auto projectile = world->getProjectile(nd.projectileGoneData.projectileId);
+                    projectile->setActive(false);
+                    projectile->getSceneNode()->setVisible(false);
+                    projectile->setLinearVelocity(Vec2(0, 0));
+                    projectile->setPosition(Vec2(0, 0)); 
                 }
                     break;
             }
@@ -274,12 +283,22 @@ namespace NetworkController {
         network->send(bytes);
     }
 
-    void sendTag(int taggedId, int taggerId, time_t timestamp){
+    void sendProjectileGone(int projectileId) {
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::PROJECTILE_GONE;
+        nd.projectileGoneData.projectileId = projectileId;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void sendTag(int taggedId, int taggerId, time_t timestamp, bool dropEgg){
         ND::NetworkData nd{};
         nd.packetType = ND::NetworkData::PacketType::TAG_PACKET;
         nd.tagData.taggedId = taggedId;
         nd.tagData.taggerId = taggerId;
         nd.tagData.timestamp = timestamp;
+        nd.tagData.dropEgg = dropEgg;
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
         network->send(bytes);

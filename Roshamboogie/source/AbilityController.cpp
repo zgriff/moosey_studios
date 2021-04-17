@@ -61,6 +61,7 @@ void AbilityController::activateAbility(std::shared_ptr<Player> player) {
 				projectile->setLinearVelocity(Vec2::forAngle(player->getAngle() + M_PI/2) * 25);
 				projectile->setAngle(player->getAngle());
 				projectile->getSceneNode()->setAngle(player->getAngle() + M_PI);
+				projectile->setIsGone(false);
 				NetworkController::sendProjectileFired(projectile->getPlayerID(), player->getPosition(), player->getAngle(), Element::None);
 
 
@@ -104,12 +105,13 @@ void AbilityController::deactivateAbility(std::shared_ptr<Player> player, std::s
 				}
 				break;
 			case Ability::Projectile:
-				if (timePassed.count() >= 1) {
+				if (timePassed.count() >= 1 || player->getProjectile()->getIsGone()) {
 					auto projectile = player->getProjectile();
 					projectile->setActive(false);
 					projectile->getSceneNode()->setVisible(false);
 					projectile->setLinearVelocity(Vec2(0, 0));
 					projectile->setPosition(Vec2(0, 0));
+					NetworkController::sendProjectileGone(projectile->getPlayerID());
 					_activeAbility = Ability::NoAbility;
 					abilityname->setVisible(false);
 				}

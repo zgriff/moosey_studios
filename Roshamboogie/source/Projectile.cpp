@@ -13,7 +13,7 @@ void Projectile::setTextures(const std::shared_ptr<Texture>& projectileTexture) 
 }
 
 bool Projectile::init(const cugl::Vec2 pos, const cugl::Size size, int playerId) {
-    if (physics2::BoxObstacle::init(pos, size)) {
+    if (physics2::CapsuleObstacle::init(pos, size)) {
         setSensor(true);
         setName("projectile");
         _playerID = playerId;

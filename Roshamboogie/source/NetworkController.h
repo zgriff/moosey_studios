@@ -37,7 +37,8 @@ namespace NetworkController {
     void sendOrbRespawn(int orbId, Vec2 orbPosition);
     void sendElementChange(int playerId, Element newElement);
     void sendProjectileFired(int projectileId, Vec2 projectilePos, float projectileAngle, Element preyElement);
-    void sendTag(int taggedId, int taggerId, time_t timestamp);
+    void sendProjectileGone(int projectileId);
+    void sendTag(int taggedId, int taggerId, time_t timestamp, bool dropEgg);
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);
 
