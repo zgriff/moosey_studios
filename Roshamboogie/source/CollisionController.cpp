@@ -137,10 +137,10 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
     tagged->setTagCooldown(timestamp);
     tagger->incScore(globals::TAG_SCORE);
     NetworkController::sendTag(tagged->getID(), tagger->getID(), timestamp, dropEgg);
-    //p1 holding egg and p2 steals it
     if (tagged->getCurrElement() == Element::None) {
         auto egg = world->getEgg(tagged->getEggId());
         if (!dropEgg) {
+            //p1 holding egg and p2 steals it
             egg->setPID(tagger->getID());
             tagged->setElement(tagged->getPrevElement());
             egg->incDistanceWalked(-1 * egg->getDistanceWalked());
@@ -148,6 +148,7 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
             tagger->setEggId(egg->getID());
         }
         else {
+            //tagged hit by projectile so drops the egg
             tagged->setElement(tagged->getPrevElement());
             egg->incDistanceWalked(-1 * egg->getDistanceWalked());
             egg->setCollected(false);
