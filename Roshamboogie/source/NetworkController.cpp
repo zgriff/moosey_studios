@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Orb.h"
 #include "Egg.h"
+#include "Globals.h"
 #include <cugl/cugl.h>
 
 
@@ -21,6 +22,7 @@ namespace NetworkController {
     }
 
     /** IP of the NAT punchthrough server */
+//    constexpr auto SERVER_ADDRESS = "35.208.113.51"; //ours;
     constexpr auto SERVER_ADDRESS = "34.74.68.73";
     /** Port of the NAT punchthrough server */
     constexpr uint16_t SERVER_PORT = 61111;
@@ -28,13 +30,12 @@ namespace NetworkController {
     void createGame() {
         network =
             std::make_shared<cugl::CUNetworkConnection>(
-                cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, 6, 0));
-        CULog("REACHED CREATE");
+                cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, globals::MAX_PLAYERS, 0));
     }
 
     void joinGame(std::string roomId) {
         network =
-            std::make_shared<cugl::CUNetworkConnection>(cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, 6, 0), roomId);
+            std::make_shared<cugl::CUNetworkConnection>(cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, globals::MAX_PLAYERS, 0), roomId);
         NetworkController::roomId = roomId;
         CULog("REACHED JOIN");
         CULog("%s", roomId.c_str());
@@ -100,11 +101,18 @@ namespace NetworkController {
     void step() {
         if(network == nullptr) return;
         network->receive([&](const std::vector<uint8_t> msg) {
-            CULog("Received message of length %lu", msg.size());
-            for (const auto& d : msg) {
-                CULog("%d", d);
+            ND::NetworkData nd{};
+            ND::fromBytes(nd, msg);
+            switch(nd.packetType){
+                case ND::NetworkData::HOST_STARTGAME:
+                    startCallback();
+                    break;
             }
-            });
+//            CULog("Received message of length %lu", msg.size());
+//            for (const auto& d : msg) {
+//                CULog("%d", d);
+//            }
+        });
     }
 
     void update(float timestep){
