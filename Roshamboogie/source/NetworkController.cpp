@@ -22,7 +22,7 @@ namespace NetworkController {
     }
 
     /** IP of the NAT punchthrough server */
-//    constexpr auto SERVER_ADDRESS = "35.208.113.51"; //34.74.68.73";
+//    constexpr auto SERVER_ADDRESS = "35.208.113.51"; //ours;
     constexpr auto SERVER_ADDRESS = "34.74.68.73";
     /** Port of the NAT punchthrough server */
     constexpr uint16_t SERVER_PORT = 61111;
