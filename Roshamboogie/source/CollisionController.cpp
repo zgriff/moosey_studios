@@ -141,11 +141,11 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
     NetworkController::sendTag(tagged->getID(), tagger->getID(), timestamp, dropEgg);
     if (tagged->getCurrElement() == Element::None) {
         auto egg = world->getEgg(tagged->getEggId());
+        tagged->setElement(tagged->getPrevElement());
+        egg->setDistanceWalked(0);
         if (!dropEgg) {
             //p1 holding egg and p2 steals it
             egg->setPID(tagger->getID());
-            tagged->setElement(tagged->getPrevElement());
-            egg->setDistanceWalked(0);
             tagger->setElement(Element::None);
             tagger->setEggId(egg->getID());
             tagged->setHoldingEgg(false);
@@ -154,9 +154,10 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
         }
         else {
             //tagged hit by projectile so drops the egg
-            tagged->setElement(tagged->getPrevElement());
-            egg->setDistanceWalked(0);
             egg->setCollected(false);
+            egg->setInitPos(tagged->getPosition()); //this is because player tagged remains in same location and doens't respawn
+            egg->setPosition(tagged->getPosition()); // if player location is changed we need to be careful this is the tag location
+            NetworkController::sendEggRespawn(egg->getID(), tagged->getPosition());
         }
     }
 }
