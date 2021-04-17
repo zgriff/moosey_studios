@@ -19,11 +19,11 @@ AbilityController::AbilityController() {
 void AbilityController::updateAbility(std::shared_ptr<cugl::scene2::Label> abilityname) {
 	srand(time(NULL));
 	int abilityChance = rand() % 100;
-	if (abilityChance < 1) {
+	if (abilityChance < 50) {
 		_queuedAbility = Ability::AetherAbility;
 		abilityname->setText("Aether");
 	}
-	else if (abilityChance < 2) {
+	else if (abilityChance < 100) {
 		_queuedAbility = Ability::SpeedBoost;
 		abilityname->setText("Boost");
 	}

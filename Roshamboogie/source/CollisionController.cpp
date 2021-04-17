@@ -157,7 +157,6 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
             egg->setCollected(false);
             egg->setInitPos(tagged->getPosition()); //this is because player tagged remains in same location and doens't respawn
             tagged->setJustHitByProjectile(true);
-            NetworkController::sendEggRespawn(egg->getID(), tagged->getPosition());
         }
     }
 }
