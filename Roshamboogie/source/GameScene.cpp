@@ -458,7 +458,7 @@ void GameScene::update(float timestep) {
   
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
-    _timerHUD->setText(updateTimerText(time(NULL)-_startTime));
+    _timerHUD->setText(updateTimerText(_startTime + 180 - time(NULL)));
     
     _player->animateMovement();
     //send new position
@@ -525,6 +525,12 @@ std::string GameScene::updateScoreText(const int score) {
 
 std::string GameScene::updateTimerText(const time_t time) {
     stringstream ss;
-    ss << "Timer: " << (time / 60) << ":" << (time % 60);
+    time_t sec = time % 60;
+    if (sec < 10) {
+        ss << "Timer: " << (time / 60) << ":0" << sec;
+    }
+    else {
+        ss << "Timer: " << (time / 60) << ":" << sec;
+    }
     return ss.str();
 }
