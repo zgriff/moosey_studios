@@ -458,7 +458,7 @@ void GameScene::update(float timestep) {
   
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
-    _timerHUD->setText(updateTimerText(_startTime + 180 - time(NULL)));
+    _timerHUD->setText(updateTimerText(_startTime + 900 - time(NULL)));
     
     _player->animateMovement();
     //send new position

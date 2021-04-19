@@ -43,7 +43,7 @@ protected:
     };
     
     
-    time_t gameTimer = 180;
+    time_t gameTimer = 900;
     time_t startTimer;
     
     SceneSelect _currentScene;
