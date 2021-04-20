@@ -26,7 +26,7 @@ void CollisionController::setWorld(std::shared_ptr<World> w){
     world = w;
 }
 
-void CollisionController::beginContact(b2Contact* contact){
+void CollisionController::hostBeginContact(b2Contact* contact){
     b2Fixture * fixA = contact->GetFixtureA();
     b2Body * bodyA = fixA->GetBody();
     b2Fixture * fixB = contact->GetFixtureB();
@@ -128,6 +128,34 @@ void CollisionController::beginContact(b2Contact* contact){
         proj->setLinearVelocity(Vec2(0, 0));
         proj->setIsGone(true);
         NetworkController::sendProjectileGone(proj->getPlayerID());
+    }
+}
+
+void CollisionController::clientBeginContact(b2Contact* contact){
+    b2Fixture * fixA = contact->GetFixtureA();
+    b2Body * bodyA = fixA->GetBody();
+    b2Fixture * fixB = contact->GetFixtureB();
+    b2Body * bodyB = fixB->GetBody();
+    
+    cugl::physics2::Obstacle* bd1 = (cugl::physics2::Obstacle*) bodyA->GetUserData();
+    cugl::physics2::Obstacle* bd2 = (cugl::physics2::Obstacle*) bodyB->GetUserData();
+    if (bd1->getName() > bd2->getName()) {
+        std::swap(bd1, bd2);
+    }
+
+    //orb and player collision
+    if(bd1->getName() == "orb" && bd2->getName() == "player") {
+        Orb* o = (Orb*) bd1;
+        Player* p = (Player*) bd2;
+        if (p->getIsLocal() && !o->getCollected() && p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
+            o->setCollected(true);
+        }
+    }
+    //booster and player collision
+    else if (bd1->getName() == "booster" && bd2->getName() == "player") {
+        Player* p = (Player*)bd2;
+        auto adjust = p->getLinearVelocity();
+        p->setLinearVelocity(adjust.scale(45.0f / adjust.length()));
     }
 }
 
