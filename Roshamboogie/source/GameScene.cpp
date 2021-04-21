@@ -38,32 +38,6 @@ using namespace std;
 #define DEFAULT_HEIGHT  18.0f
 
 
-#define WALL_VERTS  8
-#define WALL_COUNT  4
-// Left/Right wall padding
-#define LR_PADDING  0.5f
-// Top/Bottom wall padding
-#define TB_PADDING  1.0f
-
-float WALL[WALL_COUNT][WALL_VERTS] = {
-    {0.0f, 0.0f,
-        LR_PADDING, 0.0f,
-        LR_PADDING, DEFAULT_HEIGHT,
-        0.0f,  DEFAULT_HEIGHT},
-    {LR_PADDING, 0.0f,
-        DEFAULT_WIDTH-LR_PADDING,  0.0f,
-        DEFAULT_WIDTH-LR_PADDING,  TB_PADDING,
-        LR_PADDING, TB_PADDING},
-    {DEFAULT_WIDTH-LR_PADDING, 0.0f,
-        DEFAULT_WIDTH,  0.0f,
-        DEFAULT_WIDTH,  DEFAULT_HEIGHT,
-        DEFAULT_WIDTH-LR_PADDING, DEFAULT_HEIGHT},
-    {LR_PADDING, DEFAULT_HEIGHT-TB_PADDING,
-        DEFAULT_WIDTH-LR_PADDING, DEFAULT_HEIGHT-TB_PADDING,
-        DEFAULT_WIDTH-LR_PADDING,  DEFAULT_HEIGHT,
-        LR_PADDING, DEFAULT_HEIGHT}
-};
-
 #define BASIC_DENSITY   0.0f
 /** The density for a bullet */
 #define HEAVY_DENSITY   10.0f
@@ -97,6 +71,8 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         CULog("Fail!");
         return false;
     }
+    
+    //these represent the dimensions of the game world in scene units
     float w = _world->getSceneSize().x;
     float h = _world->getSceneSize().y;
     
@@ -134,10 +110,10 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         CollisionController::beforeSolve(contact,oldManifold);
     };
     
-//    Size world_to_screen = Size(world->getBounds().getMaxX()*globals::BOX2D_TO_SCENE,world->getBounds().getMaxY()*globals::BOX2D_TO_SCENE);
+    //TODO: Change from hardcoded 8.0, figure out actual offset for phones
+    _worldOffset = Vec2((dimen.width-w)/8.0f,(dimen.height-h)/2.0f);
+    CULog("world off x: %f y: %f", _worldOffset.x, _worldOffset.y);
     
-    _worldOffset = Vec2((dimen.width-w)/2.0f,(dimen.height-h)/2.0f);
-
     _rootnode = scene2::SceneNode::alloc();
     _rootnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
     _rootnode->setPosition(_worldOffset);
@@ -146,23 +122,15 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _UInode = _assets->get<scene2::SceneNode>("ui");
     _UInode->setAnchor(Vec2::ANCHOR_CENTER);
     _UInode->setPosition(_worldOffset);
-    _UInode->setContentSize(dimen);
+    _UInode->setContentSize(Application::get()->getDisplaySize());
     _UInode->doLayout(); // Repositions the HUD;
     
-    CULog("camera pos x: %f y: %f z: %f", getCamera()->getPosition().x, getCamera()->getPosition().y, getCamera()->getPosition().z);
     
-    CULog("root pos x: %f y: %f", _rootnode->getPosition().x, _rootnode->getPosition().y);
-    
-    
-    
-    CULog("ui pos x: %f y: %f", _UInode->getPosition().x, _UInode->getPosition().y);
-
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
     
     _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
     
     _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
-//    CULog("Hatchbar: %s", _hatchbar->get);
     _hatchbar->setVisible(false);
     
     _hatchnode = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_hatched"));
@@ -227,7 +195,6 @@ void GameScene::reset() {
     _playerController.init();
     
     _world->setDebug(false);
-    CULog("camera pos x: %f y: %f z: %f", getCamera()->getPosition().x, getCamera()->getPosition().y, getCamera()->getPosition().z);
     
 
     getCamera()->update();
@@ -421,6 +388,7 @@ void GameScene::update(float timestep) {
                 _player->setHoldingEgg(false);
                 _hatchbar->setVisible(false);
                 _hatchbar->setProgress(0.0);
+                _hatchnode->setVisible(true);
                 _hatchedTime = time(NULL);
                 _egg->setHatched(true);
                 _egg->setDistanceWalked(0);
@@ -471,33 +439,6 @@ void GameScene::update(float timestep) {
     //send new position
     //TODO: only every few frames
     NetworkController::sendPosition();
-}
-
-
-
-void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj,
-                            const std::shared_ptr<cugl::scene2::SceneNode>& node,
-                            int zOrder,
-                            bool useObjPosition) {
-    _world->getPhysicsWorld()->addObstacle(obj);
-//    obj->setDebugScene(_debugnode);
-    obj->setDebugScene(_debugnode);
-
-    // Position the scene graph node (enough for static objects)
-      if (useObjPosition) {
-          node->setPosition(obj->getPosition()*_scale);
-      }
-    _world->getSceneNode()->addChild(node, zOrder);
-
-    // Dynamic objects need constant updating
-    if (obj->getBodyType() == b2_dynamicBody) {
-        scene2::SceneNode* weak = node.get(); // No need for smart pointer in callback
-        obj->setListener([=](physics2::Obstacle* obs){
-            weak->setPosition(obs->getPosition()*_scale);
-            weak->setAngle(obs->getAngle());
-        });
-    }
-
 }
 
 
