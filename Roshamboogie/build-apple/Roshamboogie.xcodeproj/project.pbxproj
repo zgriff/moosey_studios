@@ -16,9 +16,6 @@
 		288216542605A90E0073F7D4 /* NetworkData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216522605A90E0073F7D4 /* NetworkData.cpp */; };
 		288216552605A90E0073F7D4 /* NetworkData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216522605A90E0073F7D4 /* NetworkData.cpp */; };
 		288216562605A90E0073F7D4 /* NetworkData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216522605A90E0073F7D4 /* NetworkData.cpp */; };
-		28BF965D2622AE8B0050EDCD /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28BF96582622AE8B0050EDCD /* Booster.cpp */; };
-		28BF96612622AE920050EDCD /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28BF96582622AE8B0050EDCD /* Booster.cpp */; };
-		28BF96652622AE930050EDCD /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28BF96582622AE8B0050EDCD /* Booster.cpp */; };
 		28D048A725F59412005AB6CC /* (null) in Sources */ = {isa = PBXBuildFile; };
 		28D048A825F59412005AB6CC /* (null) in Sources */ = {isa = PBXBuildFile; };
 		28D048A925F59412005AB6CC /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -174,8 +171,6 @@
 		288216532605A90E0073F7D4 /* NetworkData.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = NetworkData.h; sourceTree = "<group>"; };
 		2882167626098AEE0073F7D4 /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
 		28821696260A545C0073F7D4 /* World.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
-		28BF96582622AE8B0050EDCD /* Booster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Booster.cpp; sourceTree = "<group>"; };
-		28BF965C2622AE8B0050EDCD /* Booster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Booster.h; sourceTree = "<group>"; };
 		28E6A53625F76E72004998CF /* Element.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Element.h; sourceTree = "<group>"; };
 		92165312261B6DDA00FFE01E /* LobbyScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LobbyScene.cpp; sourceTree = "<group>"; };
 		92165313261B6DDA00FFE01E /* LobbyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LobbyScene.h; sourceTree = "<group>"; };
@@ -440,8 +435,6 @@
 		EBBF18B11D749176008E2001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				28BF96582622AE8B0050EDCD /* Booster.cpp */,
-				28BF965C2622AE8B0050EDCD /* Booster.h */,
 				925FC4F525F42B2800532483 /* main.cpp */,
 				925FC50025F42B6F00532483 /* App.h */,
 				925FC4FF25F42B6F00532483 /* App.cpp */,
@@ -453,38 +446,38 @@
 				92165312261B6DDA00FFE01E /* LobbyScene.cpp */,
 				925FC51325F42D0800532483 /* GameScene.h */,
 				925FC51225F42D0800532483 /* GameScene.cpp */,
+				EC86E555261B5DF900203FCA /* EndScene.h */,
+				EC86E556261B5E0F00203FCA /* EndScene.cpp */,
 				288216482605A7910073F7D4 /* NetworkController.cpp */,
 				288216462605A7910073F7D4 /* NetworkController.h */,
+				288216522605A90E0073F7D4 /* NetworkData.cpp */,
+				288216532605A90E0073F7D4 /* NetworkData.h */,
 				925FC51B25F42D1800532483 /* InputController.h */,
 				925FC51A25F42D1800532483 /* InputController.cpp */,
-				925FC52B25F42D3700532483 /* Player.h */,
-				925FC52A25F42D3700532483 /* Player.cpp */,
+				ECFA78E82605149B009D7949 /* CollisionController.h */,
+				ECFA78EC260514B1009D7949 /* CollisionController.cpp */,
+				925FC53B25F42D5C00532483 /* SpawnController.h */,
+				925FC53A25F42D5C00532483 /* SpawnController.cpp */,
 				921654462622999000FFE01E /* AbilityController.cpp */,
 				921654452622999000FFE01E /* AbilityController.h */,
+				28821696260A545C0073F7D4 /* World.h */,
+				28297955260CEE99002EC000 /* World.cpp */,
+				925FC52B25F42D3700532483 /* Player.h */,
+				925FC52A25F42D3700532483 /* Player.cpp */,
+				28E6A53625F76E72004998CF /* Element.h */,
 				9216543E2622997100FFE01E /* Projectile.cpp */,
 				9216543A2622997100FFE01E /* Projectile.h */,
 				925FC53325F42D4D00532483 /* Orb.h */,
 				925FC53225F42D4D00532483 /* Orb.cpp */,
-				925FC53B25F42D5C00532483 /* SpawnController.h */,
-				925FC53A25F42D5C00532483 /* SpawnController.cpp */,
 				925FC54325F42D6800532483 /* SwapStation.h */,
 				925FC54225F42D6800532483 /* SwapStation.cpp */,
-				28E6A53625F76E72004998CF /* Element.h */,
-				288216522605A90E0073F7D4 /* NetworkData.cpp */,
-				288216532605A90E0073F7D4 /* NetworkData.h */,
 				2882167626098AEE0073F7D4 /* Globals.h */,
-				28821696260A545C0073F7D4 /* World.h */,
-				28297955260CEE99002EC000 /* World.cpp */,
 				ECA583EF2603006C00DF6791 /* Egg.h */,
 				ECA583F32603008700DF6791 /* Egg.cpp */,
 				92165429262282A300FFE01E /* Booster.h */,
 				92165425262282A300FFE01E /* Booster.cpp */,
-				ECFA78E82605149B009D7949 /* CollisionController.h */,
-				ECFA78EC260514B1009D7949 /* CollisionController.cpp */,
 				922094CC260D0AFB003C9263 /* MovementStyle.h */,
 				92165332261C370200FFE01E /* MapConstants.h */,
-				EC86E555261B5DF900203FCA /* EndScene.h */,
-				EC86E556261B5E0F00203FCA /* EndScene.cpp */,
 			);
 			name = Source;
 			path = ../source;
@@ -680,7 +673,6 @@
 				925FC50E25F42CFD00532483 /* LoadingScene.cpp in Sources */,
 				92165316261B6DDA00FFE01E /* LobbyScene.cpp in Sources */,
 				925FC53625F42D4D00532483 /* Orb.cpp in Sources */,
-				28BF96652622AE930050EDCD /* Booster.cpp in Sources */,
 				ECA583F62603008700DF6791 /* Egg.cpp in Sources */,
 				921654492622999000FFE01E /* AbilityController.cpp in Sources */,
 				28297958260CEE99002EC000 /* World.cpp in Sources */,
@@ -709,7 +701,6 @@
 				925FC50D25F42CFD00532483 /* LoadingScene.cpp in Sources */,
 				92165315261B6DDA00FFE01E /* LobbyScene.cpp in Sources */,
 				925FC53525F42D4D00532483 /* Orb.cpp in Sources */,
-				28BF96612622AE920050EDCD /* Booster.cpp in Sources */,
 				ECA583F52603008700DF6791 /* Egg.cpp in Sources */,
 				921654482622999000FFE01E /* AbilityController.cpp in Sources */,
 				28297957260CEE99002EC000 /* World.cpp in Sources */,
@@ -738,7 +729,6 @@
 				925FC50C25F42CFC00532483 /* LoadingScene.cpp in Sources */,
 				92165314261B6DDA00FFE01E /* LobbyScene.cpp in Sources */,
 				925FC53425F42D4D00532483 /* Orb.cpp in Sources */,
-				28BF965D2622AE8B0050EDCD /* Booster.cpp in Sources */,
 				ECA583F42603008700DF6791 /* Egg.cpp in Sources */,
 				921654472622999000FFE01E /* AbilityController.cpp in Sources */,
 				28297956260CEE99002EC000 /* World.cpp in Sources */,
