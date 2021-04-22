@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "EB0FF5FB2016EF4F00517030"
-               BuildableName = "Roshamboogie (Sim).app"
-               BlueprintName = "Roshamboogie (Sim)"
-               ReferencedContainer = "container:Roshamboogie.xcodeproj">
+               BlueprintIdentifier = "EB74548B1D74D75C002FBAE6"
+               BuildableName = "Mystic Mayhem (iOS).app"
+               BlueprintName = "Mystic Mayhem (iOS)"
+               ReferencedContainer = "container:MysticMayhem.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -44,10 +44,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "EB0FF5FB2016EF4F00517030"
-            BuildableName = "Roshamboogie (Sim).app"
-            BlueprintName = "Roshamboogie (Sim)"
-            ReferencedContainer = "container:Roshamboogie.xcodeproj">
+            BlueprintIdentifier = "EB74548B1D74D75C002FBAE6"
+            BuildableName = "Mystic Mayhem (iOS).app"
+            BlueprintName = "Mystic Mayhem (iOS)"
+            ReferencedContainer = "container:MysticMayhem.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -61,10 +61,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "EB0FF5FB2016EF4F00517030"
-            BuildableName = "Roshamboogie (Sim).app"
-            BlueprintName = "Roshamboogie (Sim)"
-            ReferencedContainer = "container:Roshamboogie.xcodeproj">
+            BlueprintIdentifier = "EB74548B1D74D75C002FBAE6"
+            BuildableName = "Mystic Mayhem (iOS).app"
+            BlueprintName = "Mystic Mayhem (iOS)"
+            ReferencedContainer = "container:MysticMayhem.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

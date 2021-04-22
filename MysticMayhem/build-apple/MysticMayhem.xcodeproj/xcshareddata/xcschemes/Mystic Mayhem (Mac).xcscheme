@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EBBF18901D74904A008E2001"
-               BuildableName = "Roshamboogie (Mac).app"
-               BlueprintName = "Roshamboogie (Mac)"
-               ReferencedContainer = "container:Roshamboogie.xcodeproj">
+               BuildableName = "Mystic Mayhem (Mac).app"
+               BlueprintName = "Mystic Mayhem (Mac)"
+               ReferencedContainer = "container:MysticMayhem.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,7 +34,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      enableAddressSanitizer = "YES"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -46,18 +45,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EBBF18901D74904A008E2001"
-            BuildableName = "Roshamboogie (Mac).app"
-            BlueprintName = "Roshamboogie (Mac)"
-            ReferencedContainer = "container:Roshamboogie.xcodeproj">
+            BuildableName = "Mystic Mayhem (Mac).app"
+            BlueprintName = "Mystic Mayhem (Mac)"
+            ReferencedContainer = "container:MysticMayhem.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <AdditionalOptions>
-         <AdditionalOption
-            key = "NSZombieEnabled"
-            value = "YES"
-            isEnabled = "YES">
-         </AdditionalOption>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -70,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EBBF18901D74904A008E2001"
-            BuildableName = "Roshamboogie (Mac).app"
-            BlueprintName = "Roshamboogie (Mac)"
-            ReferencedContainer = "container:Roshamboogie.xcodeproj">
+            BuildableName = "Mystic Mayhem (Mac).app"
+            BlueprintName = "Mystic Mayhem (Mac)"
+            ReferencedContainer = "container:MysticMayhem.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

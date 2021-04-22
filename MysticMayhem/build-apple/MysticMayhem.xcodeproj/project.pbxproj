@@ -25,9 +25,6 @@
 		92165314261B6DDA00FFE01E /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92165312261B6DDA00FFE01E /* LobbyScene.cpp */; };
 		92165315261B6DDA00FFE01E /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92165312261B6DDA00FFE01E /* LobbyScene.cpp */; };
 		92165316261B6DDA00FFE01E /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92165312261B6DDA00FFE01E /* LobbyScene.cpp */; };
-		9216542A262282A400FFE01E /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92165425262282A300FFE01E /* Booster.cpp */; };
-		9216542B262282A400FFE01E /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92165425262282A300FFE01E /* Booster.cpp */; };
-		9216542C262282A400FFE01E /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92165425262282A300FFE01E /* Booster.cpp */; };
 		9216543F2622997200FFE01E /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9216543E2622997100FFE01E /* Projectile.cpp */; };
 		921654402622997200FFE01E /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9216543E2622997100FFE01E /* Projectile.cpp */; };
 		921654412622997200FFE01E /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9216543E2622997100FFE01E /* Projectile.cpp */; };
@@ -180,8 +177,6 @@
 		92165312261B6DDA00FFE01E /* LobbyScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LobbyScene.cpp; sourceTree = "<group>"; };
 		92165313261B6DDA00FFE01E /* LobbyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LobbyScene.h; sourceTree = "<group>"; };
 		92165332261C370200FFE01E /* MapConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapConstants.h; sourceTree = "<group>"; };
-		92165425262282A300FFE01E /* Booster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Booster.cpp; sourceTree = "<group>"; };
-		92165429262282A300FFE01E /* Booster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Booster.h; sourceTree = "<group>"; };
 		9216543A2622997100FFE01E /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
 		9216543E2622997100FFE01E /* Projectile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Projectile.cpp; sourceTree = "<group>"; };
 		921654452622999000FFE01E /* AbilityController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbilityController.h; sourceTree = "<group>"; };
@@ -207,12 +202,12 @@
 		925FC54225F42D6800532483 /* SwapStation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SwapStation.cpp; sourceTree = "<group>"; };
 		925FC54325F42D6800532483 /* SwapStation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwapStation.h; sourceTree = "<group>"; };
 		925FC57F25F4489100532483 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
-		EB0FF5FC2016EF4F00517030 /* Roshamboogie (Sim).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Roshamboogie (Sim).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB0FF5FC2016EF4F00517030 /* Mystic Mayhem (Sim).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mystic Mayhem (Sim).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE9B81D7498C9002FE78B /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		EB2BE9BA1D7498D2002FE78B /* textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = textures; sourceTree = "<group>"; };
 		EB42669221F68F6900A9DE61 /* DeviceMargins.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DeviceMargins.plist; sourceTree = "<group>"; };
 		EB4EB19D1E3404F3007BCF09 /* CUGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CUGL.xcodeproj; path = "../cugl/build-apple/CUGL.xcodeproj"; sourceTree = "<group>"; };
-		EB74548C1D74D75C002FBAE6 /* Roshamboogie (iOS).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Roshamboogie (iOS).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB74548C1D74D75C002FBAE6 /* Mystic Mayhem (iOS).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mystic Mayhem (iOS).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB7454A61D74D846002FBAE6 /* iOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iOS-Info.plist"; sourceTree = "<group>"; };
 		EB7454A71D74D846002FBAE6 /* iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = iOS.xcassets; sourceTree = "<group>"; };
 		EB7454A81D74D846002FBAE6 /* Landscape.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Landscape.storyboard; sourceTree = "<group>"; };
@@ -245,7 +240,7 @@
 		EB97E8B325D1839000753535 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.4.sdk/System/Library/Frameworks/CoreVideo.framework; sourceTree = DEVELOPER_DIR; };
 		EB97E8B425D1839000753535 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.4.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		EB97E8C325D183B000753535 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.4.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		EBBF18911D74904A008E2001 /* Roshamboogie (Mac).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Roshamboogie (Mac).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBBF18911D74904A008E2001 /* Mystic Mayhem (Mac).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mystic Mayhem (Mac).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBBF189A1D74904A008E2001 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
 		EBBF189F1D74904A008E2001 /* Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
 		EBFE7C041E19B496001007C2 /* json */ = {isa = PBXFileReference; lastKnownFileType = folder; path = json; sourceTree = "<group>"; };
@@ -416,9 +411,9 @@
 		EBBF18921D74904A008E2001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EBBF18911D74904A008E2001 /* Roshamboogie (Mac).app */,
-				EB74548C1D74D75C002FBAE6 /* Roshamboogie (iOS).app */,
-				EB0FF5FC2016EF4F00517030 /* Roshamboogie (Sim).app */,
+				EBBF18911D74904A008E2001 /* Mystic Mayhem (Mac).app */,
+				EB74548C1D74D75C002FBAE6 /* Mystic Mayhem (iOS).app */,
+				EB0FF5FC2016EF4F00517030 /* Mystic Mayhem (Sim).app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -477,8 +472,6 @@
 				28297955260CEE99002EC000 /* World.cpp */,
 				ECA583EF2603006C00DF6791 /* Egg.h */,
 				ECA583F32603008700DF6791 /* Egg.cpp */,
-				92165429262282A300FFE01E /* Booster.h */,
-				92165425262282A300FFE01E /* Booster.cpp */,
 				ECFA78E82605149B009D7949 /* CollisionController.h */,
 				ECFA78EC260514B1009D7949 /* CollisionController.cpp */,
 				922094CC260D0AFB003C9263 /* MovementStyle.h */,
@@ -493,9 +486,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EB0FF5FB2016EF4F00517030 /* Roshamboogie (Sim) */ = {
+		EB0FF5FB2016EF4F00517030 /* Mystic Mayhem (Sim) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EB0FF6162016EF4F00517030 /* Build configuration list for PBXNativeTarget "Roshamboogie (Sim)" */;
+			buildConfigurationList = EB0FF6162016EF4F00517030 /* Build configuration list for PBXNativeTarget "Mystic Mayhem (Sim)" */;
 			buildPhases = (
 				EB0FF5F82016EF4F00517030 /* Sources */,
 				EB0FF5F92016EF4F00517030 /* Frameworks */,
@@ -505,14 +498,14 @@
 			);
 			dependencies = (
 			);
-			name = "Roshamboogie (Sim)";
+			name = "Mystic Mayhem (Sim)";
 			productName = "HelloWorld (Sim)";
-			productReference = EB0FF5FC2016EF4F00517030 /* Roshamboogie (Sim).app */;
+			productReference = EB0FF5FC2016EF4F00517030 /* Mystic Mayhem (Sim).app */;
 			productType = "com.apple.product-type.application";
 		};
-		EB74548B1D74D75C002FBAE6 /* Roshamboogie (iOS) */ = {
+		EB74548B1D74D75C002FBAE6 /* Mystic Mayhem (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Roshamboogie (iOS)" */;
+			buildConfigurationList = EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Mystic Mayhem (iOS)" */;
 			buildPhases = (
 				EB7454881D74D75C002FBAE6 /* Sources */,
 				EB7454891D74D75C002FBAE6 /* Frameworks */,
@@ -522,14 +515,14 @@
 			);
 			dependencies = (
 			);
-			name = "Roshamboogie (iOS)";
+			name = "Mystic Mayhem (iOS)";
 			productName = "HelloWorld (iOS)";
-			productReference = EB74548C1D74D75C002FBAE6 /* Roshamboogie (iOS).app */;
+			productReference = EB74548C1D74D75C002FBAE6 /* Mystic Mayhem (iOS).app */;
 			productType = "com.apple.product-type.application";
 		};
-		EBBF18901D74904A008E2001 /* Roshamboogie (Mac) */ = {
+		EBBF18901D74904A008E2001 /* Mystic Mayhem (Mac) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Roshamboogie (Mac)" */;
+			buildConfigurationList = EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Mystic Mayhem (Mac)" */;
 			buildPhases = (
 				EBBF188D1D74904A008E2001 /* Sources */,
 				EBBF188E1D74904A008E2001 /* Frameworks */,
@@ -539,9 +532,9 @@
 			);
 			dependencies = (
 			);
-			name = "Roshamboogie (Mac)";
+			name = "Mystic Mayhem (Mac)";
 			productName = "HelloWorld (Mac)";
-			productReference = EBBF18911D74904A008E2001 /* Roshamboogie (Mac).app */;
+			productReference = EBBF18911D74904A008E2001 /* Mystic Mayhem (Mac).app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -569,7 +562,7 @@
 					};
 				};
 			};
-			buildConfigurationList = EBBF188C1D74904A008E2001 /* Build configuration list for PBXProject "Roshamboogie" */;
+			buildConfigurationList = EBBF188C1D74904A008E2001 /* Build configuration list for PBXProject "MysticMayhem" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -588,9 +581,9 @@
 			);
 			projectRoot = "";
 			targets = (
-				EBBF18901D74904A008E2001 /* Roshamboogie (Mac) */,
-				EB74548B1D74D75C002FBAE6 /* Roshamboogie (iOS) */,
-				EB0FF5FB2016EF4F00517030 /* Roshamboogie (Sim) */,
+				EBBF18901D74904A008E2001 /* Mystic Mayhem (Mac) */,
+				EB74548B1D74D75C002FBAE6 /* Mystic Mayhem (iOS) */,
+				EB0FF5FB2016EF4F00517030 /* Mystic Mayhem (Sim) */,
 			);
 		};
 /* End PBXProject section */
@@ -674,7 +667,6 @@
 				28D048A925F59412005AB6CC /* (null) in Sources */,
 				925FC4F825F42B2800532483 /* main.cpp in Sources */,
 				2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */,
-				9216542C262282A400FFE01E /* Booster.cpp in Sources */,
 				925FC53E25F42D5C00532483 /* SpawnController.cpp in Sources */,
 				92209531260DA500003C9263 /* MenuScene.cpp in Sources */,
 				925FC51E25F42D1800532483 /* InputController.cpp in Sources */,
@@ -703,7 +695,6 @@
 				28D048A825F59412005AB6CC /* (null) in Sources */,
 				925FC4F725F42B2800532483 /* main.cpp in Sources */,
 				2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */,
-				9216542B262282A400FFE01E /* Booster.cpp in Sources */,
 				925FC53D25F42D5C00532483 /* SpawnController.cpp in Sources */,
 				92209530260DA500003C9263 /* MenuScene.cpp in Sources */,
 				925FC51D25F42D1800532483 /* InputController.cpp in Sources */,
@@ -732,7 +723,6 @@
 				28D048A725F59412005AB6CC /* (null) in Sources */,
 				925FC4F625F42B2800532483 /* main.cpp in Sources */,
 				2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */,
-				9216542A262282A400FFE01E /* Booster.cpp in Sources */,
 				925FC53C25F42D5C00532483 /* SpawnController.cpp in Sources */,
 				9220952F260DA500003C9263 /* MenuScene.cpp in Sources */,
 				925FC51C25F42D1800532483 /* InputController.cpp in Sources */,
@@ -1025,7 +1015,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EB0FF6162016EF4F00517030 /* Build configuration list for PBXNativeTarget "Roshamboogie (Sim)" */ = {
+		EB0FF6162016EF4F00517030 /* Build configuration list for PBXNativeTarget "Mystic Mayhem (Sim)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB0FF60F2016EF4F00517030 /* Debug */,
@@ -1034,7 +1024,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Roshamboogie (iOS)" */ = {
+		EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Mystic Mayhem (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB7454A11D74D75C002FBAE6 /* Debug */,
@@ -1043,7 +1033,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EBBF188C1D74904A008E2001 /* Build configuration list for PBXProject "Roshamboogie" */ = {
+		EBBF188C1D74904A008E2001 /* Build configuration list for PBXProject "MysticMayhem" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EBBF18A01D74904A008E2001 /* Debug */,
@@ -1052,7 +1042,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Roshamboogie (Mac)" */ = {
+		EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Mystic Mayhem (Mac)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EBBF18A31D74904A008E2001 /* Debug */,
