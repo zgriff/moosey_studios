@@ -186,19 +186,27 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void GameScene::dispose() {
-    if (_active) {
-        removeAllChildren();
-        _debugnode = nullptr;
-        _scoreHUD = nullptr;
-        _hatchnode = nullptr;
-        _hatchbar = nullptr;
-        _abilitybar = nullptr;
-        _abilityname = nullptr;
-        _active = false;
-        _debug = false;
-        Scene2::dispose();
-        _world = nullptr;
-    }
+    CULog("game scene dispose");
+    removeAllChildren();
+    _rootnode = nullptr;
+    _debugnode = nullptr;
+    _camera = nullptr;
+    _UInode = nullptr;
+    _scoreHUD = nullptr;
+    _hatchnode = nullptr;
+    _hatchbar = nullptr;
+    _abilitybar = nullptr;
+    _abilityname = nullptr;
+    _timerHUD = nullptr;
+    _debug = false;
+    _assets = nullptr;
+    _playerController.dispose();
+//        Scene2::dispose();
+    _world->clearRootNode();
+//    _world->getSceneNode()->removeAllChildren();
+    _world->getPhysicsWorld()->clear();
+    _world = nullptr;
+    _active = false;
 }
 
 
@@ -247,7 +255,7 @@ void GameScene::update(float timestep) {
 
 
         // BEGIN PLAYER MOVEMENT //
-    
+//    CULog("game update");
     auto playerId_option = NetworkController::getPlayerId();
     if(! playerId_option.has_value()) return;
     uint8_t playerId = playerId_option.value();
@@ -458,7 +466,7 @@ void GameScene::update(float timestep) {
   
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
-    _timerHUD->setText(updateTimerText(_startTime + 900 - time(NULL)));
+    _timerHUD->setText(updateTimerText(_startTime + 10 - time(NULL)));
     
     _player->animateMovement();
     //send new position

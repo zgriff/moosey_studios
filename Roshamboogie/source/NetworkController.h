@@ -43,6 +43,7 @@ namespace NetworkController {
     void sendEggRespawn(int eggId, Vec2 eggPosition);
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);
+    std::shared_ptr<World> getWorld();
 
     std::string getUsername();
     std::string getUsername(int i);

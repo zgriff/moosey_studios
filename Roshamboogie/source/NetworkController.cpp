@@ -56,6 +56,10 @@ namespace NetworkController {
         world = w;
     }
 
+    std::shared_ptr<World> getWorld() {
+        return world;
+    }
+
     bool isHost(){
         return network->getPlayerID().value_or(-1) == 0;
     }

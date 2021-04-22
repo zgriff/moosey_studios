@@ -42,6 +42,7 @@ protected:
     /**true host false client*/
     std::string _currRoomId;
     bool _host;
+    bool _playAgain;
 //    int _movement;
         
 
@@ -104,6 +105,10 @@ public:
     void displayLobby();
     
     bool isHost() {return _host;};
+    
+    bool isPlayAgain() { return _playAgain; }
+    
+    void setPlayAgain(bool p) { _playAgain = p;}
         
 };
 
