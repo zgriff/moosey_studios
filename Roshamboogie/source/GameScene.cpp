@@ -150,10 +150,14 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _scale = dimen.width == w ? dimen.width/world->getBounds().getMaxX() : dimen.height/world->getBounds().getMaxY();
     if(NetworkController::isHost()){
         world->onBeginContact = [this](b2Contact* contact) {
-            CollisionController::beginContact(contact);
+            CollisionController::hostBeginContact(contact);
         };
         world->onEndContact = [this](b2Contact* contact) {
             CollisionController::endContact(contact);
+        };
+    }else{
+        world->onBeginContact = [this](b2Contact* contact) {
+            CollisionController::clientBeginContact(contact);
         };
     }
     world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {

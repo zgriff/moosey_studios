@@ -25,7 +25,8 @@ namespace CollisionController {
         std::shared_ptr<World> world;
     }
 
-    void beginContact(b2Contact* contact);
+    void hostBeginContact(b2Contact* contact);
+    void clientBeginContact(b2Contact* contact);
 
     void endContact(b2Contact* contact);
     
