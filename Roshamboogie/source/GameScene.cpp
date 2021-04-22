@@ -466,7 +466,6 @@ void GameScene::update(float timestep) {
     
     _player->animateMovement();
     //send new position
-    //TODO: only every few frames
     NetworkController::sendPosition();
 }
 

@@ -60,6 +60,7 @@ struct NetworkData {
         struct {
             cugl::Vec2 playerPos;
             cugl::Vec2 playerVelocity;
+            float playerDirection;
             uint8_t playerId;
         } positionData;
         struct {

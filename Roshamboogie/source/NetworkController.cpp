@@ -155,6 +155,7 @@ namespace NetworkController {
                         p->setPositionError(newError);
                         p->setPosition(nd.positionData.playerPos);
                         p->setLinearVelocity(nd.positionData.playerVelocity);
+                        p->setAngle(nd.positionData.playerDirection);
                     }
                     break;
                 case ND::NetworkData::ORB_CAPTURED:
@@ -246,6 +247,7 @@ namespace NetworkController {
         nd.packetType = ND::NetworkData::PacketType::POSITION_PACKET;
         nd.positionData.playerPos = p->getPosition();
         nd.positionData.playerVelocity = p->getLinearVelocity();
+        nd.positionData.playerDirection = p->getAngle();
         nd.positionData.playerId = NetworkController::getPlayerId().value();
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
