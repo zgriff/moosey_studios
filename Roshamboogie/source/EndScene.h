@@ -19,6 +19,7 @@ protected:
     // VIEW
     std::shared_ptr<cugl::scene2::Button> _playAgainButton; //returns to same lobby
     std::shared_ptr<cugl::scene2::Button> _mainMenuButton; //returns to main menu
+    std::shared_ptr<cugl::scene2::Label> _results; 
     
     bool _playAgain; //whether player clicked play again or not
     bool _mainMenu; //whether player clicked return to main menu or not
@@ -58,6 +59,8 @@ public:
     bool mainMenu() {
         return _mainMenu;
     }
+    
+    void displayResults();
 
 };
 

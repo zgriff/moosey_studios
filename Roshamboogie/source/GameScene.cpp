@@ -93,7 +93,6 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Initialize the scene to a locked width
     //create world
     _world = assets->get<World>(GRASS_MAP_KEY);
-//    _world->preload(GRASS_MAP_JSON);
     if (_world == nullptr) {
         CULog("Fail!");
         return false;
@@ -206,7 +205,6 @@ void GameScene::dispose() {
     _world->clearRootNode();
 //    _world->getSceneNode()->removeAllChildren();
     _world->getPhysicsWorld()->clear();
-//    _world->unload();
     _world = nullptr;
     _active = false;
 }

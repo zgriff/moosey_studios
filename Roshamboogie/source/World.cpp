@@ -94,8 +94,9 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     }
     
     _currEggCount = 0;
-    for(auto it = _eggs.begin(); it != _eggs.end(); ++it) {
-        std::shared_ptr<Egg> egg = *it;
+    for(auto it = _initEggLocs.begin(); it != _initEggLocs.end(); ++it) {
+        Size eggSize(1, 2);
+        std::shared_ptr<Egg> egg = Egg::alloc(*it, eggSize);
         _physicsWorld->addObstacle(egg);
         egg->setTextures(eggTexture);
         egg->setDrawScale(_scale);
@@ -109,21 +110,24 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         egg->setInitPos(egg->getPosition());
         _currEggCount = _currEggCount + 1;
         _worldNode->addChild(egg->getSceneNode(),1);
+        _eggs.push_back(egg);
     }
     
     _currOrbCount = 0;
-    for(auto it = _orbs.begin(); it != _orbs.end(); ++it) {
-        std::shared_ptr<Orb> orb = *it;
+    for(auto it = _initOrbLocs.begin(); it != _initOrbLocs.end(); ++it) {
+        CULog("orb");
+        std::shared_ptr<Orb> orb = Orb::alloc(*it);
         _physicsWorld->addObstacle(orb);
+        orb->setTextures(orbTexture);
         orb->setDrawScale(_scale);
         orb->setCollected(false);
         orb->setActive(true);
         orb->setDebugColor(Color4::YELLOW);
         orb->setDebugScene(_debugNode);
         orb->setID(_currOrbCount);
-        orb->setTextures(orbTexture);
         _currOrbCount = _currOrbCount + 1;
         _worldNode->addChild(orb->getSceneNode(),1);
+        _orbs.push_back(orb);
     }
     
     for(auto it = _swapStations.begin(); it != _swapStations.end(); ++it) {
@@ -224,6 +228,11 @@ void World::clearRootNode() {
     _debugNode = nullptr;
 
     _root = nullptr;
+    _players.clear();
+    _eggs.clear();
+    _orbs.clear();
+    _orbSpawns.clear();
+    _eggSpawns.clear();
 }
 
 void World::showDebug(bool flag) {
@@ -373,7 +382,7 @@ void World::unload()  {
     
     if (_physicsWorld !=  nullptr) {
         _physicsWorld->clear();
-//        _physicsWorld = nullptr;
+        _physicsWorld = nullptr;
     }
     
 }
@@ -475,12 +484,12 @@ bool World::loadEgg(const std::shared_ptr<JsonValue> &json){
 //    auto eggTexture = _assets->get<Texture>("target");
     Vec2 eggPos = Vec2(xCoord,yCoord);
 //    Size eggSize(eggTexture->getSize() / _scale);
-    Size eggSize(1, 2);
-    auto egg = Egg::alloc(eggPos, eggSize);
-    CULog("orbPos: %f   y %f",eggPos.x,eggPos.y);
+//    Size eggSize(1, 2);
+//    auto egg = Egg::alloc(eggPos, eggSize);
+//    CULog("eggPos: %f   y %f",eggPos.x,eggPos.y);
 
 //    egg->setTextures(eggTexture);
-    _eggs.push_back(egg);
+    _initEggLocs.push_back(eggPos);
     return true;
 }
 
@@ -494,9 +503,10 @@ bool World::loadOrb(const std::shared_ptr<JsonValue> &json){
 //    auto eggTexture = _assets->get<Texture>("target");
     Vec2 orbPos = Vec2(xCoord,yCoord);
 //    Size orbSize(orbTexture->getSize() / _scale);
-    Size orbSize(1, 2);
-    auto orb = Orb::alloc(orbPos);
-    _orbs.push_back(orb);
+//    Size orbSize(1, 2);
+//    auto orb = Orb::alloc(orbPos);
+//    _orbs.push_back(orb);
+    _initOrbLocs.push_back(orbPos);
     return true;
 }
 
@@ -560,7 +570,7 @@ bool World::loadGameObject(const std::shared_ptr<JsonValue>& json) {
             success = loadOrb(json);
             break;
             
-        case  GameObjectType::OrbLocation:
+        case GameObjectType::OrbLocation:
             success = loadOrbLoc(json);
             break;
             

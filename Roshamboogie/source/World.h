@@ -57,7 +57,11 @@ protected:
     
     std::vector<std::shared_ptr<Orb>> _orbs;
     
-    std::vector<Vec2> _orbSpawns;
+    std::vector<Vec2> _orbSpawns; //all the possible orb spawn locations
+    std::vector<Vec2> _initOrbLocs; //initial orb postions when map created
+    
+    std::vector<Vec2> _initEggLocs; //initial egg postions when map created
+    std::vector<Vec2> _eggSpawns;
     
     std::vector<std::shared_ptr<SwapStation>> _swapStations;
 

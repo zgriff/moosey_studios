@@ -590,7 +590,7 @@
                 "type" : "Anchored"
             },
             "data" : {
-                "color": [239,61,49,255]
+                "color": [190,187,191,255]
             },
             "children": {
                 "playagain": {
@@ -615,6 +615,7 @@
                         "x_anchor": "center",
                         "y_anchor": "middle",
                         "y_offset": 115,
+                        "x_offset": -200,
                         "absolute": true
                     }
                 },
@@ -639,8 +640,26 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": -115,
+                        "y_offset": 115,
+                        "x_offset": 200,
                         "absolute": true
+                    }
+                },
+                "results": {
+                    "type": "Label",
+                    "data": {
+                        "font": "retro",
+                        "text": "Winner: ",
+                        "foreground": [ 0, 0, 0, 255 ],
+                        "size": [ 100, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": -0.4,
+                        "y_offset": -0.4
                     }
                 }
             }

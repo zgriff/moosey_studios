@@ -44,6 +44,7 @@ namespace NetworkController {
     void sendTag(int taggedId, int taggerId, time_t timestamp);
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);
+    std::shared_ptr<World> getWorld();
 
     std::string getUsername();
 
