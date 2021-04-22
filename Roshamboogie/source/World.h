@@ -108,7 +108,6 @@ protected:
     /**
      * Clears the root scene graph node for this level
      */
-    void clearRootNode();
 
 
 public:
@@ -316,6 +315,8 @@ public:
     
     bool getDebug() const {return _debug;}
     
+    void clearRootNode();
+    
 #pragma mark -
 #pragma mark Asset Loading
     /**
@@ -366,6 +367,8 @@ public:
      * Destroys this level, releasing all resources.
      */
     virtual ~World(void);
+    
+    void dispose();
 
 };
 

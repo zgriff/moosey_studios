@@ -133,16 +133,19 @@ void App::update(float timestep) {
             if (_menu.isActive()) {
 //                _menu.update(0.01f);
                 NetworkController::step();
-                if(NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected){
+//                CULog("menu scene");
+                if(_menu.createPressed() && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected){
                     _menu.setActive(false);
                     _lobby.init(_assets);
                     _lobby.setActive(true);
+                    _menu.dispose();
                     _currentScene = SceneSelect::Lobby;
                 }
             } else {
                 _menu.setActive(false);
                 _lobby.init(_assets);
                 _lobby.setActive(true);
+                _menu.dispose();
                 _currentScene = SceneSelect::Lobby;
             }
             break;
@@ -153,13 +156,12 @@ void App::update(float timestep) {
             } else {
                 _lobby.setActive(false);
                 _gameplay.init(_assets);
-                _gameplay.setMovementStyle(_menu.getMovement());
-//                _menu.dispose();
+                _gameplay.setActive(true);
+                _gameplay.setMovementStyle(0);
                 startTimer = time(NULL);
-                _menu.dispose();
                 _lobby.dispose();
                 _currentScene = SceneSelect::Game;
-            }
+        }
             break;
         }
         case SceneSelect::Game:{
@@ -167,21 +169,31 @@ void App::update(float timestep) {
             if (time(NULL) - startTimer >= gameTimer) {
                 _results.init(_assets);
                 _gameplay.dispose();
+//                _gameplay.reset();
                 _currentScene = SceneSelect::Results;
             }
             break;
         }
         case SceneSelect::Results: {
-//            if (_results.isActive()) {
-//
-//            }
+            if (_results.playAgain()) {
+                _results.dispose();
+                _lobby.init(_assets);
+                _lobby.setActive(true);
+                _lobby.setPlayAgain(true);
+                _currentScene = SceneSelect::Lobby;
+            }
+            else if (_results.mainMenu()) {
+                _results.dispose();
+                _menu.init(_assets);
+                _currentScene = SceneSelect::Menu;
+                _menu.setActive(true);
+
+            }
 //            else {
 //                _results.dispose();
-////                _menu.init(_assets);
-//                _currentScene = SceneSelect::Menu;
-//                _menu.setActive(true);
+//                _gameplay.dispose();
 //            }
-////            _results.update(timestep);
+//            _results.update(timestep);
             break;
         }
         default:

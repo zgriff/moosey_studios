@@ -103,6 +103,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
 //    NetworkController::setReadyCallback([&](uint8_t playerid, bool r){
 //        return;
 //    });
+    _playAgain = false;
     return true;
 }
 
@@ -110,9 +111,12 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void LobbyScene::dispose() {
+    removeAllChildren();
     _startButton = nullptr;
     _playerLabels.clear();
     _assets = nullptr;
+    _active = false;
+    _playAgain = false;
 }
 
 

@@ -49,24 +49,27 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     layer->doLayout(); // This rearranges the children to fit the screen
     addChild(layer);
     
+//    _create = false;
+    
     _hostButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_host"));
     _hostButton->addListener([=](const std::string& name, bool down) {
         _host = true;
         NetworkController::createGame();
         _joinButton->deactivate();
-        _slider->setVisible(false);
-        _slider->deactivate();
+//        _slider->setVisible(false);
+//        _slider->deactivate();
         _label->setVisible(false);
 //        _joinButton->dispose();
         this->_active = down;
+        _create = true;
     });
     
     _joinButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_join"));
     _joinButton->addListener([=](const std::string& name, bool down) {
         _host = false;
-        _slider->setVisible(false);
-        _slider->deactivate();
-        _label->setVisible(false);
+//        _slider->setVisible(false);
+//        _slider->deactivate();
+//        _label->setVisible(false);
         _hostButton->setVisible(false);
         _hostButton->deactivate();
         _joinButton->setVisible(false);
@@ -101,6 +104,9 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         }
     });
     
+    _slider->setVisible(false);
+    _label->setVisible(false);
+    
     _codeField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_joincode"));
     _codeField->addTypeListener([=](const std::string& name, const std::string& value) {
         CULog("Change to %s", value.c_str());
@@ -115,9 +121,9 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     
     Input::activate<TextInput>();
     _codeField->setVisible(false);
-    if(_active) {
-        _slider->activate();
-    }
+//    if(_active) {
+//        _slider->activate();
+//    }
 
     Application::get()->setClearColor(Color4(192,192,192,255));
     return true;
@@ -127,12 +133,15 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void MenuScene::dispose() {
+    removeAllChildren();
     _hostButton = nullptr;
     _joinButton = nullptr;
     Input::deactivate<TextInput>();
     _codeField = nullptr;
     _slider = nullptr;
     _assets = nullptr;
+    _active = false;
+    _create = false;
 }
 
 
@@ -155,17 +164,17 @@ void MenuScene::dispose() {
  */
 void MenuScene::setActive(bool value) {
     _active = value;
+    Input::activate<TextInput>();
     if (value && (!_hostButton->isActive() || !_joinButton->isActive())) {
-        _slider->setVisible(true);
-        _label->setVisible(true);
-        _slider->activate();
+//        _slider->setVisible(true);
+//        _label->setVisible(true);
+//        _slider->activate();
         _hostButton->activate();
         _joinButton->activate();
-        _codeField->activate();
-    } else if (!value && (_hostButton->isActive() || _joinButton->isActive())) {
+    } else if (!value && (_hostButton->isActive() || _joinButton->isActive() || !_codeField->isActive())) {
         _hostButton->deactivate();
         _joinButton->deactivate();
         _codeField->deactivate();
-        _slider->deactivate();
+//        _slider->deactivate();
     }
 }

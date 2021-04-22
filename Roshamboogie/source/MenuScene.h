@@ -46,6 +46,7 @@ protected:
     /**true host false client*/
     bool _host;
     int _movement;
+    bool _create;
         
 
 public:
@@ -107,6 +108,8 @@ public:
     bool isHost() {return _host;};
         
     int getMovement() {return _movement;};
+    
+    bool createPressed() { return _create; }
 
 };
 

@@ -30,6 +30,11 @@ World::~World(void) {
     clearRootNode();
 }
 
+void World::dispose() {
+    unload();
+    clearRootNode();
+}
+
 #pragma mark -
 #pragma mark Drawing Methods
 
@@ -98,6 +103,10 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         egg->setDebugColor(Color4::YELLOW);
         egg->setDebugScene(_debugNode);
         egg->setID(_currEggCount);
+        egg->setCollected(false);
+        egg->setHatched(false);
+        egg->setDistanceWalked(0);
+        egg->setInitPos(egg->getPosition());
         _currEggCount = _currEggCount + 1;
         _worldNode->addChild(egg->getSceneNode(),1);
     }
@@ -107,6 +116,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         std::shared_ptr<Orb> orb = *it;
         _physicsWorld->addObstacle(orb);
         orb->setDrawScale(_scale);
+        orb->setCollected(false);
         orb->setActive(true);
         orb->setDebugColor(Color4::YELLOW);
         orb->setDebugScene(_debugNode);
@@ -180,6 +190,8 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->setDrawScale(_scale);
         player->setDebugScene(_debugNode);
         player->setID(i);
+        player->setHoldingEgg(false);
+        player->setOrbScore(0);
         player->setDebugColor(Color4::YELLOW);
         //player id is set to i right now, if that is changed, projectile's associated userid needs to change too
         player->setProjectile(_projectiles[i]);
@@ -250,6 +262,7 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
         CUAssertLog(false, "Failed to load level file");
         return false;
     }
+    CULog("loading world");
     
     float w = json->get(WIDTH_FIELD)->asFloat();
     float h = json->get(HEIGHT_FIELD)->asFloat();
@@ -360,7 +373,7 @@ void World::unload()  {
     
     if (_physicsWorld !=  nullptr) {
         _physicsWorld->clear();
-        _physicsWorld = nullptr;
+//        _physicsWorld = nullptr;
     }
     
 }
@@ -384,7 +397,7 @@ bool World::loadBackground(const std::shared_ptr<JsonValue> &json) {
 
 bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
     bool success = true;
-    CULog("loading wall");
+//    CULog("loading wall");
     
     std::string wname = "wall";
     

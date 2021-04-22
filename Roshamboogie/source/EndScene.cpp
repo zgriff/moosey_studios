@@ -44,11 +44,16 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _playAgainButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("end_playagain"));
     _playAgainButton->activate();
-//    _playAgainButton->addListener([=](const std::string& name, bool down) {
-//        this->_active = down;
-//    });
-
+    _playAgainButton->addListener([=](const std::string& name, bool down) {
+        this->_playAgain = down;
+    });
     
+    _mainMenuButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("end_mainmenu"));
+    _mainMenuButton->activate();
+    _mainMenuButton->addListener([=](const std::string& name, bool down) {
+        this->_mainMenu = down;
+    });
+
 
     Application::get()->setClearColor(Color4(192,192,192,255));
     return true;
@@ -58,11 +63,15 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 * Disposes of all (non-static) resources allocated to this mode.
 */
 void EndScene::dispose() {
-    if (isPending()) {
-        _playAgainButton->deactivate();
-    }
+    removeAllChildren();
+    _playAgainButton->deactivate();
+    _mainMenuButton->deactivate();
     _assets = nullptr;
     _playAgainButton = nullptr;
+    _mainMenuButton = nullptr;
+    _mainMenu = false;
+    _playAgain = false;
+    _active = false;
     
 }
 
