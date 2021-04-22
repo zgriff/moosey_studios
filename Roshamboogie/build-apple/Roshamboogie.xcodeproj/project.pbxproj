@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		282050612630D9BE00E839B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 282050602630D9BD00E839B2 /* GoogleService-Info.plist */; };
+		282050622630D9BE00E839B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 282050602630D9BD00E839B2 /* GoogleService-Info.plist */; };
+		282050632630D9BE00E839B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 282050602630D9BD00E839B2 /* GoogleService-Info.plist */; };
 		28297956260CEE99002EC000 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28297955260CEE99002EC000 /* World.cpp */; };
 		28297957260CEE99002EC000 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28297955260CEE99002EC000 /* World.cpp */; };
 		28297958260CEE99002EC000 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28297955260CEE99002EC000 /* World.cpp */; };
@@ -167,6 +170,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		282050602630D9BD00E839B2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28297955260CEE99002EC000 /* World.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		288216462605A7910073F7D4 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
 		288216482605A7910073F7D4 /* NetworkController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkController.cpp; sourceTree = "<group>"; };
@@ -430,6 +434,7 @@
 				EB7454A61D74D846002FBAE6 /* iOS-Info.plist */,
 				EB7454A71D74D846002FBAE6 /* iOS.xcassets */,
 				EB7454A81D74D846002FBAE6 /* Landscape.storyboard */,
+				282050602630D9BD00E839B2 /* GoogleService-Info.plist */,
 				EB7454A91D74D846002FBAE6 /* Portrait.storyboard */,
 				EBBF189A1D74904A008E2001 /* Mac.xcassets */,
 				EBBF189F1D74904A008E2001 /* Mac-Info.plist */,
@@ -625,6 +630,7 @@
 			files = (
 				EB0FF61A2016EFC500517030 /* json in Resources */,
 				EB0FF61B2016EFC500517030 /* textures in Resources */,
+				282050632630D9BE00E839B2 /* GoogleService-Info.plist in Resources */,
 				925FC58225F4489100532483 /* sounds in Resources */,
 				EB0FF61C2016EFC500517030 /* fonts in Resources */,
 				EB0FF6172016EFB200517030 /* iOS.xcassets in Resources */,
@@ -640,6 +646,7 @@
 			files = (
 				EB7454D01D750623002FBAE6 /* textures in Resources */,
 				EB7454D11D750623002FBAE6 /* fonts in Resources */,
+				282050622630D9BE00E839B2 /* GoogleService-Info.plist in Resources */,
 				925FC58125F4489100532483 /* sounds in Resources */,
 				EB7454AB1D74D846002FBAE6 /* iOS.xcassets in Resources */,
 				EB7454AC1D74D846002FBAE6 /* Landscape.storyboard in Resources */,
@@ -658,6 +665,7 @@
 				EB2BE9BB1D7498D2002FE78B /* textures in Resources */,
 				EB2BE9B91D7498C9002FE78B /* fonts in Resources */,
 				EBBF189B1D74904A008E2001 /* Mac.xcassets in Resources */,
+				282050612630D9BE00E839B2 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
