@@ -47,6 +47,7 @@ protected:
     bool _host;
     int _movement;
     bool _create;
+    bool _join;
         
 
 public:
@@ -110,6 +111,7 @@ public:
     int getMovement() {return _movement;};
     
     bool createPressed() { return _create; }
+    bool joinPressed() { return _join; }
 
 };
 

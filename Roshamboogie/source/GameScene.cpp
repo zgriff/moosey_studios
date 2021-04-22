@@ -542,3 +542,40 @@ std::string GameScene::updateTimerText(const time_t time) {
     }
     return ss.str();
 }
+
+std::string GameScene::getResults() {
+    stringstream ss;
+    auto players = _world->getPlayers();
+    for (int i = 0; i < players.size(); i++) {
+        auto p = players[i];
+        ss << "Player" << p->getID() << ":" << p->getScore() << endl;
+    }
+    
+    return ss.str();
+}
+
+std::tuple<std::string, std::string> GameScene::getWinner() {
+    stringstream ss1;
+    stringstream ss2;
+    auto players = _world->getPlayers();
+    int winScore = -1;
+    int winID = -1;
+    for (int i = 0; i < players.size(); i++) {
+        auto p = players[i];
+        if (p->getScore() > winScore) {
+            winScore = p->getScore();
+            winID = p->getID();
+        }
+    }
+    if (NetworkController::getPlayerId() == winID) {
+        ss2 << "YOU WON!";
+    }
+    else {
+        ss2 << "You lost";
+    }
+    ss1 << "Player" << winID << " with score " << winScore << endl;
+    
+    return std::make_tuple(ss1.str(), ss2.str());
+}
+
+            

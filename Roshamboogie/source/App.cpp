@@ -134,7 +134,7 @@ void App::update(float timestep) {
 //                _menu.update(0.01f);
                 NetworkController::step();
 //                CULog("menu scene");
-                if(_menu.createPressed() && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected){
+                if((_menu.createPressed() || _menu.joinPressed()) && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected){
                     _menu.setActive(false);
                     _lobby.init(_assets);
                     _lobby.setActive(true);
@@ -167,7 +167,7 @@ void App::update(float timestep) {
         case SceneSelect::Game:{
             _gameplay.update(timestep);
             if (time(NULL) - startTimer >= gameTimer) {
-                _results.init(_assets);
+                _results.init(_assets, _gameplay.getResults(), _gameplay.getWinner());
                 _gameplay.dispose();
 //                _gameplay.reset();
                 _currentScene = SceneSelect::Results;

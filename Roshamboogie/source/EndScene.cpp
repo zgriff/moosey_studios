@@ -9,6 +9,7 @@
 #include "EndScene.h"
 #include "NetworkController.h"
 #include "World.h"
+#include <string>
 
 using namespace cugl;
 
@@ -28,7 +29,7 @@ using namespace cugl;
  *
  * @return true if the controller is initialized properly, false otherwise.
  */
-bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
+bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::string results, std::tuple<std::string, std::string> winner) {
     // Initialize the scene to a locked width
     Size dimen = Application::get()->getDisplaySize();
     dimen *= SCENE_SIZE/dimen.width; // Lock the game to a reasonable resolution
@@ -46,6 +47,8 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _mainMenu = false;
     _playAgain = false;
+    _resStr = results;
+    _winnerStr = winner;
     
     _playAgainButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("end_playagain"));
     _playAgainButton->activate();
@@ -60,6 +63,10 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
 
     _results = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_results"));
+    _results->setText("Winner: " + std::get<0>(_winnerStr));
+    
+    _message = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_message"));
+    _message->setText(std::get<1>(_winnerStr));
     
 
     Application::get()->setClearColor(Color4(190,187,191,255));
@@ -94,6 +101,12 @@ bool EndScene::isPending() const {
    return _playAgainButton != nullptr && _playAgainButton->isVisible();
 }
 
-void EndScene::displayResults() {
-    auto world = NetworkController::getNumPlayers();
-}
+//void EndScene::displayResults() {
+//
+//}
+
+//std::string GameScene::updateScoreText(const int score) {
+//    stringstream ss;
+//    ss << "Score: " << score;
+//    return ss.str();
+//}

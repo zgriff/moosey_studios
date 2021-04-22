@@ -75,6 +75,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _joinButton->setVisible(false);
         _codeField->activate();
         _codeField->setVisible(true);
+        _join = true;
     });
     
     _slider = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("menu_slider"));
@@ -142,6 +143,7 @@ void MenuScene::dispose() {
     _assets = nullptr;
     _active = false;
     _create = false;
+    _join = false;
 }
 
 

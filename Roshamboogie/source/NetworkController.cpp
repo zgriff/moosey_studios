@@ -191,7 +191,7 @@ namespace NetworkController {
                     p->setHoldingEgg(false);
                     world->getEgg(nd.eggCapData.eggId)->setHatched(true);
                     world->setCurrEggCount(world->getCurrEggCount() - 1);
-                    
+                    p->incScore(globals::HATCH_SCORE);
                 }
                     break;
                 case ND::NetworkData::ORB_RESPAWN:

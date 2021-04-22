@@ -217,6 +217,10 @@ public:
     void setMovementStyle(int m);
     
     void moveOrb(Orb* orb);
+    
+    std::string getResults();
+    std::tuple<std::string, std::string> getWinner();
+    
 
 };
 

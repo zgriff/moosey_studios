@@ -648,10 +648,27 @@
                 "results": {
                     "type": "Label",
                     "data": {
-                        "font": "retro",
+                        "font": "joincode",
                         "text": "Winner: ",
                         "foreground": [ 0, 0, 0, 255 ],
-                        "size": [ 100, 15 ],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": -0.4,
+                        "y_offset": -0.2
+                    }
+                },
+                "message" : {
+                    "type": "Label",
+                    "data": {
+                        "font": "joincode",
+                        "text": "",
+                        "foreground": [ 0, 0, 0, 255 ],
+                        "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
                     },
