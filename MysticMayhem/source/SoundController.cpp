@@ -15,7 +15,7 @@
 
 namespace SoundController{
 std::shared_ptr<cugl::AssetManager> _assets;
-bool spatialAudioEnabled = false;
+bool spatialAudioEnabled = true;
 
 
 void useSpatialAudio(bool useSpatialAudio){
@@ -54,9 +54,18 @@ void playSound(Type s, cugl::Vec2 pos){
     
     if(spatialAudioEnabled){
         std::shared_ptr<cugl::audio::AudioSpinner> spatial = cugl::audio::AudioSpinner::alloc();
-        spatial->setAngle(pos.getAngle());
+        spatial->setChannelPlan(cugl::audio::AudioSpinner::Plan::SIDE_STEREO);
         spatial->attach(node);
-//            cugl::AudioEngine::get()->play(key, spatial);
+        spatial->setAngle(pos.getAngle());
+        float gain = pos.length() * (4.0/50.0);
+//        float gain = std::pos(pos.length() * (4.0/50.0), 2.0);
+        if(gain <= 1){
+            node->setGain(1);
+        }else{
+            node->setGain(1/gain);
+        }
+        //TODO: replace with key
+        cugl::AudioEngine::get()->play(std::to_string(rand()), spatial);
     }else{
         //TODO: replace with key
         cugl::AudioEngine::get()->play(std::to_string(rand()), node);

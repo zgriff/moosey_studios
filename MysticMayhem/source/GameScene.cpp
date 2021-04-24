@@ -37,40 +37,6 @@ using namespace std;
 /** Height of the game world in Box2d units */
 #define DEFAULT_HEIGHT  18.0f
 
-
-#define WALL_VERTS  8
-#define WALL_COUNT  4
-// Left/Right wall padding
-#define LR_PADDING  0.5f
-// Top/Bottom wall padding
-#define TB_PADDING  1.0f
-
-float WALL[WALL_COUNT][WALL_VERTS] = {
-    {0.0f, 0.0f,
-        LR_PADDING, 0.0f,
-        LR_PADDING, DEFAULT_HEIGHT,
-        0.0f,  DEFAULT_HEIGHT},
-    {LR_PADDING, 0.0f,
-        DEFAULT_WIDTH-LR_PADDING,  0.0f,
-        DEFAULT_WIDTH-LR_PADDING,  TB_PADDING,
-        LR_PADDING, TB_PADDING},
-    {DEFAULT_WIDTH-LR_PADDING, 0.0f,
-        DEFAULT_WIDTH,  0.0f,
-        DEFAULT_WIDTH,  DEFAULT_HEIGHT,
-        DEFAULT_WIDTH-LR_PADDING, DEFAULT_HEIGHT},
-    {LR_PADDING, DEFAULT_HEIGHT-TB_PADDING,
-        DEFAULT_WIDTH-LR_PADDING, DEFAULT_HEIGHT-TB_PADDING,
-        DEFAULT_WIDTH-LR_PADDING,  DEFAULT_HEIGHT,
-        LR_PADDING, DEFAULT_HEIGHT}
-};
-
-#define BASIC_DENSITY   0.0f
-/** The density for a bullet */
-#define HEAVY_DENSITY   10.0f
-/** Friction of most platforms */
-#define BASIC_FRICTION  0.4f
-/** The restitution for all physics objects */
-#define BASIC_RESTITUTION   0.1f
 /** The restitution for all physics objects */
 #define TURNS_PER_SPIN   55.0f
 /** how much the lateral velocity is subtracted per frame*/
@@ -113,7 +79,6 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _world->setNumPlayers(NetworkController::getNumPlayers());
 
     SpawnController::setWorld(_world);
-    CollisionController::setWorld(_world);
     
     // Start up the input handler
     _assets = assets;
@@ -213,6 +178,7 @@ void GameScene::dispose() {
  */
 void GameScene::reset() {
     _world->setRootNode(_rootnode,_scale);
+    CollisionController::setWorld(_world);
     NetworkController::setWorld(_world);
     
     auto idopt = NetworkController::getPlayerId();

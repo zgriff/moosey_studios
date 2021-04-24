@@ -23,6 +23,7 @@ namespace CollisionController {
 
     namespace {
         std::shared_ptr<World> world;
+        std::shared_ptr<Player> localPlayer;
     }
 
     void hostBeginContact(b2Contact* contact);
