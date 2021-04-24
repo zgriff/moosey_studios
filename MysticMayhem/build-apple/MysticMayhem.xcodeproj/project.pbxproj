@@ -10,6 +10,9 @@
 		28297956260CEE99002EC000 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28297955260CEE99002EC000 /* World.cpp */; };
 		28297957260CEE99002EC000 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28297955260CEE99002EC000 /* World.cpp */; };
 		28297958260CEE99002EC000 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28297955260CEE99002EC000 /* World.cpp */; };
+		2844515C2633C287008343E2 /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2844515A2633C287008343E2 /* SoundController.cpp */; };
+		2844515D2633C287008343E2 /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2844515A2633C287008343E2 /* SoundController.cpp */; };
+		2844515E2633C287008343E2 /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2844515A2633C287008343E2 /* SoundController.cpp */; };
 		2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
 		2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
 		2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
@@ -165,6 +168,8 @@
 
 /* Begin PBXFileReference section */
 		28297955260CEE99002EC000 /* World.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
+		2844515A2633C287008343E2 /* SoundController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoundController.cpp; sourceTree = "<group>"; };
+		2844515B2633C287008343E2 /* SoundController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundController.h; sourceTree = "<group>"; };
 		288216462605A7910073F7D4 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
 		288216482605A7910073F7D4 /* NetworkController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkController.cpp; sourceTree = "<group>"; };
 		288216522605A90E0073F7D4 /* NetworkData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkData.cpp; sourceTree = "<group>"; };
@@ -478,6 +483,8 @@
 				92165332261C370200FFE01E /* MapConstants.h */,
 				EC86E555261B5DF900203FCA /* EndScene.h */,
 				EC86E556261B5E0F00203FCA /* EndScene.cpp */,
+				2844515A2633C287008343E2 /* SoundController.cpp */,
+				2844515B2633C287008343E2 /* SoundController.h */,
 			);
 			name = Source;
 			path = ../source;
@@ -665,6 +672,7 @@
 				288216562605A90E0073F7D4 /* NetworkData.cpp in Sources */,
 				921654412622997200FFE01E /* Projectile.cpp in Sources */,
 				28D048A925F59412005AB6CC /* (null) in Sources */,
+				2844515E2633C287008343E2 /* SoundController.cpp in Sources */,
 				925FC4F825F42B2800532483 /* main.cpp in Sources */,
 				2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */,
 				925FC53E25F42D5C00532483 /* SpawnController.cpp in Sources */,
@@ -693,6 +701,7 @@
 				288216552605A90E0073F7D4 /* NetworkData.cpp in Sources */,
 				921654402622997200FFE01E /* Projectile.cpp in Sources */,
 				28D048A825F59412005AB6CC /* (null) in Sources */,
+				2844515D2633C287008343E2 /* SoundController.cpp in Sources */,
 				925FC4F725F42B2800532483 /* main.cpp in Sources */,
 				2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */,
 				925FC53D25F42D5C00532483 /* SpawnController.cpp in Sources */,
@@ -721,6 +730,7 @@
 				288216542605A90E0073F7D4 /* NetworkData.cpp in Sources */,
 				9216543F2622997200FFE01E /* Projectile.cpp in Sources */,
 				28D048A725F59412005AB6CC /* (null) in Sources */,
+				2844515C2633C287008343E2 /* SoundController.cpp in Sources */,
 				925FC4F625F42B2800532483 /* main.cpp in Sources */,
 				2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */,
 				925FC53C25F42D5C00532483 /* SpawnController.cpp in Sources */,

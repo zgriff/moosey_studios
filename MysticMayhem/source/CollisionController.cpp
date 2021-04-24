@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Collision/b2Collision.h>
 #include "NetworkController.h"
+#include "SoundController.h"
 #include "Globals.h"
 
 void CollisionController::setWorld(std::shared_ptr<World> w){
@@ -48,6 +49,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
             o->setCollected(true);
             p->setOrbScore(p->getOrbScore() + 1);
             world->setOrbCount(world->getCurrOrbCount() - 1);
+            SoundController::playSound(SoundController::Type::ORB, Vec2::ZERO);
             NetworkController::sendOrbCaptured(o->getID(), p->getID());
         }
     }
@@ -62,6 +64,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
                 s->setLastUsed(time(NULL));
                 p->setElement(p->getPreyElement());
                 s->setActive(false);
+                SoundController::playSound(SoundController::Type::SWAP, Vec2::ZERO);
                 NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
             }
         }
@@ -77,7 +80,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
             e->setPID(p->getID());
             p->setEggId(e->getID());
             p->setHoldingEgg(true);
-            CULog("egg collected");
+            SoundController::playSound(SoundController::Type::EGG, Vec2::ZERO);
             NetworkController::sendEggCollected(p->getID(), e->getID());
         }
     }
@@ -166,6 +169,7 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
     time_t timestamp = time(NULL);
     tagged->setTagCooldown(timestamp);
     tagger->incScore(globals::TAG_SCORE);
+    SoundController::playSound(SoundController::Type::TAG, Vec2::ZERO);
     NetworkController::sendTag(tagged->getID(), tagger->getID(), timestamp, dropEgg);
     if (tagged->getCurrElement() == Element::None) {
         auto egg = world->getEgg(tagged->getEggId());

@@ -167,13 +167,41 @@
         }
     },
     "sounds": {
-        "fusion": {
+        "egg": {
             "type": "sample",
-            "file": "sounds/fusion.ogg"
+            "file": "sounds/egg.wav"
         },
-        "laser": {
+        "orb1": {
             "type": "sample",
-            "file": "sounds/laser.ogg"
+            "file": "sounds/orb1.wav"
+        },
+        "orb2": {
+            "type": "sample",
+            "file": "sounds/orb2.wav"
+        },
+        "orb3": {
+            "type": "sample",
+            "file": "sounds/orb3.wav"
+        },
+        "orb4": {
+            "type": "sample",
+            "file": "sounds/orb4.wav"
+        },
+        "swap": {
+            "type": "sample",
+            "file": "sounds/swap.wav"
+        },
+        "tag1": {
+            "type": "sample",
+            "file": "sounds/tag1.wav"
+        },
+        "tag2": {
+            "type": "sample",
+            "file": "sounds/tag2.wav"
+        },
+        "tag3": {
+            "type": "sample",
+            "file": "sounds/tag3.wav"
         }
     },
     "fonts": {
