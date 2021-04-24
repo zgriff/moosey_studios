@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\source\AbilityController.cpp" />
+    <ClCompile Include="..\..\source\App.cpp" />
+    <ClCompile Include="..\..\source\CollisionController.cpp" />
+    <ClCompile Include="..\..\source\Egg.cpp" />
+    <ClCompile Include="..\..\source\EndScene.cpp" />
+    <ClCompile Include="..\..\source\GameScene.cpp" />
+    <ClCompile Include="..\..\source\InputController.cpp" />
+    <ClCompile Include="..\..\source\LoadingScene.cpp" />
+    <ClCompile Include="..\..\source\main.cpp" />
+    <ClCompile Include="..\..\source\MenuScene.cpp" />
+    <ClCompile Include="..\..\source\NetworkController.cpp" />
+    <ClCompile Include="..\..\source\NetworkData.cpp" />
+    <ClCompile Include="..\..\source\Orb.cpp" />
+    <ClCompile Include="..\..\source\Player.cpp" />
+    <ClCompile Include="..\..\source\SpawnController.cpp" />
+    <ClCompile Include="..\..\source\SwapStation.cpp" />
+    <ClCompile Include="..\..\source\World.cpp" />
+    <ClCompile Include="..\..\source\Projectile.cpp" />
+    <ClCompile Include="..\..\source\Booster.cpp" />
+    <ClCompile Include="..\..\source\LobbyScene.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\AbilityController.h" />
+    <ClInclude Include="..\..\source\App.h" />
+    <ClInclude Include="..\..\source\CollisionController.h" />
+    <ClInclude Include="..\..\source\Egg.h" />
+    <ClInclude Include="..\..\source\Element.h" />
+    <ClInclude Include="..\..\source\EndScene.h" />
+    <ClInclude Include="..\..\source\GameScene.h" />
+    <ClInclude Include="..\..\source\Globals.h" />
+    <ClInclude Include="..\..\source\InputController.h" />
+    <ClInclude Include="..\..\source\LoadingScene.h" />
+    <ClInclude Include="..\..\source\MenuScene.h" />
+    <ClInclude Include="..\..\source\MovementStyle.h" />
+    <ClInclude Include="..\..\source\NetworkController.h" />
+    <ClInclude Include="..\..\source\NetworkData.h" />
+    <ClInclude Include="..\..\source\Orb.h" />
+    <ClInclude Include="..\..\source\Player.h" />
+    <ClInclude Include="..\..\source\SpawnController.h" />
+    <ClInclude Include="..\..\source\SwapStation.h" />
+    <ClInclude Include="..\..\source\World.h" />
+    <ClInclude Include="..\..\source\Projectile.h" />
+    <ClInclude Include="..\..\source\Booster.h" />
+    <ClInclude Include="..\..\source\LobbyScene.h" />
+    <ClInclude Include="..\..\source\MapConstants.h" />
+  </ItemGroup>
+</Project>
