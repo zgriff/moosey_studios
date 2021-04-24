@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -64,6 +64,11 @@
 		925FC58025F4489100532483 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 925FC57F25F4489100532483 /* sounds */; };
 		925FC58125F4489100532483 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 925FC57F25F4489100532483 /* sounds */; };
 		925FC58225F4489100532483 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 925FC57F25F4489100532483 /* sounds */; };
+		92BE467A26323CD4009190B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 92BE467926323CD4009190B0 /* GoogleService-Info.plist */; };
+		92BE467B26323CD4009190B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 92BE467926323CD4009190B0 /* GoogleService-Info.plist */; };
+		92BE467C26323CD4009190B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 92BE467926323CD4009190B0 /* GoogleService-Info.plist */; };
+		92BE468226323E46009190B0 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 92BE468126323E46009190B0 /* FirebaseAuth */; };
+		92BE468426323E46009190B0 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 92BE468326323E46009190B0 /* FirebaseAppDistribution-Beta */; };
 		EB0FF6172016EFB200517030 /* iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB7454A71D74D846002FBAE6 /* iOS.xcassets */; };
 		EB0FF6182016EFB200517030 /* Landscape.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB7454A81D74D846002FBAE6 /* Landscape.storyboard */; };
 		EB0FF6192016EFB200517030 /* Portrait.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB7454A91D74D846002FBAE6 /* Portrait.storyboard */; };
@@ -202,12 +207,13 @@
 		925FC54225F42D6800532483 /* SwapStation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SwapStation.cpp; sourceTree = "<group>"; };
 		925FC54325F42D6800532483 /* SwapStation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwapStation.h; sourceTree = "<group>"; };
 		925FC57F25F4489100532483 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
+		92BE467926323CD4009190B0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EB0FF5FC2016EF4F00517030 /* Mystic Mayhem (Sim).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mystic Mayhem (Sim).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE9B81D7498C9002FE78B /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		EB2BE9BA1D7498D2002FE78B /* textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = textures; sourceTree = "<group>"; };
 		EB42669221F68F6900A9DE61 /* DeviceMargins.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DeviceMargins.plist; sourceTree = "<group>"; };
 		EB4EB19D1E3404F3007BCF09 /* CUGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CUGL.xcodeproj; path = "../cugl/build-apple/CUGL.xcodeproj"; sourceTree = "<group>"; };
-		EB74548C1D74D75C002FBAE6 /* Mystic Mayhem (iOS).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mystic Mayhem (iOS).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB74548C1D74D75C002FBAE6 /* Mystic Mayhem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mystic Mayhem.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB7454A61D74D846002FBAE6 /* iOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iOS-Info.plist"; sourceTree = "<group>"; };
 		EB7454A71D74D846002FBAE6 /* iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = iOS.xcassets; sourceTree = "<group>"; };
 		EB7454A81D74D846002FBAE6 /* Landscape.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Landscape.storyboard; sourceTree = "<group>"; };
@@ -304,11 +310,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB4EB1A71E340509007BCF09 /* libcugl-mac.a in Frameworks */,
+				92BE468226323E46009190B0 /* FirebaseAuth in Frameworks */,
 				EB97E89025D1822600753535 /* Carbon.framework in Frameworks */,
 				EB97E89225D1822600753535 /* Cocoa.framework in Frameworks */,
 				EB97E89325D1822600753535 /* CoreAudio.framework in Frameworks */,
 				EB97E89125D1822600753535 /* CoreGraphics.framework in Frameworks */,
 				EB97E88F25D1822600753535 /* CoreVideo.framework in Frameworks */,
+				92BE468426323E46009190B0 /* FirebaseAppDistribution-Beta in Frameworks */,
 				EB97E89625D1822600753535 /* CoreHaptics.framework in Frameworks */,
 				EB97E89425D1822600753535 /* AudioToolbox.framework in Frameworks */,
 				EB97E89525D1822600753535 /* AVFoundation.framework in Frameworks */,
@@ -399,6 +407,7 @@
 		EBBF18881D74904A008E2001 = {
 			isa = PBXGroup;
 			children = (
+				92BE467926323CD4009190B0 /* GoogleService-Info.plist */,
 				EBBF18B11D749176008E2001 /* Source */,
 				EB2BE9B71D749870002FE78B /* Assets */,
 				EBBF18931D74904A008E2001 /* Resources */,
@@ -412,7 +421,7 @@
 			isa = PBXGroup;
 			children = (
 				EBBF18911D74904A008E2001 /* Mystic Mayhem (Mac).app */,
-				EB74548C1D74D75C002FBAE6 /* Mystic Mayhem (iOS).app */,
+				EB74548C1D74D75C002FBAE6 /* Mystic Mayhem.app */,
 				EB0FF5FC2016EF4F00517030 /* Mystic Mayhem (Sim).app */,
 			);
 			name = Products;
@@ -503,9 +512,9 @@
 			productReference = EB0FF5FC2016EF4F00517030 /* Mystic Mayhem (Sim).app */;
 			productType = "com.apple.product-type.application";
 		};
-		EB74548B1D74D75C002FBAE6 /* Mystic Mayhem (iOS) */ = {
+		EB74548B1D74D75C002FBAE6 /* Mystic Mayhem */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Mystic Mayhem (iOS)" */;
+			buildConfigurationList = EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Mystic Mayhem" */;
 			buildPhases = (
 				EB7454881D74D75C002FBAE6 /* Sources */,
 				EB7454891D74D75C002FBAE6 /* Frameworks */,
@@ -515,9 +524,9 @@
 			);
 			dependencies = (
 			);
-			name = "Mystic Mayhem (iOS)";
+			name = "Mystic Mayhem";
 			productName = "HelloWorld (iOS)";
-			productReference = EB74548C1D74D75C002FBAE6 /* Mystic Mayhem (iOS).app */;
+			productReference = EB74548C1D74D75C002FBAE6 /* Mystic Mayhem.app */;
 			productType = "com.apple.product-type.application";
 		};
 		EBBF18901D74904A008E2001 /* Mystic Mayhem (Mac) */ = {
@@ -533,6 +542,10 @@
 			dependencies = (
 			);
 			name = "Mystic Mayhem (Mac)";
+			packageProductDependencies = (
+				92BE468126323E46009190B0 /* FirebaseAuth */,
+				92BE468326323E46009190B0 /* FirebaseAppDistribution-Beta */,
+			);
 			productName = "HelloWorld (Mac)";
 			productReference = EBBF18911D74904A008E2001 /* Mystic Mayhem (Mac).app */;
 			productType = "com.apple.product-type.application";
@@ -571,6 +584,9 @@
 				Base,
 			);
 			mainGroup = EBBF18881D74904A008E2001;
+			packageReferences = (
+				92BE468026323E46009190B0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = EBBF18921D74904A008E2001 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -582,7 +598,7 @@
 			projectRoot = "";
 			targets = (
 				EBBF18901D74904A008E2001 /* Mystic Mayhem (Mac) */,
-				EB74548B1D74D75C002FBAE6 /* Mystic Mayhem (iOS) */,
+				EB74548B1D74D75C002FBAE6 /* Mystic Mayhem */,
 				EB0FF5FB2016EF4F00517030 /* Mystic Mayhem (Sim) */,
 			);
 		};
@@ -619,6 +635,7 @@
 			files = (
 				EB0FF61A2016EFC500517030 /* json in Resources */,
 				EB0FF61B2016EFC500517030 /* textures in Resources */,
+				92BE467C26323CD4009190B0 /* GoogleService-Info.plist in Resources */,
 				925FC58225F4489100532483 /* sounds in Resources */,
 				EB0FF61C2016EFC500517030 /* fonts in Resources */,
 				EB0FF6172016EFB200517030 /* iOS.xcassets in Resources */,
@@ -634,6 +651,7 @@
 			files = (
 				EB7454D01D750623002FBAE6 /* textures in Resources */,
 				EB7454D11D750623002FBAE6 /* fonts in Resources */,
+				92BE467B26323CD4009190B0 /* GoogleService-Info.plist in Resources */,
 				925FC58125F4489100532483 /* sounds in Resources */,
 				EB7454AB1D74D846002FBAE6 /* iOS.xcassets in Resources */,
 				EB7454AC1D74D846002FBAE6 /* Landscape.storyboard in Resources */,
@@ -652,6 +670,7 @@
 				EB2BE9BB1D7498D2002FE78B /* textures in Resources */,
 				EB2BE9B91D7498C9002FE78B /* fonts in Resources */,
 				EBBF189B1D74904A008E2001 /* Mac.xcassets in Resources */,
+				92BE467A26323CD4009190B0 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -768,7 +787,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = "$(STATIC_LIB)";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = NO;
@@ -801,7 +823,10 @@
 				DEVELOPMENT_TEAM = 8V2ZJB7F6S;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = "$(STATIC_LIB)";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = NO;
@@ -828,7 +853,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.mysticmayhem;
@@ -853,7 +881,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.mysticmayhem;
@@ -991,7 +1022,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 8V2ZJB7F6S;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Mac-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.mysticmayhem;
 			};
@@ -1006,7 +1040,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 8V2ZJB7F6S;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Mac-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.mysticmayhem;
 			};
@@ -1024,7 +1061,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Mystic Mayhem (iOS)" */ = {
+		EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Mystic Mayhem" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB7454A11D74D75C002FBAE6 /* Debug */,
@@ -1052,6 +1089,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		92BE468026323E46009190B0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		92BE468126323E46009190B0 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92BE468026323E46009190B0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		92BE468326323E46009190B0 /* FirebaseAppDistribution-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92BE468026323E46009190B0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAppDistribution-Beta";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EBBF18891D74904A008E2001 /* Project object */;
 }
