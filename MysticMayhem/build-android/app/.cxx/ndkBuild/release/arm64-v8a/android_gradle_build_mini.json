@@ -1,0 +1,26 @@
+{
+  "buildFiles": [
+    "/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/Android.mk",
+    "/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/Application.mk"
+  ],
+  "cleanCommands": [
+    "/Library/Android/sdk/ndk/21.1.6352462/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/Android.mk NDK_APPLICATION_MK\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/Application.mk APP_ABI\u003darm64-v8a NDK_ALL_ABIS\u003darm64-v8a NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/build/intermediates/ndkBuild/release/lib clean"
+  ],
+  "buildTargetsCommand": "/Library/Android/sdk/ndk/21.1.6352462/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/Android.mk NDK_APPLICATION_MK\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/Application.mk APP_ABI\u003darm64-v8a NDK_ALL_ABIS\u003darm64-v8a NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/build/intermediates/ndkBuild/release/lib {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "CUGL-release-arm64-v8a": {
+      "artifactName": "CUGL",
+      "buildCommand": "/Library/Android/sdk/ndk/21.1.6352462/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/Android.mk NDK_APPLICATION_MK\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/Application.mk APP_ABI\u003darm64-v8a NDK_ALL_ABIS\u003darm64-v8a NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/build/intermediates/ndkBuild/release/lib /Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/build/intermediates/ndkBuild/release/obj/local/arm64-v8a/libCUGL.a",
+      "abi": "arm64-v8a",
+      "output": "/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/build/intermediates/ndkBuild/release/obj/local/arm64-v8a/libCUGL.a",
+      "runtimeFiles": []
+    },
+    "main-release-arm64-v8a": {
+      "artifactName": "main",
+      "buildCommand": "/Library/Android/sdk/ndk/21.1.6352462/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/Android.mk NDK_APPLICATION_MK\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/Application.mk APP_ABI\u003darm64-v8a NDK_ALL_ABIS\u003darm64-v8a NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003d/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/build/intermediates/ndkBuild/release/lib /Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/build/intermediates/ndkBuild/release/obj/local/arm64-v8a/libmain.so",
+      "abi": "arm64-v8a",
+      "output": "/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/build/intermediates/ndkBuild/release/obj/local/arm64-v8a/libmain.so",
+      "runtimeFiles": []
+    }
+  }
+}

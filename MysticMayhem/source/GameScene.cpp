@@ -36,7 +36,6 @@ using namespace std;
 #define DEFAULT_WIDTH   36.0f
 /** Height of the game world in Box2d units */
 #define DEFAULT_HEIGHT  18.0f
-
 /** The restitution for all physics objects */
 #define TURNS_PER_SPIN   55.0f
 /** how much the lateral velocity is subtracted per frame*/
@@ -63,17 +62,19 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         CULog("Fail!");
         return false;
     }
+    
+    //these represent the dimensions of the game world in scene units
     float w = _world->getSceneSize().x;
     float h = _world->getSceneSize().y;
     
     Size dimen = computeActiveSize(w,h);
-    Rect rect(0,0,DEFAULT_WIDTH,DEFAULT_HEIGHT);
+
     if (assets == nullptr) {
         return false;
     } else if (!Scene2::init(dimen)) {
         return false;
     }
-
+    
     
     NetworkController::setWorld(_world);
     _world->setNumPlayers(NetworkController::getNumPlayers());
@@ -83,32 +84,6 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Start up the input handler
     _assets = assets;
     _playerController.init();
-    // Acquire the scene built by the asset loader and resize it the scene
-//    auto scene_background = _assets->get<scene2::SceneNode>("background");
-//    scene_background->setContentSize(dimen);
-//    scene_background->doLayout(); // Repositions the HUD;
-    
-    _UInode = _assets->get<scene2::SceneNode>("ui");
-    _UInode->setContentSize(dimen);
-    _UInode->doLayout(); // Repositions the HUD;
-
-    _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
-    _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
-    
-    _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
-//    CULog("Hatchbar: %s", _hatchbar->get);
-    _hatchbar->setVisible(false);
-    
-    _hatchnode = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_hatched"));
-    _hatchnode->setVisible(false);
-    _startTime = time(NULL);
-
-    _abilityname = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_abilityBar_abilityName"));
-    _abilityname->setVisible(false);
-
-    _abilitybar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_abilityBar"));
-    _abilitybar->setForegroundColor(Color4(255, 255, 255, 100));
-//    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
     
     auto world = _world->getPhysicsWorld();
     world->activateCollisionCallbacks(true);
@@ -129,21 +104,44 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         CollisionController::beforeSolve(contact,oldManifold);
     };
     
-    Vec2 offset((dimen.width-w)/2.0f,(dimen.height-h)/2.0f);
-
+    //TODO: Change from hardcoded 8.0, figure out actual offset for phones
+    _worldOffset = Vec2((dimen.width-w)/8.0f,(dimen.height-h)/2.0f);
+    CULog("world off x: %f y: %f", _worldOffset.x, _worldOffset.y);
+    
     _rootnode = scene2::SceneNode::alloc();
     _rootnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
-    _rootnode->setPosition(offset);
+    _rootnode->setPosition(_worldOffset);
+    _rootnode->setContentSize(Size(w,h));
 
+    _UInode = _assets->get<scene2::SceneNode>("ui");
     _UInode->setAnchor(Vec2::ANCHOR_CENTER);
+    _UInode->setPosition(_worldOffset);
+    _UInode->setContentSize(Size(w,h));
+    _UInode->doLayout(); // Repositions the HUD;
+    
+    
+    _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
+    
+    _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
+    
+    _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
+    _hatchbar->setVisible(false);
+    
+    _hatchnode = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_hatched"));
+    _hatchnode->setVisible(false);
+    _startTime = time(NULL);
+
+    _abilityname = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_abilityBar_abilityName"));
+    _abilityname->setVisible(false);
+
+    _abilitybar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_abilityBar"));
+    _abilitybar->setForegroundColor(Color4(255, 255, 255, 100));
     
     
     _debugnode = _world->getDebugNode();
-//    addChild(scene_background);
+    
     addChild(_rootnode);
     addChild(_UInode);
-    _UInode->setContentSize(Size(w,h));
-    _rootnode->setContentSize(Size(w,h));
     
     _world->setAssets(_assets);
 
@@ -232,7 +230,6 @@ void GameScene::update(float timestep) {
             /* auto ang = _player->getDirection() + _playerController.getMov().x * -2.0 * M_PI / TURNS_PER_SPIN;
             //_player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
             _player->setDirection(ang);
-
             auto vel = _player->getLinearVelocity();
             //Please don't delete this comment, angles were difficult to derive and easy to forget
             //vel angle originates from y axis, player angle orginates from x axis
@@ -339,7 +336,7 @@ void GameScene::update(float timestep) {
     auto trans = (playPos - camSpot)*.07f;
     getCamera()->translate(trans);
     getCamera()->update();
-    _UInode->setPosition(camSpot + trans - Vec2(SCENE_WIDTH/2.0f, SCENE_HEIGHT/2.0f));
+    _UInode->setPosition(camSpot + trans - _worldOffset);
 
 
     
@@ -418,7 +415,7 @@ void GameScene::update(float timestep) {
     _abilitybar->setProgress(_player->getOrbScore() * 0.2);
     if (_player->getOrbScore() == 5 && _abilityController.getQueuedAbility() == AbilityController::Ability::NoAbility) {
         _abilityController.updateAbility(_abilityname);
-        _abilityname->setVisible(true); 
+        _abilityname->setVisible(true);
     }
     if (_playerController.isAbilityPressed()) {
         _abilityController.activateAbility(_player);

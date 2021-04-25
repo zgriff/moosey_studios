@@ -48,32 +48,32 @@ using namespace cugl;
 #pragma mark Animation Constants
 
 #define SKIN_ROWS           1
-#define SKIN_COLS           4
-#define SKIN_FRAMES         4
+#define SKIN_COLS           8
+#define SKIN_FRAMES         8
 
-#define COLOR_ROWS          4
-#define COLOR_COLS          4
-#define COLOR_FRAMES        16
+#define COLOR_ROWS          1
+#define COLOR_COLS          20
+#define COLOR_FRAMES        20
 
 #define FACE_ROWS           1
-#define FACE_COLS           4
-#define FACE_FRAMES         4
+#define FACE_COLS           8
+#define FACE_FRAMES         8
 
 #define BODY_ROWS           1
 #define BODY_COLS           4
 #define BODY_FRAMES         4
 
 #define HAT_ROWS            1
-#define HAT_COLS            4
-#define HAT_FRAMES          4
+#define HAT_COLS            12
+#define HAT_FRAMES          12
 
 #define STAFF_ROWS          1
-#define STAFF_COLS          4
-#define STAFF_FRAMES        4
+#define STAFF_COLS          24
+#define STAFF_FRAMES        24
 
 #define RING_ROWS           1
-#define RING_COLS           2
-#define RING_FRAMES         2
+#define RING_COLS           6
+#define RING_FRAMES         6
 
 #define PLAYER_ANIM_FRAMES  4
 
@@ -109,12 +109,32 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _animNodes[_staffKey] = staffNode;
     _animNodes[_ringKey] = ringNode;
     
+    //TODO: fix hat animation
+    _animNodes[_hatKey]->setFrame(1);
+    
+    _frameNumbers[_skinKey] = 4;
+    _frameNumbers[_colorKey] = 4;
+    _frameNumbers[_faceKey] = 4;
+    _frameNumbers[_bodyKey] = 4;
+    _frameNumbers[_hatKey] = 1;
+    _frameNumbers[_staffKey] = 4;
+    _frameNumbers[_ringKey] = 2;
+    
     for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
         (*it).second->setAnchor(Vec2::ANCHOR_CENTER);
         (*it).second->setPosition(0,0);
-        _sceneNode->addChild((*it).second);
         _animCycles[(*it).first] = true;
     }
+    
+    
+    _sceneNode->addChild(skinNode);
+    _sceneNode->addChild(colorNode);
+    _sceneNode->addChild(faceNode);
+    _sceneNode->addChild(bodyNode);
+    _sceneNode->addChild(hatNode);
+    _sceneNode->addChild(staffNode);
+    _sceneNode->addChild(ringNode);
+    
     
     _sceneNode->setScale(0.1f);
     
@@ -135,33 +155,44 @@ void Player::setElement(Element e){
     _currElt = e;
     
     //Need to flip before and after setting frame bc bug with texture on polygon
-    bool flip = _animNodes[_colorKey]->isFlipHorizontal();
-    if (flip) {
+    //Staff asset faces opposite direction
+    if (_horizFlip) {
         _animNodes[_colorKey]->flipHorizontal(false);
+    } else {
+        _animNodes[_staffKey]->flipHorizontal(false);
     }
     
     switch(e){
         case Element::Grass:
-//            _animationNode->setFrame(4);
-            _animNodes[_colorKey]->setFrame(4);
+            _animNodes[_colorKey]->setFrame(calculateFrame(8,_colorKey));
+            _animNodes[_staffKey]->setFrame(calculateFrame(8,_staffKey));
+            _animNodes[_ringKey]->setFrame(calculateFrame(4,_ringKey));
             break;
         case Element::Fire:
-            _animNodes[_colorKey]->setFrame(0);
+            _animNodes[_colorKey]->setFrame(calculateFrame(0,_colorKey));
+            _animNodes[_staffKey]->setFrame(calculateFrame(0,_staffKey));
+            _animNodes[_ringKey]->setFrame(calculateFrame(0,_ringKey));
             break;
         case Element::Water:
-            _animNodes[_colorKey]->setFrame(8);
+            _animNodes[_colorKey]->setFrame(calculateFrame(4,_colorKey));
+            _animNodes[_staffKey]->setFrame(calculateFrame(4,_staffKey));
+            _animNodes[_ringKey]->setFrame(calculateFrame(2,_ringKey));
             break;
         case Element::None:
-            _animNodes[_colorKey]->setFrame(12);
+            _animNodes[_colorKey]->setFrame(calculateFrame(16,_colorKey));
+            _animNodes[_staffKey]->setFrame(calculateFrame(16,_staffKey));
             break;
         case Element::Aether:
-            _sceneNode->setColor(Color4(0, 0, 0));
+            _animNodes[_colorKey]->setFrame(calculateFrame(12,_colorKey));
+            _animNodes[_staffKey]->setFrame(calculateFrame(12,_staffKey));
+            break;
     }
     
-    if (flip) {
+    if (_horizFlip) {
         _animNodes[_colorKey]->flipHorizontal(true);
+    } else  {
+        _animNodes[_staffKey]->flipHorizontal(true);
     }
-    
 }
 
 Element Player::getPreyElement() {
@@ -188,7 +219,6 @@ void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     CULog("sceneNode width %d", _sceneNode->getContentWidth());
     CULog("animationNode width %d", _animationNode->getContentWidth());*/
     _sceneNode->addChild(_usernameNode);
-    
 }
 
 /**
@@ -201,6 +231,7 @@ void Player::dispose() {
     _texture = nullptr;
     _animNodes.clear();
     _animCycles.clear();
+    _frameNumbers.clear();
     _skinKey = "";
     _colorKey = "";
     _faceKey = "";
@@ -355,29 +386,32 @@ void Player::animateMovement() {
     //Check to see if player is going right or left and flip sprite
     if (getDirection() >= M_PI)  {
         flipHorizontal(true);
+        _horizFlip = true;
     } else if (getDirection() < M_PI) {
         flipHorizontal(false);
+        _horizFlip = false;
     }
     
     //iterate through nodes and animate at animation rate
     if (clock() - _animationTimer  >= _animationRate) {
         for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
-            if ((*it).first != _ringKey) {
-                animationCycle((*it).second.get(), &_animCycles[(*it).first]);
-            }
+            animationCycle((*it).second.get(), &_animCycles[(*it).first], (*it).first);
         }
         _animationTimer = clock();
     }
 }
 
 
-void Player::animationCycle(scene2::AnimationNode* node, bool* cycle) {
-    if (node->getFrame()%PLAYER_ANIM_FRAMES == PLAYER_ANIM_FRAMES-1) {
+void Player::animationCycle(scene2::AnimationNode* node, bool* cycle, std::string key) {
+    if (node->getFrame()%_frameNumbers[key] == _frameNumbers[key]-1 && !node->isFlipHorizontal()) {
+        *cycle = false;
+    } else if (node->getFrame()%_frameNumbers[key] == 0 && node->isFlipHorizontal()) {
         *cycle = false;
     } else {
         *cycle = true;
     }
     
+//    CULog("frame:   %i", node->getFrame());
     //Need to flip before and after setting frame bc bug with texture on polygon
     bool flip = node->isFlipHorizontal();
     if (flip) {
@@ -386,10 +420,19 @@ void Player::animationCycle(scene2::AnimationNode* node, bool* cycle) {
     
     // Increment
     if (*cycle) {
-        node->setFrame(node->getFrame()+1);
+        if (flip) {
+            node->setFrame(node->getFrame()-1);
+        } else {
+            node->setFrame(node->getFrame()+1);
+        }
     } else {
-        //TODO: change 3 to num frames
-        node->setFrame(node->getFrame()-(PLAYER_ANIM_FRAMES-1));
+        //Return to beginning of animation cycle
+        if (flip) {
+            node->setFrame(node->getFrame()+(_frameNumbers[key]-1));
+        } else {
+            node->setFrame(node->getFrame()-(_frameNumbers[key]-1));
+        }
+        
     }
     
     if (flip) {
@@ -400,11 +443,27 @@ void Player::animationCycle(scene2::AnimationNode* node, bool* cycle) {
 //iterate through animation nodes and flip if not ring
 void Player::flipHorizontal(bool flip) {
     for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
-        if ((*it).second->isFlipHorizontal()!=flip) {
-            if ((*it).first != _ringKey) {
+        //staff asset faces the opposite direction as all other nodes
+        if ((*it).first == _staffKey) {
+            if ((*it).second->isFlipHorizontal()==flip) {
+                (*it).second->setFrame((*it).second->getSize()-(*it).second->getFrame()-1);
+                (*it).second->flipHorizontal(!flip);
+            }
+        } else if ((*it).first != _ringKey) {
+            if ((*it).second->isFlipHorizontal()!=flip) {
+                (*it).second->setFrame((*it).second->getSize()-(*it).second->getFrame()-1);
                 (*it).second->flipHorizontal(flip);
             }
         }
     }
 }
 
+//helper function to reverse frame order bc flipping horizontally flips the whole texture
+int Player::calculateFrame(int frame, std::string key) {
+    if ((_horizFlip && key != _ringKey && key != _staffKey) ||
+        (key == _staffKey && !_horizFlip))  {
+        return _animNodes[key]->getSize()-frame-1;
+    } else {
+        return frame;
+    }
+}
