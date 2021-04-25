@@ -41,6 +41,7 @@ namespace NetworkController {
     void sendProjectileGone(int projectileId);
     void sendTag(int taggedId, int taggerId, time_t timestamp, bool dropEgg);
     void sendEggRespawn(int eggId, Vec2 eggPosition);
+    void sendSetUsername(int playerId, string username);
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);
     std::shared_ptr<World> getWorld();

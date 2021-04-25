@@ -14,9 +14,9 @@ namespace NetworkController {
         std::string roomId;
         std::shared_ptr<World> world;
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
-        std::string username;
+        std::string username = "test";
         //Networked usernames indexed by playerId
-        array<std::string, 16> usernames = {"test", "test2"};
+        array<std::string, 2> usernames = {"test", "test2"};
         int _networkFrame;
     
         std::function<void(uint8_t, bool)> readyCallback;
@@ -85,7 +85,7 @@ namespace NetworkController {
     }
 
     std::string getUsername(int i) {
-        return usernames[i];
+        return roomId;
     }
 
     void setUsername(std::string name) {
@@ -127,6 +127,7 @@ namespace NetworkController {
 
     void update(float timestep){
         network->receive([&](const std::vector<uint8_t> msg) {
+            CULog("received stuff");
             ND::NetworkData nd{};
             ND::fromBytes(nd, msg);
             switch(nd.packetType){
@@ -140,7 +141,14 @@ namespace NetworkController {
                     startCallback();
                     break;
                 case ND::NetworkData::SET_USERNAME:
-                    usernames[nd.setUsernameData.playerId] = *nd.setUsernameData.username;
+                {
+                    //usernames[nd.setUsernameData.playerId] = *nd.setUsernameData.username;
+                    CULog("reached receive set username");
+                    int id1 = nd.setUsernameData.playerId;
+                    string username1 = *nd.setUsernameData.username;
+                    CULog("setting %d username to ", id1);
+                    CULog("username is %s", username1);
+                }
                     break;
                 case ND::NetworkData::TAG_PACKET:
                 {
@@ -367,6 +375,17 @@ namespace NetworkController {
         nd.tagData.taggerId = taggerId;
         nd.tagData.timestamp = timestamp;
         nd.tagData.dropEgg = dropEgg;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void sendSetUsername(int playerId, string username) {
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::SET_USERNAME;
+        nd.setUsernameData.playerId = playerId;
+        nd.setUsernameData.username = &username;
+        //CULog("reached here 1");
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
         network->send(bytes);

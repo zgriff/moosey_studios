@@ -16,6 +16,7 @@
 #include "InputController.h"
 #include "World.h"
 #include "Globals.h"
+#include "MapConstants.h"
 
 /**
  * This class is a simple loading screen for asychronous asset loading.
@@ -35,6 +36,11 @@ protected:
 
     // VIEW
     std::shared_ptr<cugl::scene2::Button> _startButton;
+    std::shared_ptr<cugl::scene2::Button> _map1Button;
+    std::shared_ptr<cugl::scene2::Button> _map2Button;
+    std::shared_ptr<cugl::scene2::Button> _map3Button;
+    std::shared_ptr<cugl::scene2::Button> _map4Button;
+    string _selectedMap = GRASS_MAP_KEY;
     std::shared_ptr<cugl::scene2::Label> _roomId;
     std::vector<std::shared_ptr<cugl::scene2::Label>> _playerLabels;
     
@@ -109,6 +115,9 @@ public:
     bool isPlayAgain() { return _playAgain; }
     
     void setPlayAgain(bool p) { _playAgain = p;}
+
+    string getSelectedMap() { return _selectedMap; };
+    void setSelectedMap(string map) { _selectedMap = map; };
         
 };
 

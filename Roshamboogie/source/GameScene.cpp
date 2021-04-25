@@ -89,10 +89,10 @@ float WALL[WALL_COUNT][WALL_VERTS] = {
  *
  * @return true if the controller is initialized properly, false otherwise.
  */
-bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
+bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string mapKey) {
     // Initialize the scene to a locked width
     //create world
-    _world = assets->get<World>(GRASS_MAP_KEY);
+    _world = assets->get<World>(mapKey);
     if (_world == nullptr) {
         CULog("Fail!");
         return false;

@@ -54,16 +54,59 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     addChild(layer);
     
     _startButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_start"));
+    _startButton->setVisible(false);
+    _map1Button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_map1"));
+    _map2Button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_map2"));
+    _map3Button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_map3"));
+    _map4Button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_map4"));
+    _map1Button->setToggle(true);
+    _map2Button->setToggle(true);
+    _map3Button->setToggle(true);
+    _map4Button->setToggle(true);
     
     if(NetworkController::isHost()){
+        _startButton->setVisible(true);
         _startButton->addListener([&](const std::string& name, bool down) {
             if(true){ //TODO: if everyone ready
                 NetworkController::startGame();
                 _active = down;
             }
         });
+        _map1Button->addListener([&](const std::string& name, bool down) {
+            if (_map1Button->isDown()) {
+                _map2Button->setDown(false);
+                _map3Button->setDown(false);
+                _map4Button->setDown(false);
+                _selectedMap = GRASS_MAP_KEY;
+                CULog("%f %f", _map1Button->getPositionX(), _map1Button->getPositionY());
+            }
+        });
+        _map2Button->addListener([&](const std::string& name, bool down) {
+            if (_map2Button->isDown()) {
+                _map1Button->setDown(false);
+                _map3Button->setDown(false);
+                _map4Button->setDown(false);
+                _selectedMap = GRASS_MAP2_KEY;
+            }
+        });
+        _map3Button->addListener([&](const std::string& name, bool down) {
+            if (_map3Button->isDown()) {
+                _map1Button->setDown(false);
+                _map2Button->setDown(false);
+                _map4Button->setDown(false);
+                _selectedMap = GRASS_MAP3_KEY;
+            }
+            });
+        _map4Button->addListener([&](const std::string& name, bool down) {
+            if (_map4Button->isDown()) {
+                _map1Button->setDown(false);
+                _map2Button->setDown(false);
+                _map3Button->setDown(false);
+                _selectedMap = GRASS_MAP4_KEY;
+            }
+            });
     }
-//    else{
+    else{
 //        _startButton->addListener([&](const std::string& name, bool down) {
 //            if(clientReady){
 //                NetworkController::unready();
@@ -72,12 +115,31 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
 //            }
 //            clientReady = !clientReady;
 //        });
-//    }
-//    _startButton->addListener([&](const std::string& name, bool down) {
-//        if(true){ //TODO: if everyone ready
-//            _active = down;
-//        }
-//    });
+        _map1Button->deactivate();
+        _map1Button->setVisible(false);
+        _map2Button->deactivate();
+        _map2Button->setVisible(false);
+        _map3Button->deactivate();
+        _map3Button->setVisible(false);
+        _map4Button->deactivate();
+        _map4Button->setVisible(false);
+
+        if (_selectedMap == GRASS_MAP_KEY) {
+            _map1Button->setVisible(true);
+        }
+        else if (_selectedMap == GRASS_MAP2_KEY) {
+            _map2Button->setVisible(true);
+            _map2Button->setPosition(100, 160);
+        }
+        else if (_selectedMap == GRASS_MAP3_KEY) {
+            _map3Button->setVisible(true);
+            _map3Button->setPosition(100, 160);
+        }
+        else if (_selectedMap == GRASS_MAP4_KEY) {
+            _map4Button->setVisible(true);
+            _map4Button->setPosition(100, 160);
+        }
+    }
     
     _roomId = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("lobby_roomId"));
     
@@ -113,6 +175,10 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
 void LobbyScene::dispose() {
     removeAllChildren();
     _startButton = nullptr;
+    _map1Button = nullptr;
+    _map2Button = nullptr;
+    _map3Button = nullptr;
+    _map4Button = nullptr;
     _playerLabels.clear();
     _assets = nullptr;
     _active = false;
@@ -146,7 +212,13 @@ void LobbyScene::update(float progress) {
         int player_num = std::stoi(name);
         
         if (player_num <= NetworkController::getNumPlayers()) {
-            (*it)->setText(NetworkController::getUsername(it - _playerLabels.begin()));
+            if (player_num == 2) {
+                //NetworkController::sendSetUsername(player_num, "testname2");
+            }
+            //CULog("index is %d", it - _playerLabels.begin());
+            //NetworkController::sendSetUsername(player_num, "testname");
+            //CULog("setting username label text %s", NetworkController::getUsername(it - _playerLabels.begin()));
+            //(*it)->setText(NetworkController::getUsername(it - _playerLabels.begin()));
             (*it)->setVisible(true);
         }
     }
@@ -164,8 +236,16 @@ void LobbyScene::setActive(bool value) {
     _active = value;
     if (value && !_startButton->isActive()) {
         _startButton->activate();
+        _map1Button->activate();
+        _map2Button->activate();
+        _map3Button->activate();
+        _map4Button->activate();
     } else {
         _startButton->deactivate();
+        _map1Button->deactivate();
+        _map2Button->deactivate();
+        _map3Button->deactivate();
+        _map4Button->deactivate();
     }
 //    if (value && (!_hostButton->isActive() || !_joinButton->isActive())) {
 //        _hostButton->activate();

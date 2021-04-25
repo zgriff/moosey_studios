@@ -336,6 +336,7 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
             writeBits(dest, src.readyData.player_id, PLAYER_ID_BITS);
             break;
         case NetworkData::SET_USERNAME:
+            //CULog("reached here 2");
             writeBits(dest, src.setUsernameData.playerId, PLAYER_ID_BITS);
             writeString(dest, *src.setUsernameData.username);
             break;

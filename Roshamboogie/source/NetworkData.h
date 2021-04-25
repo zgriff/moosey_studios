@@ -79,20 +79,10 @@ struct NetworkData {
             uint8_t playerId;
             string* username;
         } setUsernameData;
-    }; //u;
-
-    /*NetworkData(const NetworkData& nd) : packetType(nd.packetType) {
-        switch (nd.packetType) {
-        case SET_USERNAME: 
-            new(&u.setUsernameData.username)(nd.u.setUsernameData.username); 
-            break;
-        }
-    }
-    ~NetworkData() {
-        if (nd.packetType == SET_USERNAME)
-            u.setUsernameData.username.~string();
-    }*/
-    
+        struct {
+            uint8_t mapNumber;
+        } setMapNumber;
+    };     
 };
 
 //convert the bytes to a NetworkData struct, putting the result in dest
