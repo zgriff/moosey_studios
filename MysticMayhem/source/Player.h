@@ -37,6 +37,8 @@ private:
     
     std::unordered_map<std::string,std::shared_ptr<cugl::scene2::AnimationNode>> _animNodes;
     std::unordered_map<std::string,bool> _animCycles;
+    std::unordered_map<std::string,int> _frameNumbers;
+    
     
     /** Animation Nodes :o */
     std::string _skinKey;
@@ -178,6 +180,8 @@ public:
     void allocUsernameNode(const std::shared_ptr<cugl::Font>& font);
 
     void setUsername(std::string name) { _username = name; };
+    
+    int calculateFrame(int frame, std::string key);
 
     
 #pragma mark Graphics
@@ -343,7 +347,7 @@ public:
     
     void animateMovement();
     
-    void animationCycle(cugl::scene2::AnimationNode* node, bool* cycle);
+    void animationCycle(cugl::scene2::AnimationNode* node, bool* cycle, std::string key);
     
     void flipHorizontal(bool flip);
     
