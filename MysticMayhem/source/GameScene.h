@@ -49,6 +49,8 @@ protected:
     
     /** The scale between the physics world and the screen (MUST BE UNIFORM) */
     float _scale;
+    
+    Vec2 _worldOffset;
 
     std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
 	
