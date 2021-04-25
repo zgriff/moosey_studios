@@ -13,6 +13,9 @@
 		2844515C2633C287008343E2 /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2844515A2633C287008343E2 /* SoundController.cpp */; };
 		2844515D2633C287008343E2 /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2844515A2633C287008343E2 /* SoundController.cpp */; };
 		2844515E2633C287008343E2 /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2844515A2633C287008343E2 /* SoundController.cpp */; };
+		2844518D263629DA008343E2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2844518C263629D8008343E2 /* GoogleService-Info.plist */; };
+		28445191263629DA008343E2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2844518C263629D8008343E2 /* GoogleService-Info.plist */; };
+		28445192263629DB008343E2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2844518C263629D8008343E2 /* GoogleService-Info.plist */; };
 		2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
 		2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
 		2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
@@ -67,9 +70,6 @@
 		925FC58025F4489100532483 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 925FC57F25F4489100532483 /* sounds */; };
 		925FC58125F4489100532483 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 925FC57F25F4489100532483 /* sounds */; };
 		925FC58225F4489100532483 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 925FC57F25F4489100532483 /* sounds */; };
-		92BE467A26323CD4009190B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 92BE467926323CD4009190B0 /* GoogleService-Info.plist */; };
-		92BE467B26323CD4009190B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 92BE467926323CD4009190B0 /* GoogleService-Info.plist */; };
-		92BE467C26323CD4009190B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 92BE467926323CD4009190B0 /* GoogleService-Info.plist */; };
 		92BE468226323E46009190B0 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 92BE468126323E46009190B0 /* FirebaseAuth */; };
 		92BE468426323E46009190B0 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 92BE468326323E46009190B0 /* FirebaseAppDistribution-Beta */; };
 		EB0FF6172016EFB200517030 /* iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB7454A71D74D846002FBAE6 /* iOS.xcassets */; };
@@ -175,6 +175,7 @@
 		28297955260CEE99002EC000 /* World.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		2844515A2633C287008343E2 /* SoundController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoundController.cpp; sourceTree = "<group>"; };
 		2844515B2633C287008343E2 /* SoundController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundController.h; sourceTree = "<group>"; };
+		2844518C263629D8008343E2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		288216462605A7910073F7D4 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
 		288216482605A7910073F7D4 /* NetworkController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkController.cpp; sourceTree = "<group>"; };
 		288216522605A90E0073F7D4 /* NetworkData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkData.cpp; sourceTree = "<group>"; };
@@ -212,7 +213,6 @@
 		925FC54225F42D6800532483 /* SwapStation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SwapStation.cpp; sourceTree = "<group>"; };
 		925FC54325F42D6800532483 /* SwapStation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwapStation.h; sourceTree = "<group>"; };
 		925FC57F25F4489100532483 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
-		92BE467926323CD4009190B0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EB0FF5FC2016EF4F00517030 /* Mystic Mayhem (Sim).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mystic Mayhem (Sim).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE9B81D7498C9002FE78B /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		EB2BE9BA1D7498D2002FE78B /* textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = textures; sourceTree = "<group>"; };
@@ -412,7 +412,7 @@
 		EBBF18881D74904A008E2001 = {
 			isa = PBXGroup;
 			children = (
-				92BE467926323CD4009190B0 /* GoogleService-Info.plist */,
+				2844518C263629D8008343E2 /* GoogleService-Info.plist */,
 				EBBF18B11D749176008E2001 /* Source */,
 				EB2BE9B71D749870002FE78B /* Assets */,
 				EBBF18931D74904A008E2001 /* Resources */,
@@ -642,7 +642,7 @@
 			files = (
 				EB0FF61A2016EFC500517030 /* json in Resources */,
 				EB0FF61B2016EFC500517030 /* textures in Resources */,
-				92BE467C26323CD4009190B0 /* GoogleService-Info.plist in Resources */,
+				28445192263629DB008343E2 /* GoogleService-Info.plist in Resources */,
 				925FC58225F4489100532483 /* sounds in Resources */,
 				EB0FF61C2016EFC500517030 /* fonts in Resources */,
 				EB0FF6172016EFB200517030 /* iOS.xcassets in Resources */,
@@ -658,7 +658,7 @@
 			files = (
 				EB7454D01D750623002FBAE6 /* textures in Resources */,
 				EB7454D11D750623002FBAE6 /* fonts in Resources */,
-				92BE467B26323CD4009190B0 /* GoogleService-Info.plist in Resources */,
+				28445191263629DA008343E2 /* GoogleService-Info.plist in Resources */,
 				925FC58125F4489100532483 /* sounds in Resources */,
 				EB7454AB1D74D846002FBAE6 /* iOS.xcassets in Resources */,
 				EB7454AC1D74D846002FBAE6 /* Landscape.storyboard in Resources */,
@@ -677,7 +677,7 @@
 				EB2BE9BB1D7498D2002FE78B /* textures in Resources */,
 				EB2BE9B91D7498C9002FE78B /* fonts in Resources */,
 				EBBF189B1D74904A008E2001 /* Mac.xcassets in Resources */,
-				92BE467A26323CD4009190B0 /* GoogleService-Info.plist in Resources */,
+				2844518D263629DA008343E2 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
