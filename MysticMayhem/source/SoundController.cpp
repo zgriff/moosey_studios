@@ -54,9 +54,9 @@ void playSound(Type s, cugl::Vec2 pos){
     
     if(spatialAudioEnabled){
         std::shared_ptr<cugl::audio::AudioSpinner> spatial = cugl::audio::AudioSpinner::alloc();
-        spatial->setChannelPlan(cugl::audio::AudioSpinner::Plan::SIDE_STEREO);
+//        spatial->setChannelPlan(cugl::audio::AudioSpinner::Plan::SIDE_STEREO);
         spatial->attach(node);
-        spatial->setAngle(pos.getAngle());
+//        spatial->setAngle(pos.getAngle());
         float gain = pos.length() * (4.0/50.0);
 //        float gain = std::pos(pos.length() * (4.0/50.0), 2.0);
         if(gain <= 1){

@@ -6,6 +6,7 @@
 #include "Egg.h"
 #include "Globals.h"
 #include <cugl/cugl.h>
+#include "SoundController.h"
 
 
 namespace NetworkController {
@@ -133,9 +134,11 @@ namespace NetworkController {
                 {
                     auto tagged = world->getPlayer(nd.tagData.taggedId);
                     auto tagger = world->getPlayer(nd.tagData.taggerId);
+                    auto self = world->getPlayer(network->getPlayerID().value());
                     tagged->setIsTagged(true);
                     tagged->setTagCooldown(nd.tagData.timestamp);
                     tagger->incScore(globals::TAG_SCORE);
+                    SoundController::playSound(SoundController::Type::TAG, tagger->getPosition() - self->getPosition());
                     if (tagged->getCurrElement() == Element::None && !nd.tagData.dropEgg) {
                         auto egg = world->getEgg(tagged->getEggId());
                         egg->setPID(tagger->getID());
@@ -159,24 +162,35 @@ namespace NetworkController {
                     break;
                 case ND::NetworkData::ORB_CAPTURED:
                 {
-                    world->getOrb(nd.orbCapData.orbId)->setCollected(true);
+                    auto o = world->getOrb(nd.orbCapData.orbId);
+                    o->setCollected(true);
                     auto p = world->getPlayer(nd.orbCapData.playerId);
                     p->setOrbScore(p->getOrbScore() + 1);
+                    auto self = world->getPlayer(network->getPlayerID().value());
+                    SoundController::playSound(SoundController::Type::ORB, o->getPosition() - self->getPosition());
                     break;
                 }
                 case ND::NetworkData::SWAP_PACKET:
+                {
                     world->getPlayer(nd.swapData.playerId)->setElement(nd.swapData.newElement);
-                    world->getSwapStation(nd.swapData.swapId)->setLastUsed(clock());
-                    world->getSwapStation(nd.swapData.swapId)->setActive(false);
+                    auto s = world->getSwapStation(nd.swapData.swapId);
+                    s->setLastUsed(clock());
+                    s->setActive(false);
+                    auto self = world->getPlayer(network->getPlayerID().value());
+                    SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - self->getPosition());
                     break;
+                }
                 case ND::NetworkData::EGG_CAPTURED:
                 {
                     auto p = world->getPlayer(nd.eggCapData.playerId);
                     p->setElement(Element::None);
                     p->setEggId(nd.eggCapData.eggId);
                     p->setHoldingEgg(true);
-                    world->getEgg(nd.eggCapData.eggId)->setCollected(true);
-                    world->getEgg(nd.eggCapData.eggId)->setPID(nd.eggCapData.playerId);
+                    auto e = world->getEgg(nd.eggCapData.eggId);
+                    e->setCollected(true);
+                    e->setPID(nd.eggCapData.playerId);
+                    auto self = world->getPlayer(network->getPlayerID().value());
+                    SoundController::playSound(SoundController::Type::EGG, e->getPosition() - self->getPosition());
                     
                 }
                     break;
