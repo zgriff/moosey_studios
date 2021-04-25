@@ -36,8 +36,8 @@
         "tree3": {
             "file": "textures/tree3.png"
         },
-        "skin1":{
-            "file": "textures/Character1_Skin1.png"
+        "player_skin":{
+            "file": "textures/Character1_Skin.png"
         },
         "skin2":{
             "file": "textures/Character1_Skin2.png"
@@ -46,7 +46,7 @@
             "file": "textures/Character2_ColorAether.png"
         },
         "player_color":{
-            "file": "textures/Character2_ColorTest.png"
+            "file": "textures/Character2_Color.png"
         },
         "egg_color":{
             "file": "textures/Character2_ColorEgg.png"
@@ -60,14 +60,17 @@
         "water_color":{
             "file": "textures/Character2_ColorWater.png"
         },
-        "face1":{
-            "file": "textures/Character3_Face1.png"
+        "player_face":{
+            "file": "textures/Character3_Face.png"
         },
         "face_tag":{
             "file": "textures/Character3_Face2Tag.png"
         },
-        "body_line":{
+        "player_body_line":{
             "file": "textures/Character4_BodyLine.png"
+        },
+        "player_hat":{
+            "file": "textures/Character5_PersonalizationStar.png"
         },
         "hat_star":{
             "file": "textures/Character5_PersonalizationStar.png"
@@ -75,8 +78,8 @@
         "hat_swirl":{
             "file": "textures/Character5_PersonalizationSwirl.png"
         },
-        "staff_aether":{
-            "file": "textures/Character7_StaffAetherState.png"
+        "player_staff":{
+            "file": "textures/Character7_Staff.png"
         },
         "staff_egg":{
             "file": "textures/Character7_StaffEggState.png"
@@ -90,6 +93,9 @@
         "staff_water":{
             "file": "textures/Character7_StaffWater.png"
         },
+        "staff_tag":{
+            "file": "textures/Character7_Tag.png"
+        },
         "staff_tag_aether":{
             "file": "textures/Character7_TagAether.png"
         },
@@ -102,8 +108,8 @@
         "staff_tag_water":{
             "file": "textures/Character7_TagWater.png"
         },
-        "direction_fire":{
-            "file": "textures/Direction_FireRing.png"
+        "player_direction":{
+            "file": "textures/Direction_Ring.png"
         },
         "direction_grass":{
             "file": "textures/Direction_GrassRing.png"
@@ -621,34 +627,18 @@
             }
         },
         "ui":{
-            "comment": "Scene for all UI elements",
-            "type": "Node",
-            "format": {
-                "type": "Anchored"
+            "type"      : "Node",
+            "format"    : {
+                "type" : "Anchored"
+            },
+            "data" : {
+                "anchor" :[0.5,0.5]
             },
             "layout" : {
-                "x_anchor" : "fill",
-                "y_anchor" : "fill"
+                "x_anchor" : "center",
+                "y_anchor" : "middle"
             },
             "children": {
-                "roomId": {
-                    "type": "Label",
-                    "data": {
-                        "font": "retro",
-                        "text": "",
-                        "foreground": [ 0, 0, 0, 255 ],
-                        "size": [ 100, 15 ],
-                        "valign": "bottom",
-                        "halign": "left"
-                    },
-                    "layout": {
-                        "x_anchor": "right",
-                        "y_anchor": "bottom",
-                        "x_offset": -725,
-                        "y_offset": 100,
-                        "absolute": true
-                    }
-                },
                 "timer" : {
                        "type": "Label",
                        "data": {
@@ -657,14 +647,12 @@
                            "foreground" : [255,255,255,255],
                            "size"       : [500,70],
                            "valign"     : "bottom",
-                           "halign"     : "left"
+                           "halign"     : "center"
                        },
                        "layout" : {
-                           "x_anchor" : "right",
+                           "x_anchor" : "center",
                            "y_anchor" : "top",
-                           "x_offset" : -0.2,
-                           "y_offset" : -0.2,
-                           "absolute" : true
+                           "y_offset" : -0.1
                        }
                    },
                 "hud": {
@@ -678,10 +666,10 @@
                         "halign": "left"
                     },
                     "layout": {
-                        "x_anchor": "right",
+                        "x_anchor": "left",
                         "y_anchor": "top",
-                        "x_offset": -0.2,
-                        "y_offset": -0.2
+                        "x_offset" : 0.1,
+                        "y_offset" : -0.1
                     }
                 },
                 "bar": {
@@ -696,7 +684,7 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset": -0.2,
+                        "x_offset": -0.1,
                         "y_offset": -0.2
                     }
                 },
@@ -714,7 +702,7 @@
                         "x_anchor": "right",
                         "y_anchor": "top",
                         "x_offset": -0.2,
-                        "y_offset": -0.4
+                        "y_offset": -0.2
                     }
                 },
                 "abilityBar": {
@@ -727,8 +715,8 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset": -0.4,
-                        "y_offset": -0.2
+                        "x_offset" : -0.1,
+                        "y_offset" : -0.1
                     },
                     "children": {
                         "abilityName": {
