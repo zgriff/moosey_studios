@@ -162,7 +162,6 @@ void Player::setElement(Element e){
         _animNodes[_staffKey]->flipHorizontal(false);
     }
     
-    
     switch(e){
         case Element::Grass:
             _animNodes[_colorKey]->setFrame(calculateFrame(8,_colorKey));
@@ -422,18 +421,13 @@ void Player::animationCycle(scene2::AnimationNode* node, bool* cycle, std::strin
     // Increment
     if (*cycle) {
         if (flip) {
-            if (key == _colorKey) {
-                CULog("setting color %i -> %i", node->getFrame(),node->getFrame()-1);
-            }
             node->setFrame(node->getFrame()-1);
         } else {
             node->setFrame(node->getFrame()+1);
         }
     } else {
+        //Return to beginning of animation cycle
         if (flip) {
-            if (key == _colorKey) {
-                CULog("setting color %i -> %i", node->getFrame(),node->getFrame()+(_frameNumbers[key]-1));
-            }
             node->setFrame(node->getFrame()+(_frameNumbers[key]-1));
         } else {
             node->setFrame(node->getFrame()-(_frameNumbers[key]-1));
@@ -454,8 +448,6 @@ void Player::flipHorizontal(bool flip) {
             if ((*it).second->isFlipHorizontal()==flip) {
                 (*it).second->setFrame((*it).second->getSize()-(*it).second->getFrame()-1);
                 (*it).second->flipHorizontal(!flip);
-//                CULog("frame:   %i", (*it).second->getFrame());
-//                CULog("size:   %i", (*it).second->getSize());
             }
         } else if ((*it).first != _ringKey) {
             if ((*it).second->isFlipHorizontal()!=flip) {
@@ -470,7 +462,6 @@ void Player::flipHorizontal(bool flip) {
 int Player::calculateFrame(int frame, std::string key) {
     if ((_horizFlip && key != _ringKey && key != _staffKey) ||
         (key == _staffKey && !_horizFlip))  {
-        CULog("frame  calc:   %i", _animNodes[key]->getFrame());
         return _animNodes[key]->getSize()-frame-1;
     } else {
         return frame;
