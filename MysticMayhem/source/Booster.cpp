@@ -67,6 +67,6 @@ void Booster::update(float delta) {
     }
     else {
         _active = false;
-        _animationNode->setFrame(0);
+        _animationNode->setFrame(0); //TODO: fix. this was throwing an error when it was on 1. I'm guessing the asset doesn't exist
     }
 }

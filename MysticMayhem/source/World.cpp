@@ -408,7 +408,6 @@ bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
         wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
         wallobj->setName(wname);
         wallobj->setFriction(0);
-
         // Set the physics attributes
         wallobj->setBodyType(b2_staticBody);
 

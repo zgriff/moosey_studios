@@ -9,6 +9,8 @@
 #include "App.h"
 #include "NetworkController.h"
 #include "MapConstants.h"
+#include "SoundController.h"
+#include <cstdlib>
 
 using namespace cugl;
 
@@ -18,6 +20,7 @@ using namespace cugl;
 
 
 void App::onStartup() {
+    srand((unsigned) time(0));
     _assets = AssetManager::alloc();
     _batch  = SpriteBatch::alloc();
     auto cam = OrthographicCamera::alloc(getDisplaySize());
@@ -48,6 +51,8 @@ void App::onStartup() {
     _assets->loadAsync<World>(GRASS_MAP_KEY,GRASS_MAP_JSON,nullptr);
     
     AudioEngine::start();
+    SoundController::init(_assets);
+
     Application::onStartup(); // YOU MUST END with call to parent
 }
 

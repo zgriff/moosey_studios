@@ -36,15 +36,6 @@ using namespace std;
 #define DEFAULT_WIDTH   36.0f
 /** Height of the game world in Box2d units */
 #define DEFAULT_HEIGHT  18.0f
-
-
-#define BASIC_DENSITY   0.0f
-/** The density for a bullet */
-#define HEAVY_DENSITY   10.0f
-/** Friction of most platforms */
-#define BASIC_FRICTION  0.4f
-/** The restitution for all physics objects */
-#define BASIC_RESTITUTION   0.1f
 /** The restitution for all physics objects */
 #define TURNS_PER_SPIN   55.0f
 /** how much the lateral velocity is subtracted per frame*/
@@ -89,7 +80,6 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _world->setNumPlayers(NetworkController::getNumPlayers());
 
     SpawnController::setWorld(_world);
-    CollisionController::setWorld(_world);
     
     // Start up the input handler
     _assets = assets;
@@ -186,6 +176,7 @@ void GameScene::dispose() {
  */
 void GameScene::reset() {
     _world->setRootNode(_rootnode,_scale);
+    CollisionController::setWorld(_world);
     NetworkController::setWorld(_world);
     
     auto idopt = NetworkController::getPlayerId();
