@@ -30,7 +30,7 @@ int main(int argc, char * argv[]) {
     app.setFPS(60.0f);
 
     // VARY THIS TO TRY OUT YOUR SCENE GRAPH
-    app.setSize(1600, 900); // 16x9,  Android phones, PC Gaming
+    app.setSize(1280, 720); // 16x9,  Android phones, PC Gaming
 
     /// DO NOT MODIFY ANYTHING BELOW THIS LINE
     if (!app.init()) {
