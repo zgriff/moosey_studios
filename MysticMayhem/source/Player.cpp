@@ -156,9 +156,41 @@ void Player::setElement(Element e){
     
     //Need to flip before and after setting frame bc bug with texture on polygon
     
+    
+    if (_horizFlip) {
+        _animNodes[_colorKey]->flipHorizontal(false);
+        _animNodes[_staffKey]->flipHorizontal(false);
+    }
+    
+//    switch(e){
+//        case Element::Grass:
+//            _animNodes[_colorKey]->setFrame(8);
+//            _animNodes[_staffKey]->setFrame(8);
+//            _animNodes[_ringKey]->setFrame(4);
+//            break;
+//        case Element::Fire:
+//            _animNodes[_colorKey]->setFrame(0);
+//            _animNodes[_staffKey]->setFrame(0);
+//            _animNodes[_ringKey]->setFrame(0);
+//            break;
+//        case Element::Water:
+//            _animNodes[_colorKey]->setFrame(4);
+//            _animNodes[_staffKey]->setFrame(4);
+//            _animNodes[_ringKey]->setFrame(2);
+//            break;
+//        case Element::None:
+//            _animNodes[_colorKey]->setFrame(16);
+//            _animNodes[_staffKey]->setFrame(16);
+//            break;
+//        case Element::Aether:
+//            _animNodes[_colorKey]->setFrame(12);
+//            _animNodes[_staffKey]->setFrame(12);
+//            break;
+//    }
+    
+    
     switch(e){
         case Element::Grass:
-//            _animationNode->setFrame(4);
             _animNodes[_colorKey]->setFrame(calculateFrame(8,_colorKey));
             _animNodes[_staffKey]->setFrame(calculateFrame(8,_staffKey));
             _animNodes[_ringKey]->setFrame(calculateFrame(4,_ringKey));
@@ -183,8 +215,10 @@ void Player::setElement(Element e){
             break;
     }
     
-    _animNodes[_colorKey]->setFrame(_animNodes[_colorKey]->getFrame());
-    _animNodes[_staffKey]->setFrame(_animNodes[_staffKey]->getFrame());
+    if (_horizFlip) {
+        _animNodes[_colorKey]->flipHorizontal(true);
+        _animNodes[_staffKey]->flipHorizontal(true);
+    }
 }
 
 Element Player::getPreyElement() {
@@ -378,8 +412,10 @@ void Player::animateMovement() {
     //Check to see if player is going right or left and flip sprite
     if (getDirection() >= M_PI)  {
         flipHorizontal(true);
+        _horizFlip = true;
     } else if (getDirection() < M_PI) {
         flipHorizontal(false);
+        _horizFlip = false;
     }
     
     //iterate through nodes and animate at animation rate
@@ -455,7 +491,8 @@ void Player::flipHorizontal(bool flip) {
 }
 
 int Player::calculateFrame(int frame, std::string key) {
-    if (_animNodes[key]->isFlipHorizontal())  {
+    if (_horizFlip && key!=_ringKey)  {
+        CULog("frame  calc:   %i", _animNodes[key]->getFrame());
         return _animNodes[key]->getSize()-frame-1;
     } else {
         return frame;

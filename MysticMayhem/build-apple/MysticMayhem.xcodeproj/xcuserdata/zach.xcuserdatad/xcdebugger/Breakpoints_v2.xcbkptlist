@@ -14,8 +14,8 @@
             filePath = "../source/Player.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "432"
-            endingLineNumber = "432"
+            startingLineNumber = "468"
+            endingLineNumber = "468"
             landmarkName = "Player::animationCycle(node, cycle, key)"
             landmarkType = "7">
          </BreakpointContent>

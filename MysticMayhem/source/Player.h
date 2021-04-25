@@ -34,6 +34,7 @@ private:
     bool _isLocal; // true if the player is the one running on this system
     int _eggID; //id of the egg that the player is holding, if any
     cugl::Vec2 _positionError;
+    bool _horizFlip;
     
     std::unordered_map<std::string,std::shared_ptr<cugl::scene2::AnimationNode>> _animNodes;
     std::unordered_map<std::string,bool> _animCycles;
