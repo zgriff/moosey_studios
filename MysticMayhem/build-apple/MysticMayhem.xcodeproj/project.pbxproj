@@ -16,6 +16,9 @@
 		2844518D263629DA008343E2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2844518C263629D8008343E2 /* GoogleService-Info.plist */; };
 		28445191263629DA008343E2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2844518C263629D8008343E2 /* GoogleService-Info.plist */; };
 		28445192263629DB008343E2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2844518C263629D8008343E2 /* GoogleService-Info.plist */; };
+		28630392263657E90037BFDB /* maps in Resources */ = {isa = PBXBuildFile; fileRef = 2863038E263657E90037BFDB /* maps */; };
+		28630393263657E90037BFDB /* maps in Resources */ = {isa = PBXBuildFile; fileRef = 2863038E263657E90037BFDB /* maps */; };
+		28630394263657E90037BFDB /* maps in Resources */ = {isa = PBXBuildFile; fileRef = 2863038E263657E90037BFDB /* maps */; };
 		2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
 		2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
 		2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
@@ -176,6 +179,7 @@
 		2844515A2633C287008343E2 /* SoundController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoundController.cpp; sourceTree = "<group>"; };
 		2844515B2633C287008343E2 /* SoundController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundController.h; sourceTree = "<group>"; };
 		2844518C263629D8008343E2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2863038E263657E90037BFDB /* maps */ = {isa = PBXFileReference; lastKnownFileType = folder; path = maps; sourceTree = "<group>"; };
 		288216462605A7910073F7D4 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
 		288216482605A7910073F7D4 /* NetworkController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkController.cpp; sourceTree = "<group>"; };
 		288216522605A90E0073F7D4 /* NetworkData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkData.cpp; sourceTree = "<group>"; };
@@ -339,6 +343,7 @@
 		EB2BE9B71D749870002FE78B /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				2863038E263657E90037BFDB /* maps */,
 				925FC57F25F4489100532483 /* sounds */,
 				EBFE7C041E19B496001007C2 /* json */,
 				EB2BE9BA1D7498D2002FE78B /* textures */,
@@ -643,6 +648,7 @@
 				EB0FF61A2016EFC500517030 /* json in Resources */,
 				EB0FF61B2016EFC500517030 /* textures in Resources */,
 				28445192263629DB008343E2 /* GoogleService-Info.plist in Resources */,
+				28630394263657E90037BFDB /* maps in Resources */,
 				925FC58225F4489100532483 /* sounds in Resources */,
 				EB0FF61C2016EFC500517030 /* fonts in Resources */,
 				EB0FF6172016EFB200517030 /* iOS.xcassets in Resources */,
@@ -659,6 +665,7 @@
 				EB7454D01D750623002FBAE6 /* textures in Resources */,
 				EB7454D11D750623002FBAE6 /* fonts in Resources */,
 				28445191263629DA008343E2 /* GoogleService-Info.plist in Resources */,
+				28630393263657E90037BFDB /* maps in Resources */,
 				925FC58125F4489100532483 /* sounds in Resources */,
 				EB7454AB1D74D846002FBAE6 /* iOS.xcassets in Resources */,
 				EB7454AC1D74D846002FBAE6 /* Landscape.storyboard in Resources */,
@@ -675,6 +682,7 @@
 				925FC58025F4489100532483 /* sounds in Resources */,
 				EBFE7C091E19B4AC001007C2 /* json in Resources */,
 				EB2BE9BB1D7498D2002FE78B /* textures in Resources */,
+				28630392263657E90037BFDB /* maps in Resources */,
 				EB2BE9B91D7498C9002FE78B /* fonts in Resources */,
 				EBBF189B1D74904A008E2001 /* Mac.xcassets in Resources */,
 				2844518D263629DA008343E2 /* GoogleService-Info.plist in Resources */,

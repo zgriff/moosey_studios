@@ -18,6 +18,15 @@
         "grass": {
             "file":  "textures/grass_texture.png"
         },
+        "grass1": {
+            "file":  "textures/grass1.png"
+        },
+        "grass2": {
+            "file":  "textures/grass2.png"
+        },
+        "grass3": {
+            "file":  "textures/grass3.png"
+        },
         "booster": {
             "file": "textures/sped.png"
         },
