@@ -19,7 +19,7 @@ AbilityController::AbilityController() {
 void AbilityController::updateAbility(std::shared_ptr<cugl::scene2::Label> abilityname) {
 	srand(time(NULL));
 	int abilityChance = rand() % 100;
-	if (abilityChance < 50) {
+	if (abilityChance < 0) {
 		_queuedAbility = Ability::AetherAbility;
 		abilityname->setText("Aether");
 	}
@@ -46,7 +46,8 @@ void AbilityController::activateAbility(std::shared_ptr<Player> player) {
 				_queuedAbility = Ability::NoAbility;
 				break;
 			case Ability::SpeedBoost:
-				player->setLinearVelocity(player->getLinearVelocity() * 2);
+				auto adjust = player->getLinearVelocity().normalize();
+				player->setLinearVelocity(adjust.scale(40.0f));
 				_activeAbility = Ability::SpeedBoost;
 				_queuedAbility = Ability::NoAbility;
 				break;
@@ -99,7 +100,7 @@ void AbilityController::deactivateAbility(std::shared_ptr<Player> player, std::s
 				break;
 			case Ability::SpeedBoost:
 				if (timePassed.count() >= 0.25) {
-					player->setLinearVelocity(player->getLinearVelocity() * 0.5);
+					//player->setLinearVelocity(player->getLinearVelocity() * 0.5);
 					_activeAbility = Ability::NoAbility;
 					abilityname->setVisible(false);
 				}

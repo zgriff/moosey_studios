@@ -40,6 +40,8 @@ using namespace std;
 #define TURNS_PER_SPIN   55.0f
 /** how much the lateral velocity is subtracted per frame*/
 #define KINETIC_FRICTION 1.4f
+/** how quickly the camera catches up to the player*/
+#define CAMERA_STICKINESS .07f
 
 #pragma mark -
 #pragma mark Constructors
@@ -118,6 +120,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _UInode->setPosition(_worldOffset);
     _UInode->setContentSize(Size(w,h));
     _UInode->doLayout(); // Repositions the HUD;
+    _UInode->setScale(.4f);
     
     
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
@@ -185,6 +188,8 @@ void GameScene::reset() {
         auto _player = _world->getPlayer(idopt.value());
         _player->setUsername(NetworkController::getUsername());
         _player->setIsLocal(true);
+        static_pointer_cast<cugl::OrthographicCamera>(getCamera())->set(Application::get()->getDisplaySize());
+        static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(.8f);
         getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
     }
     _playerController.init();
@@ -227,14 +232,6 @@ void GameScene::update(float timestep) {
             if (_abilityController.getActiveAbility() == AbilityController::Ability::SpeedBoost) {
                 break;
             }
-            /* auto ang = _player->getDirection() + _playerController.getMov().x * -2.0 * M_PI / TURNS_PER_SPIN;
-            //_player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
-            _player->setDirection(ang);
-            auto vel = _player->getLinearVelocity();
-            //Please don't delete this comment, angles were difficult to derive and easy to forget
-            //vel angle originates from y axis, player angle orginates from x axis
-            auto offset = (vel.getAngle() + M_PI/2.0) - _player->getDirection();
-            offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset); */
 
             auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
             _player->setDirection(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
@@ -245,11 +242,11 @@ void GameScene::update(float timestep) {
             auto offset = vel.getAngle() - _player->getDirection() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
-            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset));
+            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * _player->getMass());
             if (correction.length() > KINETIC_FRICTION) {
                 correction.scale(KINETIC_FRICTION / correction.length());
             }
-            _player->setLinearVelocity(vel.add(correction));
+            _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
 
             //apply friction if going backwards IE braking
             if (abs(offset) > M_PI / 2.0) {
@@ -271,7 +268,7 @@ void GameScene::update(float timestep) {
             }
             else {
                 auto forForce = _player->getForce();
-                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * 2.0f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN));
+                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * 4.0f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN));
                 if (_playerController.getMov().x < 0) {
                     turnForce.scale(-1.0f);
                 }
@@ -332,8 +329,11 @@ void GameScene::update(float timestep) {
 
 
     auto playPos = _player->getSceneNode()->getPosition();
+    if (_player->getLinearVelocity().length() > .00001) {
+        playPos += _player->getLinearVelocity().scale(60.0 / pow(_player->getLinearVelocity().length(), .35));
+    }
     auto camSpot = getCamera()->getPosition();
-    auto trans = (playPos - camSpot)*.07f;
+    auto trans = (playPos - camSpot)*CAMERA_STICKINESS;
     getCamera()->translate(trans);
     getCamera()->update();
     _UInode->setPosition(camSpot + trans - _worldOffset);

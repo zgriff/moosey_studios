@@ -89,8 +89,8 @@ void CollisionController::hostBeginContact(b2Contact* contact){
     //booster and player collision
     else if (bd1->getName() == "booster" && bd2->getName() == "player") {
         Player* p = (Player*)bd2;
-        auto adjust = p->getLinearVelocity();
-        p->setLinearVelocity(adjust.scale(45.0f / adjust.length()));
+        auto adjust = p->getLinearVelocity().normalize();
+        p->setLinearVelocity(adjust.scale(40.0f));
     }
 
     //projectile and player collision (basically an ability tag)
