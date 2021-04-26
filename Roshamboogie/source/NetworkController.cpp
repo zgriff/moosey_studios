@@ -160,9 +160,10 @@ namespace NetworkController {
                     //usernames[nd.setUsernameData.playerId] = *nd.setUsernameData.username;
                     CULog("reached receive set username");
                     int id1 = nd.setUsernameData.playerId;
-                    string username1 = *nd.setUsernameData.username;
+                    string username1(nd.setUsernameData.username, nd.setUsernameData.username_length);
+                    delete[] nd.setUsernameData.username;
                     CULog("setting %d username to ", id1);
-                    CULog("username is %s", username1);
+                    CULog("username is %s", username1.c_str());
                 }
                     break;
                 case ND::NetworkData::SET_MAP_NUMBER:
@@ -419,7 +420,8 @@ namespace NetworkController {
         ND::NetworkData nd{};
         nd.packetType = ND::NetworkData::PacketType::SET_USERNAME;
         nd.setUsernameData.playerId = playerId;
-        nd.setUsernameData.username = &username;
+        nd.setUsernameData.username_length = username.length();
+        nd.setUsernameData.username = username.data();
         //CULog("reached here 1");
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);

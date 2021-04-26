@@ -77,7 +77,8 @@ struct NetworkData {
         } projectileGoneData;
         struct {
             uint8_t playerId;
-            string* username;
+            int username_length;
+            char * username;
         } setUsernameData;
         struct {
             uint8_t mapNumber;

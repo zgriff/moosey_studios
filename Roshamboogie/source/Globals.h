@@ -36,6 +36,8 @@ constexpr float  SCENE_TO_BOX2D = 1.0f/40.0f;
 
 constexpr float  BOX2D_TO_SCENE = 40.0f;
 
+const int MAX_CHARS_IN_USERNAME = 15;
+
 
 }
 

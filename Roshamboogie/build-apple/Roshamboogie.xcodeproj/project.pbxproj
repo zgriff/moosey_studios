@@ -10,6 +10,9 @@
 		28297956260CEE99002EC000 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28297955260CEE99002EC000 /* World.cpp */; };
 		28297957260CEE99002EC000 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28297955260CEE99002EC000 /* World.cpp */; };
 		28297958260CEE99002EC000 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28297955260CEE99002EC000 /* World.cpp */; };
+		2844517626362580008343E2 /* maps in Resources */ = {isa = PBXBuildFile; fileRef = 2844517226362580008343E2 /* maps */; };
+		2844517726362580008343E2 /* maps in Resources */ = {isa = PBXBuildFile; fileRef = 2844517226362580008343E2 /* maps */; };
+		2844517826362580008343E2 /* maps in Resources */ = {isa = PBXBuildFile; fileRef = 2844517226362580008343E2 /* maps */; };
 		2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
 		2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
 		2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288216482605A7910073F7D4 /* NetworkController.cpp */; };
@@ -168,6 +171,7 @@
 
 /* Begin PBXFileReference section */
 		28297955260CEE99002EC000 /* World.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
+		2844517226362580008343E2 /* maps */ = {isa = PBXFileReference; lastKnownFileType = folder; path = maps; sourceTree = "<group>"; };
 		288216462605A7910073F7D4 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
 		288216482605A7910073F7D4 /* NetworkController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkController.cpp; sourceTree = "<group>"; };
 		288216522605A90E0073F7D4 /* NetworkData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkData.cpp; sourceTree = "<group>"; };
@@ -331,6 +335,7 @@
 		EB2BE9B71D749870002FE78B /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				2844517226362580008343E2 /* maps */,
 				925FC57F25F4489100532483 /* sounds */,
 				EBFE7C041E19B496001007C2 /* json */,
 				EB2BE9BA1D7498D2002FE78B /* textures */,
@@ -629,6 +634,7 @@
 				EB0FF61C2016EFC500517030 /* fonts in Resources */,
 				EB0FF6172016EFB200517030 /* iOS.xcassets in Resources */,
 				EB0FF6182016EFB200517030 /* Landscape.storyboard in Resources */,
+				2844517826362580008343E2 /* maps in Resources */,
 				EB0FF6192016EFB200517030 /* Portrait.storyboard in Resources */,
 				EB42669721F68F6900A9DE61 /* DeviceMargins.plist in Resources */,
 			);
@@ -644,6 +650,7 @@
 				EB7454AB1D74D846002FBAE6 /* iOS.xcassets in Resources */,
 				EB7454AC1D74D846002FBAE6 /* Landscape.storyboard in Resources */,
 				EBFE7C051E19B496001007C2 /* json in Resources */,
+				2844517726362580008343E2 /* maps in Resources */,
 				EB7454AD1D74D846002FBAE6 /* Portrait.storyboard in Resources */,
 				EB42669621F68F6900A9DE61 /* DeviceMargins.plist in Resources */,
 			);
@@ -656,6 +663,7 @@
 				925FC58025F4489100532483 /* sounds in Resources */,
 				EBFE7C091E19B4AC001007C2 /* json in Resources */,
 				EB2BE9BB1D7498D2002FE78B /* textures in Resources */,
+				2844517626362580008343E2 /* maps in Resources */,
 				EB2BE9B91D7498C9002FE78B /* fonts in Resources */,
 				EBBF189B1D74904A008E2001 /* Mac.xcassets in Resources */,
 			);
