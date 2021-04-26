@@ -128,6 +128,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _UInode->doLayout(); // Repositions the HUD;
 
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
+    _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
     
     _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
 //    CULog("Hatchbar: %s", _hatchbar->get);
@@ -135,13 +136,13 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _hatchnode = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_hatched"));
     _hatchnode->setVisible(false);
+    _startTime = time(NULL);
 
     _abilityname = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("ui_abilityBar_abilityName"));
     _abilityname->setVisible(false);
 
     _abilitybar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_abilityBar"));
-    _abilitybar->setForegroundColor(Color4(255, 255, 0));
-    
+    _abilitybar->setForegroundColor(Color4(255, 255, 255, 100));
 //    _roomIdHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_roomId"));
     
     auto world = _world->getPhysicsWorld();
@@ -185,19 +186,27 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void GameScene::dispose() {
-    if (_active) {
-        removeAllChildren();
-        _debugnode = nullptr;
-        _scoreHUD = nullptr;
-        _hatchnode = nullptr;
-        _hatchbar = nullptr;
-        _abilitybar = nullptr;
-        _abilityname = nullptr;
-        _active = false;
-        _debug = false;
-        Scene2::dispose();
-        _world = nullptr;
-    }
+    CULog("game scene dispose");
+    removeAllChildren();
+    _rootnode = nullptr;
+    _debugnode = nullptr;
+    _camera = nullptr;
+    _UInode = nullptr;
+    _scoreHUD = nullptr;
+    _hatchnode = nullptr;
+    _hatchbar = nullptr;
+    _abilitybar = nullptr;
+    _abilityname = nullptr;
+    _timerHUD = nullptr;
+    _debug = false;
+    _assets = nullptr;
+    _playerController.dispose();
+//        Scene2::dispose();
+    _world->clearRootNode();
+//    _world->getSceneNode()->removeAllChildren();
+    _world->getPhysicsWorld()->clear();
+    _world = nullptr;
+    _active = false;
 }
 
 
@@ -246,7 +255,7 @@ void GameScene::update(float timestep) {
 
 
         // BEGIN PLAYER MOVEMENT //
-    
+//    CULog("game update");
     auto playerId_option = NetworkController::getPlayerId();
     if(! playerId_option.has_value()) return;
     uint8_t playerId = playerId_option.value();
@@ -268,13 +277,13 @@ void GameScene::update(float timestep) {
             auto offset = (vel.getAngle() + M_PI/2.0) - _player->getDirection();
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset); */
 
-            auto ang = _player->getAngle() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
-            _player->setAngle(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
+            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
+            _player->setDirection(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
 
             auto vel = _player->getLinearVelocity();
             //Please don't delete this comment, angles were difficult to derive and easy to forget
             //vel angle originates from x axis, player angle orginates from y axis
-            auto offset = vel.getAngle() - _player->getAngle() + M_PI / 2.0f;
+            auto offset = vel.getAngle() - _player->getDirection() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
             auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset));
@@ -373,61 +382,59 @@ void GameScene::update(float timestep) {
 
     
     if(NetworkController::isHost()){
-
-//        for(int i = 0; i < 3; ++i){ //TODO: This is temporary;
-//            auto orb = world->getOrb(i);
-//            if(orb->getCollected()) {
-//                orb->respawn();
-//                NetworkController::sendOrbRespawn(orb->getID(), orb->getPosition());
-//            }
-//            orb->setCollected(false);
-//
-//        }
-        std::random_device r;
-        std::default_random_engine e1(r());
-        std::uniform_int_distribution<int> prob(0,100);
-//        CULog("prob %d", prob(e1));
-        if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
-            if (_world->getCurrOrbCount() < _world->getNumOrbs()) {
+        int spawnProb = rand() % 100;
+        // orb spawning
+        if (spawnProb == 25) {
+            if (_world->getCurrOrbCount() < _world->getInitOrbCount()) {
                 SpawnController::spawnOrbs();
             }
         }
-    
+        
+        //egg spawning
+//        CULog("egg max %f ", ceil(int(_world->getPlayers().size())/3));
+        //TODO: set max egg number based on number of players
+        if (spawnProb == 50) {
+            if (_world->getCurrEggCount() < _world->getTotalEggCount()) {
+                SpawnController::spawnEggs();
+            }
+        }
     }
     
+    if (_player->getJustHitByProjectile()) {
+        _player->setJustHitByProjectile(false);
+        auto _egg = _world->getEgg(_player->getEggId());
+        _egg->setPosition(_egg->getInitPos());
+        NetworkController::sendEggRespawn(_egg->getID(), _egg->getInitPos());
+    }
     
     //egg hatch logic
-
-    //TODO: change to allow multiple eggs
-    auto _egg = _world->getEgg(0);
-    if (_egg->getCollected() && _egg->getHatched() == false) {
-        std::shared_ptr<Player> _eggCollector = _world->getPlayer(_egg->getPID());
-        _egg->setPosition(_eggCollector->getPosition());
-        if (_egg->getPID() == _player->getID()) {
+    if (_player->getHoldingEgg()) {
+        auto _egg = _world->getEgg(_player->getEggId());
+        if (_egg->getHatched() == false) {
+            _egg->setPosition(_player->getPosition());
             _hatchbar->setVisible(true);
-        }
-        else {
-            _hatchbar->setVisible(false);
-        }
-        _hatchbar->setProgress(_egg->getDistanceWalked()/80);
-        Vec2 diff = _eggCollector->getPosition() - _egg->getInitPos();
-        float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
-        _egg->incDistanceWalked(dist);
-        _egg->setInitPos(_eggCollector->getPosition());
-        if (_egg->getDistanceWalked() >= 80) {
-            _hatchbar->dispose();
-            _hatchedTime = time(NULL);
-            _egg->setHatched(true);
-//            _egg->setCollected(false);
-            _eggCollector->setElement(_eggCollector->getPrevElement());
-            if (_egg->getPID() == _player->getID()) {
-                _hatchnode->setVisible(true);
-                _player->incScore(10);
+            _hatchbar->setProgress(_egg->getDistanceWalked()/80);
+            Vec2 diff = _player->getPosition() - _egg->getInitPos();
+            float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
+            _egg->setDistanceWalked(_egg->getDistanceWalked() + dist);
+            _egg->setInitPos(_player->getPosition());
+            if (_egg->getDistanceWalked() >= 80) {
+                _world->addEggSpawn(_egg->getSpawnLoc());
+                _player->setHoldingEgg(false);
+                _hatchbar->setVisible(false);
+                _hatchbar->setProgress(0.0);
+                _hatchedTime = time(NULL);
+                _egg->setHatched(true);
+                _egg->setDistanceWalked(0);
+                _world->setCurrEggCount(_world->getCurrEggCount() - 1);
+                _player->setElement(_player->getPrevElement());
+                _player->incScore(globals::HATCH_SCORE);
+                NetworkController::sendEggHatched(_player->getID(), _egg->getID());
             }
-            _egg->dispose();
-
         }
-        
+    }
+    else if (_hatchbar->isVisible()){
+        _hatchbar->setVisible(false);
     }
     
     if (time(NULL) - _hatchedTime >= _hatchTextTimer) {
@@ -438,8 +445,6 @@ void GameScene::update(float timestep) {
     for(auto p : _world->getPlayers()){
         if (p->getIsTagged()) {
             if (time(NULL) - p->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
-                CULog("not tagged");
-    //            _player->getSceneNode()->setVisible(false);
                 p->setIsTagged(false);
             }
         }
@@ -459,47 +464,14 @@ void GameScene::update(float timestep) {
   
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
+    _timerHUD->setText(updateTimerText(_startTime + 120 - time(NULL)));
     
+    _player->animateMovement();
     //send new position
     //TODO: only every few frames
     NetworkController::sendPosition();
 }
 
-
-void GameScene::populate() {
-    std::shared_ptr<Texture> image = _assets->get<Texture>("earth");
-    std::shared_ptr<scene2::PolygonNode> sprite;
-    std::shared_ptr<scene2::WireNode> draw;
-    std::string wname = "wall";
-    for (int ii = 0; ii<WALL_COUNT; ii++) {
-        std::shared_ptr<physics2::PolygonObstacle> wallobj;
-
-        Poly2 wall(WALL[ii],WALL_VERTS);
-        // Call this on a polygon to get a solid shape
-        SimpleTriangulator triangulator;
-        triangulator.set(wall);
-        triangulator.calculate();
-        wall.setIndices(triangulator.getTriangulation());
-        wall.setGeometry(Geometry::SOLID);
-
-        wallobj = physics2::PolygonObstacle::alloc(wall);
-        wallobj->setDebugColor(Color4::WHITE);
-        // You cannot add constant "".  Must stringify
-        wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
-        wallobj->setName(wname);
-
-        // Set the physics attributes
-        wallobj->setBodyType(b2_staticBody);
-        wallobj->setDensity(BASIC_DENSITY);
-        wallobj->setFriction(BASIC_FRICTION);
-        wallobj->setRestitution(BASIC_RESTITUTION);
-
-        wall *= _scale;
-        sprite = scene2::PolygonNode::allocWithTexture(image,wall);
-        addObstacle(wallobj,sprite,2);
-    }
-
-}
 
 
 void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj,
@@ -556,3 +528,52 @@ std::string GameScene::updateScoreText(const int score) {
     ss << "Score: " << score;
     return ss.str();
 }
+
+std::string GameScene::updateTimerText(const time_t time) {
+    stringstream ss;
+    time_t sec = time % 60;
+    if (sec < 10) {
+        ss << "Timer: " << (time / 60) << ":0" << sec;
+    }
+    else {
+        ss << "Timer: " << (time / 60) << ":" << sec;
+    }
+    return ss.str();
+}
+
+std::string GameScene::getResults() {
+    stringstream ss;
+    auto players = _world->getPlayers();
+    for (int i = 0; i < players.size(); i++) {
+        auto p = players[i];
+        ss << "Player" << p->getID() << ":" << p->getScore() << endl;
+    }
+    
+    return ss.str();
+}
+
+std::tuple<std::string, std::string> GameScene::getWinner() {
+    stringstream ss1;
+    stringstream ss2;
+    auto players = _world->getPlayers();
+    int winScore = -1;
+    int winID = -1;
+    for (int i = 0; i < players.size(); i++) {
+        auto p = players[i];
+        if (p->getScore() > winScore) {
+            winScore = p->getScore();
+            winID = p->getID();
+        }
+    }
+    if (NetworkController::getPlayerId() == winID) {
+        ss2 << "YOU WON!";
+    }
+    else {
+        ss2 << "You lost";
+    }
+    ss1 << "Player" << winID << " with score " << winScore << endl;
+    
+    return std::make_tuple(ss1.str(), ss2.str());
+}
+
+            

@@ -63,8 +63,10 @@ protected:
     
     time_t _hatchTextTimer = 5; //5 secs
     time_t _hatchedTime;
+    time_t _startTime;
 
     std::shared_ptr<cugl::scene2::Label> _scoreHUD;
+    std::shared_ptr<cugl::scene2::Label> _timerHUD;
     
     /** Whether or not debug mode is active */
     bool _debug;
@@ -97,6 +99,7 @@ protected:
     bool swap = false;
     
     std::string updateScoreText(const int score);
+    std::string updateTimerText(const time_t time);
     
     bool isDebug( ) const { return _debug; }
     
@@ -214,6 +217,10 @@ public:
     void setMovementStyle(int m);
     
     void moveOrb(Orb* orb);
+    
+    std::string getResults();
+    std::tuple<std::string, std::string> getWinner();
+    
 
 };
 

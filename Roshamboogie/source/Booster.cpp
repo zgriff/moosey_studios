@@ -67,6 +67,6 @@ void Booster::update(float delta) {
     }
     else {
         _active = false;
-        _animationNode->setFrame(1);
+        _animationNode->setFrame(0);
     }
 }
