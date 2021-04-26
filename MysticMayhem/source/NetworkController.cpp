@@ -90,10 +90,6 @@ namespace NetworkController {
         username = name;
     }
 
-    std::shared_ptr<World> getWorld() {
-        return world;
-    }
-
     int getMapSelected() {
         return mapSelected;
     }
@@ -243,13 +239,8 @@ namespace NetworkController {
                     p->setHoldingEgg(false);
                     world->getEgg(nd.eggCapData.eggId)->setHatched(true);
                     world->setCurrEggCount(world->getCurrEggCount() - 1);
-<<<<<<< HEAD
                     p->incScore(globals::HATCH_SCORE);
                     world->addEggSpawn(egg->getSpawnLoc());
-                    
-=======
-
->>>>>>> sprint/closed_beta
                 }
                     break;
                 case ND::NetworkData::ORB_RESPAWN:
