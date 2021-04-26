@@ -134,6 +134,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void MenuScene::dispose() {
+//    removeAllChildren();
     _hostButton = nullptr;
     _joinButton = nullptr;
     Input::deactivate<TextInput>();

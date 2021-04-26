@@ -9,6 +9,8 @@
 #include "App.h"
 #include "NetworkController.h"
 #include "MapConstants.h"
+#include "SoundController.h"
+#include <cstdlib>
 
 using namespace cugl;
 
@@ -18,10 +20,11 @@ using namespace cugl;
 
 
 void App::onStartup() {
+    srand((unsigned) time(0));
     _assets = AssetManager::alloc();
     _batch  = SpriteBatch::alloc();
     auto cam = OrthographicCamera::alloc(getDisplaySize());
-    
+
     // Start-up basic input
 #ifdef CU_MOBILE
     Input::activate<Touchscreen>();
@@ -32,22 +35,26 @@ void App::onStartup() {
     Input::get<Mouse>()->setPointerAwareness(Mouse::PointerAwareness::DRAG);
     Input::activate<Keyboard>();
 #endif
-    
+
     _assets->attach<Font>(FontLoader::alloc()->getHook());
     _assets->attach<Texture>(TextureLoader::alloc()->getHook());
     _assets->attach<Sound>(SoundLoader::alloc()->getHook());
     _assets->attach<scene2::SceneNode>(Scene2Loader::alloc()->getHook());
     _assets->attach<World>(GenericLoader<World>::alloc()->getHook());
-    
+
     // Create a "loading" screen
     _currentScene = SceneSelect::Loading;
     _loading.init(_assets);
-    
+
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
     _assets->loadAsync<World>(GRASS_MAP_KEY,GRASS_MAP_JSON,nullptr);
-    
+    _assets->loadAsync<World>(GRASS_MAP2_KEY, GRASS_MAP2_JSON, nullptr);
+    _assets->loadAsync<World>(GRASS_MAP3_KEY, GRASS_MAP3_JSON, nullptr);
+    _assets->loadAsync<World>(GRASS_MAP4_KEY, GRASS_MAP4_JSON, nullptr);
+
     AudioEngine::start();
+    SoundController::init(_assets);
     Application::onStartup(); // YOU MUST END with call to parent
 }
 
@@ -155,7 +162,7 @@ void App::update(float timestep) {
                 _lobby.update(0.01f);
             } else {
                 _lobby.setActive(false);
-                _gameplay.init(_assets);
+                _gameplay.init(_assets, _lobby.getSelectedMap());
                 _gameplay.setActive(true);
                 _gameplay.setMovementStyle(0);
                 startTimer = time(NULL);
