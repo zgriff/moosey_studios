@@ -56,10 +56,25 @@ using namespace std;
  *
  * @return true if the controller is initialized properly, false otherwise.
  */
-bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
+bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string mapKey) {
     // Initialize the scene to a locked width
     //create world
-    _world = assets->get<World>(GRASS_MAP_KEY);
+    CULog("map selected is %d", NetworkController::getMapSelected());
+    switch (NetworkController::getMapSelected()) {
+    case 1:
+        mapKey = GRASS_MAP_KEY;
+        break;
+    case 2:
+        mapKey = GRASS_MAP2_KEY;
+        break;
+    case 3:
+        mapKey = GRASS_MAP3_KEY;
+        break;
+    case 4:
+        mapKey = GRASS_MAP4_KEY;
+        break;
+    }
+    _world = assets->get<World>(mapKey);
     if (_world == nullptr) {
         CULog("Fail!");
         return false;
@@ -340,7 +355,7 @@ void GameScene::update(float timestep) {
 
     auto playPos = _player->getSceneNode()->getPosition();
     if (_player->getLinearVelocity().length() > .00001) {
-        playPos += _player->getLinearVelocity().scale(60.0 / pow(_player->getLinearVelocity().length(), .35));
+        playPos += _player->getLinearVelocity().scale(40.0 / pow(_player->getLinearVelocity().length(), .35));
     }
     auto camSpot = getCamera()->getPosition();
     auto trans = (playPos - camSpot)*CAMERA_STICKINESS;

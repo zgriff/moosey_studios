@@ -32,8 +32,17 @@
 
 #define TILE_SIZE           50.0f
 
-#define GRASS_MAP_JSON      "maps/forest2.json"
+#define GRASS_MAP_JSON      "json/forest.json"
 #define GRASS_MAP_KEY       "grass_map"
+
+#define GRASS_MAP2_JSON      "maps/forest2.json"
+#define GRASS_MAP2_KEY       "grass_map2"
+
+#define GRASS_MAP3_JSON      "maps/bigforest.json" //replace this with the new maps once they have been made
+#define GRASS_MAP3_KEY       "grass_map3"
+
+#define GRASS_MAP4_JSON      "maps/forest2.json"
+#define GRASS_MAP4_KEY       "grass_map4"
 
 
 enum class GameObjectType {

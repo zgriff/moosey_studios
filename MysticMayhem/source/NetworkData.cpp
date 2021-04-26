@@ -17,6 +17,7 @@ namespace ND{
 #define SWAP_ID_BITS 4
 #define ORB_ID_BITS 5
 #define EGG_ID_BITS 3
+#define MAP_NUMBER_BITS 3
 
 //writing
 uint16_t scratch;
@@ -102,6 +103,16 @@ void writeTimestamp(std::vector<uint8_t> & buffer, time_t timestamp){
     writeBits(buffer, u.ui8[7], 8);
 }
 
+void writeString(std::vector<uint8_t>& buffer, int length, char s[]) {
+    // supports string up to length 16
+    writeBits(buffer, length, 4);
+    for (int i = 0; i < length; i++) {
+        // can optimize if we only want to have alphanumeric chars but then we will need custom char to int conversion
+        uint8_t u = s[i];
+        writeBits(buffer, u, 8);
+    }
+}
+
 //call at the end of writing data to make sure everything ends up in the buffer
 void flush(std::vector<uint8_t> & buffer){
     writeByte(buffer,scratch & 0b11111111);
@@ -184,6 +195,20 @@ bool readBool(const std::vector<uint8_t>& bytes){
     return true;
 }
 
+int readStringLen(const std::vector<uint8_t>& bytes) {
+    uint32_t len = readBits(bytes, 4);
+    return len;
+}
+
+char * readString(const std::vector<uint8_t>& bytes, int len) {
+    char * s = new char[globals::MAX_CHARS_IN_USERNAME];
+    for (int i = 0; i < len; i++) {
+        char c = readBits(bytes, 8);
+        s[i] = c;
+    }
+    return s;
+}
+
 
 
 //convert the bytes to a NetworkData struct, putting the result in dest
@@ -234,6 +259,7 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
             break;
         case NetworkData::PROJECTILE_GONE:
             dest.projectileGoneData.projectileId = readBits(bytes, PLAYER_ID_BITS);
+            break;
         case NetworkData::EGG_RESPAWN:
             dest.eggRespawnData.eggId = readBits(bytes, EGG_ID_BITS);
             dest.eggRespawnData.position = readVec2(bytes);
@@ -245,6 +271,14 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
         case NetworkData::CLIENT_READY:
         case NetworkData::CLIENT_UNREADY:
             dest.readyData.player_id = readBits(bytes, PLAYER_ID_BITS);
+            break;
+        case NetworkData::SET_USERNAME:
+            dest.setUsernameData.playerId = readBits(bytes, PLAYER_ID_BITS);
+            dest.setUsernameData.username_length = readStringLen(bytes);
+            dest.setUsernameData.username = readString(bytes, dest.setUsernameData.username_length);
+            break;
+        case NetworkData::SET_MAP_NUMBER:
+            dest.setMapNumber.mapNumber = readBits(bytes, MAP_NUMBER_BITS);
             break;
     }
     return true;
@@ -297,6 +331,7 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
             break;
         case NetworkData::PROJECTILE_GONE:
             writeBits(dest, src.projectileFiredData.projectileId, PLAYER_ID_BITS);
+            break;
         case NetworkData::EGG_RESPAWN:
             writeBits(dest, src.eggRespawnData.eggId, EGG_ID_BITS);
             writeVec2(dest, src.eggRespawnData.position);
@@ -308,6 +343,14 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
         case NetworkData::CLIENT_READY:
         case NetworkData::CLIENT_UNREADY:
             writeBits(dest, src.readyData.player_id, PLAYER_ID_BITS);
+            break;
+        case NetworkData::SET_USERNAME:
+            //CULog("reached here 2");
+            writeBits(dest, src.setUsernameData.playerId, PLAYER_ID_BITS);
+            writeString(dest, src.setUsernameData.username_length, src.setUsernameData.username);
+            break;
+        case NetworkData::SET_MAP_NUMBER:
+            writeBits(dest, src.setMapNumber.mapNumber, MAP_NUMBER_BITS);
             break;
     }
     flush(dest);

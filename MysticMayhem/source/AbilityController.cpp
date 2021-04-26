@@ -46,13 +46,12 @@ void AbilityController::activateAbility(std::shared_ptr<Player> player) {
 				_queuedAbility = Ability::NoAbility;
 				break;
 			case Ability::SpeedBoost:
-            {
-				auto adjust = player->getLinearVelocity().normalize();
-				player->setLinearVelocity(adjust.scale(40.0f));
+			{
+				player->setLinearVelocity(player->getLinearVelocity() * 2.0);
 				_activeAbility = Ability::SpeedBoost;
 				_queuedAbility = Ability::NoAbility;
 				break;
-            }
+			}
 			case Ability::Projectile:
             {
 				auto projectile = player->getProjectile();

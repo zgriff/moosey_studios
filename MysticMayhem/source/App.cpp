@@ -24,7 +24,7 @@ void App::onStartup() {
     _assets = AssetManager::alloc();
     _batch  = SpriteBatch::alloc();
     auto cam = OrthographicCamera::alloc(getDisplaySize());
-    
+
     // Start-up basic input
 #ifdef CU_MOBILE
     Input::activate<Touchscreen>();
@@ -35,21 +35,24 @@ void App::onStartup() {
     Input::get<Mouse>()->setPointerAwareness(Mouse::PointerAwareness::DRAG);
     Input::activate<Keyboard>();
 #endif
-    
+
     _assets->attach<Font>(FontLoader::alloc()->getHook());
     _assets->attach<Texture>(TextureLoader::alloc()->getHook());
     _assets->attach<Sound>(SoundLoader::alloc()->getHook());
     _assets->attach<scene2::SceneNode>(Scene2Loader::alloc()->getHook());
     _assets->attach<World>(GenericLoader<World>::alloc()->getHook());
-    
+
     // Create a "loading" screen
     _currentScene = SceneSelect::Loading;
     _loading.init(_assets);
-    
+
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
     _assets->loadAsync<World>(GRASS_MAP_KEY,GRASS_MAP_JSON,nullptr);
-    
+    _assets->loadAsync<World>(GRASS_MAP2_KEY, GRASS_MAP2_JSON, nullptr);
+    _assets->loadAsync<World>(GRASS_MAP3_KEY, GRASS_MAP3_JSON, nullptr);
+    _assets->loadAsync<World>(GRASS_MAP4_KEY, GRASS_MAP4_JSON, nullptr);
+
     AudioEngine::start();
     SoundController::init(_assets);
     Application::onStartup(); // YOU MUST END with call to parent
@@ -120,6 +123,7 @@ void App::onResume() {
  *
  * @param timestep  The amount of time (in seconds) since the last frame
  */
+<<<<<<< HEAD
 void App::update(float timestep) {
     switch (_currentScene) {
         case SceneSelect::Loading:{

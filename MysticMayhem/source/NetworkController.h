@@ -3,6 +3,7 @@
 
 #include <cugl/cugl.h>
 #include "World.h"
+#include "LobbyScene.h"
 
 #define NETWORK_FRAMERATE 6
 
@@ -41,12 +42,18 @@ namespace NetworkController {
     void sendProjectileGone(int projectileId);
     void sendTag(int taggedId, int taggerId, time_t timestamp, bool dropEgg);
     void sendEggRespawn(int eggId, Vec2 eggPosition);
-    void sendTag(int taggedId, int taggerId, time_t timestamp);
+    void sendSetUsername(int playerId, string username);
+    void sendSetMapSelected(int i);
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);
     std::shared_ptr<World> getWorld();
 
+    //void setLobbyScene(std::shared_ptr<LobbyScene> lobby);
+    int getMapSelected();
+    void setMapSelected(int i);
+
     std::string getUsername();
+    std::string getUsername(int i);
 
     void setUsername(std::string name);
 
