@@ -17,6 +17,7 @@ namespace ND{
 #define SWAP_ID_BITS 4
 #define ORB_ID_BITS 5
 #define EGG_ID_BITS 3
+#define MAP_NUMBER_BITS 2
 
 //writing
 uint16_t scratch;
@@ -271,6 +272,9 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
             dest.setUsernameData.playerId = readBits(bytes, PLAYER_ID_BITS);
             dest.setUsernameData.username = readString(bytes);
             break;
+        case NetworkData::SET_MAP_NUMBER:
+            dest.setMapNumber.mapNumber = readBits(bytes, MAP_NUMBER_BITS);
+            break;
     }
     return true;
 }
@@ -339,6 +343,9 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
             //CULog("reached here 2");
             writeBits(dest, src.setUsernameData.playerId, PLAYER_ID_BITS);
             writeString(dest, *src.setUsernameData.username);
+            break;
+        case NetworkData::SET_MAP_NUMBER:
+            writeBits(dest, src.setMapNumber.mapNumber, MAP_NUMBER_BITS);
             break;
     }
     flush(dest);

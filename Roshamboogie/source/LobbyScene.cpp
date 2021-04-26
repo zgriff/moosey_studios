@@ -78,7 +78,10 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _map3Button->setDown(false);
                 _map4Button->setDown(false);
                 _selectedMap = GRASS_MAP_KEY;
+                NetworkController::sendSetMapSelected(1);
+                NetworkController::setMapSelected(1);
                 CULog("%f %f", _map1Button->getPositionX(), _map1Button->getPositionY());
+
             }
         });
         _map2Button->addListener([&](const std::string& name, bool down) {
@@ -86,6 +89,8 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _map1Button->setDown(false);
                 _map3Button->setDown(false);
                 _map4Button->setDown(false);
+                NetworkController::sendSetMapSelected(2);
+                NetworkController::setMapSelected(2);
                 _selectedMap = GRASS_MAP2_KEY;
             }
         });
@@ -94,6 +99,8 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _map1Button->setDown(false);
                 _map2Button->setDown(false);
                 _map4Button->setDown(false);
+                NetworkController::sendSetMapSelected(3);
+                NetworkController::setMapSelected(3);
                 _selectedMap = GRASS_MAP3_KEY;
             }
             });
@@ -102,6 +109,8 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _map1Button->setDown(false);
                 _map2Button->setDown(false);
                 _map3Button->setDown(false);
+                NetworkController::sendSetMapSelected(4);
+                NetworkController::setMapSelected(4);
                 _selectedMap = GRASS_MAP4_KEY;
             }
             });
@@ -124,7 +133,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _map4Button->deactivate();
         _map4Button->setVisible(false);
 
-        if (_selectedMap == GRASS_MAP_KEY) {
+        /*if (_selectedMap == GRASS_MAP_KEY) {
             _map1Button->setVisible(true);
         }
         else if (_selectedMap == GRASS_MAP2_KEY) {
@@ -138,7 +147,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         else if (_selectedMap == GRASS_MAP4_KEY) {
             _map4Button->setVisible(true);
             _map4Button->setPosition(100, 160);
-        }
+        }*/
     }
     
     _roomId = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("lobby_roomId"));

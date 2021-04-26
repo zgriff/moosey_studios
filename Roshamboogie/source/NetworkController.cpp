@@ -5,6 +5,7 @@
 #include "Orb.h"
 #include "Egg.h"
 #include "Globals.h"
+#include "MapConstants.h"
 #include <cugl/cugl.h>
 
 
@@ -13,11 +14,13 @@ namespace NetworkController {
         std::shared_ptr<cugl::CUNetworkConnection> network;
         std::string roomId;
         std::shared_ptr<World> world;
+        //std::shared_ptr<LobbyScene> _lobby;
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username = "test";
         //Networked usernames indexed by playerId
         array<std::string, 2> usernames = {"test", "test2"};
         int _networkFrame;
+        int mapSelected;
     
         std::function<void(uint8_t, bool)> readyCallback;
         std::function<void(void)> startCallback;
@@ -60,6 +63,10 @@ namespace NetworkController {
         return world;
     }
 
+    /*void setLobbyScene(std::shared_ptr<LobbyScene> lobby) {
+        _lobby = lobby;
+    }*/
+
     bool isHost(){
         return network->getPlayerID().value_or(-1) == 0;
     }
@@ -90,6 +97,14 @@ namespace NetworkController {
 
     void setUsername(std::string name) {
         username = name;
+    }
+
+    int getMapSelected() {
+        return mapSelected;
+    }
+
+    void setMapSelected(int i) {
+        mapSelected = i;
     }
 
     void receive(const std::function<void(const std::vector<uint8_t>&)>& dispatcher){
@@ -148,6 +163,26 @@ namespace NetworkController {
                     string username1 = *nd.setUsernameData.username;
                     CULog("setting %d username to ", id1);
                     CULog("username is %s", username1);
+                }
+                    break;
+                case ND::NetworkData::SET_MAP_NUMBER:
+                {
+                    /*switch (nd.setMapNumber.mapNumber) {
+                    case 1:
+                        _lobby.setSelectedMap(GRASS_MAP_KEY);
+                        break;
+                    case 2:
+                        _lobby.setSelectedMap(GRASS_MAP2_KEY);
+                        break;
+                    case 3:
+                        _lobby.setSelectedMap(GRASS_MAP3_KEY);
+                        break;
+                    case 4:
+                        _lobby.setSelectedMap(GRASS_MAP4_KEY);
+                        break;
+                    }*/
+                    mapSelected = nd.setMapNumber.mapNumber;
+                    CULog("set map selected to %d", mapSelected);
                 }
                     break;
                 case ND::NetworkData::TAG_PACKET:
@@ -386,6 +421,15 @@ namespace NetworkController {
         nd.setUsernameData.playerId = playerId;
         nd.setUsernameData.username = &username;
         //CULog("reached here 1");
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void sendSetMapSelected(int i) {
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::SET_MAP_NUMBER;
+        nd.setMapNumber.mapNumber = i;
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
         network->send(bytes);

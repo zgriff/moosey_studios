@@ -141,6 +141,7 @@ void App::update(float timestep) {
                     _menu.setActive(false);
                     _lobby.init(_assets);
                     _lobby.setActive(true);
+                    //NetworkController::setLobbyScene(_lobby);
                     _menu.dispose();
                     _currentScene = SceneSelect::Lobby;
                 }
