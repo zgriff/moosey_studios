@@ -57,7 +57,11 @@ protected:
     
     std::vector<std::shared_ptr<Orb>> _orbs;
     
-    std::vector<Vec2> _orbSpawns;
+    std::vector<Vec2> _orbSpawns; //all the possible orb spawn locations
+    std::vector<Vec2> _initOrbLocs; //initial orb postions when map created
+    
+    std::vector<Vec2> _initEggLocs; //initial egg postions when map created
+    std::vector<Vec2> _eggSpawns;
     
     std::vector<std::shared_ptr<SwapStation>> _swapStations;
 
@@ -108,7 +112,6 @@ protected:
     /**
      * Clears the root scene graph node for this level
      */
-    void clearRootNode();
 
 
 public:
@@ -316,6 +319,8 @@ public:
     
     bool getDebug() const {return _debug;}
     
+    void clearRootNode();
+    
 #pragma mark -
 #pragma mark Asset Loading
     /**
@@ -366,6 +371,8 @@ public:
      * Destroys this level, releasing all resources.
      */
     virtual ~World(void);
+    
+    void dispose();
 
 };
 

@@ -1,55 +1,47 @@
 {
-    "activeFile": "maps/foo.tmx",
+    "activeFile": "maps/forest2.tmx",
     "expandedProjectPaths": [
-        "tilesets",
+        "maps",
         "templates",
-        "maps"
+        "tilesets"
     ],
     "fileStates": {
-        "maps/bigforest.tmx": {
-            "scale": 0.3945,
-            "selectedLayer": 1,
-            "viewCenter": {
-                "x": 1569.0747782002536,
-                "y": 1353.61216730038
-            }
-        },
-        "maps/f.tmx": {
-            "scale": 0.30628,
-            "selectedLayer": 2,
-            "viewCenter": {
-                "x": 1717.3827869922948,
-                "y": 1119.890296460755
-            }
-        },
         "maps/foo.tmx": {
             "scale": 0.3483,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1329.3138099339649,
-                "y": 869.9397071490093
+                "x": 1251.7944300890038,
+                "y": 749.3540051679587
             }
         },
         "maps/forest.tmx": {
             "scale": 0.2991,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1435.9745904379809,
-                "y": 922.7683049147445
+                "x": 1350.7188231360751,
+                "y": 849.2143095954531
+            }
+        },
+        "maps/forest2.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1236.3636363636363,
+                "y": 890.909090909091
             }
         },
         "maps/untitled.tmx": {
-            "scale": 0.3157,
+            "scale": 0.6031,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1498.2578397212542,
-                "y": 924.9287298067786
+                "x": 1248.5491626595922,
+                "y": 487.4813463770519
             }
         },
         "tilesets/decorations.tsx": {
-            "dynamicWrapping": false,
-            "scaleInDock": 1,
-            "scaleInEditor": 0.67
+            "dynamicWrapping": true,
+            "scaleInDock": 0.75,
+            "scaleInEditor": 0.5
         },
         "tilesets/tiles.tsx": {
             "dynamicWrapping": true,
@@ -57,19 +49,28 @@
             "scaleInEditor": 0.67
         }
     },
-    "last.exportedFilePath": "/Users/joshuakaplan/Downloads",
-    "last.imagePath": "/Users/joshuakaplan/Documents/School Stuff/2020-2021/Spring Semester/game design/moosey_studios/Tiled_files/images",
+    "last.exportedFilePath": "C:/Users/Thomas/Desktop/CS4152/moosey_studios/Roshamboogie/assets/maps",
+    "last.imagePath": "C:/Users/Thomas/Downloads",
     "last.objectTemplatePath": "/Users/joshuakaplan/Documents/School Stuff/2020-2021/Spring Semester/game design/moosey_studios/Tiled_files/templates",
-    "map.lastUsedExportFilter": "Mystic Mayhem map format (*.json)",
+    "map.lastUsedExportFilter": "Roshamboogie map format (*.json)",
     "openFiles": [
         "maps/untitled.tmx",
-        "maps/foo.tmx"
+        "maps/foo.tmx",
+        "maps/forest2.tmx",
+        "maps/forest.tmx",
+        "tilesets/decorations.tsx"
     ],
     "project": "template.tiled-project",
     "recentFiles": [
         "maps/untitled.tmx",
         "maps/foo.tmx",
-        "maps/forest.tmx"
+        "tilesets/decorations.tsx",
+        "maps/forest.tmx",
+        "maps/forest2.tmx"
     ],
-    "resizeMap.removeObjects": true
+    "resizeMap.removeObjects": true,
+    "tileset.tileSize": {
+        "height": 50,
+        "width": 50
+    }
 }

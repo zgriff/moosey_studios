@@ -19,7 +19,7 @@ struct NetworkData {
     enum PacketType {
         TAG_PACKET, ORB_RESPAWN, EGG_RESPAWN, ORB_CAPTURED, EGG_CAPTURED, EGG_HATCHED, SWAP_PACKET, POSITION_PACKET, 
         ELEMENT_CHANGE, PROJECTILE_FIRED, PROJECTILE_GONE,
-        CLIENT_READY, CLIENT_UNREADY, HOST_STARTGAME
+        SET_USERNAME, SET_MAP_NUMBER, CLIENT_READY, CLIENT_UNREADY, HOST_STARTGAME
     };
     uint8_t packetType;
     union {
@@ -75,8 +75,15 @@ struct NetworkData {
         struct {
             uint8_t projectileId;
         } projectileGoneData;
-    };
-    
+        struct {
+            uint8_t playerId;
+            int username_length;
+            char * username;
+        } setUsernameData;
+        struct {
+            uint8_t mapNumber;
+        } setMapNumber;
+    };     
 };
 
 //convert the bytes to a NetworkData struct, putting the result in dest

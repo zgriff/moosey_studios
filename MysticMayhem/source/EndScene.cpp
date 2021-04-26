@@ -7,6 +7,8 @@
 //
 
 #include "EndScene.h"
+#include "NetworkController.h"
+#include "World.h"
 
 using namespace cugl;
 
@@ -42,15 +44,25 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     layer->doLayout(); // This rearranges the children to fit the screen
     addChild(layer);
     
+    _mainMenu = false;
+    _playAgain = false;
+    
     _playAgainButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("end_playagain"));
     _playAgainButton->activate();
-//    _playAgainButton->addListener([=](const std::string& name, bool down) {
-//        this->_active = down;
-//    });
+    _playAgainButton->addListener([=](const std::string& name, bool down) {
+        this->_playAgain = down;
+    });
+    
+    _mainMenuButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("end_mainmenu"));
+    _mainMenuButton->activate();
+    _mainMenuButton->addListener([=](const std::string& name, bool down) {
+        this->_mainMenu = down;
+    });
 
+    _results = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_results"));
     
 
-    Application::get()->setClearColor(Color4(192,192,192,255));
+    Application::get()->setClearColor(Color4(190,187,191,255));
     return true;
 }
 
@@ -58,11 +70,13 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 * Disposes of all (non-static) resources allocated to this mode.
 */
 void EndScene::dispose() {
-    if (isPending()) {
-        _playAgainButton->deactivate();
-    }
+    removeAllChildren();
     _assets = nullptr;
     _playAgainButton = nullptr;
+    _mainMenuButton = nullptr;
+    _mainMenu = false;
+    _playAgain = false;
+    _active = false;
     
 }
 
@@ -76,4 +90,8 @@ void EndScene::update(float timestep) {
 */
 bool EndScene::isPending() const {
    return _playAgainButton != nullptr && _playAgainButton->isVisible();
+}
+
+void EndScene::displayResults() {
+    auto world = NetworkController::getNumPlayers();
 }
