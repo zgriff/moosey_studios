@@ -132,6 +132,25 @@ namespace NetworkController {
                 case ND::NetworkData::HOST_STARTGAME:
                     startCallback();
                     break;
+                case ND::NetworkData::SET_MAP_NUMBER:
+                {
+                    /*switch (nd.setMapNumber.mapNumber) {
+                    case 1:
+                        _lobby.setSelectedMap(GRASS_MAP_KEY);
+                        break;
+                    case 2:
+                        _lobby.setSelectedMap(GRASS_MAP2_KEY);
+                        break;
+                    case 3:
+                        _lobby.setSelectedMap(GRASS_MAP3_KEY);
+                        break;
+                    case 4:
+                        _lobby.setSelectedMap(GRASS_MAP4_KEY);
+                        break;
+                    }*/
+                    mapSelected = nd.setMapNumber.mapNumber;
+                    CULog("set map selected to %d", mapSelected);
+                }
             }
 //            CULog("Received message of length %lu", msg.size());
 //            for (const auto& d : msg) {

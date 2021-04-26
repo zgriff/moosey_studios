@@ -92,7 +92,7 @@ float WALL[WALL_COUNT][WALL_VERTS] = {
 bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string mapKey) {
     // Initialize the scene to a locked width
     //create world
-    CULog("%d", NetworkController::getMapSelected());
+    CULog("map selected is %d", NetworkController::getMapSelected());
     switch (NetworkController::getMapSelected()) {
     case 1:
         mapKey = GRASS_MAP_KEY;

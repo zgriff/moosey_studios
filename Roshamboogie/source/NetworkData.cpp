@@ -17,7 +17,7 @@ namespace ND{
 #define SWAP_ID_BITS 4
 #define ORB_ID_BITS 5
 #define EGG_ID_BITS 3
-#define MAP_NUMBER_BITS 2
+#define MAP_NUMBER_BITS 3
 
 //writing
 uint16_t scratch;

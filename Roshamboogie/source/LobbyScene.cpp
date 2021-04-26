@@ -68,6 +68,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _startButton->setVisible(true);
         _startButton->addListener([&](const std::string& name, bool down) {
             if(true){ //TODO: if everyone ready
+                NetworkController::sendSetMapSelected(NetworkController::getMapSelected());
                 NetworkController::startGame();
                 _active = down;
             }
@@ -132,22 +133,6 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _map3Button->setVisible(false);
         _map4Button->deactivate();
         _map4Button->setVisible(false);
-
-        /*if (_selectedMap == GRASS_MAP_KEY) {
-            _map1Button->setVisible(true);
-        }
-        else if (_selectedMap == GRASS_MAP2_KEY) {
-            _map2Button->setVisible(true);
-            _map2Button->setPosition(100, 160);
-        }
-        else if (_selectedMap == GRASS_MAP3_KEY) {
-            _map3Button->setVisible(true);
-            _map3Button->setPosition(100, 160);
-        }
-        else if (_selectedMap == GRASS_MAP4_KEY) {
-            _map4Button->setVisible(true);
-            _map4Button->setPosition(100, 160);
-        }*/
     }
     
     _roomId = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("lobby_roomId"));
@@ -229,6 +214,37 @@ void LobbyScene::update(float progress) {
             //CULog("setting username label text %s", NetworkController::getUsername(it - _playerLabels.begin()));
             //(*it)->setText(NetworkController::getUsername(it - _playerLabels.begin()));
             (*it)->setVisible(true);
+        }
+    }
+
+    if (!NetworkController::isHost()) {
+        if (NetworkController::getMapSelected() == 1) {
+            _map1Button->setVisible(true);
+            _map1Button->setPosition(100, 160);
+            _map2Button->setVisible(false);
+            _map3Button->setVisible(false);
+            _map4Button->setVisible(false);
+        }
+        else if (NetworkController::getMapSelected() == 2) {
+            _map2Button->setVisible(true);
+            _map2Button->setPosition(100, 160);
+            _map1Button->setVisible(false);
+            _map3Button->setVisible(false);
+            _map4Button->setVisible(false);
+        }
+        else if (NetworkController::getMapSelected() == 3) {
+            _map3Button->setVisible(true);
+            _map3Button->setPosition(100, 160);
+            _map1Button->setVisible(false);
+            _map2Button->setVisible(false);
+            _map4Button->setVisible(false);
+        }
+        else if (NetworkController::getMapSelected() == 4) {
+            _map4Button->setVisible(true);
+            _map4Button->setPosition(100, 160);
+            _map1Button->setVisible(false);
+            _map2Button->setVisible(false);
+            _map3Button->setVisible(false);
         }
     }
 
