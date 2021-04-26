@@ -71,8 +71,6 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 */
 void EndScene::dispose() {
     removeAllChildren();
-    _playAgainButton->deactivate();
-    _mainMenuButton->deactivate();
     _assets = nullptr;
     _playAgainButton = nullptr;
     _mainMenuButton = nullptr;

@@ -78,11 +78,14 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _map2Button->setDown(false);
                 _map3Button->setDown(false);
                 _map4Button->setDown(false);
+                /*_map1Button->deactivate();
+                _map2Button->activate();
+                _map3Button->activate();
+                _map4Button->activate();*/
                 _selectedMap = GRASS_MAP_KEY;
                 NetworkController::sendSetMapSelected(1);
                 NetworkController::setMapSelected(1);
                 CULog("%f %f", _map1Button->getPositionX(), _map1Button->getPositionY());
-
             }
         });
         _map2Button->addListener([&](const std::string& name, bool down) {
@@ -90,6 +93,10 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _map1Button->setDown(false);
                 _map3Button->setDown(false);
                 _map4Button->setDown(false);
+                /*_map1Button->activate();
+                _map2Button->deactivate();
+                _map3Button->activate();
+                _map4Button->activate();*/
                 NetworkController::sendSetMapSelected(2);
                 NetworkController::setMapSelected(2);
                 _selectedMap = GRASS_MAP2_KEY;
@@ -100,6 +107,10 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _map1Button->setDown(false);
                 _map2Button->setDown(false);
                 _map4Button->setDown(false);
+                /*_map1Button->activate();
+                _map2Button->activate();
+                _map3Button->deactivate();
+                _map4Button->activate();*/
                 NetworkController::sendSetMapSelected(3);
                 NetworkController::setMapSelected(3);
                 _selectedMap = GRASS_MAP3_KEY;
@@ -110,6 +121,10 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _map1Button->setDown(false);
                 _map2Button->setDown(false);
                 _map3Button->setDown(false);
+               /* _map1Button->activate();
+                _map2Button->activate();
+                _map3Button->activate();
+                _map4Button->deactivate();*/
                 NetworkController::sendSetMapSelected(4);
                 NetworkController::setMapSelected(4);
                 _selectedMap = GRASS_MAP4_KEY;
@@ -167,7 +182,6 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void LobbyScene::dispose() {
-    removeAllChildren();
     _startButton = nullptr;
     _map1Button = nullptr;
     _map2Button = nullptr;
