@@ -92,7 +92,6 @@ void SpawnController::spawnOrbs() {
 
 //check which rooms have egg and player and don't spawn in those rooms
 void SpawnController::spawnEggs() {
-    int maxEggs = int(world->getPlayers().size() / 3);
     int rows = 4;
     int cols = 4;
     
@@ -138,17 +137,37 @@ void SpawnController::spawnEggs() {
     std::uniform_int_distribution<long> rand_x(emptySpaces[randRoom].x * roomWidth, emptySpaces[randRoom].x * roomWidth + roomWidth);
     std::uniform_int_distribution<long> rand_y(emptySpaces[randRoom].y * roomHeight, emptySpaces[randRoom].y * roomHeight + roomHeight);
     
+    auto spawnLocs = world->getEggSpawns();
+    
+    auto eggPos = Vec2(rand_x(e1), rand_y(e1));
+    
+    int minIdx = -1; //saves which valid spawn location is closest to the generated one
+    int minDist = INT_MAX;
+    for (int i = 0; i < spawnLocs.size(); i++) {
+        int dist = eggPos.distanceSquared(spawnLocs[i]);
+        if (dist < minDist) {
+            minDist = dist;
+            minIdx = i;
+        }
+    }
+    
+    if (minIdx == -1) { //currently no available spawn locations
+        return;
+    }
+    
     for (int i = 0; i < eggs.size(); i++) {
         std::shared_ptr<Egg> egg = world->getEgg(i);
         if (egg->getHatched()) {
-//            egg->setPosition(Vec2(rand_x(e1), rand_y(e1)));
-            egg->setPosition(10, 10); //TODO: change -- just for testing now
-            egg->setInitPos(Vec2(10,10));
+            world->removeEggSpawn(minIdx);
+            egg->setPosition(spawnLocs[minIdx]);
+            egg->setInitPos(spawnLocs[minIdx]);
+            egg->setSpawnLoc(spawnLocs[minIdx]);
             egg->setHatched(false);
             egg->setCollected(false);
             egg->setDistanceWalked(0);
             world->setCurrEggCount(world->getCurrEggCount() + 1);
             NetworkController::sendEggRespawn(egg->getID(), egg->getPosition());
+            return;
         }
     }
     

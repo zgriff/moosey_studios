@@ -175,19 +175,21 @@ void App::update(float timestep) {
             break;
         }
         case SceneSelect::Results: {
-            if (_results.playAgain()) {
-                _results.dispose();
-                _lobby.init(_assets);
-                _lobby.setActive(true);
-                _lobby.setPlayAgain(true);
-                _currentScene = SceneSelect::Lobby;
-            }
-            else if (_results.mainMenu()) {
-                _results.dispose();
-                _menu.init(_assets);
-                _currentScene = SceneSelect::Menu;
-                _menu.setActive(true);
+            if (_results.isActive()) {
+                if (_results.playAgain()) {
+                    _lobby.init(_assets);
+                    _lobby.setActive(true);
+                    _lobby.setPlayAgain(true);
+                    _results.dispose();
+                    _currentScene = SceneSelect::Lobby;
+                }
+                else if (_results.mainMenu()) {
+                    _menu.init(_assets);
+                    _currentScene = SceneSelect::Menu;
+                    _menu.setActive(true);
+                    _results.dispose();
 
+                }
             }
 //            else {
 //                _results.dispose();

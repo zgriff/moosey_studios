@@ -75,8 +75,10 @@ protected:
     
     float _scale;
     uint8_t _numPlayers;
+    uint8_t _initOrbCount;
     uint8_t _currOrbCount;
     uint8_t _currEggCount;
+    uint8_t _totalEggCount;
 
     
 #pragma mark Internal Helpers
@@ -255,6 +257,22 @@ public:
     void removeOrbSpawn(int pos) {
         _orbSpawns.erase(_orbSpawns.begin() + pos);
     }
+    
+    std::vector<Vec2> getEggSpawns() {
+        return _eggSpawns;
+    }
+    
+    void addEggSpawn(Vec2 eggSpawnPos) {
+        _eggSpawns.push_back(eggSpawnPos);
+    }
+    
+    void removeEggSpawn(int pos) {
+        _eggSpawns.erase(_eggSpawns.begin() + pos);
+    }
+    
+    uint8_t getInitOrbCount() {
+        return _initOrbCount;
+    }
 
     uint8_t getCurrOrbCount() {
         return _currOrbCount;
@@ -270,6 +288,10 @@ public:
     
     void setCurrEggCount(int c) {
         _currEggCount = c;
+    }
+    
+    uint8_t getTotalEggCount() {
+        return _totalEggCount;
     }
     
     void addOrb(Vec2 pos);

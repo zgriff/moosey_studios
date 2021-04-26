@@ -593,6 +593,17 @@
                 "color": [190,187,191,255]
             },
             "children": {
+                "background": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "title_background",
+                        "anchor": [ 0.0, 0.5 ]
+                    },
+                    "layout": {
+                        "x_anchor": "fill",
+                        "y_anchor": "fill"
+                    }
+                },
                 "playagain": {
                     "type": "Button",
                     "data": {
@@ -601,7 +612,7 @@
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.5, 0.5 ],
-                        "scale": 0.8
+                        "scale": 0.6
                     },
                     "children": {
                         "up": {
@@ -614,8 +625,8 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": 115,
-                        "x_offset": -200,
+                        "y_offset": 10,
+                        "x_offset": -150,
                         "absolute": true
                     }
                 },
@@ -627,7 +638,7 @@
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.5, 0.5 ],
-                        "scale": 0.8
+                        "scale": 0.6
                     },
                     "children": {
                         "up": {
@@ -640,8 +651,8 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": 115,
-                        "x_offset": 200,
+                        "y_offset": 10,
+                        "x_offset": 250,
                         "absolute": true
                     }
                 },
@@ -658,7 +669,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "x_offset": -0.4,
+                        "x_offset": -0.3,
                         "y_offset": -0.2
                     }
                 },
@@ -675,7 +686,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "x_offset": -0.4,
+                        "x_offset": -0.3,
                         "y_offset": -0.4
                     }
                 }

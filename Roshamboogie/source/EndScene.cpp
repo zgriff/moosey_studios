@@ -53,22 +53,32 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::stri
     _playAgainButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("end_playagain"));
     _playAgainButton->activate();
     _playAgainButton->addListener([=](const std::string& name, bool down) {
-        this->_playAgain = down;
+        this->_active = down;
+        _playAgain = true;
     });
     
+    if (_playAgainButton->isDown()) {
+        _playAgainButton->setDown(false);
+    }
+    
     _mainMenuButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("end_mainmenu"));
-    _mainMenuButton->activate();
+//    _mainMenuButton->activate(); //TODO: activate main menu button when connection issue fixed
     _mainMenuButton->addListener([=](const std::string& name, bool down) {
-        this->_mainMenu = down;
+        this->_active = down;
+        _mainMenu = true;
     });
+    
+    if (_mainMenuButton->isDown()) {
+        _mainMenuButton->setDown(false);
+    }
 
     _results = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_results"));
     _results->setText("Winner: " + std::get<0>(_winnerStr));
     
     _message = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_message"));
     _message->setText(std::get<1>(_winnerStr));
-    
 
+    
     Application::get()->setClearColor(Color4(190,187,191,255));
     return true;
 }
@@ -77,6 +87,7 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::stri
 * Disposes of all (non-static) resources allocated to this mode.
 */
 void EndScene::dispose() {
+    CULog("Results dispose");
     removeAllChildren();
     _playAgainButton->deactivate();
     _mainMenuButton->deactivate();
@@ -86,6 +97,7 @@ void EndScene::dispose() {
     _mainMenu = false;
     _playAgain = false;
     _active = false;
+    Scene2::dispose();
     
 }
 

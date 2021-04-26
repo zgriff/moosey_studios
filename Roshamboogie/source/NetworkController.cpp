@@ -187,11 +187,13 @@ namespace NetworkController {
                 case ND::NetworkData::EGG_HATCHED:
                 {
                     auto p = world->getPlayer(nd.eggHatchData.playerId);
+                    auto egg = world->getEgg(nd.eggCapData.eggId);
                     p->setElement(p->getPrevElement());
                     p->setHoldingEgg(false);
                     world->getEgg(nd.eggCapData.eggId)->setHatched(true);
                     world->setCurrEggCount(world->getCurrEggCount() - 1);
                     p->incScore(globals::HATCH_SCORE);
+                    world->addEggSpawn(egg->getSpawnLoc());
                 }
                     break;
                 case ND::NetworkData::ORB_RESPAWN:
@@ -234,7 +236,8 @@ namespace NetworkController {
                     egg->setCollected(false);
                     egg->setHatched(false);
                     egg->setDistanceWalked(0);
-                    egg->setInitPos(Vec2(10,10));
+                    egg->setSpawnLoc(nd.eggRespawnData.position);
+                    egg->setInitPos(nd.eggRespawnData.position);
                 }
                     break;
             }

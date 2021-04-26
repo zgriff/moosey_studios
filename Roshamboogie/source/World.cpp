@@ -94,26 +94,28 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     }
     
     _currEggCount = 0;
+    _totalEggCount = 0;
     for(auto it = _initEggLocs.begin(); it != _initEggLocs.end(); ++it) {
         Size eggSize(1, 2);
         std::shared_ptr<Egg> egg = Egg::alloc(*it, eggSize);
         _physicsWorld->addObstacle(egg);
         egg->setTextures(eggTexture);
         egg->setDrawScale(_scale);
-        egg->setActive(true);
         egg->setDebugColor(Color4::YELLOW);
         egg->setDebugScene(_debugNode);
-        egg->setID(_currEggCount);
-        egg->setCollected(false);
-        egg->setHatched(false);
+        egg->setID(_totalEggCount);
+        //setting collected and hatched to true since should not be in map in the beginning
+        egg->setCollected(true);
+        egg->setHatched(true);
         egg->setDistanceWalked(0);
         egg->setInitPos(egg->getPosition());
-        _currEggCount = _currEggCount + 1;
+        _totalEggCount = _totalEggCount + 1;
         _worldNode->addChild(egg->getSceneNode(),1);
         _eggs.push_back(egg);
     }
     
     _currOrbCount = 0;
+    _initOrbCount = 0;
     for(auto it = _initOrbLocs.begin(); it != _initOrbLocs.end(); ++it) {
         CULog("orb");
         std::shared_ptr<Orb> orb = Orb::alloc(*it);
@@ -126,6 +128,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         orb->setDebugScene(_debugNode);
         orb->setID(_currOrbCount);
         _currOrbCount = _currOrbCount + 1;
+        _initOrbCount = _initOrbCount + 1;
         _worldNode->addChild(orb->getSceneNode(),1);
         _orbs.push_back(orb);
     }
@@ -490,6 +493,7 @@ bool World::loadEgg(const std::shared_ptr<JsonValue> &json){
 
 //    egg->setTextures(eggTexture);
     _initEggLocs.push_back(eggPos);
+    _eggSpawns.push_back(eggPos);
     return true;
 }
 

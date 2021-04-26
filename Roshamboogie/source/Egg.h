@@ -30,6 +30,7 @@ private:
     bool _hatched;
     bool _collected;
     Vec2 _initPos;
+    Vec2 _spawnLoc; //where the egg spawned
     float _distanceWalked;
     int _id;
     int _playerID; //id of the player who collected the egg
@@ -71,10 +72,14 @@ public:
     
     void setInitPos(Vec2 pos) { _initPos = pos; }
     
+    Vec2 getSpawnLoc() { return _spawnLoc; }
+    
+    void setSpawnLoc(Vec2 loc) {_spawnLoc = loc; }
+    
     float getDistanceWalked() { return _distanceWalked; }
     
     void setDistanceWalked(float dist) { _distanceWalked = dist; }
-    
+ 
     void update(float delta) override;
     
     

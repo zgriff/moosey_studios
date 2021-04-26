@@ -382,43 +382,44 @@ void GameScene::update(float timestep) {
 
     
     if(NetworkController::isHost()){
-        std::random_device r;
-        std::default_random_engine e1(r());
-        std::uniform_int_distribution<int> prob(0,100);
-//        CULog("prob %d", prob(e1));
+        int spawnProb = rand() % 100;
         // orb spawning
-        if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
-            if (_world->getOrbSpawns().size() > 5) {
+        if (spawnProb == 25) {
+            if (_world->getCurrOrbCount() < _world->getInitOrbCount()) {
                 SpawnController::spawnOrbs();
             }
         }
         
         //egg spawning
-//        if (_world->getCurrEggCount() < 1) {
-//            CULog("egg respawn");
-//            SpawnController::spawnEggs();
-//        }
+//        CULog("egg max %f ", ceil(int(_world->getPlayers().size())/3));
+        //TODO: set max egg number based on number of players
+        if (spawnProb == 50) {
+            if (_world->getCurrEggCount() < _world->getTotalEggCount()) {
+                SpawnController::spawnEggs();
+            }
+        }
     }
     
-    //egg hatch logic
     if (_player->getJustHitByProjectile()) {
         _player->setJustHitByProjectile(false);
         auto _egg = _world->getEgg(_player->getEggId());
         _egg->setPosition(_egg->getInitPos());
         NetworkController::sendEggRespawn(_egg->getID(), _egg->getInitPos());
     }
+    
+    //egg hatch logic
     if (_player->getHoldingEgg()) {
         auto _egg = _world->getEgg(_player->getEggId());
         if (_egg->getHatched() == false) {
             _egg->setPosition(_player->getPosition());
             _hatchbar->setVisible(true);
-//            CULog("egg distance %f", _egg->getDistanceWalked());
             _hatchbar->setProgress(_egg->getDistanceWalked()/80);
             Vec2 diff = _player->getPosition() - _egg->getInitPos();
             float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
             _egg->setDistanceWalked(_egg->getDistanceWalked() + dist);
             _egg->setInitPos(_player->getPosition());
             if (_egg->getDistanceWalked() >= 80) {
+                _world->addEggSpawn(_egg->getSpawnLoc());
                 _player->setHoldingEgg(false);
                 _hatchbar->setVisible(false);
                 _hatchbar->setProgress(0.0);
@@ -426,7 +427,6 @@ void GameScene::update(float timestep) {
                 _egg->setHatched(true);
                 _egg->setDistanceWalked(0);
                 _world->setCurrEggCount(_world->getCurrEggCount() - 1);
-//                _egg->dispose();
                 _player->setElement(_player->getPrevElement());
                 _player->incScore(globals::HATCH_SCORE);
                 NetworkController::sendEggHatched(_player->getID(), _egg->getID());
@@ -445,8 +445,6 @@ void GameScene::update(float timestep) {
     for(auto p : _world->getPlayers()){
         if (p->getIsTagged()) {
             if (time(NULL) - p->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
-                CULog("not tagged");
-    //            _player->getSceneNode()->setVisible(false);
                 p->setIsTagged(false);
             }
         }
@@ -466,7 +464,7 @@ void GameScene::update(float timestep) {
   
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
-    _timerHUD->setText(updateTimerText(_startTime + 10 - time(NULL)));
+    _timerHUD->setText(updateTimerText(_startTime + 120 - time(NULL)));
     
     _player->animateMovement();
     //send new position
