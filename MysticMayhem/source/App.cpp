@@ -24,7 +24,7 @@ void App::onStartup() {
     _assets = AssetManager::alloc();
     _batch  = SpriteBatch::alloc();
     auto cam = OrthographicCamera::alloc(getDisplaySize());
-    
+
     // Start-up basic input
 #ifdef CU_MOBILE
     Input::activate<Touchscreen>();
@@ -35,21 +35,24 @@ void App::onStartup() {
     Input::get<Mouse>()->setPointerAwareness(Mouse::PointerAwareness::DRAG);
     Input::activate<Keyboard>();
 #endif
-    
+
     _assets->attach<Font>(FontLoader::alloc()->getHook());
     _assets->attach<Texture>(TextureLoader::alloc()->getHook());
     _assets->attach<Sound>(SoundLoader::alloc()->getHook());
     _assets->attach<scene2::SceneNode>(Scene2Loader::alloc()->getHook());
     _assets->attach<World>(GenericLoader<World>::alloc()->getHook());
-    
+
     // Create a "loading" screen
     _currentScene = SceneSelect::Loading;
     _loading.init(_assets);
-    
+
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
     _assets->loadAsync<World>(GRASS_MAP_KEY,GRASS_MAP_JSON,nullptr);
-    
+    _assets->loadAsync<World>(GRASS_MAP2_KEY, GRASS_MAP2_JSON, nullptr);
+    _assets->loadAsync<World>(GRASS_MAP3_KEY, GRASS_MAP3_JSON, nullptr);
+    _assets->loadAsync<World>(GRASS_MAP4_KEY, GRASS_MAP4_JSON, nullptr);
+
     AudioEngine::start();
     SoundController::init(_assets);
 
@@ -121,78 +124,91 @@ void App::onResume() {
  *
  * @param timestep  The amount of time (in seconds) since the last frame
  */
-void App::update(float timestep) {
-    switch (_currentScene) {
-        case SceneSelect::Loading:{
-            if (_loading.isActive()) {
-                _loading.update(0.01f);
-            } else {
-                _loading.dispose(); // Disables the input listeners in this mode
-                _menu.init(_assets);
-                _currentScene = SceneSelect::Menu;
-                _menu.setActive(true);
-            }
-            break;
-        }
-        case SceneSelect::Menu:{
-            if (_menu.isActive()) {
-//                _menu.update(0.01f);
-                NetworkController::step();
-                if(NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected){
-                    _menu.setActive(false);
-                    _lobby.init(_assets);
-                    _lobby.setActive(true);
-                    _currentScene = SceneSelect::Lobby;
-                }
-            } else {
-                _menu.setActive(false);
-                _lobby.init(_assets);
-                _lobby.setActive(true);
-                _currentScene = SceneSelect::Lobby;
-            }
-            break;
-        }
-        case SceneSelect::Lobby:{
-            if (_lobby.isActive()) {
-                _lobby.update(0.01f);
-            } else {
-                _lobby.setActive(false);
-                _gameplay.init(_assets);
-                _gameplay.setMovementStyle(_menu.getMovement());
-//                _menu.dispose();
-                startTimer = time(NULL);
-                _menu.dispose();
-                _lobby.dispose();
-                _currentScene = SceneSelect::Game;
-            }
-            break;
-        }
-        case SceneSelect::Game:{
-            _gameplay.update(timestep);
-            if (time(NULL) - startTimer >= gameTimer) {
-                _results.init(_assets);
-                _gameplay.dispose();
-                _currentScene = SceneSelect::Results;
-            }
-            break;
-        }
-        case SceneSelect::Results: {
-//            if (_results.isActive()) {
-//
-//            }
-//            else {
-//                _results.dispose();
-////                _menu.init(_assets);
-//                _currentScene = SceneSelect::Menu;
-//                _menu.setActive(true);
-//            }
-////            _results.update(timestep);
-            break;
-        }
-        default:
-            break;
-    }
-}
+ void App::update(float timestep) {
+     switch (_currentScene) {
+         case SceneSelect::Loading:{
+             if (_loading.isActive()) {
+                 _loading.update(0.01f);
+             } else {
+                 _loading.dispose(); // Disables the input listeners in this mode
+                 _menu.init(_assets);
+                 _currentScene = SceneSelect::Menu;
+                 _menu.setActive(true);
+             }
+             break;
+         }
+         case SceneSelect::Menu:{
+             if (_menu.isActive()) {
+ //                _menu.update(0.01f);
+                 NetworkController::step();
+ //                CULog("menu scene");
+                 if(_menu.createPressed() && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected){
+                     _menu.setActive(false);
+                     _lobby.init(_assets);
+                     _lobby.setActive(true);
+                     //NetworkController::setLobbyScene(_lobby);
+                     _menu.dispose();
+                     _currentScene = SceneSelect::Lobby;
+                 }
+             } else {
+                 _menu.setActive(false);
+                 _lobby.init(_assets);
+                 _lobby.setActive(true);
+                 _menu.dispose();
+                 _currentScene = SceneSelect::Lobby;
+             }
+             break;
+         }
+         case SceneSelect::Lobby:{
+             if (_lobby.isActive()) {
+                 _lobby.update(0.01f);
+             } else {
+                 _lobby.setActive(false);
+                 _gameplay.init(_assets, _lobby.getSelectedMap());
+                 _gameplay.setActive(true);
+                 _gameplay.setMovementStyle(0);
+                 startTimer = time(NULL);
+                 _lobby.dispose();
+                 _currentScene = SceneSelect::Game;
+             }
+             break;
+         }
+         case SceneSelect::Game:{
+             _gameplay.update(timestep);
+             if (time(NULL) - startTimer >= gameTimer) {
+                 _results.init(_assets);
+                 _gameplay.dispose();
+ //                _gameplay.reset();
+                 _currentScene = SceneSelect::Results;
+             }
+             break;
+         }
+         case SceneSelect::Results: {
+             if (_results.playAgain()) {
+                 _results.dispose();
+                 _lobby.init(_assets);
+                 _lobby.setActive(true);
+                 _lobby.setPlayAgain(true);
+                 _currentScene = SceneSelect::Lobby;
+             }
+             else if (_results.mainMenu()) {
+                 _results.dispose();
+                 _menu.init(_assets);
+                 _currentScene = SceneSelect::Menu;
+                 _menu.setActive(true);
+
+             }
+ //            else {
+ //                _results.dispose();
+ //                _gameplay.dispose();
+ //            }
+ //            _results.update(timestep);
+             break;
+         }
+         default:
+             break;
+     }
+ }
 
 /**
  * The method called to draw the application to the screen.

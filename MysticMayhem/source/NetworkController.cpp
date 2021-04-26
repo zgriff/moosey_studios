@@ -6,6 +6,7 @@
 #include "Egg.h"
 #include "Globals.h"
 #include <cugl/cugl.h>
+#include "MapConstants.h"
 #include "SoundController.h"
 
 
@@ -16,8 +17,10 @@ namespace NetworkController {
         std::shared_ptr<World> world;
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username;
+        //Networked usernames indexed by playerId
+        array<std::string, 2> usernames = {"test", "test2"};
         int _networkFrame;
-    
+        int mapSelected;
         std::function<void(uint8_t, bool)> readyCallback;
         std::function<void(void)> startCallback;
     }
@@ -55,6 +58,10 @@ namespace NetworkController {
         world = w;
     }
 
+    std::shared_ptr<World> getWorld() {
+        return world;
+    }
+
     bool isHost(){
         return network->getPlayerID().value_or(-1) == 0;
     }
@@ -83,6 +90,14 @@ namespace NetworkController {
         username = name;
     }
 
+    int getMapSelected() {
+        return mapSelected;
+    }
+
+    void setMapSelected(int i) {
+        mapSelected = i;
+    }
+
     void receive(const std::function<void(const std::vector<uint8_t>&)>& dispatcher){
         network->receive(dispatcher);
     }
@@ -108,6 +123,11 @@ namespace NetworkController {
                 case ND::NetworkData::HOST_STARTGAME:
                     startCallback();
                     break;
+                    case ND::NetworkData::SET_MAP_NUMBER:
+                    {
+                        mapSelected = nd.setMapNumber.mapNumber;
+                        CULog("set map selected to %d", mapSelected);
+                    }
             }
 //            CULog("Received message of length %lu", msg.size());
 //            for (const auto& d : msg) {
@@ -129,6 +149,23 @@ namespace NetworkController {
                     break;
                 case ND::NetworkData::HOST_STARTGAME:
                     startCallback();
+                    break;
+                case ND::NetworkData::SET_USERNAME:
+                {
+                    //usernames[nd.setUsernameData.playerId] = *nd.setUsernameData.username;
+                    CULog("reached receive set username");
+                    int id1 = nd.setUsernameData.playerId;
+                    string username1(nd.setUsernameData.username, nd.setUsernameData.username_length);
+                    delete[] nd.setUsernameData.username;
+                    CULog("setting %d username to ", id1);
+                    CULog("username is %s", username1.c_str());
+                }
+                    break;
+                case ND::NetworkData::SET_MAP_NUMBER:
+                {
+                    mapSelected = nd.setMapNumber.mapNumber;
+                    CULog("set map selected to %d", mapSelected);
+                }
                     break;
                 case ND::NetworkData::TAG_PACKET:
                 {
@@ -191,7 +228,7 @@ namespace NetworkController {
                     e->setPID(nd.eggCapData.playerId);
                     auto self = world->getPlayer(network->getPlayerID().value());
                     SoundController::playSound(SoundController::Type::EGG, e->getPosition() - self->getPosition());
-                    
+
                 }
                     break;
                 case ND::NetworkData::EGG_HATCHED:
@@ -201,7 +238,7 @@ namespace NetworkController {
                     p->setHoldingEgg(false);
                     world->getEgg(nd.eggCapData.eggId)->setHatched(true);
                     world->setCurrEggCount(world->getCurrEggCount() - 1);
-                    
+
                 }
                     break;
                 case ND::NetworkData::ORB_RESPAWN:
@@ -373,6 +410,27 @@ namespace NetworkController {
         network->send(bytes);
     }
 
+    void sendSetUsername(int playerId, string username) {
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::SET_USERNAME;
+        nd.setUsernameData.playerId = playerId;
+        nd.setUsernameData.username_length = username.length();
+        nd.setUsernameData.username = username.data();
+        //CULog("reached here 1");
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void sendSetMapSelected(int i) {
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::SET_MAP_NUMBER;
+        nd.setMapNumber.mapNumber = i;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
     void ready(){
         ND::NetworkData nd{};
         nd.packetType = ND::NetworkData::PacketType::CLIENT_READY;
@@ -401,6 +459,3 @@ namespace NetworkController {
     }
 
 }
-
-
-
