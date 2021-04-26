@@ -330,7 +330,7 @@ void GameScene::update(float timestep) {
 
     auto playPos = _player->getSceneNode()->getPosition();
     if (_player->getLinearVelocity().length() > .00001) {
-        playPos += _player->getLinearVelocity().scale(60.0 / pow(_player->getLinearVelocity().length(), .35));
+        playPos += _player->getLinearVelocity().scale(40.0 / pow(_player->getLinearVelocity().length(), .35));
     }
     auto camSpot = getCamera()->getPosition();
     auto trans = (playPos - camSpot)*CAMERA_STICKINESS;
