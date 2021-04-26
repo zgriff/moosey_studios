@@ -1,0 +1,27 @@
+/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/../../../cugl/build-android/jni/cugl/../../../lib/input/CUTouchscreen.cpp:63:90: warning: format specifies type 'long long' but the argument has type 'cugl::TouchID' (aka 'long') [-Wformat]
+    CUAssertLog(_current.find(touch) != _current.end(), "There is no touch for id %lld", touch);
+                                                                                  ~~~~   ^~~~~
+                                                                                  %ld
+/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/../../../cugl/build-android/jni/cugl/../../../include/cugl/util/CUDebug.h:210:84: note: expanded from macro 'CUAssertLog'
+#   define CUAssertLog(condition,msg,...)           __cu_assert__(condition,msg, ##__VA_ARGS__)
+                                                                            ~~~    ^~~~~~~~~~~
+/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/../../../cugl/build-android/jni/cugl/../../../include/cugl/util/CUDebug.h:118:31: note: expanded from macro '__cu_assert__'
+            CULogError(msg, ##__VA_ARGS__);     \
+                       ~~~    ^~~~~~~~~~~
+/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/../../../cugl/build-android/jni/cugl/../../../include/cugl/util/CUDebug.h:74:108: note: expanded from macro 'CULogError'
+#define CULogError(msg,args...)         SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,SDL_LOG_PRIORITY_ERROR,msg, ##args)
+                                                                                                           ~~~    ^~~~
+/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/../../../cugl/build-android/jni/cugl/../../../lib/input/CUTouchscreen.cpp:79:90: warning: format specifies type 'long long' but the argument has type 'cugl::TouchID' (aka 'long') [-Wformat]
+    CUAssertLog(_current.find(touch) != _current.end(), "There is no touch for id %lld", touch);
+                                                                                  ~~~~   ^~~~~
+                                                                                  %ld
+/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/../../../cugl/build-android/jni/cugl/../../../include/cugl/util/CUDebug.h:210:84: note: expanded from macro 'CUAssertLog'
+#   define CUAssertLog(condition,msg,...)           __cu_assert__(condition,msg, ##__VA_ARGS__)
+                                                                            ~~~    ^~~~~~~~~~~
+/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/../../../cugl/build-android/jni/cugl/../../../include/cugl/util/CUDebug.h:118:31: note: expanded from macro '__cu_assert__'
+            CULogError(msg, ##__VA_ARGS__);     \
+                       ~~~    ^~~~~~~~~~~
+/Users/wmwhite/Developer/CUGL-Demos/ShipDemo/build-android/app/jni/../../../cugl/build-android/jni/cugl/../../../include/cugl/util/CUDebug.h:74:108: note: expanded from macro 'CULogError'
+#define CULogError(msg,args...)         SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,SDL_LOG_PRIORITY_ERROR,msg, ##args)
+                                                                                                           ~~~    ^~~~
+2 warnings generated.

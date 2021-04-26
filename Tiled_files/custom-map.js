@@ -1,5 +1,8 @@
 const TILE_MAP = {
-  2: "grass"
+  2: "grass",
+  3: "grass1",
+  4: "grass2",
+  5: "grass3"
 }
 
 const DECORATION_MAP = {
@@ -11,7 +14,7 @@ const DECORATION_MAP = {
 const TILE_SIZE = 50;
 
 var customMapFormat = {
-    name: "Roshamboogie map format",
+    name: "Mystic Mayhem map format",
     extension: "json",
 
     write: function(map, fileName) {
@@ -109,4 +112,4 @@ var customMapFormat = {
     }
 };
 
-tiled.registerMapFormat("roshamboogie", customMapFormat);
+tiled.registerMapFormat("mysticmayhem", customMapFormat);

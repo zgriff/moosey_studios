@@ -6,12 +6,28 @@
         "maps"
     ],
     "fileStates": {
+        "maps/bigforest.tmx": {
+            "scale": 0.3945,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1569.0747782002536,
+                "y": 1353.61216730038
+            }
+        },
+        "maps/f.tmx": {
+            "scale": 0.30628,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1717.3827869922948,
+                "y": 1119.890296460755
+            }
+        },
         "maps/foo.tmx": {
             "scale": 0.3483,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1323.571633649153,
-                "y": 910.1349411426929
+                "x": 1329.3138099339649,
+                "y": 869.9397071490093
             }
         },
         "maps/forest.tmx": {
@@ -23,11 +39,11 @@
             }
         },
         "maps/untitled.tmx": {
-            "scale": 0.6031,
+            "scale": 0.3157,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1270.1044602885095,
-                "y": 779.3069142762396
+                "x": 1498.2578397212542,
+                "y": 924.9287298067786
             }
         },
         "tilesets/decorations.tsx": {
@@ -42,8 +58,9 @@
         }
     },
     "last.exportedFilePath": "/Users/joshuakaplan/Downloads",
+    "last.imagePath": "/Users/joshuakaplan/Documents/School Stuff/2020-2021/Spring Semester/game design/moosey_studios/Tiled_files/images",
     "last.objectTemplatePath": "/Users/joshuakaplan/Documents/School Stuff/2020-2021/Spring Semester/game design/moosey_studios/Tiled_files/templates",
-    "map.lastUsedExportFilter": "Roshamboogie map format (*.json)",
+    "map.lastUsedExportFilter": "Mystic Mayhem map format (*.json)",
     "openFiles": [
         "maps/untitled.tmx",
         "maps/foo.tmx"
