@@ -252,7 +252,7 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
 
 //convert the NetworkData struct to bytes, putting the result in dest
 //returns true on success, false on failure (if the data is corrupted)
-bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
+std::vector<uint8_t> NetworkData::toBytes(){
     scratch = 0;
     scratch_bits = 0;
     writeBits(dest, src.packetType, TYPE_BITS);
