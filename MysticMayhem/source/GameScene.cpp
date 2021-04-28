@@ -38,8 +38,10 @@ using namespace std;
 #define DEFAULT_HEIGHT  18.0f
 /** The restitution for all physics objects */
 #define TURNS_PER_SPIN   55.0f
-/** how much the lateral velocity is subtracted per frame*/
-#define KINETIC_FRICTION 1.4f
+/** how much the sideways velocity is subtracted per frame*/
+#define KINETIC_FRICTION 1.5f
+/** how much the backwards velocity is subtracted per frame if the player is going backwards*/
+#define BACKWARDS_FRICTION 0.6f
 /** how quickly the camera catches up to the player*/
 #define CAMERA_STICKINESS .07f
 
@@ -267,10 +269,21 @@ void GameScene::update(float timestep) {
             auto offset = vel.getAngle() - _player->getDirection() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
+            //applies sideways friction, capped at a flat value
             auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * _player->getMass());
             if (correction.length() > KINETIC_FRICTION) {
                 correction.scale(KINETIC_FRICTION / correction.length());
             }
+
+            //apply friction if going backwards IE braking
+            if (abs(offset) < M_PI / 2.0) {
+                auto backwards = _player->getLinearVelocity().rotate(-1.0f * offset).scale(-1.0f * cos(offset) * _player->getMass());
+                if (backwards.length() > BACKWARDS_FRICTION) {
+                    backwards.scale(BACKWARDS_FRICTION / correction.length());
+                }
+                _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(backwards.x, backwards.y), true);
+            }
+
             _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
 
             //apply friction if going backwards IE braking
