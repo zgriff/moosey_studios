@@ -48,10 +48,13 @@ private:
     std::string _bodyKey;
     std::string _hatKey;
     std::string _staffKey;
+    std::string _staffTagKey;
     std::string _ringKey;
     
     clock_t _animationTimer;
-    clock_t _animationRate = 0.1 * CLOCKS_PER_SEC;
+    clock_t _tagAnimationTimer;
+    clock_t _animationRate = 0.1f * CLOCKS_PER_SEC;
+    clock_t _tagAnimationRate = 0.05f * CLOCKS_PER_SEC;
         
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
@@ -232,6 +235,10 @@ public:
         _staffKey = staff;
     }
     
+    void setStaffTagKey(std::string staff) {
+        _staffTagKey = staff;
+    }
+    
     void setRingKey(std::string ring) {
         _ringKey = ring;
     }
@@ -345,6 +352,9 @@ public:
     float getDrawScale() const { return _drawscale; }
     
     
+    void animateTag();
+    
+    void finishTagAnim();
     
     void animateMovement();
     

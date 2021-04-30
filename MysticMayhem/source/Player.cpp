@@ -71,6 +71,10 @@ using namespace cugl;
 #define STAFF_COLS          24
 #define STAFF_FRAMES        24
 
+#define STAFF_TAG_ROWS      1
+#define STAFF_TAG_COLS      16
+#define STAFF_TAG_FRAMES    16
+
 #define RING_ROWS           1
 #define RING_COLS           6
 #define RING_FRAMES         6
@@ -99,6 +103,7 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     std::shared_ptr<scene2::AnimationNode>  bodyNode = scene2::AnimationNode::alloc(assets->get<Texture>(_bodyKey), BODY_ROWS, BODY_COLS, BODY_FRAMES);
     std::shared_ptr<scene2::AnimationNode>  hatNode = scene2::AnimationNode::alloc(assets->get<Texture>(_hatKey), HAT_ROWS, HAT_COLS, HAT_FRAMES);
     std::shared_ptr<scene2::AnimationNode>  staffNode = scene2::AnimationNode::alloc(assets->get<Texture>(_staffKey), STAFF_ROWS, STAFF_COLS, STAFF_FRAMES);
+    std::shared_ptr<scene2::AnimationNode>  staffTagNode = scene2::AnimationNode::alloc(assets->get<Texture>(_staffTagKey), STAFF_TAG_ROWS, STAFF_TAG_COLS, STAFF_TAG_FRAMES);
     std::shared_ptr<scene2::AnimationNode>  ringNode = scene2::AnimationNode::alloc(assets->get<Texture>(_ringKey), RING_ROWS, RING_COLS, RING_FRAMES);
     
     _animNodes[_skinKey] = skinNode;
@@ -107,6 +112,7 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _animNodes[_bodyKey] = bodyNode;
     _animNodes[_hatKey] = hatNode;
     _animNodes[_staffKey] = staffNode;
+    _animNodes[_staffTagKey] = staffTagNode;
     _animNodes[_ringKey] = ringNode;
     
     //TODO: fix hat animation
@@ -118,6 +124,7 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _frameNumbers[_bodyKey] = 4;
     _frameNumbers[_hatKey] = 1;
     _frameNumbers[_staffKey] = 4;
+    _frameNumbers[_staffTagKey] = 4;
     _frameNumbers[_ringKey] = 2;
     
     for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
@@ -133,12 +140,16 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _sceneNode->addChild(bodyNode);
     _sceneNode->addChild(hatNode);
     _sceneNode->addChild(staffNode);
+    _sceneNode->addChild(staffTagNode);
     _sceneNode->addChild(ringNode);
+    
+    _animNodes[_staffTagKey]->setVisible(false);
     
     
     _sceneNode->setScale(0.1f);
     
     _animationTimer = time(NULL);
+    _tagAnimationTimer = time(NULL);
     
     setElement(_currElt);
 
@@ -367,6 +378,46 @@ void Player::setDrawScale(float scale) {
     }
 }
 
+
+void Player::animateTag() {
+    _animNodes[_staffTagKey]->setVisible(true);
+    _animNodes[_staffKey]->setVisible(false);
+    
+    if (_horizFlip) {
+        _animNodes[_staffTagKey]->flipHorizontal(false);
+    }
+    
+    switch(getCurrElement()){
+        case Element::Grass:
+            _animNodes[_staffTagKey]->setFrame(calculateFrame(8,_staffTagKey));
+            break;
+        case Element::Fire:
+            _animNodes[_staffTagKey]->setFrame(calculateFrame(0,_staffTagKey));
+            break;
+        case Element::Water:
+            _animNodes[_staffTagKey]->setFrame(calculateFrame(4,_staffTagKey));
+            break;
+        case Element::None:
+            _animNodes[_staffTagKey]->setVisible(false);
+            _animNodes[_staffKey]->setVisible(true);
+            break;
+        case Element::Aether:
+            _animNodes[_staffTagKey]->setFrame(calculateFrame(12,_staffTagKey));
+            break;
+    }
+    
+    if (_horizFlip) {
+        _animNodes[_staffTagKey]->flipHorizontal(true);
+    }
+    
+}
+
+void Player::finishTagAnim() {
+    _animNodes[_staffTagKey]->setVisible(false);
+    _animNodes[_staffKey]->setVisible(true);
+}
+
+
 void Player::animateMovement() {
     //TODO: change this to be more elegant
     //Rotates directional ring around player, offset by orientation in png
@@ -395,9 +446,21 @@ void Player::animateMovement() {
     //iterate through nodes and animate at animation rate
     if (clock() - _animationTimer  >= _animationRate) {
         for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
-            animationCycle((*it).second.get(), &_animCycles[(*it).first], (*it).first);
+            if  ((*it).first != _staffTagKey) {
+                animationCycle((*it).second.get(), &_animCycles[(*it).first], (*it).first);
+            }
         }
         _animationTimer = clock();
+    }
+    
+    if (clock() - _tagAnimationTimer  >= _tagAnimationRate) {
+        //TODO: Tidy this up hehe
+        if (((_animNodes[_staffTagKey]->getFrame()%_frameNumbers[_staffTagKey] == _frameNumbers[_staffTagKey]-1 && !_animNodes[_staffTagKey]->isFlipHorizontal()) || (_animNodes[_staffTagKey]->getFrame()%_frameNumbers[_staffTagKey] == 0 && _animNodes[_staffTagKey]->isFlipHorizontal()) ) && _animNodes[_staffTagKey]->isVisible()) {
+            finishTagAnim();
+        } else if (_animNodes[_staffTagKey]->isVisible()) {
+            animationCycle(_animNodes[_staffTagKey].get(), &_animCycles[_staffTagKey], _staffTagKey);
+        }
+        _tagAnimationTimer = clock();
     }
 }
 
