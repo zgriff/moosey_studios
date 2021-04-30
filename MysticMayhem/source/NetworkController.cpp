@@ -175,6 +175,7 @@ namespace NetworkController {
                     tagged->setIsTagged(true);
                     tagged->setTagCooldown(nd.tagData.timestamp);
                     tagger->incScore(globals::TAG_SCORE);
+                    tagger->animateTag();
                     SoundController::playSound(SoundController::Type::TAG, tagger->getPosition() - self->getPosition());
                     if (tagged->getCurrElement() == Element::None && !nd.tagData.dropEgg) {
                         auto egg = world->getEgg(tagged->getEggId());
