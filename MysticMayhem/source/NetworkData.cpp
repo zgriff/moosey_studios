@@ -241,6 +241,7 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
         case NetworkData::POSITION_PACKET:
             dest.positionData.playerPos = readVec2(bytes);
             dest.positionData.playerVelocity = readVec2(bytes);
+            dest.positionData.angle = readFloat(bytes);
             dest.positionData.playerId = readBits(bytes, PLAYER_ID_BITS);
             break;
         case NetworkData::ORB_RESPAWN:
@@ -313,6 +314,7 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
         case NetworkData::POSITION_PACKET:
             writeVec2(dest, src.positionData.playerPos);
             writeVec2(dest, src.positionData.playerVelocity);
+            writeFloat(dest, src.positionData.angle);
             writeBits(dest, src.positionData.playerId, PLAYER_ID_BITS);
             break;
         case NetworkData::ORB_RESPAWN:
