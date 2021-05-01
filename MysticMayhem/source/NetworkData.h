@@ -14,18 +14,20 @@
 #include "Globals.h"
 
 class NetworkData{
-    using None = std::monostate;
+    struct None {};
     struct Ready {
         uint8_t player_id;
     };
-    using Unready = Ready;
+    struct Unready {
+        uint8_t player_id;
+    };
     struct Tag {
         uint8_t taggedId;
         uint8_t taggerId;
         time_t timestamp;
         bool dropEgg;
     };
-    using StartGame = std::monostate;
+    struct StartGame {};
     struct OrbRespawn {
         uint8_t orbId;
         cugl::Vec2 position;
@@ -80,6 +82,8 @@ class NetworkData{
     //convert the src bytes to a NetworkData
     static NetworkData fromBytes(const std::vector<uint8_t>& src);
 
+private:
+    template <typename Stream> struct Visitor;
 };
 
 
