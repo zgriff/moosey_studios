@@ -6,6 +6,7 @@
 #include "Egg.h"
 #include "Globals.h"
 #include <cugl/cugl.h>
+#include <any>
 #include "SoundController.h"
 
 
@@ -38,10 +39,6 @@ namespace NetworkController {
         network =
             std::make_shared<cugl::CUNetworkConnection>(cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, globals::MAX_PLAYERS, 0), roomId);
         NetworkController::roomId = roomId;
-        CULog("REACHED JOIN");
-        CULog("%s", roomId.c_str());
-        CULog("num players %d", network->getNumPlayers());
-        CULog("total players %d", network->getTotalPlayers());
     }
 
     cugl::CUNetworkConnection::NetStatus getStatus(){
@@ -83,14 +80,6 @@ namespace NetworkController {
         username = name;
     }
 
-    void receive(const std::function<void(const std::vector<uint8_t>&)>& dispatcher){
-        network->receive(dispatcher);
-    }
-
-    void send(const std::vector<uint8_t>& msg){
-        network->send(msg);
-    }
-
     void setReadyCallback(std::function<void(uint8_t, bool)> cb){
         readyCallback = cb;
     }
@@ -99,157 +88,145 @@ namespace NetworkController {
         startCallback = cb;
     }
 
+struct LobbyHandler {
+    LobbyHandler(){};
+    void operator()(NetworkData::Ready & data) const {
+        readyCallback(data.player_id, true);
+    }
+    void operator()(NetworkData::Unready & data) const {
+        readyCallback(data.player_id, false);
+    }
+    void operator()(NetworkData::StartGame & data) const {
+        startCallback();
+    }
+    //generic. do nothing
+    template<typename T>
+    void operator()(T & d) const {}
+};
+
+struct GameHandler {
+    GameHandler(){};
+    void operator()(NetworkData::Tag & t) const {
+        auto tagged = world->getPlayer(t.taggedId);
+        auto tagger = world->getPlayer(t.taggerId);
+        auto self = world->getPlayer(network->getPlayerID().value());
+        tagged->setIsTagged(true);
+        tagged->setTagCooldown(t.timestamp);
+        tagger->incScore(globals::TAG_SCORE);
+        SoundController::playSound(SoundController::Type::TAG, tagger->getPosition() - self->getPosition());
+        if (tagged->getCurrElement() == Element::None && !t.dropEgg) {
+            auto egg = world->getEgg(tagged->getEggId());
+            egg->setPID(tagger->getID());
+            tagged->setElement(tagged->getPrevElement());
+            tagged->setHoldingEgg(false);
+            egg->setDistanceWalked(0);
+            tagger->setElement(Element::None);
+            tagger->setEggId(egg->getID());
+            tagger->setHoldingEgg(true);
+        }
+    }
+    void operator()(NetworkData::OrbRespawn & data) const {
+        auto orb = world->getOrb(data.orbId);
+        orb->setPosition(data.position);
+        orb->setCollected(false);
+    }
+    void operator()(NetworkData::EggRespawn & data) const {
+        auto egg = world->getEgg(data.eggId);
+        egg->setPosition(data.position);
+        egg->setCollected(false);
+        egg->setHatched(false);
+        egg->setDistanceWalked(0);
+        egg->setInitPos(Vec2(10,10));
+    }
+    void operator()(NetworkData::EggCapture & data) const {
+        auto p = world->getPlayer(data.playerId);
+        p->setElement(Element::None);
+        p->setEggId(data.eggId);
+        p->setHoldingEgg(true);
+        auto e = world->getEgg(data.eggId);
+        e->setCollected(true);
+        e->setPID(data.playerId);
+        auto self = world->getPlayer(network->getPlayerID().value());
+        SoundController::playSound(SoundController::Type::EGG, e->getPosition() - self->getPosition());
+    }
+    void operator()(NetworkData::EggHatch & data) const {
+        auto p = world->getPlayer(data.playerId);
+        p->setElement(p->getPrevElement());
+        p->setHoldingEgg(false);
+        world->getEgg(data.eggId)->setHatched(true);
+        world->setCurrEggCount(world->getCurrEggCount() - 1);
+    }
+    void operator()(NetworkData::OrbCapture & data) const {
+        auto o = world->getOrb(data.orbId);
+        o->setCollected(true);
+        auto p = world->getPlayer(data.playerId);
+        p->setOrbScore(p->getOrbScore() + 1);
+        auto self = world->getPlayer(network->getPlayerID().value());
+        SoundController::playSound(SoundController::Type::ORB, o->getPosition() - self->getPosition());
+    }
+    void operator()(NetworkData::Swap & data) const {
+        world->getPlayer(data.playerId)->setElement(data.newElement);
+        auto s = world->getSwapStation(data.swapId);
+        s->setLastUsed(clock());
+        s->setActive(false);
+        auto self = world->getPlayer(network->getPlayerID().value());
+        SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - self->getPosition());
+    }
+    void operator()(NetworkData::Position & data) const {
+        auto p = world->getPlayer(data.playerId);
+        auto newError = (p->getPosition() + p->getPositionError()) - data.playerPos;
+        p->setPositionError(newError);
+        p->setPosition(data.playerPos);
+        p->setLinearVelocity(data.playerVelocity);
+    }
+    void operator()(NetworkData::ElementChange & data) const {
+        world->getPlayer(data.playerId)->setElement(data.newElement);
+    }
+    void operator()(NetworkData::ProjectileFired & data) const {
+        auto projectile = world->getProjectile(data.projectileId);
+        auto pos = data.projectilePos;
+        auto angle = data.projectileAngle;
+        projectile->setActive(true);
+        projectile->setPreyElement(data.preyElement);
+        projectile->setPosition(pos);
+        projectile->getSceneNode()->setVisible(true);
+        projectile->setLinearVelocity(Vec2::forAngle(angle + M_PI / 2) * 25);
+        projectile->setAngle(angle);
+        projectile->getSceneNode()->setAngle(angle + M_PI);
+    }
+    void operator()(NetworkData::ProjectileGone & data) const {
+        auto projectile = world->getProjectile(data.projectileId);
+        projectile->setActive(false);
+        projectile->getSceneNode()->setVisible(false);
+        projectile->setLinearVelocity(Vec2(0, 0));
+        projectile->setPosition(Vec2(0, 0));
+    }
+    //generic. do nothing
+    template<typename T>
+    void operator()(T & d) const {}
+};
+
     void step() {
         if(network == nullptr) return;
         network->receive([&](const std::vector<uint8_t> msg) {
-            ND::NetworkData nd{};
-            ND::fromBytes(nd, msg);
-            switch(nd.packetType){
-                case ND::NetworkData::HOST_STARTGAME:
-                    startCallback();
-                    break;
-            }
-//            CULog("Received message of length %lu", msg.size());
-//            for (const auto& d : msg) {
-//                CULog("%d", d);
-//            }
+            NetworkData nd = NetworkData::fromBytes(msg);
+            LobbyHandler handler;
+            std::visit(handler, nd.data);
         });
     }
 
     void update(float timestep){
         network->receive([&](const std::vector<uint8_t> msg) {
-            ND::NetworkData nd{};
-            ND::fromBytes(nd, msg);
-            switch(nd.packetType){
-                case ND::NetworkData::CLIENT_READY:
-                    readyCallback(nd.readyData.player_id, true);
-                    break;
-                case ND::NetworkData::CLIENT_UNREADY:
-                    readyCallback(nd.readyData.player_id, false);
-                    break;
-                case ND::NetworkData::HOST_STARTGAME:
-                    startCallback();
-                    break;
-                case ND::NetworkData::TAG_PACKET:
-                {
-                    auto tagged = world->getPlayer(nd.tagData.taggedId);
-                    auto tagger = world->getPlayer(nd.tagData.taggerId);
-                    auto self = world->getPlayer(network->getPlayerID().value());
-                    tagged->setIsTagged(true);
-                    tagged->setTagCooldown(nd.tagData.timestamp);
-                    tagger->incScore(globals::TAG_SCORE);
-                    SoundController::playSound(SoundController::Type::TAG, tagger->getPosition() - self->getPosition());
-                    if (tagged->getCurrElement() == Element::None && !nd.tagData.dropEgg) {
-                        auto egg = world->getEgg(tagged->getEggId());
-                        egg->setPID(tagger->getID());
-                        tagged->setElement(tagged->getPrevElement());
-                        tagged->setHoldingEgg(false);
-                        egg->setDistanceWalked(0);
-                        tagger->setElement(Element::None);
-                        tagger->setEggId(egg->getID());
-                        tagger->setHoldingEgg(true);
-                    }
-                }
-                    break;
-                case ND::NetworkData::POSITION_PACKET:
-                    {
-                        auto p = world->getPlayer(nd.positionData.playerId);
-                        auto newError = (p->getPosition() + p->getPositionError()) - nd.positionData.playerPos;
-                        p->setPositionError(newError);
-                        p->setPosition(nd.positionData.playerPos);
-                        p->setLinearVelocity(nd.positionData.playerVelocity);
-                    }
-                    break;
-                case ND::NetworkData::ORB_CAPTURED:
-                {
-                    auto o = world->getOrb(nd.orbCapData.orbId);
-                    o->setCollected(true);
-                    auto p = world->getPlayer(nd.orbCapData.playerId);
-                    p->setOrbScore(p->getOrbScore() + 1);
-                    auto self = world->getPlayer(network->getPlayerID().value());
-                    SoundController::playSound(SoundController::Type::ORB, o->getPosition() - self->getPosition());
-                    break;
-                }
-                case ND::NetworkData::SWAP_PACKET:
-                {
-                    world->getPlayer(nd.swapData.playerId)->setElement(nd.swapData.newElement);
-                    auto s = world->getSwapStation(nd.swapData.swapId);
-                    s->setLastUsed(clock());
-                    s->setActive(false);
-                    auto self = world->getPlayer(network->getPlayerID().value());
-                    SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - self->getPosition());
-                    break;
-                }
-                case ND::NetworkData::EGG_CAPTURED:
-                {
-                    auto p = world->getPlayer(nd.eggCapData.playerId);
-                    p->setElement(Element::None);
-                    p->setEggId(nd.eggCapData.eggId);
-                    p->setHoldingEgg(true);
-                    auto e = world->getEgg(nd.eggCapData.eggId);
-                    e->setCollected(true);
-                    e->setPID(nd.eggCapData.playerId);
-                    auto self = world->getPlayer(network->getPlayerID().value());
-                    SoundController::playSound(SoundController::Type::EGG, e->getPosition() - self->getPosition());
-                    
-                }
-                    break;
-                case ND::NetworkData::EGG_HATCHED:
-                {
-                    auto p = world->getPlayer(nd.eggHatchData.playerId);
-                    p->setElement(p->getPrevElement());
-                    p->setHoldingEgg(false);
-                    world->getEgg(nd.eggCapData.eggId)->setHatched(true);
-                    world->setCurrEggCount(world->getCurrEggCount() - 1);
-                    
-                }
-                    break;
-                case ND::NetworkData::ORB_RESPAWN:
-                {
-                    auto orb = world->getOrb(nd.orbRespawnData.orbId);
-                    orb->setPosition(nd.orbRespawnData.position);
-                    orb->setCollected(false);
-                }
-                    break;
-                case ND::NetworkData::ELEMENT_CHANGE:
-                    world->getPlayer(nd.elementChangeData.playerId)->setElement(nd.elementChangeData.newElement);
-                    break;
-                case ND::NetworkData::PROJECTILE_FIRED:
-                {
-                    auto projectile = world->getProjectile(nd.projectileFiredData.projectileId);
-                    auto pos = nd.projectileFiredData.projectilePos;
-                    auto angle = nd.projectileFiredData.projectileAngle;
-                    projectile->setActive(true);
-                    projectile->setPreyElement(nd.projectileFiredData.preyElement);
-                    projectile->setPosition(pos);
-                    projectile->getSceneNode()->setVisible(true);
-                    projectile->setLinearVelocity(Vec2::forAngle(angle + M_PI / 2) * 25);
-                    projectile->setAngle(angle);
-                    projectile->getSceneNode()->setAngle(angle + M_PI);
-                }
-                    break;
-                case ND::NetworkData::PROJECTILE_GONE:
-                {
-                    auto projectile = world->getProjectile(nd.projectileGoneData.projectileId);
-                    projectile->setActive(false);
-                    projectile->getSceneNode()->setVisible(false);
-                    projectile->setLinearVelocity(Vec2(0, 0));
-                    projectile->setPosition(Vec2(0, 0));
-                }
-                    break;
-                case ND::NetworkData::EGG_RESPAWN:
-                {
-                    auto egg = world->getEgg(nd.eggRespawnData.eggId);
-                    egg->setPosition(nd.eggRespawnData.position);
-                    egg->setCollected(false);
-                    egg->setHatched(false);
-                    egg->setDistanceWalked(0);
-                    egg->setInitPos(Vec2(10,10));
-                }
-                    break;
-            }
+            NetworkData nd = NetworkData::fromBytes(msg);
+            GameHandler handler;
+            std::visit(handler, nd.data);
         });
     }
+    
+    void send(NetworkData d){
+        network->send(d.toBytes());
+    }
+
     //send current player's position
     void sendPosition(){
         if(! getPlayerId().has_value()) return;
@@ -260,138 +237,102 @@ namespace NetworkController {
         pos.playerPos = p->getPosition();
         pos.playerVelocity = p->getLinearVelocity();
         pos.playerId = NetworkController::getPlayerId().value();
-        NetworkData nd;
-        nd.data = pos;
-        network->send(nd.toBytes());
+        send(NetworkData(pos));
     }
 
     //send when a player captures an orb
     void sendOrbCaptured(int orbId, int playerId){
         NetworkData::OrbCapture o;
-        NetworkData nd;
         o.orbId = orbId;
         o.playerId = playerId;
-        nd.data = o;
-        network->send(nd.toBytes());
+        send(NetworkData(o));
     }
 
     //send when a player swaps colors at a swap station
     void sendPlayerColorSwap(int playerId, Element newElement, int swapId){
-        NetworkData nd;
         NetworkData::Swap s;
         s.newElement = newElement;
         s.playerId = playerId;
         s.swapId = swapId;
-        nd.data = s;
-        network->send(nd.toBytes());
+        send(NetworkData(s));
     }
 
     //send when a player collects an egg
     void sendEggCollected(int playerId, int eggId){
-        NetworkData nd;
         NetworkData::EggCapture e;
         e.eggId = eggId;
         e.playerId = playerId;
-        nd.data = e;
-        network->send(nd.toBytes());
+        send(NetworkData(e));
     }
 
     void sendOrbRespawn(int orbId, Vec2 orbPosition){
-        NetworkData nd;
         NetworkData::OrbRespawn o;
         o.orbId = orbId;
         o.position = orbPosition;
-        nd.data = o;
-        network->send(nd.toBytes());
+        send(NetworkData(o));
     }
 
     void sendElementChange(int playerId, Element newElement) {
-        NetworkData nd;
         NetworkData::ElementChange e;
         e.playerId = playerId;
         e.newElement = newElement;
-        nd.data = e;
-        network->send(nd.toBytes());
+        send(NetworkData(e));
 }
 
     void sendEggRespawn(int eggId, Vec2 eggPosition){
-        ND::NetworkData nd{};
-        nd.packetType = ND::NetworkData::PacketType::EGG_RESPAWN;
-        nd.eggRespawnData.eggId = eggId;
-        nd.eggRespawnData.position = eggPosition;
-        std::vector<uint8_t> bytes;
-        ND::toBytes(bytes, nd);
-        network->send(bytes);
+        NetworkData::EggRespawn e;
+        e.eggId = eggId;
+        e.position = eggPosition;
+        send(NetworkData(e));
     }
 
     void sendProjectileFired(int projectileId, Vec2 projectilePos, float projectileAngle, Element preyElement) {
-        ND::NetworkData nd{};
-        nd.packetType = ND::NetworkData::PacketType::PROJECTILE_FIRED;
-        nd.projectileFiredData.projectileId = projectileId;
-        nd.projectileFiredData.projectilePos = projectilePos;
-        nd.projectileFiredData.projectileAngle = projectileAngle;
-        nd.projectileFiredData.preyElement = preyElement;
-        std::vector<uint8_t> bytes;
-        ND::toBytes(bytes, nd);
-        network->send(bytes);
+        NetworkData::ProjectileFired p;
+        p.projectileId = projectileId;
+        p.projectilePos = projectilePos;
+        p.projectileAngle = projectileAngle;
+        p.preyElement = preyElement;
+        send(NetworkData(p));
     }
 
     void sendEggHatched(int playerId, int eggId) {
-        ND::NetworkData nd{};
-        nd.packetType = ND::NetworkData::PacketType::EGG_HATCHED;
-        nd.eggHatchData.eggId = eggId;
-        nd.eggHatchData.playerId = playerId;
-        std::vector<uint8_t> bytes;
-        ND::toBytes(bytes, nd);
-        network->send(bytes);
+        NetworkData::EggHatch e;
+        e.eggId = eggId;
+        e.playerId = playerId;
+        send(NetworkData(e));
     }
 
     void sendProjectileGone(int projectileId) {
-        ND::NetworkData nd{};
-        nd.packetType = ND::NetworkData::PacketType::PROJECTILE_GONE;
-        nd.projectileGoneData.projectileId = projectileId;
-        std::vector<uint8_t> bytes;
-        ND::toBytes(bytes, nd);
-        network->send(bytes);
+        NetworkData::ProjectileGone p;
+        p.projectileId = projectileId;
+        send(NetworkData(p));
     }
 
     void sendTag(int taggedId, int taggerId, time_t timestamp, bool dropEgg){
-        ND::NetworkData nd{};
-        nd.packetType = ND::NetworkData::PacketType::TAG_PACKET;
-        nd.tagData.taggedId = taggedId;
-        nd.tagData.taggerId = taggerId;
-        nd.tagData.timestamp = timestamp;
-        nd.tagData.dropEgg = dropEgg;
-        std::vector<uint8_t> bytes;
-        ND::toBytes(bytes, nd);
-        network->send(bytes);
+        NetworkData::Tag t;
+        t.taggedId = taggedId;
+        t.taggerId = taggerId;
+        t.timestamp = timestamp;
+        t.dropEgg = dropEgg;
+        send(NetworkData(t));
     }
 
     void ready(){
-        ND::NetworkData nd{};
-        nd.packetType = ND::NetworkData::PacketType::CLIENT_READY;
-        nd.readyData.player_id = network->getPlayerID().value();
-        std::vector<uint8_t> bytes;
-        ND::toBytes(bytes, nd);
-        network->send(bytes);
+        NetworkData::Ready d;
+        d.player_id = network->getPlayerID().value();
+        send(NetworkData(d));
     }
 
     void unready(){
-        ND::NetworkData nd{};
-        nd.packetType = ND::NetworkData::PacketType::CLIENT_UNREADY;
-        nd.readyData.player_id = network->getPlayerID().value();
-        std::vector<uint8_t> bytes;
-        ND::toBytes(bytes, nd);
-        network->send(bytes);
+        NetworkData::Unready d;
+        d.player_id = network->getPlayerID().value();
+        send(NetworkData(d));
     }
 
     void startGame(){
         network->startGame();
-        ND::NetworkData nd{};
-        nd.packetType = ND::NetworkData::PacketType::HOST_STARTGAME;
-        std::vector<uint8_t> bytes;
-        ND::toBytes(bytes, nd);
-        network->send(bytes);
+        NetworkData::StartGame s;
+        send(NetworkData(s));
     }
 
 }

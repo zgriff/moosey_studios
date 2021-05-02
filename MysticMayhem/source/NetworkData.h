@@ -9,11 +9,13 @@
 #ifndef NetworkData_h
 #define NetworkData_h
 
+#include <variant>
 #include <cugl/cugl.h>
 #include "Element.h"
 #include "Globals.h"
 
 class NetworkData{
+public:
     struct None {};
     struct Ready {
         uint8_t player_id;
@@ -71,10 +73,15 @@ class NetworkData{
     struct ProjectileGone {
         uint8_t projectileId;
     };
+    
+    typedef std::variant<None, Ready, Unready, Tag, StartGame, OrbRespawn, EggRespawn, EggCapture, EggHatch, OrbCapture, Swap, Position, ElementChange, ProjectileFired, ProjectileGone> DATA_T;
 
-    std::variant<None, Ready, Unready, Tag, StartGame, OrbRespawn, EggRespawn, EggCapture, EggHatch, OrbCapture, Swap, Position, ElementChange, ProjectileFired, ProjectileGone> data;
+    DATA_T data;
     
     NetworkData(){}
+    NetworkData(DATA_T d){
+        data = d;
+    }
         
     //convert the NetworkData to bytes
     std::vector<uint8_t> toBytes();

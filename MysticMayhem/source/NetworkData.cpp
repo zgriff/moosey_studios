@@ -195,9 +195,7 @@ public:
 template <typename Stream>
 struct NetworkData::Visitor {
     Stream & s;
-    Visitor(Stream & st){
-        s = st;
-    }
+    Visitor(Stream & st) : s(st){}
     void operator()(None & d) const {}
     void operator()(Ready & r) const {
         s.serializeBits(r.player_id, PLAYER_ID_BITS);
@@ -258,13 +256,26 @@ struct NetworkData::Visitor {
 };
 
 
-//no clue how this works. taken from https://www.reddit.com/r/cpp/comments/f8cbzs/creating_stdvariant_based_on_index_at_runtime/
-template <typename... Ts>
-[[nodiscard]] std::variant<Ts...>
-expand_type(std::size_t i)
-{
-    static constexpr std::variant<Ts...> table[] = { Ts{ }... };
-    return table[i];
+////no clue how this works. taken from https://www.reddit.com/r/cpp/comments/f8cbzs/creating_stdvariant_based_on_index_at_runtime/
+//template <typename... Ts>
+//[[nodiscard]] std::variant<Ts...>
+//expand_type(std::size_t i)
+//{
+//    static constexpr std::variant<Ts...> table[] = { Ts{ }... };
+//    return table[i];
+//}
+////taken from https://stackoverflow.com/a/60567091
+template <std::size_t I = 0>
+void variant_from_index(NetworkData::DATA_T & v, std::size_t index) {
+    if constexpr(I >= std::variant_size_v<NetworkData::DATA_T>)
+        throw std::runtime_error{"Variant index " + std::to_string(I + index) + " out of bounds"};
+    else {
+        if(index == 0){
+            v.emplace<I>();
+        }else {
+            variant_from_index<I + 1>(v, index - 1);
+        }
+    }
 }
 
 //convert the bytes to a NetworkData struct, putting the result in dest
@@ -274,7 +285,10 @@ NetworkData NetworkData::fromBytes(const std::vector<uint8_t>& bytes){
     int packetType = s.readBits(TYPE_BITS);
     
     NetworkData nd;
-    nd.data = expand_type(packetType);
+//    nd.data = expand_type(packetType);
+//    nd.data = variant_from_index<NetworkData::DATA_T>(packetType);
+    variant_from_index(nd.data, packetType);
+//    nd.data.emplace<packetType>();
     std::visit(Visitor(s), nd.data);
     
     return nd;
