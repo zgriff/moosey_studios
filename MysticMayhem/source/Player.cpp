@@ -25,9 +25,9 @@ using namespace cugl;
 /** The friction of the player */
 #define DEFAULT_FRICTION 0.0f
 /** The minimum total velocity for drag to apply */
-#define THRESHOLD_VELOCITY 29.0f
-/** The how much the player is slowed down to minimum velocity per frame*/
-#define SPEEDING_DRAG 0.90f
+#define THRESHOLD_VELOCITY 27.0f
+/** What proportion of the player's extra velocity is lost per frame*/
+#define SPEEDING_DRAG 0.006f
 
 /** The restitution of this rocket */
 #define DEFAULT_RESTITUTION 0.4f
@@ -316,7 +316,8 @@ void Player::update(float delta) {
 
     if (getLinearVelocity().length() > THRESHOLD_VELOCITY) {
         auto adjust = getLinearVelocity();
-        adjust.scale(SPEEDING_DRAG + THRESHOLD_VELOCITY * (1 - SPEEDING_DRAG) / adjust.length());
+        adjust.normalize().scale(1.0f * getMass() * SPEEDING_DRAG * (adjust.length() - THRESHOLD_VELOCITY));
+        getBody()->ApplyLinearImpulseToCenter(b2Vec2(adjust.x, adjust.y), true);
     }
     
     if (_isTagged) {

@@ -37,13 +37,15 @@ using namespace std;
 /** Height of the game world in Box2d units */
 #define DEFAULT_HEIGHT  18.0f
 /** The restitution for all physics objects */
-#define TURNS_PER_SPIN   55.0f
+#define TURNS_PER_SPIN   75.0f
 /** how much the sideways velocity is subtracted per frame*/
 #define KINETIC_FRICTION 1.5f
 /** how much the backwards velocity is subtracted per frame if the player is going backwards*/
-#define BACKWARDS_FRICTION 0.6f
+#define BACKWARDS_FRICTION 0.8f
 /** how quickly the camera catches up to the player*/
 #define CAMERA_STICKINESS .07f
+/** how quickly the camera catches up to the player*/
+#define CAMERA_ZOOM .55f
 
 #pragma mark -
 #pragma mark Constructors
@@ -137,11 +139,10 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string m
     _UInode->setPosition(_worldOffset);
     _UInode->setContentSize(Size(w,h));
     _UInode->doLayout(); // Repositions the HUD;
-    _UInode->setScale(.4f);
+    _UInode->setScale(CAMERA_ZOOM/1.0f);
     
-    
-    _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
-    
+    _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_score"));
+    _framesHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_frames"));
     _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
     
     _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
@@ -184,6 +185,7 @@ void GameScene::dispose() {
     _abilitybar = nullptr;
     _abilityname = nullptr;
     _timerHUD = nullptr;
+    _framesHUD = nullptr;
     _debug = false;
     _assets = nullptr;
 //        Scene2::dispose();
@@ -216,7 +218,7 @@ void GameScene::reset() {
         _player->setUsername(NetworkController::getUsername());
         _player->setIsLocal(true);
         static_pointer_cast<cugl::OrthographicCamera>(getCamera())->set(Application::get()->getDisplaySize());
-        static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(.8f);
+        static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(CAMERA_ZOOM);
         getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
     }
     _playerController.init();
@@ -286,19 +288,14 @@ void GameScene::update(float timestep) {
 
             _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
 
-            //apply friction if going backwards IE braking
-            if (abs(offset) > M_PI / 2.0) {
-
-            }
-
             if (_playerController.getMov().x == 0) {
 
                 //accelerate to a maximum velocity
                 auto forForce = _player->getForce();
                 auto scaling = _player->getForce();
 
-                //scaling.normalize().scale(0.05f * pow(30.0f - vel.length(), 2.0f));
-                scaling.normalize().scale(_player->getMass() * 0.32f * (25.0f - vel.length()));
+                scaling.normalize().scale(_player->getMass() * 0.06f * pow(max(25.0f - vel.length(), 0.0f), 1.8f));
+                //scaling.normalize().scale(_player->getMass() * 0.5f * (25.0f - vel.length()));
                 //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
                 _player->setForce(scaling);
                 _player->applyForce();
@@ -306,7 +303,7 @@ void GameScene::update(float timestep) {
             }
             else {
                 auto forForce = _player->getForce();
-                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * 4.0f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN));
+                auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 2.0) * cos(offset) * 1.5f * _player->getMass() * tan(2.0 * M_PI / TURNS_PER_SPIN));
                 if (_playerController.getMov().x < 0) {
                     turnForce.scale(-1.0f);
                 }
@@ -461,6 +458,7 @@ void GameScene::update(float timestep) {
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
     _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
+    _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
     
     _player->animateMovement();
     //send new position
@@ -522,6 +520,12 @@ Size GameScene::computeActiveSize(float w, float h) const {
 std::string GameScene::updateScoreText(const int score) {
     stringstream ss;
     ss << "Score: " << score;
+    return ss.str();
+}
+
+std::string GameScene::updateFramesText(const double score) {
+    stringstream ss;
+    ss << "Frames: " << score;
     return ss.str();
 }
 
