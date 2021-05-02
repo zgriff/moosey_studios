@@ -147,6 +147,7 @@ void App::onResume() {
                      _lobby.init(_assets);
                      _lobby.setActive(true);
                      //NetworkController::setLobbyScene(_lobby);
+                     _menu.removeAllChildren();
                      _menu.dispose();
                      _currentScene = SceneSelect::Lobby;
                  }
@@ -154,6 +155,7 @@ void App::onResume() {
                  _menu.setActive(false);
                  _lobby.init(_assets);
                  _lobby.setActive(true);
+                 _menu.removeAllChildren();
                  _menu.dispose();
                  _currentScene = SceneSelect::Lobby;
              }
@@ -168,6 +170,7 @@ void App::onResume() {
                  _gameplay.setActive(true);
                  _gameplay.setMovementStyle(0);
                  startTimer = time(NULL);
+                 _lobby.removeAllChildren();
                  _lobby.dispose();
                  _currentScene = SceneSelect::Game;
              }

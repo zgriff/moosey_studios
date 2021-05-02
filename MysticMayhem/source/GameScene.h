@@ -10,6 +10,7 @@
 #define __GAME_SCENE_H__
 #include <cugl/cugl.h>
 #include <vector>
+#include <map>
 #include <time.h>
 #include "InputController.h"
 #include "CollisionController.h"
@@ -220,8 +221,8 @@ public:
     
     void moveOrb(Orb* orb);
 
-    std::string getResults();
-    std::tuple<std::string, std::string> getWinner();
+    std::map<std::string, int> getResults();
+    std::string getWinner();
 
 };
 

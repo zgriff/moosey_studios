@@ -6,6 +6,9 @@
         "title_background": {
             "file": "textures/titleBackground.png"
         },
+        "end_scene": {
+            "file": "textures/end_scene.png"
+        },
         "orb": {
             "file": "textures/orb.png"
         },
@@ -253,6 +256,10 @@
         "joincode": {
             "file": "fonts/MarkerFelt.ttf",
             "size": 60
+        },
+        "results": {
+            "file": "fonts/MarkerFelt.ttf",
+            "size": 30
         }
 
     },
@@ -777,7 +784,7 @@
                 "background": {
                     "type": "Image",
                     "data": {
-                        "texture": "title_background",
+                        "texture": "end_scene",
                         "anchor": [ 0.0, 0.5 ]
                     },
                     "layout": {
@@ -793,7 +800,7 @@
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.5, 0.5 ],
-                        "scale": 0.6
+                        "scale": 0.4
                     },
                     "children": {
                         "up": {
@@ -806,8 +813,8 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": 10,
-                        "x_offset": -150,
+                        "y_offset":100,
+                        "x_offset": 200,
                         "absolute": true
                     }
                 },
@@ -819,7 +826,7 @@
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.5, 0.5 ],
-                        "scale": 0.6
+                        "scale": 0.4
                     },
                     "children": {
                         "up": {
@@ -832,17 +839,17 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": 10,
-                        "x_offset": 250,
+                        "y_offset": 180,
+                        "x_offset": 200,
                         "absolute": true
                     }
                 },
                 "results": {
                     "type": "Label",
                     "data": {
-                        "font": "joincode",
+                        "font": "results",
                         "text": "Winner: ",
-                        "foreground": [ 0, 0, 0, 255 ],
+                        "foreground": [ 255, 255, 255, 255],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -850,16 +857,136 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "x_offset": -0.3,
-                        "y_offset": -0.2
+                        "x_offset": -0.25,
+                        "y_offset": 0.25
+                    }
+                },
+                "playerscore1": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playerscore2": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playerscore3": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playerscore4": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playerscore5": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playerscore6": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playerscore7": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playerscore8": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
                     }
                 },
                 "message" : {
                     "type": "Label",
                     "data": {
-                        "font": "joincode",
+                        "font": "results",
                         "text": "",
-                        "foreground": [ 0, 0, 0, 255 ],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -867,8 +994,8 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "x_offset": -0.3,
-                        "y_offset": -0.4
+                        "x_offset": -0.25,
+                        "y_offset": 0.35
                     }
                 }
             }

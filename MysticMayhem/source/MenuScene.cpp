@@ -137,7 +137,7 @@ void MenuScene::dispose() {
 //    removeAllChildren();
     _hostButton = nullptr;
     _joinButton = nullptr;
-    Input::deactivate<TextInput>();
+//    Input::deactivate<TextInput>();
     _codeField = nullptr;
     _slider = nullptr;
     _assets = nullptr;
