@@ -262,7 +262,7 @@ void GameScene::update(float timestep) {
                 break;
             }
 
-            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
+            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI * timestep * 60.0f / TURNS_PER_SPIN;
             _player->setDirection(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
 
             auto vel = _player->getLinearVelocity();
@@ -462,7 +462,6 @@ void GameScene::update(float timestep) {
     
     _player->animateMovement();
     //send new position
-    //TODO: only every few frames
     NetworkController::sendPosition();
 }
 

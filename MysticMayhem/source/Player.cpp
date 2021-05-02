@@ -279,7 +279,7 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
 /** sets the players direction
  *  don't use values outside of the range (-2 * PI, 4 * PI)
  */
-void Player::setDirection(double d) {
+void Player::setDirection(float d) {
     _direct = d > 2.0 * M_PI ? d - 2.0 * M_PI : (d < 0.0 ? d + 2.0 * M_PI : d);
 }
 
@@ -307,7 +307,7 @@ void Player::update(float delta) {
             _positionError.setZero();
         }
         _sceneNode->setPosition((getPosition() + _positionError) * _drawscale);
-        _sceneNode->setAngle(getAngle());
+//        _sceneNode->setAngle(getAngle());
         
         _positionError *= INTERPOLATION_AMOUNT;
     }
