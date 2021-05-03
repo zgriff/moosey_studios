@@ -17,7 +17,7 @@
 //#define SWAPST_COLS       2
 ///** Number of elements in this image filmstrip */
 //#define SWAPST_FRAMES     2
-#define SWAPST_RADIUS     0.7
+#define SWAPST_RADIUS     0.9
 
 using namespace cugl;
 

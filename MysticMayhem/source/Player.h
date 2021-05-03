@@ -28,7 +28,7 @@ private:
     int _score;
     bool _isInvisible;
     bool _isIntangible; //can't interact with any object (can't tag and nobody can tag you)
-    time_t _tagCooldown;
+    time_t _timeLastTagged;
     bool _holdingEgg;
     bool _justHitByProjectile = false;
     bool _isLocal; // true if the player is the one running on this system
@@ -137,9 +137,9 @@ public:
     
     void setIsIntangible(bool b) { _isIntangible = b; }
     
-    time_t getTagCooldown() { return _tagCooldown; }
+    time_t getTimeLastTagged() { return _timeLastTagged; }
     
-    void setTagCooldown(clock_t t) { _tagCooldown = t; }
+    void setTimeLastTagged(clock_t t) { _timeLastTagged = t; }
 
     float getDirection() { return _direct; }
 

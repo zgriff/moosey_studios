@@ -173,7 +173,7 @@ namespace NetworkController {
                     auto tagger = world->getPlayer(nd.tagData.taggerId);
                     auto self = world->getPlayer(network->getPlayerID().value());
                     tagged->setIsTagged(true);
-                    tagged->setTagCooldown(nd.tagData.timestamp);
+                    tagged->setTimeLastTagged(nd.tagData.timestamp);
                     tagger->incScore(globals::TAG_SCORE);
                     SoundController::playSound(SoundController::Type::TAG, tagger->getPosition() - self->getPosition());
                     if (tagged->getCurrElement() == Element::None && !nd.tagData.dropEgg) {
@@ -210,12 +210,16 @@ namespace NetworkController {
                 }
                 case ND::NetworkData::SWAP_PACKET:
                 {
-                    world->getPlayer(nd.swapData.playerId)->setElement(nd.swapData.newElement);
+                    auto p = world->getPlayer(nd.swapData.playerId);
+                    p->setElement(nd.swapData.newElement);
+                    
                     auto s = world->getSwapStation(nd.swapData.swapId);
-                    s->setLastUsed(clock());
-                    s->setActive(false);
-                    auto self = world->getPlayer(network->getPlayerID().value());
-                    SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - self->getPosition());
+                    if (!p->getIsInvisible()) {
+                        s->setLastUsed(clock());
+                        s->setActive(false);
+                        auto self = world->getPlayer(network->getPlayerID().value());
+                        SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - self->getPosition());
+                    }
                     break;
                 }
                 case ND::NetworkData::EGG_CAPTURED:

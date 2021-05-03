@@ -28,6 +28,10 @@ using namespace cugl;
 #define THRESHOLD_VELOCITY 27.0f
 /** What proportion of the player's extra velocity is lost per frame*/
 #define SPEEDING_DRAG 0.006f
+/** What proportion of the player's extra velocity is lost per frame*/
+#define INVIS_TIME 3.0
+/** What proportion of the player's extra velocity is lost per frame*/
+#define INTANG_TIME 3.0
 
 /** The restitution of this rocket */
 #define DEFAULT_RESTITUTION 0.4f
@@ -266,7 +270,7 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         _currElt = elt;
         _prevElt = elt;
         _score = 0;
-        _tagCooldown = 0;
+        _timeLastTagged = 0;
         _isTagged = false;
         _didTag = false;
         _positionError = Vec2::ZERO;
@@ -320,14 +324,21 @@ void Player::update(float delta) {
         getBody()->ApplyLinearImpulseToCenter(b2Vec2(adjust.x, adjust.y), true);
     }
     
-    if (_isTagged) {
+    if (time(NULL) - _timeLastTagged < INVIS_TIME) {
         _isInvisible = true;
         _isIntangible = true;
+        _isTagged = true;
         _sceneNode->setColor(Color4(255,255,255,50));
     }
-    else {
+    else if (time(NULL) - _timeLastTagged < INTANG_TIME + INVIS_TIME) {
         _isInvisible = false;
+        if (_currElt != Element::Aether) {
+            _sceneNode->setColor(Color4(255, 255, 255, 150));
+        }
+    }
+    else {
         _isIntangible = false;
+        _isTagged = false;
         if (_currElt != Element::Aether) {
             _sceneNode->setColor(Color4(255, 255, 255, 255));
         }

@@ -60,7 +60,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
         Player* p = (Player*) bd1;
         SwapStation* s = (SwapStation*) bd2;
 
-        if (p->getCurrElement() != Element::None && p->getCurrElement() != Element::Aether && p->getIsIntangible() == false) {
+        if (p->getCurrElement() != Element::None && p->getCurrElement() != Element::Aether && !p->getIsIntangible()) {
             if (s->getActive()) {
                 s->setLastUsed(time(NULL));
                 p->setElement(p->getPreyElement());
@@ -68,6 +68,9 @@ void CollisionController::hostBeginContact(b2Contact* contact){
                 SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - localPlayer->getPosition());
                 NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
             }
+        } else if (p->getIsIntangible()) {
+            p->setElement(p->getPreyElement());
+            SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - localPlayer->getPosition());
         }
     }
     
@@ -168,7 +171,7 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
     CULog("tagged");
     tagged->setIsTagged(true);
     time_t timestamp = time(NULL);
-    tagged->setTagCooldown(timestamp);
+    tagged->setTimeLastTagged(timestamp);
     tagger->incScore(globals::TAG_SCORE);
     SoundController::playSound(SoundController::Type::TAG, tagger->getPosition() - localPlayer->getPosition());
     NetworkController::sendTag(tagged->getID(), tagger->getID(), timestamp, dropEgg);
@@ -183,7 +186,6 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
             tagger->setEggId(egg->getID());
             tagged->setHoldingEgg(false);
             tagger->setHoldingEgg(true);
-
         }
         else {
             //tagged hit by projectile so drops the egg

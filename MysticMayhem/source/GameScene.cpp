@@ -45,7 +45,7 @@ using namespace std;
 /** how quickly the camera catches up to the player*/
 #define CAMERA_STICKINESS .07f
 /** how quickly the camera catches up to the player*/
-#define CAMERA_ZOOM .55f
+#define CAMERA_ZOOM .58f
 
 #pragma mark -
 #pragma mark Constructors
@@ -262,7 +262,7 @@ void GameScene::update(float timestep) {
                 break;
             }
 
-            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI * timestep * 60.0f / TURNS_PER_SPIN;
+            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI * timestep * 60.0 / TURNS_PER_SPIN;
             _player->setDirection(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
 
             auto vel = _player->getLinearVelocity();
@@ -364,9 +364,7 @@ void GameScene::update(float timestep) {
 
 
     auto playPos = _player->getSceneNode()->getPosition();
-    if (_player->getLinearVelocity().length() > .00001) {
-        playPos += _player->getLinearVelocity().scale(40.0 / pow(_player->getLinearVelocity().length(), .35));
-    }
+    playPos += _player->getLinearVelocity().scale(40.0 / pow(max(_player->getLinearVelocity().length(), .000001f), .35));
     auto camSpot = getCamera()->getPosition();
     auto trans = (playPos - camSpot)*CAMERA_STICKINESS;
     getCamera()->translate(trans);
@@ -374,7 +372,6 @@ void GameScene::update(float timestep) {
     _UInode->setPosition(camSpot + trans - _worldOffset);
 
 
-    
     if(NetworkController::isHost()){
         int spawnProb = rand() % 100;
             // orb spawning
@@ -435,13 +432,13 @@ void GameScene::update(float timestep) {
     }
     
     //cooldown for player after it's tagged
-    for(auto p : _world->getPlayers()){
-        if (p->getIsTagged()) {
-            if (time(NULL) - p->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
-                p->setIsTagged(false);
-            }
-        }
-    }
+    //for(auto p : _world->getPlayers()){
+    //    if (p->getIsTagged()) {
+    //        if (time(NULL) - p->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
+    //            p->setIsTagged(false);
+    //        }
+    //    }
+    //}
     
     // ability stuff here
     _abilitybar->setProgress(_player->getOrbScore() * 0.2);

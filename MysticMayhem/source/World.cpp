@@ -171,7 +171,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     }
     
     Vec2 playerPos = ((Vec2)PLAYER_POS);
-    Size playerSize(1, 2);
+    Size playerSize(.75, 1.5);
     for(int i = 0; i < _numPlayers; ++i){
         if (_playerSpawns.size()-1>=i) {
             playerPos = _playerSpawns[i];
