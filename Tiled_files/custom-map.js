@@ -46,10 +46,10 @@ var customMapFormat = {
                       x: obj.x + obj.width,
                       y: flipY(obj.y)
                     },{
-                      x: obj.x,
+                      x: obj.x + obj.width,
                       y: flipY(obj.y + obj.height)
                     },{
-                      x: obj.x + obj.width,
+                      x: obj.x,
                       y: flipY(obj.y + obj.height)
                     }];
                   }else if(obj.shape == MapObject.Polygon){
