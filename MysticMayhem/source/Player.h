@@ -153,9 +153,9 @@ public:
     
     bool canSwap();
 
-    double getDirection() { return _direct; }
+    float getDirection() { return _direct; }
 
-    void setDirection(double d);
+    void setDirection(float d);
     
     bool getHoldingEgg() { return _holdingEgg; }
     

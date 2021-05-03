@@ -195,6 +195,7 @@ namespace NetworkController {
                         auto newError = (p->getPosition() + p->getPositionError()) - nd.positionData.playerPos;
                         p->setPositionError(newError);
                         p->setPosition(nd.positionData.playerPos);
+                        p->setDirection(nd.positionData.angle);
                         p->setLinearVelocity(nd.positionData.playerVelocity);
                     }
                     break;
@@ -301,6 +302,7 @@ namespace NetworkController {
         nd.packetType = ND::NetworkData::PacketType::POSITION_PACKET;
         nd.positionData.playerPos = p->getPosition();
         nd.positionData.playerVelocity = p->getLinearVelocity();
+        nd.positionData.angle = p->getDirection();
         nd.positionData.playerId = NetworkController::getPlayerId().value();
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
