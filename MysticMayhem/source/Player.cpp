@@ -164,6 +164,7 @@ void Player::setElement(Element e){
         _prevElt = _currElt;
     }
     _currElt = e;
+    _swapTimer = time(NULL);
     
     //Need to flip before and after setting frame bc bug with texture on polygon
     //Staff asset faces opposite direction
@@ -204,6 +205,10 @@ void Player::setElement(Element e){
     } else  {
         _animNodes[_staffKey]->flipHorizontal(true);
     }
+}
+
+bool Player::canSwap() {
+    return time(NULL)-_swapTimer > _swapCooldown;
 }
 
 Element Player::getPreyElement() {

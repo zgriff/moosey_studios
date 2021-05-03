@@ -51,6 +51,9 @@ private:
     std::string _staffTagKey;
     std::string _ringKey;
     
+    time_t _swapTimer;
+    time_t _swapCooldown = 0.25;
+    
     clock_t _animationTimer;
     clock_t _tagAnimationTimer;
     clock_t _animationRate = 0.1f * CLOCKS_PER_SEC;
@@ -143,6 +146,12 @@ public:
     time_t getTagCooldown() { return _tagCooldown; }
     
     void setTagCooldown(clock_t t) { _tagCooldown = t; }
+    
+    time_t getSwapCooldown() { return _swapTimer; }
+    
+    void setSwapCooldown(clock_t t) { _swapTimer = t; }
+    
+    bool canSwap();
 
     double getDirection() { return _direct; }
 

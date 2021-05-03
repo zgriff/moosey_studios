@@ -69,6 +69,11 @@ void CollisionController::hostBeginContact(b2Contact* contact){
                 NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
             }
         }
+        if ((p->getIsIntangible() || p->getIsInvisible()) && p->canSwap()) {
+            p->setElement(p->getPreyElement());
+            SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - localPlayer->getPosition());
+            NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
+        }
     }
     
     //egg and player collision
