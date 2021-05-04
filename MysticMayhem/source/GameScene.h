@@ -32,13 +32,7 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
     
     /** Reference to the physics root of the scene graph */
-    std::shared_ptr<cugl::scene2::SceneNode> _rootnode;
-
-    /** Reference to the physics root of the scene graph */
-//    std::shared_ptr<cugl::scene2::SceneNode> _worldnode;
-    /** The Box2D world */
-//    std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
-    
+    std::shared_ptr<cugl::scene2::SceneNode> _rootnode; 
     
     std::shared_ptr<World> _world;
     
@@ -69,6 +63,9 @@ protected:
     time_t _startTime;
     time_t prevTime;
 
+    /** Reference to the UI element exposing the frame rate */
+    std::shared_ptr<cugl::scene2::Label> _framesHUD;
+
     std::shared_ptr<cugl::scene2::Label> _scoreHUD;
     std::shared_ptr<cugl::scene2::Label> _timerHUD;
     
@@ -86,23 +83,10 @@ protected:
     /** Controller for the player */
     InputController _playerController;
 
-    /** Location and animation information for player (MODEL CLASS) */
-//    std::shared_ptr<Player> _player;
-//    std::shared_ptr<Player> _player2;
-//
-//    std::shared_ptr<Orb> _fireOrb;
-//    std::shared_ptr<Orb> _waterOrb;
-//    std::shared_ptr<Orb> _grassOrb;
-//
-//    std::shared_ptr<SwapStation> _swapStation;
-//
-//    std::shared_ptr<Egg> _egg;
-
-    /** The weapon fire sound for the blue player */
-//    std::shared_ptr<cugl::Sound> _blueSound;
     bool swap = false;
     
     std::string updateScoreText(const int score);
+    std::string updateFramesText(const double score);
     std::string updateTimerText(const time_t time);
     
     bool isDebug( ) const { return _debug; }

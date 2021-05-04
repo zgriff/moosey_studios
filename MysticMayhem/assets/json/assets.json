@@ -1144,14 +1144,16 @@
             }
         },
         "ui":{
-            "comment": "Scene for all UI elements",
-            "type": "Node",
-            "format": {
-                "type": "Anchored"
+            "type"      : "Node",
+            "format"    : {
+                "type" : "Anchored"
+            },
+            "data" : {
+                "anchor" :[0.5,0.5]
             },
             "layout" : {
-                "x_anchor" : "fill",
-                "y_anchor" : "fill"
+                "x_anchor" : "center",
+                "y_anchor" : "middle"
             },
             "children": {
                 "roomId": {
@@ -1172,6 +1174,24 @@
                         "absolute": true
                     }
                 },
+                "frames" : {
+                    "type": "Label",
+                    "data": {
+                        "font"       : "retro",
+                        "text"       : "Frames: 0",
+                        "foreground" : [255,255,255,255],
+                        "size"       : [500,70],
+                        "valign"     : "bottom",
+                        "halign"     : "left"
+                    },
+                    "layout" : {
+                        "x_anchor" : "left",
+                        "y_anchor" : "bottom",
+                        "x_offset" : -0.2,
+                        "y_offset" : -0.2,
+                        "absolute" : true
+                    }
+                },
                 "timer" : {
                        "type": "Label",
                        "data": {
@@ -1180,17 +1200,15 @@
                            "foreground" : [255,255,255,255],
                            "size"       : [500,70],
                            "valign"     : "bottom",
-                           "halign"     : "left"
+                           "halign"     : "center"
                        },
                        "layout" : {
-                           "x_anchor" : "right",
+                           "x_anchor" : "center",
                            "y_anchor" : "top",
-                           "x_offset" : -0.2,
-                           "y_offset" : -0.2,
-                           "absolute" : true
+                           "y_offset" : -0.1
                        }
                    },
-                "hud": {
+                "score": {
                     "type": "Label",
                     "data": {
                         "font": "retro",
@@ -1201,10 +1219,10 @@
                         "halign": "left"
                     },
                     "layout": {
-                        "x_anchor": "right",
+                        "x_anchor": "left",
                         "y_anchor": "top",
-                        "x_offset": -0.2,
-                        "y_offset": -0.2
+                        "x_offset" : 0.1,
+                        "y_offset" : -0.1
                     }
                 },
                 "bar": {
@@ -1219,7 +1237,7 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset": -0.2,
+                        "x_offset": -0.1,
                         "y_offset": -0.2
                     }
                 },
@@ -1237,7 +1255,7 @@
                         "x_anchor": "right",
                         "y_anchor": "top",
                         "x_offset": -0.2,
-                        "y_offset": -0.4
+                        "y_offset": -0.2
                     }
                 },
                 "abilityBar": {
@@ -1250,8 +1268,8 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset": -0.4,
-                        "y_offset": -0.2
+                        "x_offset" : -0.1,
+                        "y_offset" : -0.1
                     },
                     "children": {
                         "abilityName": {

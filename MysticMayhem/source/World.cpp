@@ -299,7 +299,7 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
     }
     
     
-    auto tiles = json->get(TILES_FIELD);
+    /* auto tiles = json->get(TILES_FIELD);
     if (tiles != nullptr) {
         int tsize = (int)tiles->size();
         for(int ii = 0; ii < tsize; ii++) {
@@ -308,7 +308,7 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
     } else {
         CUAssertLog(false, "Failed to load tiles");
         return false;
-    }
+    } */
 
 
     auto decorations = json->get(DECORATIONS_FIELD);
@@ -393,7 +393,6 @@ bool World::loadBackground(const std::shared_ptr<JsonValue> &json) {
     float yCoord = json->getFloat(Y_FIELD) * globals::TILE_TO_BOX2D;
     
     std::string assetName = json->getString("asset");
-//    std::string assetName = "grass";
     
     _bgTiles.push_back(std::make_tuple(assetName,Vec2(xCoord,yCoord)));
     
@@ -426,8 +425,8 @@ bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
         // You cannot add constant "".  Must stringify
         wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
         wallobj->setName(wname);
-        wallobj->setFriction(0.15);
-        wallobj->setRestitution(0.3);
+        wallobj->setFriction(0.0);
+        wallobj->setRestitution(0.6);
         // Set the physics attributes
         wallobj->setBodyType(b2_staticBody);
 

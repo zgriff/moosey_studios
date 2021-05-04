@@ -141,9 +141,9 @@ public:
     
     void setTagCooldown(clock_t t) { _tagCooldown = t; }
 
-    double getDirection() { return _direct; }
+    float getDirection() { return _direct; }
 
-    void setDirection(double d);
+    void setDirection(float d);
     
     bool getHoldingEgg() { return _holdingEgg; }
     

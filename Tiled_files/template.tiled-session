@@ -1,11 +1,19 @@
 {
-    "activeFile": "maps/forest2.tmx",
+    "activeFile": "maps/weird.tmx",
     "expandedProjectPaths": [
         "maps",
-        "templates",
-        "tilesets"
+        "tilesets",
+        "templates"
     ],
     "fileStates": {
+        "maps/bigforest.tmx": {
+            "scale": 0.317,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 946.3722397476341,
+                "y": 1574.1324921135647
+            }
+        },
         "maps/foo.tmx": {
             "scale": 0.3483,
             "selectedLayer": 1,
@@ -26,8 +34,8 @@
             "scale": 0.33,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1236.3636363636363,
-                "y": 890.909090909091
+                "x": 1251.5151515151515,
+                "y": 824.2424242424241
             }
         },
         "maps/untitled.tmx": {
@@ -36,6 +44,14 @@
             "viewCenter": {
                 "x": 1248.5491626595922,
                 "y": 487.4813463770519
+            }
+        },
+        "maps/weird.tmx": {
+            "scale": 0.2093,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 914.9546106067844,
+                "y": 1462.01624462494
             }
         },
         "tilesets/decorations.tsx": {
@@ -49,24 +65,28 @@
             "scaleInEditor": 0.67
         }
     },
-    "last.exportedFilePath": "C:/Users/Thomas/Desktop/CS4152/moosey_studios/Roshamboogie/assets/maps",
+    "last.exportedFilePath": "/Users/joshuakaplan/Downloads",
     "last.imagePath": "C:/Users/Thomas/Downloads",
     "last.objectTemplatePath": "/Users/joshuakaplan/Documents/School Stuff/2020-2021/Spring Semester/game design/moosey_studios/Tiled_files/templates",
-    "map.lastUsedExportFilter": "Roshamboogie map format (*.json)",
+    "map.lastUsedExportFilter": "Mystic Mayhem map format (*.json)",
     "openFiles": [
         "maps/untitled.tmx",
         "maps/foo.tmx",
         "maps/forest2.tmx",
         "maps/forest.tmx",
-        "tilesets/decorations.tsx"
+        "tilesets/decorations.tsx",
+        "maps/bigforest.tmx",
+        "maps/weird.tmx"
     ],
     "project": "template.tiled-project",
     "recentFiles": [
         "maps/untitled.tmx",
         "maps/foo.tmx",
-        "tilesets/decorations.tsx",
+        "maps/forest2.tmx",
         "maps/forest.tmx",
-        "maps/forest2.tmx"
+        "tilesets/decorations.tsx",
+        "maps/bigforest.tmx",
+        "maps/weird.tmx"
     ],
     "resizeMap.removeObjects": true,
     "tileset.tileSize": {
