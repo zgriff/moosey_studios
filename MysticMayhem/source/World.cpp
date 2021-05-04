@@ -89,31 +89,43 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     }
     
     _currEggCount = 0;
-    for(auto it = _eggs.begin(); it != _eggs.end(); ++it) {
-        std::shared_ptr<Egg> egg = *it;
+    _totalEggCount = 0;
+    for(auto it = _initEggLocs.begin(); it != _initEggLocs.end(); ++it) {
+        Size eggSize(1, 2);
+        std::shared_ptr<Egg> egg = Egg::alloc(*it, eggSize);
         _physicsWorld->addObstacle(egg);
         egg->setTextures(eggTexture);
         egg->setDrawScale(_scale);
-        egg->setActive(true);
         egg->setDebugColor(Color4::YELLOW);
         egg->setDebugScene(_debugNode);
-        egg->setID(_currEggCount);
-        _currEggCount = _currEggCount + 1;
+        egg->setID(_totalEggCount);
+        //setting collected and hatched to true since should not be in map in the beginning
+        egg->setCollected(true);
+        egg->setHatched(true);
+        egg->setDistanceWalked(0);
+        egg->setInitPos(egg->getPosition());
+        _totalEggCount = _totalEggCount + 1;
         _worldNode->addChild(egg->getSceneNode(),1);
+        _eggs.push_back(egg);
     }
     
     _currOrbCount = 0;
-    for(auto it = _orbs.begin(); it != _orbs.end(); ++it) {
-        std::shared_ptr<Orb> orb = *it;
+    _initOrbCount = 0;
+    for(auto it = _initOrbLocs.begin(); it != _initOrbLocs.end(); ++it) {
+        CULog("orb");
+        std::shared_ptr<Orb> orb = Orb::alloc(*it);
         _physicsWorld->addObstacle(orb);
+        orb->setTextures(orbTexture);
         orb->setDrawScale(_scale);
+        orb->setCollected(false);
         orb->setActive(true);
         orb->setDebugColor(Color4::YELLOW);
         orb->setDebugScene(_debugNode);
         orb->setID(_currOrbCount);
-        orb->setTextures(orbTexture);
         _currOrbCount = _currOrbCount + 1;
+        _initOrbCount = _initOrbCount + 1;
         _worldNode->addChild(orb->getSceneNode(),1);
+        _orbs.push_back(orb);
     }
     
     for(auto it = _swapStations.begin(); it != _swapStations.end(); ++it) {
@@ -181,6 +193,8 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->setDebugScene(_debugNode);
         player->setID(i);
         player->setDebugColor(Color4::YELLOW);
+        player->setHoldingEgg(false);
+        player->setOrbScore(0);
         //player id is set to i right now, if that is changed, projectile's associated userid needs to change too
         player->setProjectile(_projectiles[i]);
         player->allocUsernameNode(_assets->get<Font>("username"));
@@ -200,7 +214,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
 
 // Used to reset the scene
 void World::clearRootNode() {
-    if (_root == nullptr) {
+    if (!_root) {
         return;
     }
     _worldNode->removeFromParent();
@@ -212,6 +226,11 @@ void World::clearRootNode() {
     _debugNode = nullptr;
 
     _root = nullptr;
+    _players.clear();
+    _eggs.clear();
+    _orbs.clear();
+    _orbSpawns.clear();
+    _eggSpawns.clear();
 }
 
 void World::showDebug(bool flag) {
@@ -280,7 +299,7 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
     }
     
     
-    auto tiles = json->get(TILES_FIELD);
+    /* auto tiles = json->get(TILES_FIELD);
     if (tiles != nullptr) {
         int tsize = (int)tiles->size();
         for(int ii = 0; ii < tsize; ii++) {
@@ -289,7 +308,7 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
     } else {
         CUAssertLog(false, "Failed to load tiles");
         return false;
-    }
+    } */
 
 
     auto decorations = json->get(DECORATIONS_FIELD);
@@ -374,7 +393,6 @@ bool World::loadBackground(const std::shared_ptr<JsonValue> &json) {
     float yCoord = json->getFloat(Y_FIELD) * globals::TILE_TO_BOX2D;
     
     std::string assetName = json->getString("asset");
-//    std::string assetName = "grass";
     
     _bgTiles.push_back(std::make_tuple(assetName,Vec2(xCoord,yCoord)));
     
@@ -407,7 +425,8 @@ bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
         // You cannot add constant "".  Must stringify
         wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
         wallobj->setName(wname);
-        wallobj->setFriction(0);
+        wallobj->setFriction(0.0);
+        wallobj->setRestitution(0.6);
         // Set the physics attributes
         wallobj->setBodyType(b2_staticBody);
 
@@ -465,8 +484,8 @@ bool World::loadEgg(const std::shared_ptr<JsonValue> &json){
     auto egg = Egg::alloc(eggPos, eggSize);
     CULog("orbPos: %f   y %f",eggPos.x,eggPos.y);
 
-//    egg->setTextures(eggTexture);
-    _eggs.push_back(egg);
+    _initEggLocs.push_back(eggPos);
+    _eggSpawns.push_back(eggPos);
     return true;
 }
 
@@ -490,9 +509,9 @@ bool World::loadOrbLoc(const std::shared_ptr<JsonValue> &json){
     float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
     float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
     
-    Vec2 orbSpawnPos = Vec2(xCoord,yCoord);
+    Vec2 orbPos = Vec2(xCoord,yCoord);
     
-    _orbSpawns.push_back(orbSpawnPos);
+    _initOrbLocs.push_back(orbPos);
     return true;
 }
 

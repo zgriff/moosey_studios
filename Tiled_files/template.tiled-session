@@ -1,39 +1,63 @@
 {
-    "activeFile": "maps/foo.tmx",
+    "activeFile": "maps/weird.tmx",
     "expandedProjectPaths": [
+        "maps",
         "tilesets",
-        "templates",
-        "maps"
+        "templates"
     ],
     "fileStates": {
+        "maps/bigforest.tmx": {
+            "scale": 0.317,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 946.3722397476341,
+                "y": 1574.1324921135647
+            }
+        },
         "maps/foo.tmx": {
             "scale": 0.3483,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1323.571633649153,
-                "y": 910.1349411426929
+                "x": 1251.7944300890038,
+                "y": 749.3540051679587
             }
         },
         "maps/forest.tmx": {
             "scale": 0.2991,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1435.9745904379809,
-                "y": 922.7683049147445
+                "x": 1350.7188231360751,
+                "y": 849.2143095954531
+            }
+        },
+        "maps/forest2.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1251.5151515151515,
+                "y": 824.2424242424241
             }
         },
         "maps/untitled.tmx": {
             "scale": 0.6031,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1270.1044602885095,
-                "y": 779.3069142762396
+                "x": 1248.5491626595922,
+                "y": 487.4813463770519
+            }
+        },
+        "maps/weird.tmx": {
+            "scale": 0.2093,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 914.9546106067844,
+                "y": 1462.01624462494
             }
         },
         "tilesets/decorations.tsx": {
-            "dynamicWrapping": false,
-            "scaleInDock": 1,
-            "scaleInEditor": 0.67
+            "dynamicWrapping": true,
+            "scaleInDock": 0.75,
+            "scaleInEditor": 0.5
         },
         "tilesets/tiles.tsx": {
             "dynamicWrapping": true,
@@ -42,17 +66,31 @@
         }
     },
     "last.exportedFilePath": "/Users/joshuakaplan/Downloads",
+    "last.imagePath": "C:/Users/Thomas/Downloads",
     "last.objectTemplatePath": "/Users/joshuakaplan/Documents/School Stuff/2020-2021/Spring Semester/game design/moosey_studios/Tiled_files/templates",
-    "map.lastUsedExportFilter": "Roshamboogie map format (*.json)",
+    "map.lastUsedExportFilter": "Mystic Mayhem map format (*.json)",
     "openFiles": [
         "maps/untitled.tmx",
-        "maps/foo.tmx"
+        "maps/foo.tmx",
+        "maps/forest2.tmx",
+        "maps/forest.tmx",
+        "tilesets/decorations.tsx",
+        "maps/bigforest.tmx",
+        "maps/weird.tmx"
     ],
     "project": "template.tiled-project",
     "recentFiles": [
         "maps/untitled.tmx",
         "maps/foo.tmx",
-        "maps/forest.tmx"
+        "maps/forest2.tmx",
+        "maps/forest.tmx",
+        "tilesets/decorations.tsx",
+        "maps/bigforest.tmx",
+        "maps/weird.tmx"
     ],
-    "resizeMap.removeObjects": true
+    "resizeMap.removeObjects": true,
+    "tileset.tileSize": {
+        "height": 50,
+        "width": 50
+    }
 }

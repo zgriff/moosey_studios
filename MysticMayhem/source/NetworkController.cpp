@@ -6,7 +6,7 @@
 #include "Egg.h"
 #include "Globals.h"
 #include <cugl/cugl.h>
-#include <any>
+#include "MapConstants.h"
 #include "SoundController.h"
 
 
@@ -17,8 +17,10 @@ namespace NetworkController {
         std::shared_ptr<World> world;
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username;
+        //Networked usernames indexed by playerId
+        array<std::string, 2> usernames = {"test", "test2"};
         int _networkFrame;
-    
+        int mapSelected;
         std::function<void(uint8_t, bool)> readyCallback;
         std::function<void(void)> startCallback;
     }
@@ -52,6 +54,10 @@ namespace NetworkController {
         world = w;
     }
 
+    std::shared_ptr<World> getWorld() {
+        return world;
+    }
+
     bool isHost(){
         return network->getPlayerID().value_or(-1) == 0;
     }
@@ -78,6 +84,14 @@ namespace NetworkController {
 
     void setUsername(std::string name) {
         username = name;
+    }
+
+    int getMapSelected() {
+        return mapSelected;
+    }
+
+    void setMapSelected(int i) {
+        mapSelected = i;
     }
 
     void setReadyCallback(std::function<void(uint8_t, bool)> cb){
@@ -177,7 +191,15 @@ struct GameHandler {
         auto newError = (p->getPosition() + p->getPositionError()) - data.playerPos;
         p->setPositionError(newError);
         p->setPosition(data.playerPos);
+        p->setDirection(data.angle);
         p->setLinearVelocity(data.playerVelocity);
+    }
+    void operator()(NetworkData::SetUsername & data) const {
+        int id1 = data.playerId;
+        string username1 = data.username;
+    }
+    void operator()(NetworkData::SetMap & data) const {
+        mapSelected = data.mapNumber;
     }
     void operator()(NetworkData::ElementChange & data) const {
         world->getPlayer(data.playerId)->setElement(data.newElement);
@@ -236,6 +258,7 @@ struct GameHandler {
         NetworkData::Position pos;
         pos.playerPos = p->getPosition();
         pos.playerVelocity = p->getLinearVelocity();
+        pos.angle = p->getDirection();
         pos.playerId = NetworkController::getPlayerId().value();
         send(NetworkData(pos));
     }
@@ -277,7 +300,7 @@ struct GameHandler {
         e.playerId = playerId;
         e.newElement = newElement;
         send(NetworkData(e));
-}
+    }
 
     void sendEggRespawn(int eggId, Vec2 eggPosition){
         NetworkData::EggRespawn e;
@@ -317,6 +340,19 @@ struct GameHandler {
         send(NetworkData(t));
     }
 
+    void sendSetUsername(int playerId, string username) {
+        NetworkData::SetUsername data;
+        data.playerId = playerId;
+        data.username = username;
+        send(NetworkData(data));
+    }
+
+    void sendSetMapSelected(int i) {
+        NetworkData::SetMap data;
+        data.mapNumber = i;
+        send(NetworkData(data));
+    }
+
     void ready(){
         NetworkData::Ready d;
         d.player_id = network->getPlayerID().value();
@@ -336,6 +372,3 @@ struct GameHandler {
     }
 
 }
-
-
-

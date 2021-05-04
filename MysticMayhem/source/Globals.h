@@ -26,6 +26,8 @@ constexpr uint8_t MAX_SWAP_STATIONS = 5;
 constexpr int TAG_SCORE = 15;
 constexpr int HATCH_SCORE = 10;
 
+constexpr int GAME_TIMER= 180;
+
 /**convert Tiled coords to box2d w/ scalar*/
 constexpr float  TILE_TO_BOX2D = 50.0f/40.0f;
 
@@ -35,6 +37,8 @@ constexpr float  TILE_TO_SCENE = 50.0f;
 constexpr float  SCENE_TO_BOX2D = 1.0f/40.0f;
 
 constexpr float  BOX2D_TO_SCENE = 40.0f;
+
+constexpr int MAX_CHARS_IN_USERNAME = 15;
 
 }
 

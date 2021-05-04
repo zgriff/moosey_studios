@@ -16,6 +16,7 @@
 #define SWAP_ID_BITS 4
 #define ORB_ID_BITS 5
 #define EGG_ID_BITS 3
+#define MAP_NUMBER_BITS 3
 
 //interpret uint32_t as uint8_t[4]
 union ui32_to_ui8 {
@@ -114,6 +115,17 @@ public:
         }
         data = true;
     }
+    
+    void serializeString(std::string & data){
+        data = std::string();
+        while(true){
+            char c = readBits(8);
+            if(c == 0){
+                break;
+            }
+            data.push_back(c);
+        }
+    }
 };
 
 class WriteStream {
@@ -189,6 +201,12 @@ public:
         serializeBits(u.ui8[6], 8);
         serializeBits(u.ui8[7], 8);
     }
+    
+    void serializeString(std::string & data){
+        for (char const &c: data) {
+            serializeBits(c, 8);
+        }
+    }
 };
 
 
@@ -238,6 +256,7 @@ struct NetworkData::Visitor {
     void operator()(Position & p) const {
         s.serializeVec2(p.playerPos);
         s.serializeVec2(p.playerVelocity);
+        s.serializeFloat(p.angle);
         s.serializeBits(p.playerId, PLAYER_ID_BITS);
     }
     void operator()(ElementChange & e) const {
@@ -253,6 +272,14 @@ struct NetworkData::Visitor {
     void operator()(ProjectileGone & p) const {
         s.serializeBits(p.projectileId, PLAYER_ID_BITS);
     }
+    void operator()(SetUsername & d) const {
+        s.serializeBits(d.playerId, PLAYER_ID_BITS);
+        s.serializeString(d.username);
+    }
+    void operator()(SetMap & d) const {
+        s.serializeBits(d.mapNumber, MAP_NUMBER_BITS);
+    }
+
 };
 
 

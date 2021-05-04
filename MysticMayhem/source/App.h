@@ -14,6 +14,7 @@
 #include "MenuScene.h"
 #include "EndScene.h"
 #include "LobbyScene.h"
+#include "Globals.h"
 
 /**
  * This class represents the application root for the project.
@@ -43,7 +44,7 @@ protected:
     };
     
     
-    time_t gameTimer = 900;
+    time_t gameTimer = globals::GAME_TIMER;
     time_t startTimer;
     
     SceneSelect _currentScene;

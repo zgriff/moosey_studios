@@ -37,9 +37,15 @@ using namespace std;
 /** Height of the game world in Box2d units */
 #define DEFAULT_HEIGHT  18.0f
 /** The restitution for all physics objects */
-#define TURNS_PER_SPIN   55.0f
-/** how much the lateral velocity is subtracted per frame*/
-#define KINETIC_FRICTION 1.4f
+#define TURNS_PER_SPIN   75.0f
+/** how much the sideways velocity is subtracted per frame*/
+#define KINETIC_FRICTION 1.5f
+/** how much the backwards velocity is subtracted per frame if the player is going backwards*/
+#define BACKWARDS_FRICTION 0.8f
+/** how quickly the camera catches up to the player*/
+#define CAMERA_STICKINESS .07f
+/** how quickly the camera catches up to the player*/
+#define CAMERA_ZOOM .55f
 
 #pragma mark -
 #pragma mark Constructors
@@ -54,10 +60,25 @@ using namespace std;
  *
  * @return true if the controller is initialized properly, false otherwise.
  */
-bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
+bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string mapKey) {
     // Initialize the scene to a locked width
     //create world
-    _world = assets->get<World>(GRASS_MAP_KEY);
+    CULog("map selected is %d", NetworkController::getMapSelected());
+    switch (NetworkController::getMapSelected()) {
+    case 1:
+        mapKey = GRASS_MAP_KEY;
+        break;
+    case 2:
+        mapKey = GRASS_MAP2_KEY;
+        break;
+    case 3:
+        mapKey = GRASS_MAP3_KEY;
+        break;
+    case 4:
+        mapKey = GRASS_MAP4_KEY;
+        break;
+    }
+    _world = assets->get<World>(mapKey);
     if (_world == nullptr) {
         CULog("Fail!");
         return false;
@@ -118,10 +139,10 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _UInode->setPosition(_worldOffset);
     _UInode->setContentSize(Size(w,h));
     _UInode->doLayout(); // Repositions the HUD;
+    _UInode->setScale(CAMERA_ZOOM/1.0f);
     
-    
-    _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_hud"));
-    
+    _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_score"));
+    _framesHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_frames"));
     _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
     
     _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
@@ -153,19 +174,30 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void GameScene::dispose() {
-    if (_active) {
-        removeAllChildren();
-        _debugnode = nullptr;
-        _scoreHUD = nullptr;
-        _hatchnode = nullptr;
-        _hatchbar = nullptr;
-        _abilitybar = nullptr;
-        _abilityname = nullptr;
-        _active = false;
-        _debug = false;
-        Scene2::dispose();
+    CULog("game scene dispose");
+    removeAllChildren();
+    _debugnode = nullptr;
+    _camera = nullptr;
+    _UInode = nullptr;
+    _scoreHUD = nullptr;
+    _hatchnode = nullptr;
+    _hatchbar = nullptr;
+    _abilitybar = nullptr;
+    _abilityname = nullptr;
+    _timerHUD = nullptr;
+    _framesHUD = nullptr;
+    _debug = false;
+    _assets = nullptr;
+//        Scene2::dispose();
+    if (_world != nullptr) {
+        _world->clearRootNode();
+    //    _world->getSceneNode()->removeAllChildren();
+        _world->getPhysicsWorld()->clear();
         _world = nullptr;
     }
+    _active = false;
+    _rootnode = nullptr;
+    _playerController.dispose();
 }
 
 
@@ -185,6 +217,8 @@ void GameScene::reset() {
         auto _player = _world->getPlayer(idopt.value());
         _player->setUsername(NetworkController::getUsername());
         _player->setIsLocal(true);
+        static_pointer_cast<cugl::OrthographicCamera>(getCamera())->set(Application::get()->getDisplaySize());
+        static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(CAMERA_ZOOM);
         getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
     }
     _playerController.init();
@@ -227,16 +261,8 @@ void GameScene::update(float timestep) {
             if (_abilityController.getActiveAbility() == AbilityController::Ability::SpeedBoost) {
                 break;
             }
-            /* auto ang = _player->getDirection() + _playerController.getMov().x * -2.0 * M_PI / TURNS_PER_SPIN;
-            //_player->setAngle(ang > M_PI ? ang - 2.0f*M_PI : (ang < -M_PI ? ang + 2.0f*M_PI : ang));
-            _player->setDirection(ang);
-            auto vel = _player->getLinearVelocity();
-            //Please don't delete this comment, angles were difficult to derive and easy to forget
-            //vel angle originates from y axis, player angle orginates from x axis
-            auto offset = (vel.getAngle() + M_PI/2.0) - _player->getDirection();
-            offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset); */
 
-            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI / TURNS_PER_SPIN;
+            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI * timestep * 60.0f / TURNS_PER_SPIN;
             _player->setDirection(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
 
             auto vel = _player->getLinearVelocity();
@@ -245,16 +271,22 @@ void GameScene::update(float timestep) {
             auto offset = vel.getAngle() - _player->getDirection() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
-            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset));
+            //applies sideways friction, capped at a flat value
+            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * _player->getMass());
             if (correction.length() > KINETIC_FRICTION) {
                 correction.scale(KINETIC_FRICTION / correction.length());
             }
-            _player->setLinearVelocity(vel.add(correction));
 
             //apply friction if going backwards IE braking
-            if (abs(offset) > M_PI / 2.0) {
-
+            if (abs(offset) < M_PI / 2.0) {
+                auto backwards = _player->getLinearVelocity().rotate(-1.0f * offset).scale(-1.0f * cos(offset) * _player->getMass());
+                if (backwards.length() > BACKWARDS_FRICTION) {
+                    backwards.scale(BACKWARDS_FRICTION / correction.length());
+                }
+                _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(backwards.x, backwards.y), true);
             }
+
+            _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
 
             if (_playerController.getMov().x == 0) {
 
@@ -262,8 +294,8 @@ void GameScene::update(float timestep) {
                 auto forForce = _player->getForce();
                 auto scaling = _player->getForce();
 
-                //scaling.normalize().scale(0.05f * pow(30.0f - vel.length(), 2.0f));
-                scaling.normalize().scale(_player->getMass() * 0.32f * (25.0f - vel.length()));
+                scaling.normalize().scale(_player->getMass() * 0.06f * pow(max(25.0f - vel.length(), 0.0f), 1.8f));
+                //scaling.normalize().scale(_player->getMass() * 0.5f * (25.0f - vel.length()));
                 //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
                 _player->setForce(scaling);
                 _player->applyForce();
@@ -271,7 +303,7 @@ void GameScene::update(float timestep) {
             }
             else {
                 auto forForce = _player->getForce();
-                auto turnForce = _player->getForce().getPerp().scale(vel.length() * cos(offset) * 2.0f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN));
+                auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 2.0) * cos(offset) * 1.5f * _player->getMass() * tan(2.0 * M_PI / TURNS_PER_SPIN));
                 if (_playerController.getMov().x < 0) {
                     turnForce.scale(-1.0f);
                 }
@@ -332,8 +364,11 @@ void GameScene::update(float timestep) {
 
 
     auto playPos = _player->getSceneNode()->getPosition();
+    if (_player->getLinearVelocity().length() > .00001) {
+        playPos += _player->getLinearVelocity().scale(40.0 / pow(_player->getLinearVelocity().length(), .35));
+    }
     auto camSpot = getCamera()->getPosition();
-    auto trans = (playPos - camSpot)*.07f;
+    auto trans = (playPos - camSpot)*CAMERA_STICKINESS;
     getCamera()->translate(trans);
     getCamera()->update();
     _UInode->setPosition(camSpot + trans - _worldOffset);
@@ -341,23 +376,23 @@ void GameScene::update(float timestep) {
 
     
     if(NetworkController::isHost()){
-        std::random_device r;
-        std::default_random_engine e1(r());
-        std::uniform_int_distribution<int> prob(0,100);
-//        CULog("prob %d", prob(e1));
-        // orb spawning
-        if (prob(e1) < 25) { //TODO: change to depend on how many orbs on map currently
-            if (_world->getOrbSpawns().size() > 5) {
-                SpawnController::spawnOrbs();
+        int spawnProb = rand() % 100;
+            // orb spawning
+            if (spawnProb == 25) {
+                if (_world->getCurrOrbCount() < _world->getInitOrbCount()) {
+                    SpawnController::spawnOrbs();
+                }
+            }
+            
+            //egg spawning
+    //        CULog("egg max %f ", ceil(int(_world->getPlayers().size())/3));
+            //TODO: set max egg number based on number of players
+            if (spawnProb == 50) {
+                if (_world->getCurrEggCount() < _world->getTotalEggCount()) {
+                    SpawnController::spawnEggs();
+                }
             }
         }
-        
-        //egg spawning
-//        if (_world->getCurrEggCount() < 1) {
-//            CULog("egg respawn");
-//            SpawnController::spawnEggs();
-//        }
-    }
     
     //egg hatch logic
     if (_player->getJustHitByProjectile()) {
@@ -371,13 +406,13 @@ void GameScene::update(float timestep) {
         if (_egg->getHatched() == false) {
             _egg->setPosition(_player->getPosition());
             _hatchbar->setVisible(true);
-//            CULog("egg distance %f", _egg->getDistanceWalked());
             _hatchbar->setProgress(_egg->getDistanceWalked()/80);
             Vec2 diff = _player->getPosition() - _egg->getInitPos();
             float dist = sqrt(pow(diff.x, 2) + pow(diff.y, 2));
             _egg->setDistanceWalked(_egg->getDistanceWalked() + dist);
             _egg->setInitPos(_player->getPosition());
             if (_egg->getDistanceWalked() >= 80) {
+                _world->addEggSpawn(_egg->getSpawnLoc());
                 _player->setHoldingEgg(false);
                 _hatchbar->setVisible(false);
                 _hatchbar->setProgress(0.0);
@@ -385,7 +420,6 @@ void GameScene::update(float timestep) {
                 _egg->setHatched(true);
                 _egg->setDistanceWalked(0);
                 _world->setCurrEggCount(_world->getCurrEggCount() - 1);
-//                _egg->dispose();
                 _player->setElement(_player->getPrevElement());
                 _player->incScore(globals::HATCH_SCORE);
                 NetworkController::sendEggHatched(_player->getID(), _egg->getID());
@@ -404,8 +438,6 @@ void GameScene::update(float timestep) {
     for(auto p : _world->getPlayers()){
         if (p->getIsTagged()) {
             if (time(NULL) - p->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
-                CULog("not tagged");
-    //            _player->getSceneNode()->setVisible(false);
                 p->setIsTagged(false);
             }
         }
@@ -425,11 +457,11 @@ void GameScene::update(float timestep) {
   
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
-    _timerHUD->setText(updateTimerText(_startTime + 900 - time(NULL)));
+    _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
+    _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
     
     _player->animateMovement();
     //send new position
-    //TODO: only every few frames
     NetworkController::sendPosition();
 }
 
@@ -490,6 +522,12 @@ std::string GameScene::updateScoreText(const int score) {
     return ss.str();
 }
 
+std::string GameScene::updateFramesText(const double score) {
+    stringstream ss;
+    ss << "Frames: " << score;
+    return ss.str();
+}
+
 std::string GameScene::updateTimerText(const time_t time) {
     stringstream ss;
     time_t sec = time % 60;
@@ -500,4 +538,39 @@ std::string GameScene::updateTimerText(const time_t time) {
         ss << "Timer: " << (time / 60) << ":" << sec;
     }
     return ss.str();
+}
+
+std::string GameScene::getResults() {
+    stringstream ss;
+    auto players = _world->getPlayers();
+    for (int i = 0; i < players.size(); i++) {
+        auto p = players[i];
+        ss << "Player" << p->getID() << ":" << p->getScore() << endl;
+    }
+    
+    return ss.str();
+}
+
+std::tuple<std::string, std::string> GameScene::getWinner() {
+    stringstream ss1;
+    stringstream ss2;
+    auto players = _world->getPlayers();
+    int winScore = -1;
+    int winID = -1;
+    for (int i = 0; i < players.size(); i++) {
+        auto p = players[i];
+        if (p->getScore() > winScore) {
+            winScore = p->getScore();
+            winID = p->getID();
+        }
+    }
+    if (NetworkController::getPlayerId() == winID) {
+        ss2 << "YOU WON!";
+    }
+    else {
+        ss2 << "You lost";
+    }
+    ss1 << "Player" << winID << " with score " << winScore << endl;
+    
+    return std::make_tuple(ss1.str(), ss2.str());
 }

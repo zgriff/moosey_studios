@@ -57,7 +57,11 @@ protected:
     
     std::vector<std::shared_ptr<Orb>> _orbs;
     
-    std::vector<Vec2> _orbSpawns;
+    std::vector<Vec2> _orbSpawns; //all the possible orb spawn locations
+    std::vector<Vec2> _initOrbLocs; //initial orb postions when map created
+    
+    std::vector<Vec2> _initEggLocs; //initial egg postions when map created
+    std::vector<Vec2> _eggSpawns;
     
     std::vector<std::shared_ptr<SwapStation>> _swapStations;
 
@@ -71,8 +75,10 @@ protected:
     
     float _scale;
     uint8_t _numPlayers;
+    uint8_t _initOrbCount;
     uint8_t _currOrbCount;
     uint8_t _currEggCount;
+    uint8_t _totalEggCount;
 
     
 #pragma mark Internal Helpers
@@ -108,7 +114,6 @@ protected:
     /**
      * Clears the root scene graph node for this level
      */
-    void clearRootNode();
 
 
 public:
@@ -252,6 +257,22 @@ public:
     void removeOrbSpawn(int pos) {
         _orbSpawns.erase(_orbSpawns.begin() + pos);
     }
+    
+    std::vector<Vec2> getEggSpawns() {
+        return _eggSpawns;
+    }
+    
+    void addEggSpawn(Vec2 eggSpawnPos) {
+        _eggSpawns.push_back(eggSpawnPos);
+    }
+    
+    void removeEggSpawn(int pos) {
+        _eggSpawns.erase(_eggSpawns.begin() + pos);
+    }
+    
+    uint8_t getInitOrbCount() {
+        return _initOrbCount;
+    }
 
     uint8_t getCurrOrbCount() {
         return _currOrbCount;
@@ -267,6 +288,10 @@ public:
     
     void setCurrEggCount(int c) {
         _currEggCount = c;
+    }
+    
+    uint8_t getTotalEggCount() {
+        return _totalEggCount;
     }
     
     void addOrb(Vec2 pos);
@@ -315,6 +340,8 @@ public:
     void setDebug(bool value) { _debug = value; _debugNode->setVisible(value); }
     
     bool getDebug() const {return _debug;}
+    
+    void clearRootNode();
     
 #pragma mark -
 #pragma mark Asset Loading
@@ -366,6 +393,8 @@ public:
      * Destroys this level, releasing all resources.
      */
     virtual ~World(void);
+    
+    void dispose();
 
 };
 
