@@ -69,6 +69,11 @@ void CollisionController::hostBeginContact(b2Contact* contact){
                 NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
             }
         }
+        if ((p->getIsIntangible() || p->getIsInvisible()) && p->canSwap()) {
+            p->setElement(p->getPreyElement());
+            SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - localPlayer->getPosition());
+            NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
+        }
     }
     
     //egg and player collision
@@ -170,6 +175,7 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
     time_t timestamp = time(NULL);
     tagged->setTagCooldown(timestamp);
     tagger->incScore(globals::TAG_SCORE);
+    tagger->animateTag();
     SoundController::playSound(SoundController::Type::TAG, tagger->getPosition() - localPlayer->getPosition());
     NetworkController::sendTag(tagged->getID(), tagger->getID(), timestamp, dropEgg);
     if (tagged->getCurrElement() == Element::None) {

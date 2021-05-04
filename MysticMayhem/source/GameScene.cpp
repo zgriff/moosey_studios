@@ -467,7 +467,11 @@ void GameScene::update(float timestep) {
     _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
     _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
     
-    _player->animateMovement();
+    for(auto p : _world->getPlayers()){
+        p->animateMovement();
+    }
+    
+    
     //send new position
     NetworkController::sendPosition();
 }

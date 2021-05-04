@@ -185,6 +185,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->setBodyKey("player_body_line");
         player->setHatKey("player_hat");
         player->setStaffKey("player_staff");
+        player->setStaffTagKey("player_staff_tag");
         player->setRingKey("player_direction");
         
         _physicsWorld->addObstacle(player);
@@ -402,7 +403,6 @@ bool World::loadBackground(const std::shared_ptr<JsonValue> &json) {
 
 bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
     bool success = true;
-    CULog("loading wall");
     
     std::string wname = "wall";
     
@@ -482,7 +482,6 @@ bool World::loadEgg(const std::shared_ptr<JsonValue> &json){
 //    Size eggSize(eggTexture->getSize() / _scale);
     Size eggSize(1, 2);
     auto egg = Egg::alloc(eggPos, eggSize);
-    CULog("orbPos: %f   y %f",eggPos.x,eggPos.y);
 
     _initEggLocs.push_back(eggPos);
     _eggSpawns.push_back(eggPos);
