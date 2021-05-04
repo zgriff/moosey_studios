@@ -139,6 +139,9 @@
 		EBBF189B1D74904A008E2001 /* Mac.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBBF189A1D74904A008E2001 /* Mac.xcassets */; };
 		EBFE7C051E19B496001007C2 /* json in Resources */ = {isa = PBXBuildFile; fileRef = EBFE7C041E19B496001007C2 /* json */; };
 		EBFE7C091E19B4AC001007C2 /* json in Resources */ = {isa = PBXBuildFile; fileRef = EBFE7C041E19B496001007C2 /* json */; };
+		EC80F8FE263FA896001CC9EC /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC80F8FD263FA896001CC9EC /* Settings.cpp */; };
+		EC80F8FF263FA896001CC9EC /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC80F8FD263FA896001CC9EC /* Settings.cpp */; };
+		EC80F900263FA896001CC9EC /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC80F8FD263FA896001CC9EC /* Settings.cpp */; };
 		EC86E557261B5E0F00203FCA /* EndScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC86E556261B5E0F00203FCA /* EndScene.cpp */; };
 		EC86E558261B5E0F00203FCA /* EndScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC86E556261B5E0F00203FCA /* EndScene.cpp */; };
 		EC86E559261B5E0F00203FCA /* EndScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC86E556261B5E0F00203FCA /* EndScene.cpp */; };
@@ -259,6 +262,8 @@
 		EBBF189A1D74904A008E2001 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
 		EBBF189F1D74904A008E2001 /* Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
 		EBFE7C041E19B496001007C2 /* json */ = {isa = PBXFileReference; lastKnownFileType = folder; path = json; sourceTree = "<group>"; };
+		EC80F8F9263FA87E001CC9EC /* Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		EC80F8FD263FA896001CC9EC /* Settings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
 		EC86E555261B5DF900203FCA /* EndScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EndScene.h; sourceTree = "<group>"; };
 		EC86E556261B5E0F00203FCA /* EndScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EndScene.cpp; sourceTree = "<group>"; };
 		ECA583EF2603006C00DF6791 /* Egg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Egg.h; sourceTree = "<group>"; };
@@ -499,6 +504,8 @@
 				925FC54225F42D6800532483 /* SwapStation.cpp */,
 				28BF96582622AE8B0050EDCD /* Booster.cpp */,
 				28BF965C2622AE8B0050EDCD /* Booster.h */,
+				EC80F8F9263FA87E001CC9EC /* Settings.h */,
+				EC80F8FD263FA896001CC9EC /* Settings.cpp */,
 			);
 			name = Source;
 			path = ../source;
@@ -697,6 +704,7 @@
 				288216562605A90E0073F7D4 /* NetworkData.cpp in Sources */,
 				921654412622997200FFE01E /* Projectile.cpp in Sources */,
 				28D048A925F59412005AB6CC /* (null) in Sources */,
+				EC80F900263FA896001CC9EC /* Settings.cpp in Sources */,
 				2844515E2633C287008343E2 /* SoundController.cpp in Sources */,
 				925FC4F825F42B2800532483 /* main.cpp in Sources */,
 				2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */,
@@ -726,6 +734,7 @@
 				288216552605A90E0073F7D4 /* NetworkData.cpp in Sources */,
 				921654402622997200FFE01E /* Projectile.cpp in Sources */,
 				28D048A825F59412005AB6CC /* (null) in Sources */,
+				EC80F8FF263FA896001CC9EC /* Settings.cpp in Sources */,
 				2844515D2633C287008343E2 /* SoundController.cpp in Sources */,
 				925FC4F725F42B2800532483 /* main.cpp in Sources */,
 				2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */,
@@ -755,6 +764,7 @@
 				288216542605A90E0073F7D4 /* NetworkData.cpp in Sources */,
 				9216543F2622997200FFE01E /* Projectile.cpp in Sources */,
 				28D048A725F59412005AB6CC /* (null) in Sources */,
+				EC80F8FE263FA896001CC9EC /* Settings.cpp in Sources */,
 				2844515C2633C287008343E2 /* SoundController.cpp in Sources */,
 				925FC4F625F42B2800532483 /* main.cpp in Sources */,
 				2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */,

@@ -67,6 +67,7 @@ protected:
     time_t _hatchTextTimer = 5; //5 secs
     time_t _hatchedTime;
     time_t _startTime;
+    time_t prevTime;
 
     std::shared_ptr<cugl::scene2::Label> _scoreHUD;
     std::shared_ptr<cugl::scene2::Label> _timerHUD;

@@ -22,8 +22,8 @@ void SpawnController::setWorld(std::shared_ptr<World> w){
 //divide map and check each region --> how many people in each region and
     //spawn where less people
 void SpawnController::spawnOrbs() {
-    int rows = 4;
-    int cols = 4;
+    int rows = 5;
+    int cols = 6;
     
     float roomWidth = world->getPhysicsWorld()->getBounds().getMaxX() / cols;
     float roomHeight = world->getPhysicsWorld()->getBounds().getMaxY() / rows;

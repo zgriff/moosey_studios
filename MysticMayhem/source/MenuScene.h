@@ -38,6 +38,7 @@ protected:
     std::shared_ptr<cugl::scene2::Button> _hostButton;
     /** The join game button */
     std::shared_ptr<cugl::scene2::Button> _joinButton;
+    std::shared_ptr<cugl::scene2::Button> _settingsButton;
     /**join code text field*/
     std::shared_ptr<cugl::scene2::TextField> _codeField;
     std::shared_ptr<cugl::scene2::Slider> _slider;
@@ -48,6 +49,7 @@ protected:
     int _movement;
     bool _create;
     bool _join;
+    bool _settings;
         
 
 public:
@@ -112,6 +114,7 @@ public:
     
     bool createPressed() { return _create; }
     bool joinPressed() { return _join; }
+    bool settingsPressed() { return _settings; }
 
 };
 

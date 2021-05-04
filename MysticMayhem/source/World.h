@@ -80,6 +80,7 @@ protected:
     uint8_t _currEggCount;
     uint8_t _totalEggCount;
 
+    time_t _eggSpawnCooldown;
     
 #pragma mark Internal Helpers
     bool loadPlayer(const int i, Vec2 loc);
@@ -314,6 +315,10 @@ public:
     std::shared_ptr<Booster> getBooster(int id) {
         return _boosters[id];
     }
+    
+    time_t getEggSpawnCooldown() { return _eggSpawnCooldown; }
+    
+    void setEggSpawnCooldown(time_t t) { _eggSpawnCooldown = t; }
     
     std::shared_ptr<cugl::scene2::SceneNode> getSceneNode(){
         return _worldNode;
