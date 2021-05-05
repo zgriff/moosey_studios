@@ -16,6 +16,7 @@
 #include "InputController.h"
 #include "World.h"
 #include "Globals.h"
+#include "Settings.h"
 
 /**
  * This class is a simple loading screen for asychronous asset loading.
@@ -30,8 +31,7 @@
  */
 class MenuScene : public cugl::Scene2 {
 protected:
-    /** The asset manager for loading. */
-    std::shared_ptr<cugl::AssetManager> _assets;
+    
 
     // VIEW
     /** The host game button */
@@ -43,6 +43,7 @@ protected:
     std::shared_ptr<cugl::scene2::TextField> _codeField;
     std::shared_ptr<cugl::scene2::Slider> _slider;
     std::shared_ptr<cugl::scene2::Label> _label;
+    std::shared_ptr<Settings> _settingsNode;
     float _sliderValue;
     /**true host false client*/
     bool _host;
@@ -53,6 +54,9 @@ protected:
         
 
 public:
+    
+    /** The asset manager for loading. */
+    std::shared_ptr<cugl::AssetManager> _assets;
 #pragma mark -
 #pragma mark Constructors
     /**

@@ -8,6 +8,7 @@
 
 #include "MenuScene.h"
 #include <time.h>
+#include "Settings.h"
 
 using namespace cugl;
 
@@ -78,11 +79,16 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _join = true;
     });
     
+    _settingsNode = std::make_shared<Settings>(assets);
+    _settingsNode->setVisible(false);
+    
     _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_settings"));
-//    _settingsButton->activate();
+    _settingsButton->activate();
     _settingsButton->addListener([=](const std::string& name, bool down) {
         _settings = true;
+        _settingsNode->setVisible(true);
     });
+    
     
     _slider = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("menu_slider"));
     _label  = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_slider_label"));
@@ -131,7 +137,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
 //    if(_active) {
 //        _slider->activate();
 //    }
-
+    addChild(_settingsNode);
     Application::get()->setClearColor(Color4(192,192,192,255));
     return true;
 }

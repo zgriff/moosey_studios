@@ -151,13 +151,13 @@ void App::onResume() {
                      _menu.dispose();
                      _currentScene = SceneSelect::Lobby;
                  }
-                 else if (_menu.settingsPressed()) {
-                     _menu.setActive(false);
-                     _settings.init(_assets);
-                     _menu.removeAllChildren();
-                     _menu.dispose();
-                     _currentScene = SceneSelect::Settings;
-                 }
+//                 else if (_menu.settingsPressed()) {
+//                     _menu.setActive(false);
+//                     _settings.init(_assets);
+//                     _menu.removeAllChildren();
+//                     _menu.dispose();
+//                     _currentScene = SceneSelect::Settings;
+//                 }
              }
              else {
                  _menu.setActive(false);
@@ -212,13 +212,13 @@ void App::onResume() {
              break;
          }
          case SceneSelect::Settings: {
-             if (_settings.backPressed()) {
-                 _settings.removeAllChildren();
-                 _settings.dispose();
-                 _menu.init(_assets);
-                 _currentScene = SceneSelect::Menu;
-                 _menu.setActive(true);
-             }
+//             if (_settings.backPressed()) {
+//                 _settings.removeAllChildren();
+//                 _settings.dispose();
+//                 _menu.init(_assets);
+//                 _currentScene = SceneSelect::Menu;
+//                 _menu.setActive(true);
+//             }
          }
          default:
              break;
@@ -247,9 +247,6 @@ void App::draw() {
             break;
         case SceneSelect::Lobby:
             _lobby.render(_batch);
-            break;
-        case SceneSelect::Settings:
-            _settings.render(_batch);
             break;
         default:
             _gameplay.render(_batch);

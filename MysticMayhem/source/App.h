@@ -39,7 +39,7 @@ protected:
     /** The controller for the ending results screen  */
     EndScene _results;
     /** The controller for the settings screen  */
-    Settings _settings;
+//    Settings _settings;
     
 
     /** Whether or not we have finished loading all assets */

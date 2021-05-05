@@ -836,20 +836,9 @@
                 "type" : "Anchored"
             },
             "data" : {
-                "color": [190,187,191,255]
+                "color": [190,187,191,150]
             },
             "children": {
-                "background": {
-                    "type": "Image",
-                    "data": {
-                        "texture": "title_background",
-                        "anchor": [ 0.0, 0.5 ]
-                    },
-                    "layout": {
-                        "x_anchor": "fill",
-                        "y_anchor": "fill"
-                    }
-                },
                 "soundvolume"  : {
                     "type"   : "Slider",
                     "data"   : {

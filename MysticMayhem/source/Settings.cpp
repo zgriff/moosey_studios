@@ -17,6 +17,11 @@ using namespace cugl;
 #pragma mark -
 #pragma mark Constructors
 
+
+Settings::Settings(const std::shared_ptr<cugl::AssetManager>& assets){
+    init(assets);
+}
+
 /**
  * Initializes the controller contents, making it ready for loading
  *
@@ -29,25 +34,23 @@ using namespace cugl;
  * @return true if the controller is initialized properly, false otherwise.
  */
 bool Settings::init(const std::shared_ptr<AssetManager>& assets) {
+    scene2::SceneNode::init();
+    setAnchor(0,0);
+    setPosition(0, 0);
+    setVisible(true);
+    
     // Initialize the scene to a locked width
     Size dimen = Application::get()->getDisplaySize();
-    // Lock the scene to a reasonable resolution
-    if (dimen.width > dimen.height) {
-        dimen *= SCENE_SIZE/dimen.width;
-    } else {
-        dimen *= SCENE_SIZE/dimen.height;
-    }
-    if (assets == nullptr) {
-        return false;
-    } else if (!Scene2::init(dimen)) {
-        return false;
-    }
+    dimen *= SCENE_SIZE/dimen.width;
+    setContentSize(dimen/2);
     
-    _assets = assets;
+    
+//    _assets = assets;
     auto layer = assets->get<scene2::SceneNode>("settings");
-    layer->setContentSize(dimen);
-    layer->doLayout(); // This rearranges the children to fit the screen
+    layer->setContentSize(dimen/2);
+//    layer->doLayout(); // This rearranges the children to fit the screen
     addChild(layer);
+    doLayout();
     
     _soundVolume = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("settings_soundvolume"));
     _soundVolume->activate();
@@ -69,8 +72,6 @@ bool Settings::init(const std::shared_ptr<AssetManager>& assets) {
  */
 void Settings::dispose() {
     _soundVolume = nullptr;
-    _assets = nullptr;
-    _active = false;
     _back = false;
 }
                               
