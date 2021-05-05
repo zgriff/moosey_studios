@@ -78,6 +78,12 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _join = true;
     });
     
+    _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_settings"));
+//    _settingsButton->activate();
+    _settingsButton->addListener([=](const std::string& name, bool down) {
+        _settings = true;
+    });
+    
     _slider = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("menu_slider"));
     _label  = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_slider_label"));
     _label->setText("Always Forward");
@@ -137,13 +143,14 @@ void MenuScene::dispose() {
 //    removeAllChildren();
     _hostButton = nullptr;
     _joinButton = nullptr;
-    Input::deactivate<TextInput>();
+//    Input::deactivate<TextInput>();
     _codeField = nullptr;
     _slider = nullptr;
     _assets = nullptr;
     _active = false;
     _create = false;
     _join = false;
+    _settings = false;
 }
 
 
