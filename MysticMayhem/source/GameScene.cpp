@@ -223,13 +223,13 @@ void GameScene::reset() {
         _player->setUsername(NetworkController::getUsername());
         _player->setIsLocal(true);
         static_pointer_cast<cugl::OrthographicCamera>(getCamera())->set(Application::get()->getDisplaySize());
-        static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom((double) CAMERA_ZOOM * 
-            ((Vec2)Application::get()->getDisplaySize()).length()/BASELINE_DIAGONAL);
+        float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+        static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
         auto cameraInitPlayerPos = _player->getSceneNode()->getPosition();
-        cameraInitPlayerPos.x = std::clamp(cameraInitPlayerPos.x, Application::get()->getDisplaySize().width / 2 / CAMERA_ZOOM,
-            _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / CAMERA_ZOOM));
-        cameraInitPlayerPos.y = std::clamp(cameraInitPlayerPos.y, Application::get()->getDisplaySize().height / 2 / CAMERA_ZOOM,
-            _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / CAMERA_ZOOM));
+        cameraInitPlayerPos.x = std::clamp(cameraInitPlayerPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
+            _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom));
+        cameraInitPlayerPos.y = std::clamp(cameraInitPlayerPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
+            _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
         getCamera()->translate(cameraInitPlayerPos - getCamera()->getPosition());
     }
     _playerController.init();
@@ -380,10 +380,11 @@ void GameScene::update(float timestep) {
     }
     auto camSpot = getCamera()->getPosition();
     //playPos is only used for camera to calculate camera translation, we clamp it so camera doesn't display offmap
-    playPos.x = std::clamp(playPos.x, Application::get()->getDisplaySize().width/2 / CAMERA_ZOOM, 
-        _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / CAMERA_ZOOM));
-    playPos.y = std::clamp(playPos.y, Application::get()->getDisplaySize().height / 2 / CAMERA_ZOOM,
-        _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / CAMERA_ZOOM));
+    float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+    playPos.x = std::clamp(playPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
+        _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom));
+    playPos.y = std::clamp(playPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
+        _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
 
     auto trans = (playPos - camSpot)*CAMERA_STICKINESS;
     CULog("camera x: %f camera y: %f", getCamera()->getPosition().x, getCamera()->getPosition().y);
