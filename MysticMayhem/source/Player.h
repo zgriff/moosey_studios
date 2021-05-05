@@ -63,8 +63,10 @@ private:
     //Timers to keep track of animation cycles
     clock_t _animationTimer;
     clock_t _tagAnimationTimer;
+    clock_t _ringAnimationTimer;
     clock_t _animationRate = 0.1f * CLOCKS_PER_SEC;
     clock_t _tagAnimationRate = 0.05f * CLOCKS_PER_SEC;
+    clock_t _ringAnimationRate = 0.5f * CLOCKS_PER_SEC;
         
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;

@@ -88,6 +88,10 @@ using namespace cugl;
 #define WALK_ANIM_RATE      0.5f
 #define RUN_ANIM_RATE       0.0075f
 
+#define RING_IDLE_RATE      1.5f
+#define RING_WALK_RATE      0.5f
+#define RING_RUN_RATE       0.02f
+
 /**
  * Sets the textures for this player.
  *
@@ -434,10 +438,13 @@ void Player::animateMovement() {
     //Rotates directional ring around player, offset by orientation in png
     if (getLinearVelocity().length() < WALKING_VELOCITY)  {
         _animationRate = IDLE_ANIM_RATE * CLOCKS_PER_SEC;
+        _ringAnimationRate = RING_IDLE_RATE * CLOCKS_PER_SEC;
     } else if (getLinearVelocity().length() < RUNNING_VELOCITY) {
         _animationRate = WALK_ANIM_RATE * CLOCKS_PER_SEC;
+        _ringAnimationRate = RING_WALK_RATE * CLOCKS_PER_SEC;
     } else {
         _animationRate = RUN_ANIM_RATE * CLOCKS_PER_SEC;
+        _ringAnimationRate = RING_RUN_RATE * CLOCKS_PER_SEC;
     }
     
     
@@ -456,16 +463,26 @@ void Player::animateMovement() {
     
     //iterate through nodes and animate at animation rate
     if (clock() - _animationTimer  >= _animationRate) {
+        CULog("body");
         for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
-            if  ((*it).first != _staffTagKey) {
+            if  ((*it).first != _staffTagKey && (*it).first != _ringKey) {
                 animationCycle((*it).second.get(), &_animCycles[(*it).first], (*it).first);
             }
         }
         _animationTimer = clock();
     }
     
+    if (clock() - _ringAnimationTimer  >= _ringAnimationRate) {
+        CULog("ring");
+
+        animationCycle(_animNodes[_ringKey].get(), &_animCycles[_ringKey], _ringKey);
+        _ringAnimationTimer = clock();
+    }
+    
     if (clock() - _tagAnimationTimer  >= _tagAnimationRate) {
         //TODO: Tidy this up hehe
+        //This checks to see if the tag animation is on its last frame for both
+        //  forward and flipped, then swaps it back to normal staff
         if (((_animNodes[_staffTagKey]->getFrame()%_frameNumbers[_staffTagKey] == _frameNumbers[_staffTagKey]-1 && !_animNodes[_staffTagKey]->isFlipHorizontal()) || (_animNodes[_staffTagKey]->getFrame()%_frameNumbers[_staffTagKey] == 0 && _animNodes[_staffTagKey]->isFlipHorizontal()) ) && _animNodes[_staffTagKey]->isVisible()) {
             finishTagAnim();
         } else if (_animNodes[_staffTagKey]->isVisible()) {
