@@ -45,9 +45,10 @@ using namespace std;
 /** how quickly the camera catches up to the player*/
 #define CAMERA_STICKINESS .07f
 /** what the camera zoom is at */
-#define CAMERA_ZOOM 0.75f
+#define CAMERA_ZOOM 0.65f
 /** baseline aspect ratio, 1468.604 is from 1280x720 */
 #define BASELINE_DIAGONAL 1468.60478005
+#define BASELINE_HEIGHT 720 //if we want to scale by height instead just change the places w/ length and diagonal to height
 
 #pragma mark -
 #pragma mark Constructors
@@ -228,8 +229,9 @@ void GameScene::reset() {
         float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
         static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
         auto cameraInitPlayerPos = _player->getSceneNode()->getPosition();
+        cameraZoom = 1;
         cameraInitPlayerPos.x = std::clamp(cameraInitPlayerPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
-            _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom));
+            _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
         cameraInitPlayerPos.y = std::clamp(cameraInitPlayerPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
             _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
         getCamera()->translate(cameraInitPlayerPos - getCamera()->getPosition());
@@ -384,12 +386,16 @@ void GameScene::update(float timestep) {
     //playPos is only used for camera to calculate camera translation, we clamp it so camera doesn't display offmap
     float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
     playPos.x = std::clamp(playPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
-        _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom));
+        _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
+    /*CULog("right boundary should be %f", _world->getSceneSize().x);
+    CULog("should be cutoff at %f", _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom));
+    CULog("player pos x %f", _player->getSceneNode()->getPosition().x);*/
     playPos.y = std::clamp(playPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
         _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
+    //CULog("viewport x %f", getCamera()->getViewport().size.width);
 
     auto trans = (playPos - camSpot)*CAMERA_STICKINESS;
-    CULog("camera x: %f camera y: %f", getCamera()->getPosition().x, getCamera()->getPosition().y);
+    //CULog("camera x: %f camera y: %f", getCamera()->getPosition().x, getCamera()->getPosition().y);
     getCamera()->translate(trans);
     getCamera()->update();
     _UInode->setPosition(camSpot + trans - _worldOffset);
