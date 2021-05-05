@@ -84,6 +84,10 @@ using namespace cugl;
 #define WALKING_VELOCITY    0.5f
 #define RUNNING_VELOCITY    7.0F
 
+#define IDLE_ANIM_RATE      1.5f
+#define WALK_ANIM_RATE      0.5f
+#define RUN_ANIM_RATE       0.0075f
+
 /**
  * Sets the textures for this player.
  *
@@ -426,13 +430,14 @@ void Player::finishTagAnim() {
 
 void Player::animateMovement() {
     //TODO: change this to be more elegant
+    
     //Rotates directional ring around player, offset by orientation in png
     if (getLinearVelocity().length() < WALKING_VELOCITY)  {
-        _animationRate = 1.5f * CLOCKS_PER_SEC;
+        _animationRate = IDLE_ANIM_RATE * CLOCKS_PER_SEC;
     } else if (getLinearVelocity().length() < RUNNING_VELOCITY) {
-        _animationRate = 0.5f * CLOCKS_PER_SEC;
+        _animationRate = WALK_ANIM_RATE * CLOCKS_PER_SEC;
     } else {
-        _animationRate = 0.075f * CLOCKS_PER_SEC;
+        _animationRate = RUN_ANIM_RATE * CLOCKS_PER_SEC;
     }
     
     
