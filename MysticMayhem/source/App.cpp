@@ -138,17 +138,18 @@ void App::onResume() {
              break;
          }
          case SceneSelect::Menu:{
+             _menu.update();
              if (_menu.isActive()) {
  //                _menu.update(0.01f);
                  NetworkController::step();
  //                CULog("menu scene");
                  if((_menu.createPressed() || _menu.joinPressed()) && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected){
                      _menu.setActive(false);
+                     _menu.removeAllChildren();
+                     _menu.dispose();
                      _lobby.init(_assets);
                      _lobby.setActive(true);
                      //NetworkController::setLobbyScene(_lobby);
-                     _menu.removeAllChildren();
-                     _menu.dispose();
                      _currentScene = SceneSelect::Lobby;
                  }
 //                 else if (_menu.settingsPressed()) {
@@ -161,10 +162,10 @@ void App::onResume() {
              }
              else {
                  _menu.setActive(false);
-                 _lobby.init(_assets);
-                 _lobby.setActive(true);
                  _menu.removeAllChildren();
                  _menu.dispose();
+                 _lobby.init(_assets);
+                 _lobby.setActive(true);
                  _currentScene = SceneSelect::Lobby;
              }
              break;
@@ -210,15 +211,6 @@ void App::onResume() {
 
              }
              break;
-         }
-         case SceneSelect::Settings: {
-//             if (_settings.backPressed()) {
-//                 _settings.removeAllChildren();
-//                 _settings.dispose();
-//                 _menu.init(_assets);
-//                 _currentScene = SceneSelect::Menu;
-//                 _menu.setActive(true);
-//             }
          }
          default:
              break;

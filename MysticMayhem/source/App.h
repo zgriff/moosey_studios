@@ -38,13 +38,11 @@ protected:
     LobbyScene _lobby;
     /** The controller for the ending results screen  */
     EndScene _results;
-    /** The controller for the settings screen  */
-//    Settings _settings;
     
 
     /** Whether or not we have finished loading all assets */
     enum class SceneSelect {
-        Loading, Menu, Game, Lobby, Results, Settings
+        Loading, Menu, Game, Lobby, Results
     };
     
     

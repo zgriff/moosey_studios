@@ -17,6 +17,7 @@ namespace SoundController{
 std::shared_ptr<cugl::AssetManager> _assets;
 bool spatialAudioEnabled = true;
 std::vector<std::string> soundKeys = {"egg", "orb1", "orb2", "orb3", "orb4", "tag1", "tag2", "tag3", "swap"};
+float soundVolume = 0.5;
 
 
 void useSpatialAudio(bool useSpatialAudio){
@@ -72,19 +73,17 @@ void playSound(Type s, cugl::Vec2 pos){
             node->setGain(1/gain);
         }
         //TODO: replace with key
-        cugl::AudioEngine::get()->play(key, spatial);
+        cugl::AudioEngine::get()->play(key, spatial, false, soundVolume);
     }else{
         //TODO: replace with key
-        cugl::AudioEngine::get()->play(key, node);
+        cugl::AudioEngine::get()->play(key, node, false, soundVolume);
     }
     
 }
 
 void setSoundVolume(float volume){
-    for (int i = 0; i < soundKeys.size(); i++) {
-        cugl::AudioEngine::get()->setVolume(soundKeys[i], volume);
-    }
-    
+    soundVolume = volume;
+
 }
 
 }

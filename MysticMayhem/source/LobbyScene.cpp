@@ -9,6 +9,7 @@
 #include "LobbyScene.h"
 #include <time.h>
 #include <string>
+#include "Settings.h"
 
 using namespace cugl;
 
@@ -52,6 +53,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     layer->setContentSize(dimen);
     layer->doLayout(); // This rearranges the children to fit the screen
     addChild(layer);
+    _layer = layer;
     
     _startButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_start"));
     _startButton->setVisible(false);
@@ -149,6 +151,23 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _map4Button->deactivate();
         _map4Button->setVisible(false);
     }
+    
+    _settingsNode = std::make_shared<Settings>(assets);
+    _settingsNode->setVisible(false);
+    addChild(_settingsNode);
+    
+    _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_settings"));
+    _settingsButton->activate();
+    _settingsButton->addListener([=](const std::string& name, bool down) {
+        _settingsNode->setVisible(true);
+        layer->setColor(Color4(255,255,255,100));
+        _map1Button->deactivate();
+        _map2Button->deactivate();
+        _map3Button->deactivate();
+        _map4Button->deactivate();
+        _startButton->deactivate();
+    });
+
     
     _roomId = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("lobby_roomId"));
     
@@ -261,6 +280,16 @@ void LobbyScene::update(float progress) {
             _map2Button->setVisible(false);
             _map3Button->setVisible(false);
         }
+    }
+    
+    if (_settingsNode->backPressed()) {
+        _settingsNode->setVisible(false);
+        _layer->setColor(Color4(255,255,255,255));
+        _map1Button->activate();
+        _map2Button->activate();
+        _map3Button->activate();
+        _map4Button->activate();
+        _startButton->activate();
     }
 
 }

@@ -276,7 +276,7 @@
                 "type" : "Anchored"
             },
             "data" : {
-                "color": [239,61,49,255]
+                "color": [0,0,0,255]
             },
             "children": {
                 "background": {
@@ -836,7 +836,7 @@
                 "type" : "Anchored"
             },
             "data" : {
-                "color": [190,187,191,150]
+                "color": [190,187,191,255]
             },
             "children": {
                 "soundvolume"  : {

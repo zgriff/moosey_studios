@@ -50,6 +50,8 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     layer->doLayout(); // This rearranges the children to fit the screen
     addChild(layer);
     
+    _background = assets->get<scene2::SceneNode>("menu_background");
+    
 //    _create = false;
     
     _hostButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_host"));
@@ -87,6 +89,11 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     _settingsButton->addListener([=](const std::string& name, bool down) {
         _settings = true;
         _settingsNode->setVisible(true);
+        _background->setColor(Color4(255,255,255,100));
+        _joinButton->setVisible(false);
+        _hostButton->setVisible(false);
+        _joinButton->deactivate();
+        _hostButton->deactivate();
     });
     
     
@@ -138,7 +145,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
 //        _slider->activate();
 //    }
     addChild(_settingsNode);
-    Application::get()->setClearColor(Color4(192,192,192,255));
+    Application::get()->setClearColor(Color4(255,255,255,255));
     return true;
 }
 
@@ -157,6 +164,7 @@ void MenuScene::dispose() {
     _create = false;
     _join = false;
     _settings = false;
+    _settingsNode = nullptr;
 }
 
 
@@ -191,5 +199,17 @@ void MenuScene::setActive(bool value) {
         _joinButton->deactivate();
         _codeField->deactivate();
 //        _slider->deactivate();
+    }
+}
+
+void MenuScene::update() {
+    if (_settingsNode->backPressed()) {
+        _settings = false;
+        _settingsNode->setVisible(false);
+        _background->setColor(Color4(255,255,255,255));
+        _joinButton->setVisible(true);
+        _hostButton->setVisible(true);
+        _joinButton->activate();
+        _hostButton->activate();
     }
 }

@@ -35,15 +35,18 @@ Settings::Settings(const std::shared_ptr<cugl::AssetManager>& assets){
  */
 bool Settings::init(const std::shared_ptr<AssetManager>& assets) {
     scene2::SceneNode::init();
-    setAnchor(0,0);
-    setPosition(0, 0);
+    setAnchor(0.5,0.5);
     setVisible(true);
     
     // Initialize the scene to a locked width
     Size dimen = Application::get()->getDisplaySize();
     dimen *= SCENE_SIZE/dimen.width;
     setContentSize(dimen/2);
+    setPosition(dimen.width/2, dimen.height/2);
     
+    if (assets == nullptr) {
+        return false;
+    }
     
 //    _assets = assets;
     auto layer = assets->get<scene2::SceneNode>("settings");
@@ -56,12 +59,13 @@ bool Settings::init(const std::shared_ptr<AssetManager>& assets) {
     _soundVolume->activate();
     _soundVolume->addListener([=](const std::string& name, float value) {
         SoundController::setSoundVolume(value);
+        CULog("volume %f",value);
     });
     
     _backButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("settings_backbutton"));
     _backButton->activate();
     _backButton->addListener([=](const std::string& name, bool down) {
-        _back = true;
+        _back = down;
     });
     
     return true;
@@ -71,6 +75,7 @@ bool Settings::init(const std::shared_ptr<AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void Settings::dispose() {
+    removeAllChildren();
     _soundVolume = nullptr;
     _back = false;
 }

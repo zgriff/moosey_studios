@@ -44,6 +44,7 @@ protected:
     std::shared_ptr<cugl::scene2::Slider> _slider;
     std::shared_ptr<cugl::scene2::Label> _label;
     std::shared_ptr<Settings> _settingsNode;
+    std::shared_ptr<cugl::scene2::SceneNode> _background;
     float _sliderValue;
     /**true host false client*/
     bool _host;
@@ -92,6 +93,8 @@ public:
      * @return true if the controller is initialized properly, false otherwise.
      */
     bool init(const std::shared_ptr<cugl::AssetManager>& assets);
+    
+    void update();
 
 
 #pragma mark -
