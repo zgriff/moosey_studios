@@ -2,7 +2,7 @@ const TILE_MAP = {
   2: "grass",
   3: "grass1",
   4: "grass2",
-  5: "grass3"
+  5: "big_grass"
 }
 
 const DECORATION_MAP = {
@@ -11,7 +11,7 @@ const DECORATION_MAP = {
   3: "tree3"
 }
 
-const TILE_SIZE = 50;
+const TILE_SIZE = 250;
 
 var customMapFormat = {
     name: "Mystic Mayhem map format",

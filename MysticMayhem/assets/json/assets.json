@@ -33,6 +33,9 @@
         "grass3": {
             "file":  "textures/grass3.png"
         },
+        "big_grass": {
+            "file": "textures/big_grass.png"
+        },
         "booster": {
             "file": "textures/sped.png"
         },

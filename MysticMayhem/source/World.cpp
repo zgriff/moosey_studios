@@ -300,7 +300,7 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
     }
     
     
-    /* auto tiles = json->get(TILES_FIELD);
+    auto tiles = json->get(TILES_FIELD);
     if (tiles != nullptr) {
         int tsize = (int)tiles->size();
         for(int ii = 0; ii < tsize; ii++) {
@@ -309,7 +309,7 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
     } else {
         CUAssertLog(false, "Failed to load tiles");
         return false;
-    } */
+    }
 
 
     auto decorations = json->get(DECORATIONS_FIELD);
