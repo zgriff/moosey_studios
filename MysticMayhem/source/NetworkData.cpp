@@ -10,7 +10,6 @@
 #include <vector>
 #include "Globals.h"
 
-namespace ND{
 //TODO: generate these from global maximums
 #define TYPE_BITS 4
 #define PLAYER_ID_BITS 3
@@ -18,12 +17,6 @@ namespace ND{
 #define ORB_ID_BITS 5
 #define EGG_ID_BITS 3
 #define MAP_NUMBER_BITS 3
-
-//writing
-uint16_t scratch;
-int scratch_bits;
-//reading
-int byte_arr_index;
 
 //interpret uint32_t as uint8_t[4]
 union ui32_to_ui8 {
@@ -41,321 +34,302 @@ union ui64_to_ui8 {
     uint8_t ui8[8];
 };
 
-void writeByte(std::vector<uint8_t> & buffer, uint8_t data){
-    buffer.push_back(data);
-}
-
-//1 <= numBits <= 8
-void writeBits(std::vector<uint8_t> & buffer, uint8_t data, int numBits){
-    uint16_t tmp = data & ((1 << numBits) - 1);
-    scratch |= tmp << scratch_bits;
-    scratch_bits += numBits;
-    if(scratch_bits >= 8){
-        writeByte(buffer,scratch & 0b11111111);
-        scratch >>= 8;
-        scratch_bits -= 8;
-    }
-}
-
-void write32(std::vector<uint8_t> & buffer, uint32_t data){
-    ui32_to_ui8 u;
-    u.ui32 = data;
-    //TODO: Check that this is the right order
-    writeBits(buffer, u.ui8[0], 8);
-    writeBits(buffer, u.ui8[1], 8);
-    writeBits(buffer, u.ui8[2], 8);
-    writeBits(buffer, u.ui8[3], 8);
-}
-
-void writeFloat(std::vector<uint8_t> & buffer, float data){
-    float_to_ui32 ftu;
-    ftu.f = data;
-    uint32_t marshalled = cugl::marshall(ftu.ui32);
-//    std::cout << marshalled << " write" << endl;
-    write32(buffer, marshalled);
-}
-
-void writeVec2(std::vector<uint8_t> & buffer, cugl::Vec2 data){
-    writeFloat(buffer, data.x);
-    writeFloat(buffer, data.y);
-}
-
-void writeBool(std::vector<uint8_t> & buffer, bool b){
-    writeBits(buffer, b, 1);
-}
-
-void writeElement(std::vector<uint8_t> & buffer, Element e){
-    writeBits(buffer, e, 3);
-}
-
-void writeTimestamp(std::vector<uint8_t> & buffer, time_t timestamp){
-    uint64_t tmp = static_cast<uint64_t>(timestamp);
-    uint64_t marshalled = cugl::marshall(tmp);
-    ui64_to_ui8 u;
-    u.ui64 = marshalled;
-    writeBits(buffer, u.ui8[0], 8);
-    writeBits(buffer, u.ui8[1], 8);
-    writeBits(buffer, u.ui8[2], 8);
-    writeBits(buffer, u.ui8[3], 8);
-    writeBits(buffer, u.ui8[4], 8);
-    writeBits(buffer, u.ui8[5], 8);
-    writeBits(buffer, u.ui8[6], 8);
-    writeBits(buffer, u.ui8[7], 8);
-}
-
-void writeString(std::vector<uint8_t>& buffer, int length, char s[]) {
-    // supports string up to length 16
-    writeBits(buffer, length, 4);
-    for (int i = 0; i < length; i++) {
-        // can optimize if we only want to have alphanumeric chars but then we will need custom char to int conversion
-        uint8_t u = s[i];
-        writeBits(buffer, u, 8);
-    }
-}
-
-//call at the end of writing data to make sure everything ends up in the buffer
-void flush(std::vector<uint8_t> & buffer){
-    writeByte(buffer,scratch & 0b11111111);
-    scratch = 0;
-    scratch_bits = 0;
-}
-
-//numBits must be between 1 and 32 inclusive
-uint32_t readBits(const std::vector<uint8_t>& bytes, int numBits){
-    uint32_t read = 0;
-    int bits_read = 0;
-    while(numBits > 0){
-        //fill the scratch
-        if(scratch_bits < numBits){
-            uint8_t cur = bytes[byte_arr_index];
-            uint16_t tmp = cur;
-            scratch |= tmp << scratch_bits;
-            scratch_bits += 8;
-            ++byte_arr_index;
+class ReadStream {
+    int byte_arr_index = 0;
+    int scratch_bits = 0;
+    uint16_t scratch = 0;
+    const std::vector<uint8_t> & buffer;
+    
+public:
+    uint32_t readBits(int numBits){
+        uint32_t read = 0;
+        int bits_read = 0;
+        while(numBits > 0){
+            //fill the scratch
+            if(scratch_bits < numBits){
+                uint8_t cur = buffer[byte_arr_index];
+                uint16_t tmp = cur;
+                scratch |= tmp << scratch_bits;
+                scratch_bits += 8;
+                ++byte_arr_index;
+            }
+            //grab bits
+            if(numBits >= 8){
+                uint32_t tmp = scratch & 0b11111111;
+                read |= tmp << bits_read;
+                scratch >>= 8;
+                scratch_bits -= 8;
+                numBits -= 8;
+                bits_read += 8;
+            }else{
+                uint32_t tmp = scratch;
+                read |= (tmp & ((1 << numBits) - 1)) << bits_read;
+                scratch >>= numBits;
+                scratch_bits -= numBits;
+                numBits = 0;
+            }
         }
-        //grab bits
-        if(numBits >= 8){
-            uint32_t tmp = scratch & 0b11111111;
-            read |= tmp << bits_read;
+        return read;
+    }
+    ReadStream( const std::vector<uint8_t> & buffer ) : buffer( buffer ) {}
+    void serializeBits(uint8_t & data, int bits){
+        data = readBits(bits);
+    }
+    void serializeFloat(float & data){
+        uint32_t _x = readBits(32);
+        uint32_t marshalled = cugl::marshall(_x);
+        float_to_ui32 ftu;
+        ftu.ui32 = marshalled;
+    //    float x = static_cast<float>(marshalled);
+        data = ftu.f;
+    }
+    
+    void serializeVec2(cugl::Vec2 & data){
+        serializeFloat(data.x);
+        serializeFloat(data.y);
+    }
+    
+    void serializeTimestamp(time_t & data){
+        ui64_to_ui8 u;
+        u.ui8[0] = readBits(8);
+        u.ui8[1] = readBits(8);
+        u.ui8[2] = readBits(8);
+        u.ui8[3] = readBits(8);
+        u.ui8[4] = readBits(8);
+        u.ui8[5] = readBits(8);
+        u.ui8[6] = readBits(8);
+        u.ui8[7] = readBits(8);
+        uint64_t marshalled = cugl::marshall(u.ui64);
+        data = static_cast<time_t>(marshalled);
+    }
+    
+    void serializeElement(Element & data){
+        uint32_t e = readBits(3);
+        data = (Element) e;
+    }
+
+    void serializeBool(bool & data){
+        uint32_t b = readBits(1);
+        if(b == 0){
+            data = false;
+        }
+        data = true;
+    }
+    
+    void serializeString(std::string & data){
+        data = std::string();
+        while(true){
+            char c = readBits(8);
+            if(c == 0){
+                break;
+            }
+            data.push_back(c);
+        }
+    }
+};
+
+class WriteStream {
+    int byte_arr_index = 0;
+    int scratch_bits = 0;
+    uint16_t scratch = 0;
+    std::vector<uint8_t> & buffer;
+    
+    void writeByte(uint8_t data){
+        buffer.push_back(data);
+    }
+    void write32(uint32_t data){
+        ui32_to_ui8 u;
+        u.ui32 = data;
+        //TODO: Check that this is the right order
+        serializeBits(u.ui8[0], 8);
+        serializeBits(u.ui8[1], 8);
+        serializeBits(u.ui8[2], 8);
+        serializeBits(u.ui8[3], 8);
+    }
+public:
+    //call at the end of writing data to make sure everything ends up in the buffer
+    void flush(){
+        writeByte(scratch & 0b11111111);
+        scratch = 0;
+        scratch_bits = 0;
+    }
+    WriteStream( std::vector<uint8_t> & buffer ) : buffer( buffer ) {}
+    //1 <= numBits <= 8
+    
+    void serializeBits(uint8_t data, int numBits){
+        uint16_t tmp = data & ((1 << numBits) - 1);
+        scratch |= tmp << scratch_bits;
+        scratch_bits += numBits;
+        if(scratch_bits >= 8){
+            writeByte(scratch & 0b11111111);
             scratch >>= 8;
             scratch_bits -= 8;
-            numBits -= 8;
-            bits_read += 8;
-        }else{
-            uint32_t tmp = scratch;
-            read |= (tmp & ((1 << numBits) - 1)) << bits_read;
-            scratch >>= numBits;
-            scratch_bits -= numBits;
-            numBits = 0;
         }
     }
-    return read;
-}
-
-float readFloat(const std::vector<uint8_t>& bytes){
-    uint32_t _x = readBits(bytes, 32);
-    uint32_t marshalled = cugl::marshall(_x);
-    float_to_ui32 ftu;
-    ftu.ui32 = marshalled;
-//    float x = static_cast<float>(marshalled);
-    return ftu.f;
-}
-
-
-cugl::Vec2 readVec2(const std::vector<uint8_t>& bytes){
-    float x = readFloat(bytes);
-    float y = readFloat(bytes);
-    return cugl::Vec2(x, y);
-}
-
-time_t readTimestamp(const std::vector<uint8_t>& bytes){
-    ui64_to_ui8 u;
-    u.ui8[0] = readBits(bytes, 8);
-    u.ui8[1] = readBits(bytes, 8);
-    u.ui8[2] = readBits(bytes, 8);
-    u.ui8[3] = readBits(bytes, 8);
-    u.ui8[4] = readBits(bytes, 8);
-    u.ui8[5] = readBits(bytes, 8);
-    u.ui8[6] = readBits(bytes, 8);
-    u.ui8[7] = readBits(bytes, 8);
-    uint64_t marshalled = cugl::marshall(u.ui64);
-    return static_cast<time_t>(marshalled);
-}
-
-Element readElement(const std::vector<uint8_t>& bytes){
-    uint32_t e = readBits(bytes, 3);
-    return (Element) e;
-}
-
-bool readBool(const std::vector<uint8_t>& bytes){
-    uint32_t b = readBits(bytes, 1);
-    if(b == 0){
-        return false;
+    void serializeFloat(float data){
+        float_to_ui32 ftu;
+        ftu.f = data;
+        uint32_t marshalled = cugl::marshall(ftu.ui32);
+    //    std::cout << marshalled << " write" << endl;
+        write32(marshalled);
     }
-    return true;
-}
-
-int readStringLen(const std::vector<uint8_t>& bytes) {
-    uint32_t len = readBits(bytes, 4);
-    return len;
-}
-
-char * readString(const std::vector<uint8_t>& bytes, int len) {
-    char * s = new char[globals::MAX_CHARS_IN_USERNAME];
-    for (int i = 0; i < len; i++) {
-        char c = readBits(bytes, 8);
-        s[i] = c;
+    
+    void serializeVec2(cugl::Vec2 data){
+        serializeFloat(data.x);
+        serializeFloat(data.y);
     }
-    return s;
+    
+    void serializeBool(bool b){
+        serializeBits(b, 1);
+    }
+    
+    void serializeElement(Element e){
+        serializeBits(e, 3);
+    }
+    
+    void serializeTimestamp(time_t timestamp){
+        uint64_t tmp = static_cast<uint64_t>(timestamp);
+        uint64_t marshalled = cugl::marshall(tmp);
+        ui64_to_ui8 u;
+        u.ui64 = marshalled;
+        serializeBits(u.ui8[0], 8);
+        serializeBits(u.ui8[1], 8);
+        serializeBits(u.ui8[2], 8);
+        serializeBits(u.ui8[3], 8);
+        serializeBits(u.ui8[4], 8);
+        serializeBits(u.ui8[5], 8);
+        serializeBits(u.ui8[6], 8);
+        serializeBits(u.ui8[7], 8);
+    }
+    
+    void serializeString(std::string & data){
+        for (char const &c: data) {
+            serializeBits(c, 8);
+        }
+    }
+};
+
+
+template <typename Stream>
+struct NetworkData::Visitor {
+    Stream & s;
+    Visitor(Stream & st) : s(st){}
+    void operator()(None & d) const {}
+    void operator()(Ready & r) const {
+        s.serializeBits(r.player_id, PLAYER_ID_BITS);
+    }
+    void operator()(Unready & r) const {
+        s.serializeBits(r.player_id, PLAYER_ID_BITS);
+    }
+    void operator()(Tag & t) const {
+        s.serializeBits(t.taggedId, PLAYER_ID_BITS);
+        s.serializeBits(t.taggerId, PLAYER_ID_BITS);
+        s.serializeTimestamp(t.timestamp);
+        s.serializeBool(t.dropEgg);
+    }
+    void operator()(StartGame & s) const {}
+    void operator()(OrbRespawn & o) const {
+        s.serializeBits(o.orbId, ORB_ID_BITS);
+        s.serializeVec2(o.position);
+    }
+    void operator()(EggRespawn & e) const {
+        s.serializeBits(e.eggId, EGG_ID_BITS);
+        s.serializeVec2(e.position);
+    }
+    void operator()(EggCapture & e) const {
+        s.serializeBits(e.playerId, PLAYER_ID_BITS);
+        s.serializeBits(e.eggId, EGG_ID_BITS);
+    }
+    void operator()(EggHatch & e) const {
+        s.serializeBits(e.playerId, PLAYER_ID_BITS);
+        s.serializeBits(e.eggId, EGG_ID_BITS);
+    }
+    void operator()(OrbCapture & o) const {
+        s.serializeBits(o.orbId, ORB_ID_BITS);
+        s.serializeBits(o.playerId, PLAYER_ID_BITS);
+    }
+    void operator()(Swap & sw) const {
+        s.serializeBits(sw.swapId, SWAP_ID_BITS);
+        s.serializeBits(sw.playerId, PLAYER_ID_BITS);
+        s.serializeElement(sw.newElement);
+    }
+    void operator()(Position & p) const {
+        s.serializeVec2(p.playerPos);
+        s.serializeVec2(p.playerVelocity);
+        s.serializeFloat(p.angle);
+        s.serializeBits(p.playerId, PLAYER_ID_BITS);
+    }
+    void operator()(ElementChange & e) const {
+        s.serializeBits(e.playerId, PLAYER_ID_BITS);
+        s.serializeElement(e.newElement);
+    }
+    void operator()(ProjectileFired & p) const {
+        s.serializeBits(p.projectileId, PLAYER_ID_BITS);
+        s.serializeVec2(p.projectilePos);
+        s.serializeFloat(p.projectileAngle);
+        s.serializeElement(p.preyElement);
+    }
+    void operator()(ProjectileGone & p) const {
+        s.serializeBits(p.projectileId, PLAYER_ID_BITS);
+    }
+    void operator()(SetUsername & d) const {
+        s.serializeBits(d.playerId, PLAYER_ID_BITS);
+        s.serializeString(d.username);
+    }
+    void operator()(SetMap & d) const {
+        s.serializeBits(d.mapNumber, MAP_NUMBER_BITS);
+    }
+
+};
+
+
+////no clue how this works. taken from https://www.reddit.com/r/cpp/comments/f8cbzs/creating_stdvariant_based_on_index_at_runtime/
+//template <typename... Ts>
+//[[nodiscard]] std::variant<Ts...>
+//expand_type(std::size_t i)
+//{
+//    static constexpr std::variant<Ts...> table[] = { Ts{ }... };
+//    return table[i];
+//}
+////taken from https://stackoverflow.com/a/60567091
+template <std::size_t I = 0>
+void variant_from_index(NetworkData::DATA_T & v, std::size_t index) {
+    if constexpr(I >= std::variant_size_v<NetworkData::DATA_T>)
+        throw std::runtime_error{"Variant index " + std::to_string(I + index) + " out of bounds"};
+    else {
+        if(index == 0){
+            v.emplace<I>();
+        }else {
+            variant_from_index<I + 1>(v, index - 1);
+        }
+    }
 }
-
-
 
 //convert the bytes to a NetworkData struct, putting the result in dest
 //returns true on success, false on failure (if data is corrupted)
-bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
-    scratch = 0;
-    scratch_bits = 0;
-    byte_arr_index = 0;
-    dest.packetType = readBits(bytes, TYPE_BITS);
-    switch(dest.packetType){
-        case NetworkData::TAG_PACKET:
-            dest.tagData.taggedId = readBits(bytes, PLAYER_ID_BITS);
-            dest.tagData.taggerId = readBits(bytes, PLAYER_ID_BITS);
-            dest.tagData.timestamp = readTimestamp(bytes);
-            dest.tagData.dropEgg = readBool(bytes);
-            break;
-        case NetworkData::ORB_CAPTURED:
-            dest.orbCapData.orbId = readBits(bytes, ORB_ID_BITS);
-            dest.orbCapData.playerId = readBits(bytes, PLAYER_ID_BITS);
-            break;
-        case NetworkData::EGG_CAPTURED:
-            dest.eggCapData.playerId = readBits(bytes, PLAYER_ID_BITS);
-            dest.eggCapData.eggId = readBits(bytes, EGG_ID_BITS);
-            break;
-        case NetworkData::SWAP_PACKET:
-            dest.swapData.swapId = readBits(bytes, SWAP_ID_BITS);
-            dest.swapData.playerId = readBits(bytes, PLAYER_ID_BITS);
-            dest.swapData.newElement = readElement(bytes);
-            break;
-        case NetworkData::POSITION_PACKET:
-            dest.positionData.playerPos = readVec2(bytes);
-            dest.positionData.playerVelocity = readVec2(bytes);
-            dest.positionData.angle = readFloat(bytes);
-            dest.positionData.playerId = readBits(bytes, PLAYER_ID_BITS);
-            break;
-        case NetworkData::ORB_RESPAWN:
-            dest.orbRespawnData.orbId = readBits(bytes, ORB_ID_BITS);
-            dest.orbRespawnData.position = readVec2(bytes);
-            break;
-        case NetworkData::ELEMENT_CHANGE:
-            dest.elementChangeData.playerId = readBits(bytes, PLAYER_ID_BITS);
-            dest.elementChangeData.newElement = readElement(bytes);
-            break;
-        case NetworkData::PROJECTILE_FIRED:
-            dest.projectileFiredData.projectileId = readBits(bytes, PLAYER_ID_BITS); //num of proj the same as players for now
-            dest.projectileFiredData.projectilePos = readVec2(bytes);
-            dest.projectileFiredData.projectileAngle = readFloat(bytes);
-            dest.projectileFiredData.preyElement = readElement(bytes);
-            break;
-        case NetworkData::PROJECTILE_GONE:
-            dest.projectileGoneData.projectileId = readBits(bytes, PLAYER_ID_BITS);
-            break;
-        case NetworkData::EGG_RESPAWN:
-            dest.eggRespawnData.eggId = readBits(bytes, EGG_ID_BITS);
-            dest.eggRespawnData.position = readVec2(bytes);
-            break;
-        case NetworkData::EGG_HATCHED:
-            dest.eggHatchData.playerId = readBits(bytes, PLAYER_ID_BITS);
-            dest.eggHatchData.eggId = readBits(bytes, EGG_ID_BITS);
-            break;
-        case NetworkData::CLIENT_READY:
-        case NetworkData::CLIENT_UNREADY:
-            dest.readyData.player_id = readBits(bytes, PLAYER_ID_BITS);
-            break;
-        case NetworkData::SET_USERNAME:
-            dest.setUsernameData.playerId = readBits(bytes, PLAYER_ID_BITS);
-            dest.setUsernameData.username_length = readStringLen(bytes);
-            dest.setUsernameData.username = readString(bytes, dest.setUsernameData.username_length);
-            break;
-        case NetworkData::SET_MAP_NUMBER:
-            dest.setMapNumber.mapNumber = readBits(bytes, MAP_NUMBER_BITS);
-            break;
-    }
-    return true;
+NetworkData NetworkData::fromBytes(const std::vector<uint8_t>& bytes){
+    ReadStream s(bytes);
+    int packetType = s.readBits(TYPE_BITS);
+    
+    NetworkData nd;
+//    nd.data = expand_type(packetType);
+//    nd.data = variant_from_index<NetworkData::DATA_T>(packetType);
+    variant_from_index(nd.data, packetType);
+//    nd.data.emplace<packetType>();
+    std::visit(Visitor(s), nd.data);
+    
+    return nd;
 }
 
 //convert the NetworkData struct to bytes, putting the result in dest
 //returns true on success, false on failure (if the data is corrupted)
-bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
-    scratch = 0;
-    scratch_bits = 0;
-    writeBits(dest, src.packetType, TYPE_BITS);
-    switch(src.packetType){
-        case NetworkData::TAG_PACKET:
-            writeBits(dest, src.tagData.taggedId, PLAYER_ID_BITS);
-            writeBits(dest, src.tagData.taggerId, PLAYER_ID_BITS);
-            writeTimestamp(dest, src.tagData.timestamp);
-            writeBool(dest, src.tagData.dropEgg);
-            break;
-        case NetworkData::ORB_CAPTURED:
-            writeBits(dest, src.orbCapData.orbId, ORB_ID_BITS);
-            writeBits(dest, src.orbCapData.playerId, PLAYER_ID_BITS);
-            break;
-        case NetworkData::EGG_CAPTURED:
-            writeBits(dest, src.eggCapData.playerId, PLAYER_ID_BITS);
-            writeBits(dest, src.eggCapData.eggId, EGG_ID_BITS);
-            break;
-        case NetworkData::SWAP_PACKET:
-            writeBits(dest, src.swapData.swapId, SWAP_ID_BITS);
-            writeBits(dest, src.swapData.playerId, PLAYER_ID_BITS);
-            writeElement(dest, src.swapData.newElement);
-            break;
-        case NetworkData::POSITION_PACKET:
-            writeVec2(dest, src.positionData.playerPos);
-            writeVec2(dest, src.positionData.playerVelocity);
-            writeFloat(dest, src.positionData.angle);
-            writeBits(dest, src.positionData.playerId, PLAYER_ID_BITS);
-            break;
-        case NetworkData::ORB_RESPAWN:
-            writeBits(dest, src.orbRespawnData.orbId, ORB_ID_BITS);
-            writeVec2(dest, src.orbRespawnData.position);
-            break;
-        case NetworkData::ELEMENT_CHANGE:
-            writeBits(dest, src.elementChangeData.playerId, PLAYER_ID_BITS);
-            writeElement(dest, src.elementChangeData.newElement);
-            break;
-        case NetworkData::PROJECTILE_FIRED:
-            writeBits(dest, src.projectileFiredData.projectileId, PLAYER_ID_BITS);
-            writeVec2(dest, src.projectileFiredData.projectilePos);
-            writeFloat(dest, src.projectileFiredData.projectileAngle);
-            writeElement(dest, src.projectileFiredData.preyElement);
-            break;
-        case NetworkData::PROJECTILE_GONE:
-            writeBits(dest, src.projectileFiredData.projectileId, PLAYER_ID_BITS);
-            break;
-        case NetworkData::EGG_RESPAWN:
-            writeBits(dest, src.eggRespawnData.eggId, EGG_ID_BITS);
-            writeVec2(dest, src.eggRespawnData.position);
-            break;
-        case NetworkData::EGG_HATCHED:
-            writeBits(dest, src.eggHatchData.playerId, PLAYER_ID_BITS);
-            writeBits(dest, src.eggHatchData.eggId, EGG_ID_BITS);
-            break;
-        case NetworkData::CLIENT_READY:
-        case NetworkData::CLIENT_UNREADY:
-            writeBits(dest, src.readyData.player_id, PLAYER_ID_BITS);
-            break;
-        case NetworkData::SET_USERNAME:
-            //CULog("reached here 2");
-            writeBits(dest, src.setUsernameData.playerId, PLAYER_ID_BITS);
-            writeString(dest, src.setUsernameData.username_length, src.setUsernameData.username);
-            break;
-        case NetworkData::SET_MAP_NUMBER:
-            writeBits(dest, src.setMapNumber.mapNumber, MAP_NUMBER_BITS);
-            break;
-    }
-    flush(dest);
-    return true;
-}
+std::vector<uint8_t> NetworkData::toBytes(){
+    std::vector<uint8_t> out;
+    WriteStream s(out);
+    
+    s.serializeBits(data.index(), TYPE_BITS);
+    std::visit(Visitor(s), data);
+    
+    s.flush();
+    return out;
 }
