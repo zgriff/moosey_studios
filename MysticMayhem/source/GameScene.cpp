@@ -45,7 +45,7 @@ using namespace std;
 #define BACKWARDS_FRICTION 0.5f
 /** how quickly the camera catches up to the player*/
 #define CAMERA_STICKINESS .07f
-/** what the camera zoom is at */
+/** How much the camera */
 #define CAMERA_ZOOM 0.65f
 /** baseline aspect ratio, 1468.604 is from 1280x720 */
 #define BASELINE_DIAGONAL 1468.60478005
@@ -230,11 +230,11 @@ void GameScene::reset() {
         float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
         static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
         auto cameraInitPlayerPos = _player->getSceneNode()->getPosition();
-        cameraZoom = 1;
-        cameraInitPlayerPos.x = std::clamp(cameraInitPlayerPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
-            _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
-        cameraInitPlayerPos.y = std::clamp(cameraInitPlayerPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
-            _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
+        //cameraZoom = 1;
+        //cameraInitPlayerPos.x = std::clamp(cameraInitPlayerPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
+        //    _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
+        //cameraInitPlayerPos.y = std::clamp(cameraInitPlayerPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
+        //    _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
         getCamera()->translate(cameraInitPlayerPos - getCamera()->getPosition());
     }
     _playerController.init();
@@ -287,6 +287,21 @@ void GameScene::update(float timestep) {
             auto offset = vel.getAngle() - _player->getDirection() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
+            //applies sideways friction, capped at a flat value
+            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * _player->getMass());
+            if (correction.length() > KINETIC_FRICTION) {
+                correction.scale(KINETIC_FRICTION / correction.length());
+            }
+
+            //apply friction if going backwards IE braking
+            if (abs(offset) < M_PI / 2.0) {
+                auto backwards = _player->getLinearVelocity().rotate(-1.0f * offset).scale(-1.0f * cos(offset) * _player->getMass());
+                if (backwards.length() > BACKWARDS_FRICTION) {
+                    backwards.scale(BACKWARDS_FRICTION / backwards.length());
+                }
+                _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(backwards.x, backwards.y), true);
+            }
+            _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
 
             if (_playerController.getMov().x == 0) {
 
@@ -315,22 +330,6 @@ void GameScene::update(float timestep) {
                 _player->setForce(forForce);
             }
 
-            //applies sideways friction, capped at a flat value
-            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * _player->getMass());
-            if (correction.length() > KINETIC_FRICTION) {
-                correction.scale(KINETIC_FRICTION / correction.length());
-            }
-
-            //apply friction if going backwards IE braking
-            if (abs(offset) < M_PI / 2.0) {
-                auto backwards = _player->getLinearVelocity().rotate(-1.0f * offset).scale(-1.0f * cos(offset) * _player->getMass());
-                if (backwards.length() > BACKWARDS_FRICTION) {
-                    backwards.scale(BACKWARDS_FRICTION / backwards.length());
-                }
-                _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(backwards.x, backwards.y), true);
-            }
-
-            _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
             break;
         }
         case Movement::SwipeForce: {
@@ -382,16 +381,17 @@ void GameScene::update(float timestep) {
     auto playPos = _player->getSceneNode()->getPosition();
     playPos += _player->getLinearVelocity().scale(40.0 / pow(max(_player->getLinearVelocity().length(), .000001f), .35));
     auto camSpot = getCamera()->getPosition();
-    //playPos is only used for camera to calculate camera translation, we clamp it so camera doesn't display offmap
-    float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
-    playPos.x = std::clamp(playPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
-        _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
-    /*CULog("right boundary should be %f", _world->getSceneSize().x);
-    CULog("should be cutoff at %f", _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom));
-    CULog("player pos x %f", _player->getSceneNode()->getPosition().x);*/
-    playPos.y = std::clamp(playPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
-        _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
-    //CULog("viewport x %f", getCamera()->getViewport().size.width);
+
+    ////playPos is only used for camera to calculate camera translation, we clamp it so camera doesn't display offmap
+    //float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+    //playPos.x = std::clamp(playPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
+    //    _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
+    ///*CULog("right boundary should be %f", _world->getSceneSize().x);
+    //CULog("should be cutoff at %f", _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom));
+    //CULog("player pos x %f", _player->getSceneNode()->getPosition().x);*/
+    //playPos.y = std::clamp(playPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
+    //    _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
+    ////CULog("viewport x %f", getCamera()->getViewport().size.width);
 
     auto trans = (playPos - camSpot)*CAMERA_STICKINESS;
     //CULog("camera x: %f camera y: %f", getCamera()->getPosition().x, getCamera()->getPosition().y);

@@ -154,7 +154,7 @@ public:
     
     time_t getTimeLastTagged() { return _timeLastTagged; }
     
-    void setTagCooldown(clock_t t) { _tagCooldown = t; }
+    void setTimeLastTagged(clock_t t) { _timeLastTagged = t; }
     
     time_t getSwapCooldown() { return _swapTimer; }
     
