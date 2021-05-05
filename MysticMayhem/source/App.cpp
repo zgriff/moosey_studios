@@ -147,13 +147,23 @@ void App::onResume() {
                      _lobby.init(_assets);
                      _lobby.setActive(true);
                      //NetworkController::setLobbyScene(_lobby);
+                     _menu.removeAllChildren();
                      _menu.dispose();
                      _currentScene = SceneSelect::Lobby;
                  }
-             } else {
+                 else if (_menu.settingsPressed()) {
+                     _menu.setActive(false);
+                     _settings.init(_assets);
+                     _menu.removeAllChildren();
+                     _menu.dispose();
+                     _currentScene = SceneSelect::Settings;
+                 }
+             }
+             else {
                  _menu.setActive(false);
                  _lobby.init(_assets);
                  _lobby.setActive(true);
+                 _menu.removeAllChildren();
                  _menu.dispose();
                  _currentScene = SceneSelect::Lobby;
              }
@@ -168,6 +178,7 @@ void App::onResume() {
                  _gameplay.setActive(true);
                  _gameplay.setMovementStyle(0);
                  startTimer = time(NULL);
+                 _lobby.removeAllChildren();
                  _lobby.dispose();
                  _currentScene = SceneSelect::Game;
              }
@@ -198,12 +209,16 @@ void App::onResume() {
                  _menu.setActive(true);
 
              }
- //            else {
- //                _results.dispose();
- //                _gameplay.dispose();
- //            }
- //            _results.update(timestep);
              break;
+         }
+         case SceneSelect::Settings: {
+             if (_settings.backPressed()) {
+                 _settings.removeAllChildren();
+                 _settings.dispose();
+                 _menu.init(_assets);
+                 _currentScene = SceneSelect::Menu;
+                 _menu.setActive(true);
+             }
          }
          default:
              break;
@@ -232,6 +247,9 @@ void App::draw() {
             break;
         case SceneSelect::Lobby:
             _lobby.render(_batch);
+            break;
+        case SceneSelect::Settings:
+            _settings.render(_batch);
             break;
         default:
             _gameplay.render(_batch);

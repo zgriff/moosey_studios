@@ -31,8 +31,10 @@ private:
     /** Reference to the swap station texture */
     std::shared_ptr<cugl::Texture> _texture;
     bool _active;
+    int _lastUser;
     time_t _lastUsed;
     time_t _coolDownSecs = 5;
+    time_t _coolDownSecsDeath = 0.25;
     int _id;
     
 public:
@@ -62,6 +64,10 @@ public:
     void setLastUsed(time_t time) { _lastUsed = time; }
     
     time_t getCoolDown() { return _coolDownSecs; }
+    
+    void setLastUser(int pid) {_lastUser = pid;}
+    
+    int getLastUser() {return _lastUser;}
     
     int getID(){ return _id; }
     void setID(int i){ _id = i; }

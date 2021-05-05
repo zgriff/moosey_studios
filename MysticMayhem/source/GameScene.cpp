@@ -212,6 +212,8 @@ void GameScene::dispose() {
  * Resets the status of the game so that we can play again.
  */
 void GameScene::reset() {
+    prevTime = time(NULL);
+    _world->setEggSpawnCooldown(time(NULL));
     _world->setRootNode(_rootnode,_scale);
     CollisionController::setWorld(_world);
     NetworkController::setWorld(_world);
@@ -392,26 +394,30 @@ void GameScene::update(float timestep) {
     getCamera()->update();
     _UInode->setPosition(camSpot + trans - _worldOffset);
 
-
-    
+//    CULog("TIME %ld", time(NULL) - prevTime);
     if(NetworkController::isHost()){
-        int spawnProb = rand() % 100;
-            // orb spawning
-            if (spawnProb == 25) {
-                if (_world->getCurrOrbCount() < _world->getInitOrbCount()) {
+        if (time(NULL) - prevTime >= 1) {
+            //orb spawn
+            int orbSpawnProb = rand() % 100;
+            int randNum = rand() % 3 + 1;
+            if (orbSpawnProb < 25) {
+                if (_world->getCurrOrbCount() < _world->getInitOrbCount() && _world->getOrbSpawns().size() > randNum) {
                     SpawnController::spawnOrbs();
                 }
             }
             
-            //egg spawning
-    //        CULog("egg max %f ", ceil(int(_world->getPlayers().size())/3));
-            //TODO: set max egg number based on number of players
-            if (spawnProb == 50) {
-                if (_world->getCurrEggCount() < _world->getTotalEggCount()) {
+            //egg spawn
+            int eggSpawnProb = rand() % 100;
+            if (eggSpawnProb < 40) {
+                int maxEggs = ceil((float)_world->getPlayers().size()/3);
+//                CULog("max eggs %d",maxEggs);
+                if (_world->getCurrEggCount() < maxEggs && time(NULL) - _world->getEggSpawnCooldown() >= 5) {
                     SpawnController::spawnEggs();
                 }
             }
+            prevTime = time(NULL);
         }
+    }
     
     //egg hatch logic
     if (_player->getJustHitByProjectile()) {
@@ -431,6 +437,7 @@ void GameScene::update(float timestep) {
             _egg->setDistanceWalked(_egg->getDistanceWalked() + dist);
             _egg->setInitPos(_player->getPosition());
             if (_egg->getDistanceWalked() >= 80) {
+                _world->setEggSpawnCooldown(time(NULL));
                 _world->addEggSpawn(_egg->getSpawnLoc());
                 _player->setHoldingEgg(false);
                 _hatchbar->setVisible(false);
@@ -479,7 +486,11 @@ void GameScene::update(float timestep) {
     _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
     _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
     
-    _player->animateMovement();
+    for(auto p : _world->getPlayers()){
+        p->animateMovement();
+    }
+    
+    
     //send new position
     NetworkController::sendPosition();
 }
@@ -559,37 +570,36 @@ std::string GameScene::updateTimerText(const time_t time) {
     return ss.str();
 }
 
-std::string GameScene::getResults() {
-    stringstream ss;
+std::map<std::string, int> GameScene::getResults() {
+    std::map<std::string, int> results;
     auto players = _world->getPlayers();
     for (int i = 0; i < players.size(); i++) {
         auto p = players[i];
-        ss << "Player" << p->getID() << ":" << p->getScore() << endl;
+        stringstream ss;
+        ss << "player" << " " << p->getID();
+        results[ss.str()] = p->getScore();
     }
     
-    return ss.str();
+    return results;
 }
 
-std::tuple<std::string, std::string> GameScene::getWinner() {
-    stringstream ss1;
-    stringstream ss2;
+std::string GameScene::getWinner() {
+    stringstream ss;
     auto players = _world->getPlayers();
     int winScore = -1;
-    int winID = -1;
     for (int i = 0; i < players.size(); i++) {
         auto p = players[i];
         if (p->getScore() > winScore) {
             winScore = p->getScore();
-            winID = p->getID();
         }
     }
-    if (NetworkController::getPlayerId() == winID) {
-        ss2 << "YOU WON!";
+    
+    if (_world->getPlayer(NetworkController::getPlayerId().value())->getScore() == winScore) {
+        ss << "Congratulations!";
     }
     else {
-        ss2 << "You lost";
+        ss << "";
     }
-    ss1 << "Player" << winID << " with score " << winScore << endl;
     
-    return std::make_tuple(ss1.str(), ss2.str());
+    return ss.str();
 }
