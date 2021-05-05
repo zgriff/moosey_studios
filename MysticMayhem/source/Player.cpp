@@ -25,16 +25,16 @@ using namespace cugl;
 /** The friction of the player */
 #define DEFAULT_FRICTION 0.0f
 /** The minimum total velocity for drag to apply */
-#define THRESHOLD_VELOCITY 27.0f
+#define THRESHOLD_VELOCITY 26.0f
 /** What proportion of the player's extra velocity is lost per frame*/
-#define SPEEDING_DRAG 0.006f
+#define SPEEDING_DRAG 0.007f
 /** What proportion of the player's extra velocity is lost per frame*/
 #define INVIS_TIME 3.0
 /** What proportion of the player's extra velocity is lost per frame*/
 #define INTANG_TIME 3.0
 
 /** The restitution of this rocket */
-#define DEFAULT_RESTITUTION 0.4f
+#define DEFAULT_RESTITUTION 0.5f
 /** The constant force applied to this rocket */
 #define DEFAULT_PLAYER_FORCE Vec2(0.0f, 8.3f)
 /** Number of rows in the player image filmstrip */
@@ -272,6 +272,8 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         _score = 0;
         _timeLastTagged = 0;
         _isTagged = false;
+        _isInvisible = false;
+        _isIntangible = false;
         _didTag = false;
         _positionError = Vec2::ZERO;
         _holdingEgg = false;
@@ -333,7 +335,7 @@ void Player::update(float delta) {
     else if (time(NULL) - _timeLastTagged < INTANG_TIME + INVIS_TIME) {
         _isInvisible = false;
         if (_currElt != Element::Aether) {
-            _sceneNode->setColor(Color4(255, 255, 255, 150));
+            _sceneNode->setColor(Color4(255, 255, 255, 140));
         }
     }
     else {
@@ -344,11 +346,9 @@ void Player::update(float delta) {
         }
     }
     
-    if (_isInvisible) {
-        //set invisible for other players
-        if(! _isLocal){
-            _sceneNode->setVisible(false);
-        }
+    //set invisible for other players
+    if (_isInvisible && !_isLocal) {
+         _sceneNode->setVisible(false);
     } else {
         _sceneNode->setVisible(true);
     }

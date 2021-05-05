@@ -60,7 +60,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
         Player* p = (Player*) bd1;
         SwapStation* s = (SwapStation*) bd2;
 
-        if (p->getCurrElement() != Element::None && p->getCurrElement() != Element::Aether && !p->getIsIntangible()) {
+        /*if (p->getCurrElement() != Element::None && p->getCurrElement() != Element::Aether && !p->getIsInvisible()) {
             if (s->getActive()) {
                 s->setLastUsed(time(NULL));
                 p->setElement(p->getPreyElement());
@@ -68,9 +68,20 @@ void CollisionController::hostBeginContact(b2Contact* contact){
                 SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - localPlayer->getPosition());
                 NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
             }
-        } else if (p->getIsIntangible()) {
+        } 
+        else if (p->getIsInvisible() && s->getActive()) {
             p->setElement(p->getPreyElement());
             SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - localPlayer->getPosition());
+        }*/
+
+        if (p->getCurrElement() != Element::None && p->getCurrElement() != Element::Aether && s->getActive()) {
+            p->setElement(p->getPreyElement());
+            SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - localPlayer->getPosition());
+            if (!p->getIsInvisible()) {
+                s->setLastUsed(time(NULL));
+                s->setActive(false);
+            } 
+            NetworkController::sendPlayerColorSwap(p->getID(), p->getCurrElement(), s->getID());
         }
     }
     
@@ -78,7 +89,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
     else if (bd1->getName() == "egg" && bd2->getName() == "player") {
         Egg* e = (Egg*) bd1;
         Player* p = (Player*) bd2;
-        if (e->getCollected() == false && p->getIsIntangible() == false && !p->getHoldingEgg()) {
+        if (e->getCollected() == false && !p->getIsIntangible() && !p->getHoldingEgg()) {
             p->setElement(Element::None);
             e->setCollected(true);
             e->setPID(p->getID());
@@ -93,7 +104,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
     else if (bd1->getName() == "booster" && bd2->getName() == "player") {
         Player* p = (Player*)bd2;
         auto adjust = p->getLinearVelocity().normalize();
-        p->setLinearVelocity(adjust.scale(36.0f));
+        p->setLinearVelocity(adjust.scale(38.0f));
     }
 
     //projectile and player collision (basically an ability tag)
@@ -101,7 +112,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
         Player* p1 = (Player*) bd1;
         Projectile* proj = (Projectile*) bd2;
         auto p2 = world->getPlayer(proj->getPlayerID());
-        if (p1->getIsTagged() == false && p1->getIsIntangible() == false && p1 != p2.get()) {
+        if (!p1->getIsIntangible() && p1 != p2.get()) {
             if (proj->getPreyElement() == Element::None || proj->getPreyElement() == p1->getCurrElement() 
                 || p1->getCurrElement() == Element::None) {
                 helperTag(p1, p2.get(), world, true);
@@ -114,7 +125,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
         Player* p1 = (Player*) bd1;
         Player* p2 = (Player*) bd2;
 
-        if (p1->getIsTagged() == false && p2->getIsTagged() == false && p1->getIsIntangible() == false && p2->getIsIntangible() == false) {
+        if (!p1->getIsIntangible() && !p2->getIsIntangible()) {
             //p2 tags p1
             if ((p1->getCurrElement() == p2->getPreyElement()) || (p1->getCurrElement() == Element::None 
                 && p2->getCurrElement() != Element::None ) ||

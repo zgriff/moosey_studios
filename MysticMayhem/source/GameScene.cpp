@@ -37,15 +37,16 @@ using namespace std;
 /** Height of the game world in Box2d units */
 #define DEFAULT_HEIGHT  18.0f
 /** The restitution for all physics objects */
-#define TURNS_PER_SPIN   75.0f
-/** how much the sideways velocity is subtracted per frame*/
-#define KINETIC_FRICTION 1.5f
+#define TURNS_PER_SPIN   55.0f
+/** how much the sideways velocity is subtracted per frame
+    1.0 decelerates turning player to 14.6 velocity*/
+#define KINETIC_FRICTION 2.5f
 /** how much the backwards velocity is subtracted per frame if the player is going backwards*/
-#define BACKWARDS_FRICTION 0.8f
+#define BACKWARDS_FRICTION 0.5f
 /** how quickly the camera catches up to the player*/
 #define CAMERA_STICKINESS .07f
 /** how quickly the camera catches up to the player*/
-#define CAMERA_ZOOM .58f
+#define CAMERA_ZOOM .65f
 
 #pragma mark -
 #pragma mark Constructors
@@ -271,22 +272,6 @@ void GameScene::update(float timestep) {
             auto offset = vel.getAngle() - _player->getDirection() + M_PI / 2.0f;
             offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
-            //applies sideways friction, capped at a flat value
-            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * _player->getMass());
-            if (correction.length() > KINETIC_FRICTION) {
-                correction.scale(KINETIC_FRICTION / correction.length());
-            }
-
-            //apply friction if going backwards IE braking
-            if (abs(offset) < M_PI / 2.0) {
-                auto backwards = _player->getLinearVelocity().rotate(-1.0f * offset).scale(-1.0f * cos(offset) * _player->getMass());
-                if (backwards.length() > BACKWARDS_FRICTION) {
-                    backwards.scale(BACKWARDS_FRICTION / correction.length());
-                }
-                _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(backwards.x, backwards.y), true);
-            }
-
-            _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
 
             if (_playerController.getMov().x == 0) {
 
@@ -294,16 +279,15 @@ void GameScene::update(float timestep) {
                 auto forForce = _player->getForce();
                 auto scaling = _player->getForce();
 
-                scaling.normalize().scale(_player->getMass() * 0.06f * pow(max(25.0f - vel.length(), 0.0f), 1.8f));
-                //scaling.normalize().scale(_player->getMass() * 0.5f * (25.0f - vel.length()));
-                //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
+                scaling.normalize().scale(_player->getMass() * 0.27f * pow(max(25.0f - vel.length(), 0.0f), 1.5f));
+
                 _player->setForce(scaling);
                 _player->applyForce();
                 _player->setForce(forForce);
             }
             else {
                 auto forForce = _player->getForce();
-                auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 2.0) * cos(offset) * 1.5f * _player->getMass() * tan(2.0 * M_PI / TURNS_PER_SPIN));
+                auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * 0.9f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
                 if (_playerController.getMov().x < 0) {
                     turnForce.scale(-1.0f);
                 }
@@ -315,6 +299,23 @@ void GameScene::update(float timestep) {
                 _player->applyForce();
                 _player->setForce(forForce);
             }
+
+            //applies sideways friction, capped at a flat value
+            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * _player->getMass());
+            if (correction.length() > KINETIC_FRICTION) {
+                correction.scale(KINETIC_FRICTION / correction.length());
+            }
+
+            //apply friction if going backwards IE braking
+            if (abs(offset) < M_PI / 2.0) {
+                auto backwards = _player->getLinearVelocity().rotate(-1.0f * offset).scale(-1.0f * cos(offset) * _player->getMass());
+                if (backwards.length() > BACKWARDS_FRICTION) {
+                    backwards.scale(BACKWARDS_FRICTION / backwards.length());
+                }
+                _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(backwards.x, backwards.y), true);
+            }
+
+            _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
             break;
         }
         case Movement::SwipeForce: {

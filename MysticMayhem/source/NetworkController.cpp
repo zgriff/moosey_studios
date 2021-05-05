@@ -211,11 +211,11 @@ namespace NetworkController {
                 case ND::NetworkData::SWAP_PACKET:
                 {
                     auto p = world->getPlayer(nd.swapData.playerId);
-                    p->setElement(nd.swapData.newElement);
-                    
                     auto s = world->getSwapStation(nd.swapData.swapId);
+                    p->setElement(nd.swapData.newElement);
+
                     if (!p->getIsInvisible()) {
-                        s->setLastUsed(clock());
+                        s->setLastUsed(time(NULL));
                         s->setActive(false);
                         auto self = world->getPlayer(network->getPlayerID().value());
                         SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - self->getPosition());
