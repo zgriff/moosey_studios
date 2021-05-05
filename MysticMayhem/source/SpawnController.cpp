@@ -22,8 +22,8 @@ void SpawnController::setWorld(std::shared_ptr<World> w){
 //divide map and check each region --> how many people in each region and
     //spawn where less people
 void SpawnController::spawnOrbs() {
-    int rows = 4;
-    int cols = 4;
+    int rows = 5;
+    int cols = 5;
     
     float roomWidth = world->getPhysicsWorld()->getBounds().getMaxX() / cols;
     float roomHeight = world->getPhysicsWorld()->getBounds().getMaxY() / rows;
@@ -32,7 +32,7 @@ void SpawnController::spawnOrbs() {
     
     std::vector<std::shared_ptr<Player>> players = world->getPlayers();
     
-    std::vector<std::vector<int>> spaces (cols , vector<int> (rows, 0));
+    std::vector<std::vector<int>> spaces (rows , vector<int> (cols, 0));
          
     for (int k = 0; k < players.size(); k++) {
         Vec2 playerPos = players[k]->getPosition();
@@ -44,8 +44,8 @@ void SpawnController::spawnOrbs() {
     //TODO: check number of players in the room and assign prob of spawning in each room based on that
     //get the list of empty rooms
     std::vector<Vec2> emptySpaces;
-    for (int i = 0; i < cols; i++) {
-        for (int j = 0; j < rows; j++) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
             if (spaces[i][j] == 0) {
 //                CULog("empty space (col, row) : %d, %d", j, i);
                 emptySpaces.push_back(Vec2(float(i),float(j)));
@@ -101,7 +101,7 @@ void SpawnController::spawnEggs() {
     std::vector<std::shared_ptr<Player>> players = world->getPlayers();
     std::vector<std::shared_ptr<Egg>> eggs = world->getEggs();
     
-    std::vector<std::vector<int>> spaces (cols , vector<int> (rows, 0));
+    std::vector<std::vector<int>> spaces (rows , vector<int> (cols, 0));
          
     //checking player pos
     for (int k = 0; k < players.size(); k++) {
@@ -121,8 +121,8 @@ void SpawnController::spawnEggs() {
     
     //get the list of empty rooms
     std::vector<Vec2> emptySpaces;
-    for (int i = 0; i < cols; i++) {
-        for (int j = 0; j < rows; j++) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
             if (spaces[i][j] == 0) {
 //                CULog("empty space (col, row) : %d, %d", j, i);
                 emptySpaces.push_back(Vec2(float(i),float(j)));

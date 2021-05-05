@@ -27,7 +27,7 @@ void playSound(Type s, cugl::Vec2 pos);
 //void playMusic();
 
 //void pauseMusic();
-
+void setSoundVolume(float volume);
 
 //Call this method to enable or disable spatial audio
 // true will enable it, false will disable it

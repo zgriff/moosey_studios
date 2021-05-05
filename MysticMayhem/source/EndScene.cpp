@@ -29,7 +29,7 @@ using namespace cugl;
  *
  * @return true if the controller is initialized properly, false otherwise.
  */
-bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::string results, std::tuple<std::string, std::string> winner) {
+bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<std::string, int> results, std::string message) {
     // Initialize the scene to a locked width
     Size dimen = Application::get()->getDisplaySize();
     dimen *= SCENE_SIZE/dimen.width; // Lock the game to a reasonable resolution
@@ -47,11 +47,10 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::stri
     
     _mainMenu = false;
     _playAgain = false;
-    _resStr = results;
-    _winnerStr = winner;
+    _resultsMap = results;
     
     _playAgainButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("end_playagain"));
-//    _playAgainButton->activate();
+    _playAgainButton->activate();
     _playAgainButton->addListener([=](const std::string& name, bool down) {
         this->_active = down;
         _playAgain = true;
@@ -72,11 +71,36 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::stri
         _mainMenuButton->setDown(false);
     }
 
-    _results = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_results"));
-    _results->setText("Winner: " + std::get<0>(_winnerStr));
+    _resultLabel = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_results"));
+    _resultLabel->setText("Results:");
+    
+
+    typedef std::function<bool(std::pair<std::string, int>, std::pair<std::string, int>)> Comparator;
+
+    Comparator compFunctor =
+            [](std::pair<std::string, int> elem1 ,std::pair<std::string, int> elem2)
+            {
+                return elem1.second >= elem2.second;
+            };
+    
+    // sorting by the player scores is happening here
+    std::set<std::pair<std::string, int>, Comparator> setPlayerScores(
+            _resultsMap.begin(), _resultsMap.end(), compFunctor);
+    
+    Vec2 pos = _resultLabel->getPosition();
+    int i = 1;
+    for (std::pair<std::string, int> element : setPlayerScores) {
+//    for (const auto& [key, value] : _resultsMap) {
+        stringstream ss;
+        std::shared_ptr<cugl::scene2::Label> playerScore = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_playerscore"+std::to_string(i)));
+        playerScore->setPosition(pos.x, pos.y - (i * 30));
+        ss << element.first << " SCORE: " << element.second;
+        playerScore->setText(ss.str());
+        i++;
+    }
     
     _message = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_message"));
-    _message->setText(std::get<1>(_winnerStr));
+    _message->setText(message);
 
     
     Application::get()->setClearColor(Color4(190,187,191,255));

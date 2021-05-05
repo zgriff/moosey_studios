@@ -10,6 +10,7 @@
 #define __GAME_SCENE_H__
 #include <cugl/cugl.h>
 #include <vector>
+#include <map>
 #include <time.h>
 #include "InputController.h"
 #include "CollisionController.h"
@@ -60,6 +61,7 @@ protected:
     time_t _hatchTextTimer = 5; //5 secs
     time_t _hatchedTime;
     time_t _startTime;
+    time_t prevTime;
 
     /** Reference to the UI element exposing the frame rate */
     std::shared_ptr<cugl::scene2::Label> _framesHUD;
@@ -204,8 +206,8 @@ public:
     
     void moveOrb(Orb* orb);
 
-    std::string getResults();
-    std::tuple<std::string, std::string> getWinner();
+    std::map<std::string, int> getResults();
+    std::string getWinner();
 
 };
 

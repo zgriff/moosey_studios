@@ -150,7 +150,8 @@ struct GameHandler {
         egg->setCollected(false);
         egg->setHatched(false);
         egg->setDistanceWalked(0);
-        egg->setInitPos(Vec2(10,10));
+        egg->setSpawnLoc(data.position);
+        egg->setInitPos(data.position);
     }
     void operator()(NetworkData::EggCapture & data) const {
         auto p = world->getPlayer(data.playerId);
@@ -169,6 +170,8 @@ struct GameHandler {
         p->setHoldingEgg(false);
         world->getEgg(data.eggId)->setHatched(true);
         world->setCurrEggCount(world->getCurrEggCount() - 1);
+        p->incScore(globals::HATCH_SCORE);
+        world->addEggSpawn(egg->getSpawnLoc());
     }
     void operator()(NetworkData::OrbCapture & data) const {
         auto o = world->getOrb(data.orbId);

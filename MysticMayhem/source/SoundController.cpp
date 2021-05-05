@@ -16,6 +16,7 @@
 namespace SoundController{
 std::shared_ptr<cugl::AssetManager> _assets;
 bool spatialAudioEnabled = true;
+std::vector<std::string> soundKeys = {"egg", "orb1", "orb2", "orb3", "orb4", "tag1", "tag2", "tag3", "swap"};
 
 
 void useSpatialAudio(bool useSpatialAudio){
@@ -24,28 +25,34 @@ void useSpatialAudio(bool useSpatialAudio){
 
 void init(std::shared_ptr<cugl::AssetManager> assets){
     _assets = assets;
+    
 }
 
 void playSound(Type s, cugl::Vec2 pos){
     std::shared_ptr<cugl::Sound> sample;
+    std:string key;
     switch(s){
         case Type::EGG:
             sample = _assets->get<cugl::Sound>("egg");
+            key = "egg";
             break;
         case Type::ORB:
         {
             int soundnum = (rand() % NUM_ORB_SOUNDS) + 1;
             sample = _assets->get<cugl::Sound>("orb"+std::to_string(soundnum));
+            key = "orb"+std::to_string(soundnum);
             break;
         }
         case Type::TAG:
         {
             int soundnum = (rand() % NUM_TAG_SOUNDS) + 1;
             sample = _assets->get<cugl::Sound>("tag"+std::to_string(soundnum));
+            key = "tag"+std::to_string(soundnum);
             break;
         }
         case Type::SWAP:
             sample = _assets->get<cugl::Sound>("swap");
+            key = "swap";
             break;
         default:
             return;
@@ -65,10 +72,17 @@ void playSound(Type s, cugl::Vec2 pos){
             node->setGain(1/gain);
         }
         //TODO: replace with key
-        cugl::AudioEngine::get()->play(std::to_string(rand()), spatial);
+        cugl::AudioEngine::get()->play(key, spatial);
     }else{
         //TODO: replace with key
-        cugl::AudioEngine::get()->play(std::to_string(rand()), node);
+        cugl::AudioEngine::get()->play(key, node);
+    }
+    
+}
+
+void setSoundVolume(float volume){
+    for (int i = 0; i < soundKeys.size(); i++) {
+        cugl::AudioEngine::get()->setVolume(soundKeys[i], volume);
     }
     
 }
