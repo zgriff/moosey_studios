@@ -11,7 +11,7 @@
 #include "Globals.h"
 
 //TODO: generate these from global maximums
-#define TYPE_BITS 4
+#define TYPE_BITS 5
 #define PLAYER_ID_BITS 3
 #define SWAP_ID_BITS 4
 #define ORB_ID_BITS 5
