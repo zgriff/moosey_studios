@@ -281,6 +281,9 @@ bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& bytes){
         case NetworkData::SET_MAP_NUMBER:
             dest.setMapNumber.mapNumber = readBits(bytes, MAP_NUMBER_BITS);
             break;
+        case NetworkData::HOST_PLAYAGAIN:
+            dest.hostPlayAgain.playAgain = readBits(bytes, 2);
+            break;
     }
     return true;
 }
@@ -353,6 +356,9 @@ bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src){
             break;
         case NetworkData::SET_MAP_NUMBER:
             writeBits(dest, src.setMapNumber.mapNumber, MAP_NUMBER_BITS);
+            break;
+        case NetworkData::HOST_PLAYAGAIN:
+            writeBits(dest, src.hostPlayAgain.playAgain, 2);
             break;
     }
     flush(dest);

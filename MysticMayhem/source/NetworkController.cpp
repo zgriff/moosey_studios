@@ -23,6 +23,7 @@ namespace NetworkController {
         int mapSelected;
         std::function<void(uint8_t, bool)> readyCallback;
         std::function<void(void)> startCallback;
+        bool playAgain;  //this is to check if host pressed play again or not
     }
 
     /** IP of the NAT punchthrough server */
@@ -35,6 +36,12 @@ namespace NetworkController {
         network =
             std::make_shared<cugl::CUNetworkConnection>(
                 cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, globals::MAX_PLAYERS, 0));
+        CULog("ROOM ID %s", roomId.c_str());
+        CULog("NETWORK ROOM ID %s", network->getRoomID().c_str());
+        if (network->getStatus() == cugl::CUNetworkConnection::NetStatus::Connected) {
+            CULog("NETWORK STATUS connected");
+        }
+        
     }
 
     void joinGame(std::string roomId) {
@@ -45,6 +52,12 @@ namespace NetworkController {
         CULog("%s", roomId.c_str());
         CULog("num players %d", network->getNumPlayers());
         CULog("total players %d", network->getTotalPlayers());
+    }
+
+    void destroyConn() {
+        network = nullptr;
+        roomId = "";
+        mapSelected = 0;
     }
 
     cugl::CUNetworkConnection::NetStatus getStatus(){
@@ -96,6 +109,14 @@ namespace NetworkController {
 
     void setMapSelected(int i) {
         mapSelected = i;
+    }
+    
+    bool getPlayAgain() {
+        return playAgain;
+    }
+
+    void setPlayAgain(bool b) {
+        playAgain = b;
     }
 
     void receive(const std::function<void(const std::vector<uint8_t>&)>& dispatcher){
@@ -165,6 +186,11 @@ namespace NetworkController {
                 {
                     mapSelected = nd.setMapNumber.mapNumber;
                     CULog("set map selected to %d", mapSelected);
+                }
+                    break;
+                case ND::NetworkData::HOST_PLAYAGAIN:
+                {
+                    playAgain = nd.hostPlayAgain.playAgain;
                 }
                     break;
                 case ND::NetworkData::TAG_PACKET:
@@ -431,6 +457,15 @@ namespace NetworkController {
         ND::NetworkData nd{};
         nd.packetType = ND::NetworkData::PacketType::SET_MAP_NUMBER;
         nd.setMapNumber.mapNumber = i;
+        std::vector<uint8_t> bytes;
+        ND::toBytes(bytes, nd);
+        network->send(bytes);
+    }
+
+    void sendPlayAgain(bool b) {
+        ND::NetworkData nd{};
+        nd.packetType = ND::NetworkData::PacketType::HOST_PLAYAGAIN;
+        nd.hostPlayAgain.playAgain = b;
         std::vector<uint8_t> bytes;
         ND::toBytes(bytes, nd);
         network->send(bytes);

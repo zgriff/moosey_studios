@@ -68,6 +68,8 @@ bool Settings::init(const std::shared_ptr<AssetManager>& assets) {
         _back = down;
     });
     
+    
+    
     return true;
 }
 

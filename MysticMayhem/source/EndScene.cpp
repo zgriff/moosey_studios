@@ -50,10 +50,20 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
     _resultsMap = results;
     
     _playAgainButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("end_playagain"));
-    _playAgainButton->activate();
+//    _playAgainButton->activate();
     _playAgainButton->addListener([=](const std::string& name, bool down) {
         this->_active = down;
         _playAgain = true;
+        if (NetworkController::isHost()) {
+//            NetworkController::joinGame(NetworkController::getRoomId());
+            NetworkController::setPlayAgain(true);
+            NetworkController::sendPlayAgain(true);
+        }
+        else {
+            if (NetworkController::getPlayAgain()) { //if host pressed play again - can enter room
+                NetworkController::joinGame(NetworkController::getRoomId());
+            }
+        }
     });
     
     if (_playAgainButton->isDown()) {
@@ -61,7 +71,7 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
     }
     
     _mainMenuButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("end_mainmenu"));
-//    _mainMenuButton->activate(); //TODO: activate main menu button when connection issue fixed
+    _mainMenuButton->activate();
     _mainMenuButton->addListener([=](const std::string& name, bool down) {
         this->_active = down;
         _mainMenu = true;

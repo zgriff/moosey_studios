@@ -17,6 +17,7 @@ protected:
     std::shared_ptr<cugl::scene2::Slider> _musicVolume;
     std::shared_ptr<cugl::scene2::Slider> _soundVolume;
     std::shared_ptr<cugl::scene2::Button> _backButton;
+    std::shared_ptr<cugl::scene2::Button> _leavegameButton;
     
     bool _back;
     

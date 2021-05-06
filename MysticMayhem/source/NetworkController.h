@@ -24,6 +24,8 @@ namespace NetworkController {
     
     cugl::CUNetworkConnection::NetStatus getStatus();
 
+    void destroyConn();
+
     void step();
     
     /** Updates world states based on network packets. Should call at beginning of gamescene update method*/
@@ -44,6 +46,7 @@ namespace NetworkController {
     void sendEggRespawn(int eggId, Vec2 eggPosition);
     void sendSetUsername(int playerId, string username);
     void sendSetMapSelected(int i);
+    void sendPlayAgain(bool b);
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);
     std::shared_ptr<World> getWorld();
@@ -51,6 +54,9 @@ namespace NetworkController {
     //void setLobbyScene(std::shared_ptr<LobbyScene> lobby);
     int getMapSelected();
     void setMapSelected(int i);
+
+    bool getPlayAgain();
+    void setPlayAgain(bool b);
 
     std::string getUsername();
     std::string getUsername(int i);

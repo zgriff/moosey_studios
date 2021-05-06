@@ -123,6 +123,8 @@ public:
 
     string getSelectedMap() { return _selectedMap; };
     void setSelectedMap(string map) { _selectedMap = map; };
+    
+    std::shared_ptr<Settings> getSettings() { return _settingsNode; }
         
 };
 

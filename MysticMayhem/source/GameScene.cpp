@@ -161,8 +161,24 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string m
     
     _debugnode = _world->getDebugNode();
     
+    _settingsNode = std::make_shared<Settings>(assets);
+    _settingsNode->setVisible(false);
+    
+    _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("ui_settings"));
+    _settingsButton->activate();
+    _settingsButton->addListener([=](const std::string& name, bool down) {
+//        CULog("settings button pressed");
+        _settingsNode->setVisible(true);
+//        if(_settingsNode->isVisible()) {
+//            CULog("settings visible");
+//        }
+//
+       
+    });
+    
     addChild(_rootnode);
     addChild(_UInode);
+    addChild(_settingsNode);
     
     _world->setAssets(_assets);
 
@@ -197,7 +213,6 @@ void GameScene::dispose() {
     }
     _active = false;
     _rootnode = nullptr;
-    _playerController.dispose();
 }
 
 

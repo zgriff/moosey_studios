@@ -69,6 +69,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     
     _joinButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_join"));
     _joinButton->addListener([=](const std::string& name, bool down) {
+//        CULog("join button pressed");
         _host = false;
 //        _slider->setVisible(false);
 //        _slider->deactivate();
@@ -83,15 +84,24 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     
     _settingsNode = std::make_shared<Settings>(assets);
     _settingsNode->setVisible(false);
+    addChild(_settingsNode);
     
     _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_settings"));
     _settingsButton->activate();
     _settingsButton->addListener([=](const std::string& name, bool down) {
-        _settings = true;
+//        CULog("settings button pressed");
+        _settings = down;
         _settingsNode->setVisible(true);
+        if(_settingsNode->isVisible()) {
+            CULog("MENU: settings visible");
+        }
         _background->setColor(Color4(255,255,255,100));
         _joinButton->setVisible(false);
         _hostButton->setVisible(false);
+        if (_join) {
+            _codeField->deactivate();
+            _codeField->setVisible(false);
+        }
         _joinButton->deactivate();
         _hostButton->deactivate();
     });
@@ -144,7 +154,6 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
 //    if(_active) {
 //        _slider->activate();
 //    }
-    addChild(_settingsNode);
     Application::get()->setClearColor(Color4(255,255,255,255));
     return true;
 }
@@ -156,7 +165,7 @@ void MenuScene::dispose() {
 //    removeAllChildren();
     _hostButton = nullptr;
     _joinButton = nullptr;
-//    Input::deactivate<TextInput>();
+    Input::deactivate<TextInput>();
     _codeField = nullptr;
     _slider = nullptr;
     _assets = nullptr;
@@ -187,13 +196,17 @@ void MenuScene::dispose() {
  */
 void MenuScene::setActive(bool value) {
     _active = value;
-    Input::activate<TextInput>();
+//    Input::activate<TextInput>();
     if (value && (!_hostButton->isActive() || !_joinButton->isActive())) {
 //        _slider->setVisible(true);
 //        _label->setVisible(true);
 //        _slider->activate();
         _hostButton->activate();
         _joinButton->activate();
+        _hostButton->setVisible(true);
+        _joinButton->setVisible(true);
+        _codeField->deactivate();
+        _codeField->setVisible(false);
     } else if (!value && (_hostButton->isActive() || _joinButton->isActive() || !_codeField->isActive())) {
         _hostButton->deactivate();
         _joinButton->deactivate();
@@ -207,9 +220,16 @@ void MenuScene::update() {
         _settings = false;
         _settingsNode->setVisible(false);
         _background->setColor(Color4(255,255,255,255));
-        _joinButton->setVisible(true);
-        _hostButton->setVisible(true);
-        _joinButton->activate();
-        _hostButton->activate();
+        if (_join) {
+//            CULog("join true");
+            _codeField->activate();
+            _codeField->setVisible(true);
+        }
+        else {
+            _joinButton->setVisible(true);
+            _hostButton->setVisible(true);
+            _joinButton->activate();
+            _hostButton->activate();
+        }
     }
 }

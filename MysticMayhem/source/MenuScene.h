@@ -122,6 +122,8 @@ public:
     bool createPressed() { return _create; }
     bool joinPressed() { return _join; }
     bool settingsPressed() { return _settings; }
+    
+    std::shared_ptr<Settings> getSettings() { return _settingsNode; }
 
 };
 

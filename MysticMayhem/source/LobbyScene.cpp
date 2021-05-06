@@ -65,6 +65,10 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     _map2Button->setToggle(true);
     _map3Button->setToggle(true);
     _map4Button->setToggle(true);
+    _map1Button->setDown(false);
+    _map2Button->setDown(false);
+    _map3Button->setDown(false);
+    _map4Button->setDown(false);
     
     if(NetworkController::isHost()){
         _startButton->setVisible(true);
@@ -75,6 +79,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _active = down;
             }
         });
+        _map1Button->setVisible(true);
         _map1Button->addListener([&](const std::string& name, bool down) {
             if (_map1Button->isDown()) {
                 _map2Button->setDown(false);
@@ -90,6 +95,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 CULog("%f %f", _map1Button->getPositionX(), _map1Button->getPositionY());
             }
         });
+        _map2Button->setVisible(true);
         _map2Button->addListener([&](const std::string& name, bool down) {
             if (_map2Button->isDown()) {
                 _map1Button->setDown(false);
@@ -104,6 +110,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _selectedMap = GRASS_MAP2_KEY;
             }
         });
+        _map3Button->setVisible(true);
         _map3Button->addListener([&](const std::string& name, bool down) {
             if (_map3Button->isDown()) {
                 _map1Button->setDown(false);
@@ -118,6 +125,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _selectedMap = GRASS_MAP3_KEY;
             }
             });
+        _map4Button->setVisible(true);
         _map4Button->addListener([&](const std::string& name, bool down) {
             if (_map4Button->isDown()) {
                 _map1Button->setDown(false);
@@ -166,6 +174,9 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _map3Button->deactivate();
         _map4Button->deactivate();
         _startButton->deactivate();
+        if(_settingsNode->isVisible()) {
+            CULog("LOBBY: settings visible");
+        }
     });
 
     
@@ -211,6 +222,8 @@ void LobbyScene::dispose() {
     _assets = nullptr;
     _active = false;
     _playAgain = false;
+    _currRoomId = "";
+    _selectedMap = "";
 }
 
 
@@ -228,6 +241,7 @@ void LobbyScene::update(float progress) {
     NetworkController::step();
     if (_currRoomId == "") {
         _currRoomId = NetworkController::getRoomId();
+        CULog("room id in lobby %s", _currRoomId.c_str());
         stringstream ss;
         ss << "Room Id: " << _currRoomId;
         _roomId->setText(ss.str());

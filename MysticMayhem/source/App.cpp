@@ -145,6 +145,8 @@ void App::onResume() {
  //                CULog("menu scene");
                  if((_menu.createPressed() || _menu.joinPressed()) && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected){
                      _menu.setActive(false);
+                     _menu.getSettings()->removeAllChildren();
+                     _menu.getSettings()->dispose();
                      _menu.removeAllChildren();
                      _menu.dispose();
                      _lobby.init(_assets);
@@ -152,13 +154,6 @@ void App::onResume() {
                      //NetworkController::setLobbyScene(_lobby);
                      _currentScene = SceneSelect::Lobby;
                  }
-//                 else if (_menu.settingsPressed()) {
-//                     _menu.setActive(false);
-//                     _settings.init(_assets);
-//                     _menu.removeAllChildren();
-//                     _menu.dispose();
-//                     _currentScene = SceneSelect::Settings;
-//                 }
              }
              else {
                  _menu.setActive(false);
@@ -175,12 +170,14 @@ void App::onResume() {
                  _lobby.update(0.01f);
              } else {
                  _lobby.setActive(false);
+                 _lobby.getSettings()->removeAllChildren();
+                 _lobby.getSettings()->dispose();
+                 _lobby.removeAllChildren();
+                 _lobby.dispose();
                  _gameplay.init(_assets, _lobby.getSelectedMap());
                  _gameplay.setActive(true);
                  _gameplay.setMovementStyle(0);
                  startTimer = time(NULL);
-                 _lobby.removeAllChildren();
-                 _lobby.dispose();
                  _currentScene = SceneSelect::Game;
              }
              break;
@@ -189,6 +186,8 @@ void App::onResume() {
              _gameplay.update(timestep);
              if (time(NULL) - startTimer >= gameTimer) {
                  _results.init(_assets, _gameplay.getResults(), _gameplay.getWinner());
+                 _gameplay.getSettings()->removeAllChildren();
+                 _gameplay.getSettings()->dispose();
                  _gameplay.dispose();
  //                _gameplay.reset();
                  _currentScene = SceneSelect::Results;
@@ -204,6 +203,7 @@ void App::onResume() {
                  _currentScene = SceneSelect::Lobby;
              }
              else if (_results.mainMenu()) {
+                 NetworkController::destroyConn();
                  _results.dispose();
                  _menu.init(_assets);
                  _currentScene = SceneSelect::Menu;
