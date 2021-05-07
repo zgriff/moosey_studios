@@ -174,7 +174,7 @@ void App::onResume() {
                  _lobby.update(0.01f);
              } else {
                  _lobby.setActive(false);
-                 _gameplay.init(_assets, _lobby.getSelectedMap());
+                 _gameplay.init(_assets);
                  _gameplay.setActive(true);
                  _gameplay.setMovementStyle(0);
                  startTimer = time(NULL);

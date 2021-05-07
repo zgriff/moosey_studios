@@ -53,9 +53,10 @@ namespace NetworkController {
     void setMapSelected(int i);
 
     std::string getUsername();
-    std::string getUsername(int i);
+    std::string getUsername(int playerId);
 
     void setUsername(std::string name);
+    void setUsername(std::string name, int playerId);
 
     void setReadyCallback(std::function<void(uint8_t, bool)> cb);
     void setStartCallback (std::function<void(void)> cb);

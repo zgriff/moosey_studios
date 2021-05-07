@@ -64,10 +64,11 @@ using namespace std;
  *
  * @return true if the controller is initialized properly, false otherwise.
  */
-bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string mapKey) {
+bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Initialize the scene to a locked width
     //create world
     CULog("map selected is %d", NetworkController::getMapSelected());
+    string mapKey = "";
     switch (NetworkController::getMapSelected()) {
     case 1:
         mapKey = GRASS_MAP_KEY;
@@ -142,11 +143,13 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string m
     _UInode = _assets->get<scene2::SceneNode>("ui");
     _UInode->setAnchor(Vec2::ANCHOR_CENTER);
     _UInode->setPosition(_worldOffset);
-    _UInode->setContentSize(Size(w,h));
+    //_UInode->setContentSize(Size(w,h));
+    _UInode->setContentSize(Size(2500.0, 1750.0));
+    //Not really sure how this works, seems like UI on screen shouldn't change based on map size?
     _UInode->doLayout(); // Repositions the HUD;
-    //Basically you want the inverse of camera zoom for the UInode scale, originally this wasn't set to the inverse
-    //so I had to hardcode 0.4 to compensate for how the UInode childen are currently set
-    _UInode->setScale(0.4/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
+    //It should be inverse of the camera zoom, so UI shrinks if zoom is more
+    _UInode->setScale(0.35/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
+    //_UInode->setScale(CAMERA_ZOOM);
     
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_score"));
     _framesHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_frames"));

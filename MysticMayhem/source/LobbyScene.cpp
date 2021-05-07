@@ -218,17 +218,27 @@ void LobbyScene::update(float progress) {
     for (auto it = _playerLabels.begin(); it!=_playerLabels.end();it++) {
         std::string  name = (*it)->getName();
         name = name.back();
-        int player_num = std::stoi(name);
-        
-        if (player_num <= NetworkController::getNumPlayers()) {
-            if (player_num == 2) {
-                //NetworkController::sendSetUsername(player_num, "testname2");
+        char nullChar = 0;
+        if (name[0] != nullChar) {
+            int player_num = std::stoi(name);
+
+            if (player_num <= NetworkController::getNumPlayers()) {
+                /*if (player_num == 1) {
+                    char nullChar = 0;
+                    std::string testUsername = "testname2";
+                    testUsername += nullChar;
+                    CULog("username with null is %s", testUsername.c_str());
+                    NetworkController::sendSetUsername(player_num, testUsername);
+                }*/
+                //NetworkController::sendSetUsername(player_num, "testname");
+                /*CULog("setting username label text %s for player %d",
+                    NetworkController::getUsername(it - _playerLabels.begin()).c_str(), it - _playerLabels.begin());*/
+                NetworkController::setUsername(NetworkController::getUsername(), NetworkController::getPlayerId().value());
+                char nullChar = 0;
+                NetworkController::sendSetUsername(NetworkController::getPlayerId().value(), NetworkController::getUsername() + nullChar);
+                (*it)->setText(NetworkController::getUsername(it - _playerLabels.begin()));
+                (*it)->setVisible(true);
             }
-            //CULog("index is %d", it - _playerLabels.begin());
-            //NetworkController::sendSetUsername(player_num, "testname");
-            //CULog("setting username label text %s", NetworkController::getUsername(it - _playerLabels.begin()));
-            //(*it)->setText(NetworkController::getUsername(it - _playerLabels.begin()));
-            (*it)->setVisible(true);
         }
     }
 
