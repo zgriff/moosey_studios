@@ -50,9 +50,9 @@ bool Settings::init(const std::shared_ptr<AssetManager>& assets) {
     addChild(layer);
     
     _soundVolume = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("settings_soundvolume"));
-    _soundVolume->activate();
+//    _soundVolume->activate();
     _soundVolume->addListener([=](const std::string& name, float value) {
-        SoundController::setSoundVolume(value);
+//        SoundController::setSoundVolume(value);
     });
     
     _backButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("settings_backbutton"));
