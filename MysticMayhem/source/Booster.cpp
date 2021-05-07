@@ -16,7 +16,7 @@
 #define BOOST_COLS       1
 /** Number of elements in this image filmstrip */
 #define BOOST_FRAMES     1
-#define BOOST_SIDE_LEN     1.0f
+#define BOOST_SIDE_LEN     1.5f
 
 using namespace cugl;
 

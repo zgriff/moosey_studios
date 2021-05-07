@@ -28,7 +28,7 @@ private:
     int _score;
     bool _isInvisible;
     bool _isIntangible; //can't interact with any object (can't tag and nobody can tag you)
-    time_t _tagCooldown;
+    time_t _timeLastTagged;
     bool _holdingEgg;
     bool _justHitByProjectile = false;
     bool _isLocal; // true if the player is the one running on this system
@@ -36,8 +36,13 @@ private:
     cugl::Vec2 _positionError;
     bool _horizFlip;
     
+    
+    
+    //map to iterate through all animation nodes
     std::unordered_map<std::string,std::shared_ptr<cugl::scene2::AnimationNode>> _animNodes;
+    //map to keep track of where each node is in it's cycle/if it's reached the end
     std::unordered_map<std::string,bool> _animCycles;
+    //map to hold the number of frames in each node's cycle
     std::unordered_map<std::string,int> _frameNumbers;
     
     
@@ -48,10 +53,20 @@ private:
     std::string _bodyKey;
     std::string _hatKey;
     std::string _staffKey;
+    std::string _staffTagKey;
     std::string _ringKey;
     
+    //Timers to limit player swap during death so they don't swap 1000000 times a second
+    time_t _swapTimer;
+    time_t _swapCooldown = 0.25;
+    
+    //Timers to keep track of animation cycles
     clock_t _animationTimer;
-    clock_t _animationRate = 0.1 * CLOCKS_PER_SEC;
+    clock_t _tagAnimationTimer;
+    clock_t _ringAnimationTimer;
+    clock_t _animationRate = 0.1f * CLOCKS_PER_SEC;
+    clock_t _tagAnimationRate = 0.05f * CLOCKS_PER_SEC;
+    clock_t _ringAnimationRate = 0.5f * CLOCKS_PER_SEC;
         
     /** Cache object for transforming the force according the object angle */
     cugl::Mat4 _affine;
@@ -137,9 +152,15 @@ public:
     
     void setIsIntangible(bool b) { _isIntangible = b; }
     
-    time_t getTagCooldown() { return _tagCooldown; }
+    time_t getTimeLastTagged() { return _timeLastTagged; }
     
-    void setTagCooldown(clock_t t) { _tagCooldown = t; }
+    void setTimeLastTagged(clock_t t) { _timeLastTagged = t; }
+    
+    time_t getSwapCooldown() { return _swapTimer; }
+    
+    void setSwapCooldown(clock_t t) { _swapTimer = t; }
+    
+    bool canSwap();
 
     float getDirection() { return _direct; }
 
@@ -230,6 +251,10 @@ public:
     
     void setStaffKey(std::string staff) {
         _staffKey = staff;
+    }
+    
+    void setStaffTagKey(std::string staff) {
+        _staffTagKey = staff;
     }
     
     void setRingKey(std::string ring) {
@@ -345,6 +370,9 @@ public:
     float getDrawScale() const { return _drawscale; }
     
     
+    void animateTag();
+    
+    void finishTagAnim();
     
     void animateMovement();
     

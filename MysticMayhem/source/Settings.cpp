@@ -56,7 +56,7 @@ bool Settings::init(const std::shared_ptr<AssetManager>& assets) {
     doLayout();
     
     _soundVolume = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("settings_soundvolume"));
-    _soundVolume->activate();
+//    _soundVolume->activate();
     _soundVolume->addListener([=](const std::string& name, float value) {
         SoundController::setSoundVolume(value);
         CULog("volume %f",value);

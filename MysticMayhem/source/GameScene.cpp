@@ -37,15 +37,19 @@ using namespace std;
 /** Height of the game world in Box2d units */
 #define DEFAULT_HEIGHT  18.0f
 /** The restitution for all physics objects */
-#define TURNS_PER_SPIN   75.0f
-/** how much the sideways velocity is subtracted per frame*/
-#define KINETIC_FRICTION 1.5f
+#define TURNS_PER_SPIN   55.0f
+/** how much the sideways velocity is subtracted per frame
+    1.0 decelerates turning player to 14.6 velocity*/
+#define KINETIC_FRICTION 2.5f
 /** how much the backwards velocity is subtracted per frame if the player is going backwards*/
-#define BACKWARDS_FRICTION 0.8f
+#define BACKWARDS_FRICTION 0.5f
 /** how quickly the camera catches up to the player*/
 #define CAMERA_STICKINESS .07f
-/** how quickly the camera catches up to the player*/
-#define CAMERA_ZOOM .55f
+/** How much the camera */
+#define CAMERA_ZOOM 0.65f
+/** baseline aspect ratio, 1468.604 is from 1280x720 */
+#define BASELINE_DIAGONAL 1468.60478005
+#define BASELINE_HEIGHT 720 //if we want to scale by height instead just change the places w/ length and diagonal to height
 
 #pragma mark -
 #pragma mark Constructors
@@ -87,6 +91,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string m
     //these represent the dimensions of the game world in scene units
     float w = _world->getSceneSize().x;
     float h = _world->getSceneSize().y;
+    CULog("w is %f h is %f", w, h);
     
     Size dimen = computeActiveSize(w,h);
 
@@ -139,7 +144,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string m
     _UInode->setPosition(_worldOffset);
     _UInode->setContentSize(Size(w,h));
     _UInode->doLayout(); // Repositions the HUD;
-    _UInode->setScale(CAMERA_ZOOM/1.0f);
+    //Basically you want the inverse of camera zoom for the UInode scale, originally this wasn't set to the inverse
+    //so I had to hardcode 0.4 to compensate for how the UInode childen are currently set
+    _UInode->setScale(0.4/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
     
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_score"));
     _framesHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_frames"));
@@ -235,8 +242,15 @@ void GameScene::reset() {
         _player->setUsername(NetworkController::getUsername());
         _player->setIsLocal(true);
         static_pointer_cast<cugl::OrthographicCamera>(getCamera())->set(Application::get()->getDisplaySize());
-        static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(CAMERA_ZOOM);
-        getCamera()->translate(_player->getSceneNode()->getPosition() - getCamera()->getPosition());
+        float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+        static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
+        auto cameraInitPlayerPos = _player->getSceneNode()->getPosition();
+        //cameraZoom = 1;
+        //cameraInitPlayerPos.x = std::clamp(cameraInitPlayerPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
+        //    _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
+        //cameraInitPlayerPos.y = std::clamp(cameraInitPlayerPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
+        //    _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
+        getCamera()->translate(cameraInitPlayerPos - getCamera()->getPosition());
     }
     _playerController.init();
     
@@ -279,7 +293,7 @@ void GameScene::update(float timestep) {
                 break;
             }
 
-            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI * timestep * 60.0f / TURNS_PER_SPIN;
+            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI * timestep * 60.0 / TURNS_PER_SPIN;
             _player->setDirection(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
 
             auto vel = _player->getLinearVelocity();
@@ -298,11 +312,10 @@ void GameScene::update(float timestep) {
             if (abs(offset) < M_PI / 2.0) {
                 auto backwards = _player->getLinearVelocity().rotate(-1.0f * offset).scale(-1.0f * cos(offset) * _player->getMass());
                 if (backwards.length() > BACKWARDS_FRICTION) {
-                    backwards.scale(BACKWARDS_FRICTION / correction.length());
+                    backwards.scale(BACKWARDS_FRICTION / backwards.length());
                 }
                 _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(backwards.x, backwards.y), true);
             }
-
             _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
 
             if (_playerController.getMov().x == 0) {
@@ -311,16 +324,15 @@ void GameScene::update(float timestep) {
                 auto forForce = _player->getForce();
                 auto scaling = _player->getForce();
 
-                scaling.normalize().scale(_player->getMass() * 0.06f * pow(max(25.0f - vel.length(), 0.0f), 1.8f));
-                //scaling.normalize().scale(_player->getMass() * 0.5f * (25.0f - vel.length()));
-                //scaling.normalize().scale(2.0f * pow(30.0f - vel.length(), 0.6f));
+                scaling.normalize().scale(_player->getMass() * 0.27f * pow(max(25.0f - vel.length(), 0.0f), 1.5f));
+
                 _player->setForce(scaling);
                 _player->applyForce();
                 _player->setForce(forForce);
             }
             else {
                 auto forForce = _player->getForce();
-                auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 2.0) * cos(offset) * 1.5f * _player->getMass() * tan(2.0 * M_PI / TURNS_PER_SPIN));
+                auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * 0.9f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
                 if (_playerController.getMov().x < 0) {
                     turnForce.scale(-1.0f);
                 }
@@ -332,6 +344,7 @@ void GameScene::update(float timestep) {
                 _player->applyForce();
                 _player->setForce(forForce);
             }
+
             break;
         }
         case Movement::SwipeForce: {
@@ -381,11 +394,22 @@ void GameScene::update(float timestep) {
 
 
     auto playPos = _player->getSceneNode()->getPosition();
-    if (_player->getLinearVelocity().length() > .00001) {
-        playPos += _player->getLinearVelocity().scale(40.0 / pow(_player->getLinearVelocity().length(), .35));
-    }
+    playPos += _player->getLinearVelocity().scale(40.0 / pow(max(_player->getLinearVelocity().length(), .000001f), .35));
     auto camSpot = getCamera()->getPosition();
+
+    ////playPos is only used for camera to calculate camera translation, we clamp it so camera doesn't display offmap
+    //float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+    //playPos.x = std::clamp(playPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
+    //    _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
+    ///*CULog("right boundary should be %f", _world->getSceneSize().x);
+    //CULog("should be cutoff at %f", _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom));
+    //CULog("player pos x %f", _player->getSceneNode()->getPosition().x);*/
+    //playPos.y = std::clamp(playPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
+    //    _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
+    ////CULog("viewport x %f", getCamera()->getViewport().size.width);
+
     auto trans = (playPos - camSpot)*CAMERA_STICKINESS;
+    //CULog("camera x: %f camera y: %f", getCamera()->getPosition().x, getCamera()->getPosition().y);
     getCamera()->translate(trans);
     getCamera()->update();
     _UInode->setPosition(camSpot + trans - _worldOffset);
@@ -457,13 +481,13 @@ void GameScene::update(float timestep) {
     }
     
     //cooldown for player after it's tagged
-    for(auto p : _world->getPlayers()){
-        if (p->getIsTagged()) {
-            if (time(NULL) - p->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
-                p->setIsTagged(false);
-            }
-        }
-    }
+    //for(auto p : _world->getPlayers()){
+    //    if (p->getIsTagged()) {
+    //        if (time(NULL) - p->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
+    //            p->setIsTagged(false);
+    //        }
+    //    }
+    //}
     
     // ability stuff here
     _abilitybar->setProgress(_player->getOrbScore() * 0.2);
@@ -482,7 +506,11 @@ void GameScene::update(float timestep) {
     _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
     _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
     
-    _player->animateMovement();
+    for(auto p : _world->getPlayers()){
+        p->animateMovement();
+    }
+    
+    
     //send new position
     NetworkController::sendPosition();
 }

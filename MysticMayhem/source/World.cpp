@@ -171,7 +171,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     }
     
     Vec2 playerPos = ((Vec2)PLAYER_POS);
-    Size playerSize(1, 2);
+    Size playerSize(.75, 1.5);
     for(int i = 0; i < _numPlayers; ++i){
         if (_playerSpawns.size()-1>=i) {
             playerPos = _playerSpawns[i];
@@ -185,6 +185,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->setBodyKey("player_body_line");
         player->setHatKey("player_hat");
         player->setStaffKey("player_staff");
+        player->setStaffTagKey("player_staff_tag");
         player->setRingKey("player_direction");
         
         _physicsWorld->addObstacle(player);
@@ -299,7 +300,7 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
     }
     
     
-    /* auto tiles = json->get(TILES_FIELD);
+    auto tiles = json->get(TILES_FIELD);
     if (tiles != nullptr) {
         int tsize = (int)tiles->size();
         for(int ii = 0; ii < tsize; ii++) {
@@ -308,7 +309,7 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
     } else {
         CUAssertLog(false, "Failed to load tiles");
         return false;
-    } */
+    }
 
 
     auto decorations = json->get(DECORATIONS_FIELD);
@@ -402,7 +403,6 @@ bool World::loadBackground(const std::shared_ptr<JsonValue> &json) {
 
 bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
     bool success = true;
-    CULog("loading wall");
     
     std::string wname = "wall";
     
@@ -426,7 +426,7 @@ bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
         wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
         wallobj->setName(wname);
         wallobj->setFriction(0.0);
-        wallobj->setRestitution(0.6);
+        wallobj->setRestitution(0.4);
         // Set the physics attributes
         wallobj->setBodyType(b2_staticBody);
 
@@ -482,7 +482,6 @@ bool World::loadEgg(const std::shared_ptr<JsonValue> &json){
 //    Size eggSize(eggTexture->getSize() / _scale);
     Size eggSize(1, 2);
     auto egg = Egg::alloc(eggPos, eggSize);
-    CULog("orbPos: %f   y %f",eggPos.x,eggPos.y);
 
     _initEggLocs.push_back(eggPos);
     _eggSpawns.push_back(eggPos);

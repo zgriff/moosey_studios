@@ -33,6 +33,9 @@
         "grass3": {
             "file":  "textures/grass3.png"
         },
+        "big_grass": {
+            "file": "textures/big_grass.png"
+        },
         "booster": {
             "file": "textures/sped.png"
         },
@@ -108,7 +111,7 @@
         "staff_water":{
             "file": "textures/Character7_StaffWater.png"
         },
-        "staff_tag":{
+        "player_staff_tag":{
             "file": "textures/Character7_Tag.png"
         },
         "staff_tag_aether":{
