@@ -19,7 +19,7 @@ namespace NetworkController {
         //Networked usernames indexed by playerId
         array<std::string, 8> usernames = {"test1", "test2", "test3" , "test4" , "test5" , "test6" , "test7" , "test8" };
         int _networkFrame;
-        int mapSelected;
+        int mapSelected = 1;
         std::function<void(uint8_t, bool)> readyCallback;
         std::function<void(void)> startCallback;
     }
@@ -120,13 +120,11 @@ struct LobbyHandler {
         startCallback();
     }
     void operator()(NetworkData::SetMap & data) const {
-        CULog("received map select %d \n", data.mapNumber);
         mapSelected = data.mapNumber;
     }
     void operator()(NetworkData::SetUsername& data) const {
         int id1 = data.playerId;
         string username1 = data.username;
-        CULog("username gotten is %s", username1.c_str());
         usernames[id1] = username1;
     }
     //generic. do nothing
@@ -357,7 +355,6 @@ struct GameHandler {
         NetworkData::SetUsername data;
         data.playerId = playerId;
         data.username = username;
-        CULog("going to send %s", username.c_str());
         send(NetworkData(data));
     }
 
