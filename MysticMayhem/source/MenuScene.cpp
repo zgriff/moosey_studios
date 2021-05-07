@@ -137,7 +137,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         NetworkController::setUsername(value);
     });
     
-    _usernameField->setVisible(true);
+    _usernameField->setPosition(dimen.width/2, dimen.height/6);
     
     Input::activate<TextInput>();
     _codeField->setVisible(false);

@@ -241,12 +241,16 @@ Element Player::getPreyElement() {
 
 void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     _usernameNode = scene2::Label::alloc(_username, font);
-    _usernameNode->setPosition(-1*_usernameNode->getContentWidth()/2, 40);
+    _usernameNode->setPosition(-1*_usernameNode->getContentWidth()/2 * 10, 100);
     /*Hardcoded height because not sure how to get dimensions of the Player
     CULog("this width %d", this->getWidth());
     CULog("sceneNode width %d", _sceneNode->getContentWidth());
     CULog("animationNode width %d", _animationNode->getContentWidth());*/
     _sceneNode->addChild(_usernameNode);
+    _usernameNode->setScale(10.0f);
+    _usernameNode->setForeground(Color4::WHITE);
+    _usernameNode->setVisible(true);
+    CULog("username is %s", _username.c_str());
 }
 
 /**

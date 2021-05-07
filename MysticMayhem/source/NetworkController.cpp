@@ -14,6 +14,7 @@ namespace NetworkController {
     namespace {
         std::shared_ptr<cugl::CUNetworkConnection> network;
         std::shared_ptr<World> world;
+        std::string roomId;
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username = "";
         //Networked usernames indexed by playerId
@@ -40,6 +41,7 @@ namespace NetworkController {
     void joinGame(std::string roomId) {
         network =
             std::make_shared<cugl::CUNetworkConnection>(cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, globals::MAX_PLAYERS, 0), roomId);
+        NetworkController::roomId = roomId;
     }
 
     cugl::CUNetworkConnection::NetStatus getStatus(){
@@ -66,7 +68,10 @@ namespace NetworkController {
     }
 
     std::string getRoomId() {
-        return network->getRoomID();
+        if (roomId == "") {
+            roomId = network->getRoomID();
+        }
+        return roomId;
     }
 
     uint8_t getNumPlayers() {
