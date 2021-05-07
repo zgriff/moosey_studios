@@ -351,7 +351,6 @@ void Player::update(float delta) {
     }
     
     if (time(NULL) - _timeLastTagged < INVIS_TIME) {
-        CULog("%d can't be tagged!", getID());
         _isInvisible = true;
         _isIntangible = true;
         _isTagged = true;
@@ -364,8 +363,6 @@ void Player::update(float delta) {
         }
     }
     else {
-        CULog("time passed is %d", time(NULL) - _timeLastTagged);
-        CULog("%d can be tagged!", getID());
         _isIntangible = false;
         _isTagged = false;
         if (_currElt != Element::Aether) {
