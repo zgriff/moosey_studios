@@ -178,7 +178,9 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         } else {
             playerPos = ((Vec2)PLAYER_POS);
         }
-        auto player = Player::alloc(playerPos, playerSize, Element::Water);
+        auto r = rand() % 3;
+        auto ele = r == 0 ? Element::Water : (r == 1 ? Element::Fire : Element::Grass);
+        auto player = Player::alloc(playerPos, playerSize, ele);
         player->setSkinKey("player_skin");
         player->setColorKey("player_color");
         player->setFaceKey("player_face");
