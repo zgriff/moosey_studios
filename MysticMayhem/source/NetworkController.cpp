@@ -42,12 +42,6 @@ namespace NetworkController {
         NetworkController::roomId = roomId;
     }
 
-    void destroyConn() {
-            network = nullptr;
-            roomId = "";
-            mapSelected = 0;
-        }
-
     cugl::CUNetworkConnection::NetStatus getStatus(){
         if(network == nullptr){
             return cugl::CUNetworkConnection::NetStatus::Disconnected;

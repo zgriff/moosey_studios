@@ -9,9 +9,9 @@
 
 namespace NetworkController {
 
-	void createGame();
+    void createGame();
 
-	void joinGame(std::string roomId);
+    void joinGame(std::string roomId);
     
     /** isHost is true if the player is a host of a game and false otherwise */
     bool isHost();
@@ -23,8 +23,6 @@ namespace NetworkController {
     uint8_t getNumPlayers();
     
     cugl::CUNetworkConnection::NetStatus getStatus();
-
-    void destroyConn();
 
     void step();
     

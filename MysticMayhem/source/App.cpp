@@ -203,7 +203,7 @@ void App::onResume() {
                  _currentScene = SceneSelect::Lobby;
              }
              else if (_results.mainMenu()) {
-                 NetworkController::destroyConn();
+//                 NetworkController::destroyConn();
                  _results.dispose();
                  _menu.init(_assets);
                  _currentScene = SceneSelect::Menu;

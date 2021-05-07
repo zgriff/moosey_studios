@@ -223,7 +223,6 @@ void LobbyScene::dispose() {
     _active = false;
     _playAgain = false;
     _currRoomId = "";
-    _selectedMap = "";
 }
 
 
