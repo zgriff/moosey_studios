@@ -59,6 +59,8 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _host = true;
         NetworkController::createGame();
         _joinButton->deactivate();
+        _usernameField->deactivate();
+        _usernameField->setVisible(false);
 //        _slider->setVisible(false);
 //        _slider->deactivate();
         _label->setVisible(false);
@@ -69,13 +71,15 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     
     _joinButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_join"));
     _joinButton->addListener([=](const std::string& name, bool down) {
-//        CULog("join button pressed");
+        CULog("join button pressed");
         _host = false;
 //        _slider->setVisible(false);
 //        _slider->deactivate();
 //        _label->setVisible(false);
         _hostButton->setVisible(false);
         _hostButton->deactivate();
+        _usernameField->deactivate();
+        _usernameField->setVisible(false);
         _joinButton->setVisible(false);
         _codeField->activate();
         _codeField->setVisible(true);
@@ -146,8 +150,17 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         NetworkController::joinGame(value);
         //this->_active = false;
     });
+
+    _usernameField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_username_action"));
+    _usernameField->addTypeListener([=](const std::string& name, const std::string& value) {
+        CULog("Change to %s", value.c_str());
+        });
+    _usernameField->addExitListener([=](const std::string& name, const std::string& value) {
+        CULog("Finish to %s", value.c_str());
+        NetworkController::setUsername(value);
+    });
     
-    
+    _usernameField->setVisible(true);
     
     Input::activate<TextInput>();
     _codeField->setVisible(false);
@@ -165,8 +178,9 @@ void MenuScene::dispose() {
 //    removeAllChildren();
     _hostButton = nullptr;
     _joinButton = nullptr;
-    Input::deactivate<TextInput>();
+//    Input::deactivate<TextInput>();
     _codeField = nullptr;
+    _usernameField = nullptr;
     _slider = nullptr;
     _assets = nullptr;
     _active = false;
@@ -207,10 +221,12 @@ void MenuScene::setActive(bool value) {
         _joinButton->setVisible(true);
         _codeField->deactivate();
         _codeField->setVisible(false);
+        _usernameField->activate();
     } else if (!value && (_hostButton->isActive() || _joinButton->isActive() || !_codeField->isActive())) {
         _hostButton->deactivate();
         _joinButton->deactivate();
         _codeField->deactivate();
+        _usernameField->deactivate();
 //        _slider->deactivate();
     }
 }

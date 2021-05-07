@@ -351,6 +351,7 @@ void Player::update(float delta) {
     }
     
     if (time(NULL) - _timeLastTagged < INVIS_TIME) {
+//        CULog("%d can't be tagged!", getID());
         _isInvisible = true;
         _isIntangible = true;
         _isTagged = true;
@@ -363,6 +364,8 @@ void Player::update(float delta) {
         }
     }
     else {
+//        CULog("time passed is %d", time(NULL) - _timeLastTagged);
+//        CULog("%d can be tagged!", getID());
         _isIntangible = false;
         _isTagged = false;
         if (_currElt != Element::Aether) {
@@ -474,7 +477,7 @@ void Player::animateMovement() {
     
     //iterate through nodes and animate at animation rate
     if (clock() - _animationTimer  >= _animationRate) {
-        CULog("body");
+//        CULog("body");
         for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
             if  ((*it).first != _staffTagKey && (*it).first != _ringKey) {
                 animationCycle((*it).second.get(), &_animCycles[(*it).first], (*it).first);
@@ -484,7 +487,7 @@ void Player::animateMovement() {
     }
     
     if (clock() - _ringAnimationTimer  >= _ringAnimationRate) {
-        CULog("ring");
+        //CULog("ring");
 
         animationCycle(_animNodes[_ringKey].get(), &_animCycles[_ringKey], _ringKey);
         _ringAnimationTimer = clock();

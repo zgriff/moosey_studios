@@ -174,7 +174,7 @@ void App::onResume() {
                  _lobby.getSettings()->dispose();
                  _lobby.removeAllChildren();
                  _lobby.dispose();
-                 _gameplay.init(_assets, _lobby.getSelectedMap());
+                 _gameplay.init(_assets);
                  _gameplay.setActive(true);
                  _gameplay.setMovementStyle(0);
                  startTimer = time(NULL);
@@ -186,8 +186,8 @@ void App::onResume() {
              _gameplay.update(timestep);
              if (time(NULL) - startTimer >= gameTimer) {
                  _results.init(_assets, _gameplay.getResults(), _gameplay.getWinner());
-                 _gameplay.getSettings()->removeAllChildren();
-                 _gameplay.getSettings()->dispose();
+//                 _gameplay.getSettings()->removeAllChildren();
+//                 _gameplay.getSettings()->dispose();
                  _gameplay.dispose();
  //                _gameplay.reset();
                  _currentScene = SceneSelect::Results;
@@ -203,7 +203,7 @@ void App::onResume() {
                  _currentScene = SceneSelect::Lobby;
              }
              else if (_results.mainMenu()) {
-//                 NetworkController::destroyConn();
+                 NetworkController::destroyConn();
                  _results.dispose();
                  _menu.init(_assets);
                  _currentScene = SceneSelect::Menu;

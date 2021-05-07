@@ -46,9 +46,11 @@ bool InputController::init() {
 #ifndef CU_MOBILE
     success = Input::activate<Keyboard>();
 #else
+    CULog("phone");
     success = Input::activate<Accelerometer>();
     Touchscreen* touch = Input::get<Touchscreen>();
     touch->addBeginListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+        CULog("add begin listener");
         this->touchBeganCB(event,focus);
     });
     touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
@@ -97,6 +99,7 @@ void InputController::readInput() {
         default:
             _abilityPressed = false;
             if (_keydown && touch->touchCount() == 1) {
+                CULog("touching");
                 _abilityQueued = false;
                 if (_dtouch.x < 640) {
                     mov.x = -1;
@@ -157,6 +160,7 @@ void InputController::readInput() {
  * @param event The associated event
  */
 void InputController::touchBeganCB(const cugl::TouchEvent& event, bool focus) {
+    CULog("touch began CB");
     // All touches correspond to key up
     _keydown = true;
     _timestamp = event.timestamp;
