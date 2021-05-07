@@ -590,7 +590,8 @@ std::map<std::string, int> GameScene::getResults() {
     for (int i = 0; i < players.size(); i++) {
         auto p = players[i];
         stringstream ss;
-        ss << "player" << " " << p->getID();
+        ss << "player" << " " << p->getID()+1;
+//        ss << NetworkController::getUsername(p->getID());
         results[ss.str()] = p->getScore();
     }
     
