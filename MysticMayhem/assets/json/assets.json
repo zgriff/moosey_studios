@@ -120,9 +120,6 @@
         "staff_tag_fire":{
             "file": "textures/Character7_TagFire.png"
         },
-        "staff_tag_aether":{
-            "file": "textures/Character7_TagGrass.png"
-        },
         "staff_tag_water":{
             "file": "textures/Character7_TagWater.png"
         },
@@ -177,13 +174,6 @@
         },
         "play_again": {
             "file": "textures/play_again.png",
-            "wrapS": "clamp",
-            "wrapT": "clamp",
-            "minfilter": "linear",
-            "magfilter": "linear"
-        },
-        "main_menu": {
-            "file": "textures/main_menu.png",
             "wrapS": "clamp",
             "wrapT": "clamp",
             "minfilter": "linear",
@@ -436,7 +426,7 @@
                             "type": "TextField",
                             "data": {
                                 "font": "felt",
-                                "text": "",
+                                "text": "Player",
                                 "foreground": [ 255, 255, 255, 255 ],
                                 "background": [ 0, 0, 0, 255 ],
                                 "size": [ 300, 40 ],

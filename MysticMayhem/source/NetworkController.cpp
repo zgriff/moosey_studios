@@ -19,9 +19,10 @@ namespace NetworkController {
         //Networked usernames indexed by playerId
         array<std::string, 8> usernames = {"test1", "test2", "test3" , "test4" , "test5" , "test6" , "test7" , "test8" };
         int _networkFrame;
-        int mapSelected;
+        int mapSelected = 1;
         std::function<void(uint8_t, bool)> readyCallback;
         std::function<void(void)> startCallback;
+        time_t startTimestamp;
     }
 
     /** IP of the NAT punchthrough server */
@@ -117,6 +118,7 @@ struct LobbyHandler {
         readyCallback(data.player_id, false);
     }
     void operator()(NetworkData::StartGame & data) const {
+        startTimestamp = data.timestamp;
         startCallback();
     }
     void operator()(NetworkData::SetMap & data) const {
@@ -383,6 +385,8 @@ struct GameHandler {
     void startGame(){
         network->startGame();
         NetworkData::StartGame s;
+        startTimestamp = time(NULL);
+        s.timestamp = startTimestamp;
         send(NetworkData(s));
     }
 
