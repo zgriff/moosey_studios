@@ -247,7 +247,6 @@ void GameScene::reset() {
     if(idopt.has_value()){
         CULog("playerid: %i",idopt.value());
         auto _player = _world->getPlayer(idopt.value());
-        _player->setUsername(NetworkController::getUsername());
         _player->setIsLocal(true);
         static_pointer_cast<cugl::OrthographicCamera>(getCamera())->set(Application::get()->getDisplaySize());
         float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
@@ -260,6 +259,13 @@ void GameScene::reset() {
         //    _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
         getCamera()->translate(cameraInitPlayerPos - getCamera()->getPosition());
     }
+
+    auto players = _world->getPlayers();
+    for (auto it = players.begin(); it != players.end(); it++) {
+        (*it)->setUsername(NetworkController::getUsername(it - players.begin()));
+        (*it)->allocUsernameNode(_assets->get<Font>("username"));
+    }
+
     _playerController.init();
     
     _world->setDebug(false);
@@ -611,7 +617,8 @@ std::map<std::string, int> GameScene::getResults() {
     for (int i = 0; i < players.size(); i++) {
         auto p = players[i];
         stringstream ss;
-        ss << "player" << " " << p->getID();
+//        ss << "player" << " " << p->getID()+1;
+        ss << NetworkController::getUsername(p->getID());
         results[ss.str()] = p->getScore();
     }
     

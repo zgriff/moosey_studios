@@ -196,7 +196,6 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->setOrbScore(0);
         //player id is set to i right now, if that is changed, projectile's associated userid needs to change too
         player->setProjectile(_projectiles[i]);
-        player->allocUsernameNode(_assets->get<Font>("username"));
         _worldNode->addChild(player->getSceneNode(),1);
         _players.push_back(player);
     }

@@ -13,13 +13,13 @@ namespace NetworkController {
     namespace {
         std::shared_ptr<cugl::CUNetworkConnection> network;
         std::shared_ptr<World> world;
+        std::string roomId;
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username = "";
         //Networked usernames indexed by playerId
         array<std::string, 8> usernames = {"test1", "test2", "test3" , "test4" , "test5" , "test6" , "test7" , "test8" };
         int _networkFrame;
         int mapSelected = 1;
-        std::string roomId;
         std::function<void(uint8_t, bool)> readyCallback;
         std::function<void(void)> startCallback;
     }

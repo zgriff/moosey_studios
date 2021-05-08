@@ -136,7 +136,7 @@
             "file": "textures/Direction_FireRing.png"
         },
         "ability-bar": {
-            "file": "textures/ability_bar.png",
+            "file": "textures/AbilityBar.png",
             "wrapS": "clamp",
             "wrapT": "clamp",
             "minfilter": "linear",
