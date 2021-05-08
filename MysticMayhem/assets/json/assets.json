@@ -204,10 +204,16 @@
             "file": "textures/map4.png"
         },
         "settings": {
-            "file": "textures/settings.png"
+            "file": "textures/new_settings.png"
+        },
+        "settings_background": {
+            "file": "textures/settings_background.png"
         },
         "back": {
             "file": "textures/back_button.png"
+        },
+        "leavegame": {
+            "file": "textures/exit_game.png"
         }
     },
     "sounds": {
@@ -264,6 +270,10 @@
         "results": {
             "file": "fonts/MarkerFelt.ttf",
             "size": 30
+        },
+        "settings_font": {
+            "file": "fonts/SHOWG.TTF",
+            "size": 20
         }
 
     },
@@ -829,14 +839,22 @@
             }
         },
         "settings" : {
-            "type"      : "Solid",
+            "type"      : "Node",
             "format"    : {
                 "type" : "Anchored"
             },
-            "data" : {
-                "color": [190,187,191,255]
-            },
             "children": {
+                "background": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "settings_background",
+                        "anchor": [ 0.0, 0.5 ]
+                    },
+                    "layout": {
+                        "x_anchor": "fill",
+                        "y_anchor": "fill"
+                    }
+                },
                 "soundvolume"  : {
                     "type"   : "Slider",
                     "data"   : {
@@ -850,8 +868,28 @@
                     "layout" : {
                         "x_anchor" : "center",
                         "y_anchor" : "middle",
-                        "x_offset" : 0,
+                        "x_offset" : 70,
+                        "y_offset" : 85,
                         "absolute": true
+                    }
+                },
+                "sfxlabel": {
+                    "type": "Label",
+                    "data": {
+                        "font": "settings_font",
+                        "text": "SFX VOLUME",
+                        "foreground": [ 0,0,0, 255],
+                        "size": [ 30,  15],
+                        "valign": "bottom",
+                        "halign": "left",
+                        "anchor" : [0.5,0.5]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "top",
+                        "x_offset": -0.2,
+                        "y_offset": -0.35
+                        
                     }
                 },
                 "backbutton" : {
@@ -862,7 +900,7 @@
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.7, 0.4 ],
-                        "scale": 0.3
+                        "scale": 0.25
                     },
                     "children": {
                         "up": {
@@ -873,10 +911,36 @@
                         }
                     },
                     "layout": {
-                        "x_anchor": "left",
-                        "y_anchor": "bottom",
-                        "x_offset": 80,
-                        "y_offset": 30,
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": 10,
+                        "y_offset": -150,
+                        "absolute": true
+                    }
+                },
+                "leavegamebutton" : {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                        "visible": true,
+                        "pushsize": true,
+                        "anchor": [ 0.7, 0.4 ],
+                        "scale": 0.25
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "leavegame"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": 50,
+                        "y_offset": -100,
                         "absolute": true
                     }
                 }

@@ -20,6 +20,8 @@ protected:
     std::shared_ptr<cugl::scene2::Button> _leavegameButton;
     
     bool _back;
+    bool _leaveGame;
+    bool _inGame;
     
     
     
@@ -29,7 +31,7 @@ public:
 #pragma mark -
 #pragma mark Constructors
     
-    explicit Settings(const std::shared_ptr<cugl::AssetManager> &assets);
+    explicit Settings(const std::shared_ptr<cugl::AssetManager> &assets, bool inGame);
     
     
     ~Settings() { dispose(); }
@@ -39,7 +41,7 @@ public:
      */
     void dispose();
     
-    bool init(const std::shared_ptr<cugl::AssetManager>& assets);
+    bool init(const std::shared_ptr<cugl::AssetManager>& assets, bool inGame);
 
     
 #pragma mark -
@@ -52,6 +54,10 @@ public:
 //    void update(float timestep);
     
     bool backPressed() { return _back; }
+    
+    bool leaveGamePressed() { return _leaveGame; }
+    
+    void setActive(bool b);
     
 
 };

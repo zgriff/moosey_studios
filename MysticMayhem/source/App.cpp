@@ -186,11 +186,24 @@ void App::onResume() {
              _gameplay.update(timestep);
              if (time(NULL) - startTimer >= gameTimer) {
                  _results.init(_assets, _gameplay.getResults(), _gameplay.getWinner());
-//                 _gameplay.getSettings()->removeAllChildren();
-//                 _gameplay.getSettings()->dispose();
+                 _gameplay.getSettings()->removeAllChildren();
+                 _gameplay.getSettings()->dispose();
                  _gameplay.dispose();
  //                _gameplay.reset();
                  _currentScene = SceneSelect::Results;
+                 
+             }
+             else {
+                 if (_gameplay.getSettings()->leaveGamePressed()) {
+                     CULog("leave game in app");
+                     NetworkController::destroyConn();
+                     _gameplay.getSettings()->removeAllChildren();
+                     _gameplay.getSettings()->dispose();
+                     _gameplay.dispose();
+                     _menu.init(_assets);
+                     _currentScene = SceneSelect::Menu;
+                     _menu.setActive(true);
+                 }
              }
              break;
          }

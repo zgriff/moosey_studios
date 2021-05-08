@@ -86,9 +86,11 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _join = true;
     });
     
-    _settingsNode = std::make_shared<Settings>(assets);
+    _settingsNode = std::make_shared<Settings>(assets, false);
     _settingsNode->setVisible(false);
+    _settingsNode->setActive(false);
     addChild(_settingsNode);
+    
     
     _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_settings"));
     _settingsButton->activate();
@@ -96,9 +98,15 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
 //        CULog("settings button pressed");
         _settings = down;
         _settingsNode->setVisible(true);
-        if(_settingsNode->isVisible()) {
-            CULog("MENU: settings visible");
-        }
+        _settingsNode->setActive(true);
+//        if(_settingsNode->isVisible()) {
+//            CULog("MENU: settings visible");
+//            CULog("settings pos x %f", _settingsNode->getPositionX());
+//            CULog("settings pos y %f", _settingsNode->getPositionY());
+//            CULog("settings size x %d", _settingsNode->getSize().getIWidth());
+//            CULog("settings size y %d",_settingsNode->getSize().getIHeight());
+//            CULog("settings z order %d", _settingsNode->getZOrder());
+//        }
         _background->setColor(Color4(255,255,255,100));
         _joinButton->setVisible(false);
         _hostButton->setVisible(false);
@@ -233,8 +241,10 @@ void MenuScene::setActive(bool value) {
 
 void MenuScene::update() {
     if (_settingsNode->backPressed()) {
+        CULog("MENU: settings back pressed");
         _settings = false;
         _settingsNode->setVisible(false);
+        _settingsNode->setActive(false);
         _background->setColor(Color4(255,255,255,255));
         if (_join) {
 //            CULog("join true");
@@ -248,4 +258,9 @@ void MenuScene::update() {
             _hostButton->activate();
         }
     }
+    
+    if(_settingsNode->isVisible()) {
+        CULog("MENU: settings visible");
+    }
+    
 }

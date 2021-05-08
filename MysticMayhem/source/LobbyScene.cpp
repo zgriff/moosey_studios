@@ -160,14 +160,16 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _map4Button->setVisible(false);
     }
     
-    _settingsNode = std::make_shared<Settings>(assets);
+    _settingsNode = std::make_shared<Settings>(assets, false);
     _settingsNode->setVisible(false);
+    _settingsNode->setActive(false);
     addChild(_settingsNode);
     
     _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_settings"));
     _settingsButton->activate();
     _settingsButton->addListener([=](const std::string& name, bool down) {
         _settingsNode->setVisible(true);
+        _settingsNode->setActive(true);
         layer->setColor(Color4(255,255,255,100));
         _map1Button->deactivate();
         _map2Button->deactivate();
@@ -306,6 +308,7 @@ void LobbyScene::update(float progress) {
     }
     
     if (_settingsNode->backPressed()) {
+        _settingsNode->setActive(false);
         _settingsNode->setVisible(false);
         _layer->setColor(Color4(255,255,255,255));
         _map1Button->activate();

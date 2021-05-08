@@ -171,24 +171,28 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _debugnode = _world->getDebugNode();
     
-//    _settingsNode = std::make_shared<Settings>(assets);
-//    _settingsNode->setVisible(false);
+    _settingsNode = std::make_shared<Settings>(assets, true);
+    _settingsNode->setVisible(false);
+    _settingsNode->setActive(false);
+    _settingsNode->setPosition(_worldOffset);
+    _settingsNode->setScale(1/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
+
+    _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("ui_settings"));
+    _settingsButton->activate();
+    _settingsButton->addListener([=](const std::string& name, bool down) {
+//        CULog("settings button pressed");
+        _settingsNode->setVisible(true);
+        _settingsNode->setActive(true);
+//        if(_settingsNode->isVisible()) {
+//            CULog("settings visible");
+//        }
 //
-//    _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("ui_settings"));
-//    _settingsButton->activate();
-//    _settingsButton->addListener([=](const std::string& name, bool down) {
-////        CULog("settings button pressed");
-//        _settingsNode->setVisible(true);
-////        if(_settingsNode->isVisible()) {
-////            CULog("settings visible");
-////        }
-////
-//
-//    });
+
+    });
     
     addChild(_rootnode);
     addChild(_UInode);
-//    addChild(_settingsNode);
+    addChild(_settingsNode);
     
     _world->setAssets(_assets);
 
@@ -416,6 +420,7 @@ void GameScene::update(float timestep) {
     getCamera()->translate(trans);
     getCamera()->update();
     _UInode->setPosition(camSpot + trans - _worldOffset);
+    _settingsNode->setPosition(camSpot + trans - _worldOffset);
 
 //    CULog("TIME %ld", time(NULL) - prevTime);
     if(NetworkController::isHost()){
@@ -516,6 +521,12 @@ void GameScene::update(float timestep) {
     
     //send new position
     NetworkController::sendPosition();
+    
+    //settings
+    if (_settingsNode->backPressed()) {
+        _settingsNode->setVisible(false);
+        _settingsNode->setActive(false);
+    }
 }
 
 
