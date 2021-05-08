@@ -53,6 +53,8 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     _background = assets->get<scene2::SceneNode>("menu_background");
     
 //    _create = false;
+    _host = false;
+    _join = false;
     
     _hostButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_host"));
     _hostButton->addListener([=](const std::string& name, bool down) {
@@ -123,6 +125,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _usernameField->setVisible(true);
         _usernameLabel->setVisible(true);
         _joinButton->setVisible(true);
+        _joinButton->activate();
         _codeField->deactivate();
         _codeField->setVisible(false);
         _join = false;
@@ -262,12 +265,17 @@ void MenuScene::update() {
 //            CULog("join true");
             _codeField->activate();
             _codeField->setVisible(true);
+            _exitJoinButton->setVisible(true);
+            _exitJoinButton->activate();
         }
         else {
             _joinButton->setVisible(true);
             _hostButton->setVisible(true);
             _joinButton->activate();
             _hostButton->activate();
+            _usernameLabel->setVisible(true);
+            _usernameField->setVisible(true);
+            _usernameField->activate();
         }
     }
     
