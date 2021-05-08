@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="12" height="8" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="748">
  <editorsettings>
-  <export target="../../MysticMayhem/assets/maps/annoyances.json" format="roshamboogie"/>
+  <export target="../../MysticMayhem/assets/maps/annoyances.json" format="mysticmayhem"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/decorations.tsx"/>
- <tileset firstgid="7" source="../tilesets/tiles.tsx"/>
+ <tileset firstgid="5" source="../tilesets/tiles.tsx"/>
  <layer id="1" name="Background" width="12" height="8">
   <data encoding="csv">
-12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12
+10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10
 </data>
  </layer>
  <objectgroup id="2" name="Hitboxes">
@@ -68,14 +68,14 @@
   <object id="715" template="../templates/booster_pad.tx" x="2568.26" y="381.63"/>
   <object id="716" template="../templates/booster_pad.tx" x="1300.26" y="1237.63"/>
   <object id="717" template="../templates/booster_pad.tx" x="1680.26" y="805.63"/>
-  <object id="718" template="../templates/player_spawn.tx" x="552.259" y="537.63"/>
-  <object id="719" template="../templates/player_spawn.tx" x="740.259" y="1281.63"/>
-  <object id="720" template="../templates/player_spawn.tx" x="1092.26" y="977.63"/>
-  <object id="721" template="../templates/player_spawn.tx" x="1420.26" y="553.63"/>
-  <object id="722" template="../templates/player_spawn.tx" x="1520.26" y="1453.63"/>
-  <object id="723" template="../templates/player_spawn.tx" x="1892.26" y="1061.63"/>
-  <object id="724" template="../templates/player_spawn.tx" x="2312.26" y="701.63"/>
-  <object id="725" template="../templates/player_spawn.tx" x="2440.26" y="1517.63"/>
+  <object id="718" template="../templates/player_spawn.tx" type="none" x="552.259" y="537.63"/>
+  <object id="719" template="../templates/player_spawn.tx" type="none" x="740.259" y="1281.63"/>
+  <object id="720" template="../templates/player_spawn.tx" type="none" x="1092.26" y="977.63"/>
+  <object id="721" template="../templates/player_spawn.tx" type="none" x="1420.26" y="553.63"/>
+  <object id="722" template="../templates/player_spawn.tx" type="none" x="1520.26" y="1453.63"/>
+  <object id="723" template="../templates/player_spawn.tx" type="none" x="1892.26" y="1061.63"/>
+  <object id="724" template="../templates/player_spawn.tx" type="none" x="2312.26" y="701.63"/>
+  <object id="725" template="../templates/player_spawn.tx" type="none" x="2440.26" y="1517.63"/>
   <object id="726" template="../templates/swap_station.tx" x="992.259" y="365.63"/>
   <object id="727" template="../templates/swap_station.tx" x="1900.26" y="349.63"/>
   <object id="728" template="../templates/swap_station.tx" x="408.259" y="941.63"/>

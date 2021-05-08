@@ -172,13 +172,22 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     
     Vec2 playerPos = ((Vec2)PLAYER_POS);
     Size playerSize(.75, 1.5);
-    for(int i = 0; i < _numPlayers; ++i){
-        if (_playerSpawns.size()-1>=i) {
-            playerPos = _playerSpawns[i];
-        } else {
-            playerPos = ((Vec2)PLAYER_POS);
+    _numNPCs = _NPCSpawns.size();
+    for(int i = 0; i < _numPlayers + _numNPCs; ++i){
+        int r;
+        if (i < _numPlayers) {
+            if (_playerSpawns.size() - 1 >= i) {
+                playerPos = Vec2(_playerSpawns[i]);
+            }
+            else {
+                playerPos = ((Vec2)PLAYER_POS);
+            }
+            r = rand() % 3;
         }
-        auto r = rand() % 3;
+        else {
+            playerPos = Vec2(_NPCSpawns[i - _numPlayers].x, _NPCSpawns[i - _numPlayers].y);
+            r = _NPCSpawns[i - _numPlayers].z;
+        }
         auto ele = r == 0 ? Element::Water : (r == 1 ? Element::Fire : Element::Grass);
         auto player = Player::alloc(playerPos, playerSize, ele);
         player->setSkinKey("player_skin");
@@ -198,8 +207,9 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->setDebugColor(Color4::YELLOW);
         player->setHoldingEgg(false);
         player->setOrbScore(0);
+        player->setPC(i < _numPlayers);
         //player id is set to i right now, if that is changed, projectile's associated userid needs to change too
-        player->setProjectile(_projectiles[i]);
+        if(i < _numPlayers) player->setProjectile(_projectiles[i]);
         player->allocUsernameNode(_assets->get<Font>("username"));
         _worldNode->addChild(player->getSceneNode(),1);
         _players.push_back(player);
@@ -229,6 +239,7 @@ void World::clearRootNode() {
     _debugNode = nullptr;
 
     _root = nullptr;
+    _boosters.clear();
     _players.clear();
     _eggs.clear();
     _orbs.clear();
@@ -522,9 +533,23 @@ bool World::loadPlayerSpawn(const std::shared_ptr<JsonValue> &json) {
     float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
     float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
     
-    Vec2 spawnPos = Vec2(xCoord,yCoord);
+    auto e = json->getString("element");
+    float ret = 0;
+    if(e == "fire") {
+        ret = 1;
+    }
+    else if (e == "grass") {
+        ret = 2;
+    }
+
+    Vec3 spawnPos = Vec3(xCoord,yCoord, ret);
     
-    _playerSpawns.push_back(spawnPos);
+    if (e == "none") {
+        _playerSpawns.push_back(spawnPos);
+    }
+    else {
+        _NPCSpawns.push_back(spawnPos);
+    }
     return true;
 }
 
