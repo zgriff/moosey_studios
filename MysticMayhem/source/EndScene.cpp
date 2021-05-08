@@ -145,12 +145,3 @@ bool EndScene::isPending() const {
    return _playAgainButton != nullptr && _playAgainButton->isVisible();
 }
 
-//void EndScene::displayResults() {
-//
-//}
-
-//std::string GameScene::updateScoreText(const int score) {
-//    stringstream ss;
-//    ss << "Score: " << score;
-//    return ss.str();
-//}

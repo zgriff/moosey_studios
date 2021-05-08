@@ -178,7 +178,8 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _settingsNode->setScale(1/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
 
     _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("ui_settings"));
-    _settingsButton->activate();
+//    _settingsButton->activate();
+    _settingsButton->setVisible(false);
     _settingsButton->addListener([=](const std::string& name, bool down) {
 //        CULog("settings button pressed");
         _settingsNode->setVisible(true);
@@ -596,10 +597,10 @@ std::string GameScene::updateTimerText(const time_t time) {
     stringstream ss;
     time_t sec = time % 60;
     if (sec < 10) {
-        ss << "Timer: " << (time / 60) << ":0" << sec;
+        ss << (time / 60) << ":0" << sec;
     }
     else {
-        ss << "Timer: " << (time / 60) << ":" << sec;
+        ss << (time / 60) << ":" << sec;
     }
     return ss.str();
 }

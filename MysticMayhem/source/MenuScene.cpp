@@ -63,7 +63,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _usernameField->setVisible(false);
 //        _slider->setVisible(false);
 //        _slider->deactivate();
-        _label->setVisible(false);
+//        _label->setVisible(false);
 //        _joinButton->dispose();
         this->_active = down;
         _create = true;
@@ -80,10 +80,13 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _hostButton->deactivate();
         _usernameField->deactivate();
         _usernameField->setVisible(false);
+        _usernameLabel->setVisible(false);
         _joinButton->setVisible(false);
         _codeField->activate();
         _codeField->setVisible(true);
         _join = true;
+        _exitJoinButton->setVisible(true);
+        _exitJoinButton->activate();
     });
     
     _settingsNode = std::make_shared<Settings>(assets, false);
@@ -99,14 +102,6 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _settings = down;
         _settingsNode->setVisible(true);
         _settingsNode->setActive(true);
-//        if(_settingsNode->isVisible()) {
-//            CULog("MENU: settings visible");
-//            CULog("settings pos x %f", _settingsNode->getPositionX());
-//            CULog("settings pos y %f", _settingsNode->getPositionY());
-//            CULog("settings size x %d", _settingsNode->getSize().getIWidth());
-//            CULog("settings size y %d",_settingsNode->getSize().getIHeight());
-//            CULog("settings z order %d", _settingsNode->getZOrder());
-//        }
         _background->setColor(Color4(255,255,255,100));
         _joinButton->setVisible(false);
         _hostButton->setVisible(false);
@@ -118,36 +113,51 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _hostButton->deactivate();
     });
     
-    
-    _slider = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("menu_slider"));
-    _label  = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_slider_label"));
-    _label->setText("Always Forward");
-    _movement = 0;
-    _slider->addListener([=](const std::string& name, float value) {
-        if (value != _sliderValue) {
-            _sliderValue = value;
-            _movement = static_cast<int>(value);
-            switch (_movement) {
-                case 0:
-                    _label->setText("Always Forward");
-                    break;
-                case 1:
-                    _label->setText("Swipe Force");
-                    break;
-                case 2:
-                    _label->setText("Tilt to Move");
-                    break;
-                case 3:
-                    _label->setText("Golfing");
-                    break;
-                default:
-                    break;
-            }
-        }
+    _exitJoinButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_exitjoin"));
+    _exitJoinButton->setVisible(false);
+    _exitJoinButton->addListener([=](const std::string& name, bool down) {
+        _host = false;
+        _hostButton->setVisible(true);
+        _hostButton->activate();
+        _usernameField->activate();
+        _usernameField->setVisible(true);
+        _usernameLabel->setVisible(true);
+        _joinButton->setVisible(true);
+        _codeField->deactivate();
+        _codeField->setVisible(false);
+        _join = false;
+        _exitJoinButton->setVisible(false);
     });
     
-    _slider->setVisible(false);
-    _label->setVisible(false);
+//    _slider = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("menu_slider"));
+//    _label  = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_slider_label"));
+//    _label->setText("Always Forward");
+//    _movement = 0;
+//    _slider->addListener([=](const std::string& name, float value) {
+//        if (value != _sliderValue) {
+//            _sliderValue = value;
+//            _movement = static_cast<int>(value);
+//            switch (_movement) {
+//                case 0:
+//                    _label->setText("Always Forward");
+//                    break;
+//                case 1:
+//                    _label->setText("Swipe Force");
+//                    break;
+//                case 2:
+//                    _label->setText("Tilt to Move");
+//                    break;
+//                case 3:
+//                    _label->setText("Golfing");
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//    });
+//
+//    _slider->setVisible(false);
+//    _label->setVisible(false);
     
     _codeField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_joincode"));
     _codeField->addTypeListener([=](const std::string& name, const std::string& value) {
@@ -158,8 +168,10 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         NetworkController::joinGame(value);
         //this->_active = false;
     });
+    
+    _usernameLabel = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_usernamelabel"));
 
-    _usernameField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_username_action"));
+    _usernameField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_username"));
     _usernameField->addTypeListener([=](const std::string& name, const std::string& value) {
         CULog("Change to %s", value.c_str());
         });

@@ -39,9 +39,11 @@ protected:
     /** The join game button */
     std::shared_ptr<cugl::scene2::Button> _joinButton;
     std::shared_ptr<cugl::scene2::Button> _settingsButton;
+    std::shared_ptr<cugl::scene2::Button> _exitJoinButton;
     /**join code text field*/
     std::shared_ptr<cugl::scene2::TextField> _codeField;
     std::shared_ptr<cugl::scene2::TextField> _usernameField;
+    std::shared_ptr<cugl::scene2::Label> _usernameLabel;
     std::shared_ptr<cugl::scene2::Slider> _slider;
     std::shared_ptr<cugl::scene2::Label> _label;
     std::shared_ptr<Settings> _settingsNode;
