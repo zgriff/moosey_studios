@@ -61,6 +61,8 @@ namespace NetworkController {
     void setReadyCallback(std::function<void(uint8_t, bool)> cb);
     void setStartCallback (std::function<void(void)> cb);
 
+    time_t getStartTimestamp();
+
     //called by a client when they are ready
     void ready();
     //called by client if they were ready but are no longer ready

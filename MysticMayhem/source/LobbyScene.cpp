@@ -223,16 +223,6 @@ void LobbyScene::update(float progress) {
             int player_num = std::stoi(name);
 
             if (player_num <= NetworkController::getNumPlayers()) {
-                /*if (player_num == 1) {
-                    char nullChar = 0;
-                    std::string testUsername = "testname2";
-                    testUsername += nullChar;
-                    CULog("username with null is %s", testUsername.c_str());
-                    NetworkController::sendSetUsername(player_num, testUsername);
-                }*/
-                //NetworkController::sendSetUsername(player_num, "testname");
-                /*CULog("setting username label text %s for player %d",
-                    NetworkController::getUsername(it - _playerLabels.begin()).c_str(), it - _playerLabels.begin());*/
                 NetworkController::setUsername(NetworkController::getUsername(), NetworkController::getPlayerId().value());
                 char nullChar = 0;
                 NetworkController::sendSetUsername(NetworkController::getPlayerId().value(), NetworkController::getUsername() + nullChar);

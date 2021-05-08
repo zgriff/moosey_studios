@@ -63,6 +63,8 @@ protected:
     time_t _startTime;
     time_t prevTime;
 
+    bool _startTimePassed = false;
+
     /** Reference to the UI element exposing the frame rate */
     std::shared_ptr<cugl::scene2::Label> _framesHUD;
 

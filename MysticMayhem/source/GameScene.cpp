@@ -257,29 +257,57 @@ void GameScene::update(float timestep) {
     
     if (_playerController.didDebug()) { _world->setDebug(!_world->getDebug()); }
     
-    // NETWORK //
+        // NETWORK //
     
-    /*std::string currRoomId = NetworkController::getRoomId();
-    _roomIdHUD->setText(currRoomId);*/
-//    NetworkController::step();
     NetworkController::update(timestep);
 
-//    if (_currRoomId == "") {
-//        _currRoomId = NetworkController::getRoomId();
-//        stringstream ss;
-//        ss << "Room Id: " << _currRoomId;
-//        _roomIdHUD->setText(ss.str());
-//    }
-        
-
-
-        // BEGIN PLAYER MOVEMENT //
-    
+        // GET PLAYER //    
     auto playerId_option = NetworkController::getPlayerId();
     if(! playerId_option.has_value()) return;
     uint8_t playerId = playerId_option.value();
     auto _player = _world->getPlayer(playerId);
-    
+
+        // CAMERA + HUD
+    _world->getPhysicsWorld()->update(timestep);
+
+
+    auto playPos = _player->getSceneNode()->getPosition();
+    playPos += _player->getLinearVelocity().scale(40.0 / pow(max(_player->getLinearVelocity().length(), .000001f), .35));
+    auto camSpot = getCamera()->getPosition();
+
+    ////playPos is only used for camera to calculate camera translation, we clamp it so camera doesn't display offmap
+    //float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+    //playPos.x = std::clamp(playPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
+    //    _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
+    ///*CULog("right boundary should be %f", _world->getSceneSize().x);
+    //CULog("should be cutoff at %f", _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom));
+    //CULog("player pos x %f", _player->getSceneNode()->getPosition().x);*/
+    //playPos.y = std::clamp(playPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
+    //    _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
+    ////CULog("viewport x %f", getCamera()->getViewport().size.width);
+
+    auto trans = (playPos - camSpot) * CAMERA_STICKINESS;
+    //CULog("camera x: %f camera y: %f", getCamera()->getPosition().x, getCamera()->getPosition().y);
+    getCamera()->translate(trans);
+    getCamera()->update();
+    _UInode->setPosition(camSpot + trans - _worldOffset);
+
+    _scoreHUD->setText(updateScoreText(_player->getScore()));
+    _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
+    _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
+
+        // CHECK BEGINNING OF GAME
+    if (!_startTimePassed) {
+        if (time(NULL) - NetworkController::getStartTimestamp() < 3) {
+            CULog("time passed is %d", time(NULL) - NetworkController::getStartTimestamp());
+            return;
+        }
+        else {
+            // Just having this bool so time(NULL) isn't called every frame when not needed, not sure if it really matters
+            _startTimePassed = true;
+        }
+    }
+        // BEGIN PLATER MOVEMENT //
     _playerController.readInput();
     switch (_playerController.getMoveStyle()) {
         case Movement::AlwaysForward: {
@@ -383,30 +411,6 @@ void GameScene::update(float timestep) {
         default:
             break;
     }
-    
-    _world->getPhysicsWorld()->update(timestep);
-
-
-    auto playPos = _player->getSceneNode()->getPosition();
-    playPos += _player->getLinearVelocity().scale(40.0 / pow(max(_player->getLinearVelocity().length(), .000001f), .35));
-    auto camSpot = getCamera()->getPosition();
-
-    ////playPos is only used for camera to calculate camera translation, we clamp it so camera doesn't display offmap
-    //float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
-    //playPos.x = std::clamp(playPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
-    //    _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
-    ///*CULog("right boundary should be %f", _world->getSceneSize().x);
-    //CULog("should be cutoff at %f", _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom));
-    //CULog("player pos x %f", _player->getSceneNode()->getPosition().x);*/
-    //playPos.y = std::clamp(playPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
-    //    _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
-    ////CULog("viewport x %f", getCamera()->getViewport().size.width);
-
-    auto trans = (playPos - camSpot)*CAMERA_STICKINESS;
-    //CULog("camera x: %f camera y: %f", getCamera()->getPosition().x, getCamera()->getPosition().y);
-    getCamera()->translate(trans);
-    getCamera()->update();
-    _UInode->setPosition(camSpot + trans - _worldOffset);
 
 //    CULog("TIME %ld", time(NULL) - prevTime);
     if(NetworkController::isHost()){
@@ -493,17 +497,10 @@ void GameScene::update(float timestep) {
         _abilityController.activateAbility(_player);
     }
     _abilityController.deactivateAbility(_player, _abilityname);
-
-  
-
-    _scoreHUD->setText(updateScoreText(_player->getScore()));
-    _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
-    _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
     
     for(auto p : _world->getPlayers()){
         p->animateMovement();
     }
-    
     
     //send new position
     NetworkController::sendPosition();

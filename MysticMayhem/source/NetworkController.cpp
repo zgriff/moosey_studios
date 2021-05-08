@@ -114,6 +114,10 @@ namespace NetworkController {
         startCallback = cb;
     }
 
+    time_t getStartTimestamp() {
+        return startTimestamp;
+    }
+
 struct LobbyHandler {
     LobbyHandler(){};
     void operator()(NetworkData::Ready & data) const {
