@@ -56,6 +56,8 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _host = true;
         NetworkController::createGame();
         _joinButton->deactivate();
+        _usernameField->deactivate();
+        _usernameField->setVisible(false);
 //        _slider->setVisible(false);
 //        _slider->deactivate();
         _label->setVisible(false);
@@ -72,6 +74,8 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
 //        _label->setVisible(false);
         _hostButton->setVisible(false);
         _hostButton->deactivate();
+        _usernameField->deactivate();
+        _usernameField->setVisible(false);
         _joinButton->setVisible(false);
         _codeField->activate();
         _codeField->setVisible(true);
@@ -133,7 +137,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         NetworkController::setUsername(value);
     });
     
-    _usernameField->setVisible(true);
+    _usernameField->setPosition(dimen.width/2, dimen.height/6);
     
     Input::activate<TextInput>();
     _codeField->setVisible(false);

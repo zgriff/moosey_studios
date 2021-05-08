@@ -14,6 +14,7 @@ namespace NetworkController {
     namespace {
         std::shared_ptr<cugl::CUNetworkConnection> network;
         std::shared_ptr<World> world;
+        std::string roomId;
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username = "";
         //Networked usernames indexed by playerId
@@ -41,6 +42,7 @@ namespace NetworkController {
     void joinGame(std::string roomId) {
         network =
             std::make_shared<cugl::CUNetworkConnection>(cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, globals::MAX_PLAYERS, 0), roomId);
+        NetworkController::roomId = roomId;
     }
 
     cugl::CUNetworkConnection::NetStatus getStatus(){
@@ -67,7 +69,10 @@ namespace NetworkController {
     }
 
     std::string getRoomId() {
-        return network->getRoomID();
+        if (roomId == "") {
+            roomId = network->getRoomID();
+        }
+        return roomId;
     }
 
     uint8_t getNumPlayers() {
@@ -122,13 +127,11 @@ struct LobbyHandler {
         startCallback();
     }
     void operator()(NetworkData::SetMap & data) const {
-        CULog("received map select %d \n", data.mapNumber);
         mapSelected = data.mapNumber;
     }
     void operator()(NetworkData::SetUsername& data) const {
         int id1 = data.playerId;
         string username1 = data.username;
-        CULog("username gotten is %s", username1.c_str());
         usernames[id1] = username1;
     }
     //generic. do nothing
@@ -359,7 +362,6 @@ struct GameHandler {
         NetworkData::SetUsername data;
         data.playerId = playerId;
         data.username = username;
-        CULog("going to send %s", username.c_str());
         send(NetworkData(data));
     }
 

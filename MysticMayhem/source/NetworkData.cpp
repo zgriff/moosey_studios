@@ -113,7 +113,9 @@ public:
         if(b == 0){
             data = false;
         }
-        data = true;
+        else {
+            data = true;
+        }
     }
     
     void serializeString(std::string & data){
