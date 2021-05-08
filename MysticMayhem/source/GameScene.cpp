@@ -270,113 +270,62 @@ void GameScene::update(float timestep) {
     if(! playerId_option.has_value()) return;
     uint8_t playerId = playerId_option.value();
     auto _player = _world->getPlayer(playerId);
-    
-    _playerController.readInput();
-    switch (_playerController.getMoveStyle()) {
-        case Movement::AlwaysForward: {
-            if (_abilityController.getActiveAbility() == AbilityController::Ability::SpeedBoost) {
-                break;
-            }
+    if (_player->getPC()) {
+        _playerController.readInput();
 
-            auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI * timestep * 60.0 / TURNS_PER_SPIN;
-            _player->setDirection(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
+        auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI * timestep * 60.0 / TURNS_PER_SPIN;
+        _player->setDirection(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
 
-            auto vel = _player->getLinearVelocity();
-            //Please don't delete this comment, angles were difficult to derive and easy to forget
-            //vel angle originates from x axis, player angle orginates from y axis
-            auto offset = vel.getAngle() - _player->getDirection() + M_PI / 2.0f;
-            offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
+        auto vel = _player->getLinearVelocity();
+        //Please don't delete this comment, angles were difficult to derive and easy to forget
+        //vel angle originates from x axis, player angle orginates from y axis
+        auto offset = vel.getAngle() - _player->getDirection() + M_PI / 2.0f;
+        offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
-            //applies sideways friction, capped at a flat value
-            auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * _player->getMass());
-            if (correction.length() > KINETIC_FRICTION) {
-                correction.scale(KINETIC_FRICTION / correction.length());
-            }
-
-            //apply friction if going backwards IE braking
-            if (abs(offset) < M_PI / 2.0) {
-                auto backwards = _player->getLinearVelocity().rotate(-1.0f * offset).scale(-1.0f * cos(offset) * _player->getMass());
-                if (backwards.length() > BACKWARDS_FRICTION) {
-                    backwards.scale(BACKWARDS_FRICTION / backwards.length());
-                }
-                _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(backwards.x, backwards.y), true);
-            }
-            _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
-
-            if (_playerController.getMov().x == 0) {
-
-                //accelerate to a maximum velocity
-                auto forForce = _player->getForce();
-                auto scaling = _player->getForce();
-
-                scaling.normalize().scale(_player->getMass() * 0.27f * pow(max(25.0f - vel.length(), 0.0f), 1.5f));
-
-                _player->setForce(scaling);
-                _player->applyForce();
-                _player->setForce(forForce);
-            }
-            else {
-                auto forForce = _player->getForce();
-                auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * 0.9f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
-                if (_playerController.getMov().x < 0) {
-                    turnForce.scale(-1.0f);
-                }
-                if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
-                    //turnForce.scale(-1.0f);
-                    _player->applyForce();
-                }
-                _player->setForce(turnForce);
-                _player->applyForce();
-                _player->setForce(forForce);
-            }
-
-            break;
+        //applies sideways friction, capped at a flat value
+        auto correction = _player->getLinearVelocity().rotate(-1.0f * offset - M_PI / 2.0f).scale(sin(offset) * _player->getMass());
+        if (correction.length() > KINETIC_FRICTION) {
+            correction.scale(KINETIC_FRICTION / correction.length());
         }
-        case Movement::SwipeForce: {
-            #ifndef CU_MOBILE
-                _player->setLinearVelocity(_playerController.getMov() * 3);
-            #else
-                Vec2 moveVec = _playerController.getMoveVec();
-                Vec2 _moveVec(moveVec.x, -moveVec.y);
-                _player->setForce(_moveVec * 30);
-                _player->applyForce();
-            #endif
-            break;
-        }
-        case Movement::TiltMove:{
-            #ifndef CU_MOBILE
-                _player->setLinearVelocity(_playerController.getMov() * 3);
-            #else
-                Vec3 tilt = _playerController.getTiltVec();
 
-                Vec2 moveVec(tilt.x, -tilt.y);
-                _player->setForce(moveVec * 50);
+        //apply friction if going backwards IE braking
+        if (abs(offset) < M_PI / 2.0) {
+            auto backwards = _player->getLinearVelocity().rotate(-1.0f * offset).scale(-1.0f * cos(offset) * _player->getMass());
+            if (backwards.length() > BACKWARDS_FRICTION) {
+                backwards.scale(BACKWARDS_FRICTION / backwards.length());
+            }
+            _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(backwards.x, backwards.y), true);
+        }
+        _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
 
-                _player->applyForce();
-            #endif
+        if (_playerController.getMov().x == 0) {
+
+            //accelerate to a maximum velocity
+            auto forForce = _player->getForce();
+            auto scaling = _player->getForce();
+
+            scaling.normalize().scale(_player->getMass() * 0.27f * pow(max(22.0f - vel.length(), 0.0f), 1.5f));
+
+            _player->setForce(scaling);
+            _player->applyForce();
+            _player->setForce(forForce);
         }
-        case Movement::GolfMove:{
-            #ifndef CU_MOBILE
-                _player->setLinearVelocity(_playerController.getMov() * 3);
-            #else
-                Vec2 _moveVec;
-                if (_playerController.getMov().x == 0) {
-                    _moveVec = Vec2(-5*_player->getVX(),-5*_player->getVY());
-                } else  {
-                    Vec2 moveVec = _playerController.getMoveVec();
-                    _moveVec = Vec2(moveVec.x, -moveVec.y);
-                    _moveVec =  _moveVec*10;
-                }
-                _player->setForce(_moveVec);
+        else {
+            auto forForce = _player->getForce();
+            auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * 0.9f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
+            if (_playerController.getMov().x < 0) {
+                turnForce.scale(-1.0f);
+            }
+            if (offset < M_PI / 2.0f && offset > -M_PI / 2.0f) {
+                //turnForce.scale(-1.0f);
                 _player->applyForce();
-            #endif
+            }
+            _player->setForce(turnForce);
+            _player->applyForce();
+            _player->setForce(forForce);
         }
-        default:
-            break;
     }
-    
     _world->getPhysicsWorld()->update(timestep);
-
 
     auto playPos = _player->getSceneNode()->getPosition();
     playPos += _player->getLinearVelocity().scale(40.0 / pow(max(_player->getLinearVelocity().length(), .000001f), .35));
