@@ -257,6 +257,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _playerCustom->setCustomization((_playerCustom->getCustomization()-1));
                 _playerCustom->setDrawScale(100.0f);
             }
+            NetworkController::sendSetCustomization( NetworkController::getPlayerId().value(), _playerCustom->getSkin(), _playerCustom->getCustomization(), _playerCustom->getCurrElement());
         }
         
     });
@@ -275,6 +276,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         if (down) {
             _playerCustom->setSkin((_playerCustom->getSkin()+1)%2);
             _playerCustom->setDrawScale(100.0f);
+            NetworkController::sendSetCustomization( NetworkController::getPlayerId().value(), _playerCustom->getSkin(), _playerCustom->getCustomization(), _playerCustom->getCurrElement());
         }
     });
     
@@ -284,6 +286,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
             _playerCustom->setElement(_playerCustom->getPreyElement());
             _playerCustom->setElement(_playerCustom->getPreyElement());
             _playerCustom->setDrawScale(100.0f);
+            NetworkController::sendSetCustomization( NetworkController::getPlayerId().value(), _playerCustom->getSkin(), _playerCustom->getCustomization(), _playerCustom->getCurrElement());
         }
     });
     
@@ -292,6 +295,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         if (down) {
             _playerCustom->setElement(_playerCustom->getPreyElement());
             _playerCustom->setDrawScale(100.0f);
+            NetworkController::sendSetCustomization( NetworkController::getPlayerId().value(), _playerCustom->getSkin(), _playerCustom->getCustomization(), _playerCustom->getCurrElement());
         }
         
     });
