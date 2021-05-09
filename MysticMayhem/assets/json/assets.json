@@ -514,7 +514,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 1",
-                                "foreground": [ 255, 255, 255, 255 ],
+                                "foreground": [ 0, 0, 0, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -532,7 +532,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 2",
-                                "foreground": [ 255, 255, 255, 255 ],
+                                "foreground": [ 0, 0, 0, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -550,7 +550,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 3",
-                                "foreground": [ 255, 255, 255, 255 ],
+                                "foreground": [ 0, 0, 0, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -568,7 +568,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 4",
-                                "foreground": [ 255, 255, 255, 255 ],
+                                "foreground": [ 0, 0, 0, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -586,7 +586,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 5",
-                                "foreground": [ 255, 255, 255, 255 ],
+                                "foreground": [ 0, 0, 0, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -604,7 +604,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 6",
-                                "foreground": [ 255, 255, 255, 255 ],
+                                "foreground": [ 0, 0, 0, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -622,7 +622,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 7",
-                                "foreground": [ 255, 255, 255, 255 ],
+                                "foreground": [ 0, 0, 0, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -640,7 +640,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 8",
-                                "foreground": [ 255, 255, 255, 255 ],
+                                "foreground": [ 0, 0, 0, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",

@@ -53,7 +53,8 @@ protected:
     
     std::vector<std::shared_ptr<Player>> _players;
     
-    std::vector<Vec2> _playerSpawns;
+    std::vector<Vec3> _playerSpawns;
+    std::vector<Vec3> _NPCSpawns;
 
     std::vector<std::shared_ptr<Projectile>> _projectiles;
     
@@ -77,6 +78,7 @@ protected:
     
     float _scale;
     uint8_t _numPlayers;
+    uint8_t _numNPCs;
     uint8_t _initOrbCount;
     uint8_t _currOrbCount;
     uint8_t _currEggCount;
@@ -93,9 +95,9 @@ protected:
     
     bool loadGameObject(const std::shared_ptr<JsonValue>& json);
     
-    bool loadOrb(const std::shared_ptr<JsonValue>& json);
+    bool loadOrbActive(const std::shared_ptr<JsonValue>& json);
     
-    bool loadOrbLoc(const std::shared_ptr<JsonValue>& json);
+    bool loadOrbInactive(const std::shared_ptr<JsonValue>& json);
     
     bool loadStation(const std::shared_ptr<JsonValue>& json);
 

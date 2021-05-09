@@ -26,8 +26,8 @@
 #define SWAP_STATION        "swap_station"
 #define BOOSTER             "booster"
 #define EGG_SPAWN           "egg_spawn"
-#define ORB_SPAWN           "active_orb"
-#define ORB_LOCATION        "inactive_orb"
+#define ORB_ACTIVE           "active_orb"
+#define ORB_INACTIVE        "inactive_orb"
 #define PLAYER_SPAWN        "player_spawn"
 
 #define TILE_SIZE           250.0f
@@ -46,7 +46,7 @@
 
 
 enum class GameObjectType {
-    PlayerSpawn, OrbSpawn, OrbLocation, Station, EggSpawn, Booster
+    PlayerSpawn, OrbActive, OrbInactive, Station, EggSpawn, Booster
 };
 
 
