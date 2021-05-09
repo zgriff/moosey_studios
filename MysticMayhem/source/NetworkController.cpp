@@ -1,4 +1,3 @@
-
 #include "NetworkController.h"
 #include "NetworkData.h"
 #include "Player.h"
@@ -13,21 +12,22 @@
 namespace NetworkController {
     namespace {
         std::shared_ptr<cugl::CUNetworkConnection> network;
-        std::string roomId;
         std::shared_ptr<World> world;
+        std::string roomId;
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
-        std::string username;
+        std::string username = "";
         //Networked usernames indexed by playerId
-        array<std::string, 2> usernames = {"test", "test2"};
+        array<std::string, 8> usernames = {"test1", "test2", "test3" , "test4" , "test5" , "test6" , "test7" , "test8" };
         int _networkFrame;
-        int mapSelected;
+        int mapSelected = 1;
         std::function<void(uint8_t, bool)> readyCallback;
         std::function<void(void)> startCallback;
     }
 
     /** IP of the NAT punchthrough server */
-//    constexpr auto SERVER_ADDRESS = "35.208.113.51"; //ours;
-    constexpr auto SERVER_ADDRESS = "34.74.68.73";
+//    constexpr auto SERVER_ADDRESS = "35.208.113.51"; //josh's;
+    constexpr auto SERVER_ADDRESS = "34.74.68.73"; //michael's
+    //constexpr auto SERVER_ADDRESS = "108.59.85.19"; //ours
     /** Port of the NAT punchthrough server */
     constexpr uint16_t SERVER_PORT = 61111;
 
@@ -41,6 +41,11 @@ namespace NetworkController {
         network =
             std::make_shared<cugl::CUNetworkConnection>(cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, globals::MAX_PLAYERS, 0), roomId);
         NetworkController::roomId = roomId;
+    }
+
+    void destroyConn() {
+        network = nullptr;
+        roomId = "";
     }
 
     cugl::CUNetworkConnection::NetStatus getStatus(){
@@ -70,7 +75,6 @@ namespace NetworkController {
         if (roomId == "") {
             roomId = network->getRoomID();
         }
-        //CULog("Room ID is: %s", roomId.c_str());
         return roomId;
     }
 
@@ -79,11 +83,22 @@ namespace NetworkController {
     }
 
     std::string getUsername() {
-        return username;
+        if (username == "") {
+            return "Player";
+        }
+        return NetworkController::username;
+    }
+
+    std::string getUsername(int playerId) {
+        return usernames[playerId];
     }
 
     void setUsername(std::string name) {
         username = name;
+    }
+
+    void setUsername(std::string name, int playerId) {
+        usernames[playerId] = name;
     }
 
     int getMapSelected() {
@@ -112,6 +127,14 @@ struct LobbyHandler {
     }
     void operator()(NetworkData::StartGame & data) const {
         startCallback();
+    }
+    void operator()(NetworkData::SetMap & data) const {
+        mapSelected = data.mapNumber;
+    }
+    void operator()(NetworkData::SetUsername& data) const {
+        int id1 = data.playerId;
+        string username1 = data.username;
+        usernames[id1] = username1;
     }
     //generic. do nothing
     template<typename T>
@@ -197,13 +220,6 @@ struct GameHandler {
         p->setPosition(data.playerPos);
         p->setDirection(data.angle);
         p->setLinearVelocity(data.playerVelocity);
-    }
-    void operator()(NetworkData::SetUsername & data) const {
-        int id1 = data.playerId;
-        string username1 = data.username;
-    }
-    void operator()(NetworkData::SetMap & data) const {
-        mapSelected = data.mapNumber;
     }
     void operator()(NetworkData::ElementChange & data) const {
         world->getPlayer(data.playerId)->setElement(data.newElement);
@@ -354,6 +370,7 @@ struct GameHandler {
     void sendSetMapSelected(int i) {
         NetworkData::SetMap data;
         data.mapNumber = i;
+        CULog("sending set map to %d", i);
         send(NetworkData(data));
     }
 

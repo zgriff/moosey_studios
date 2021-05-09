@@ -56,10 +56,11 @@ using namespace std;
  *
  * @return true if the controller is initialized properly, false otherwise.
  */
-bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string mapKey) {
+bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Initialize the scene to a locked width
     //create world
     CULog("map selected is %d", NetworkController::getMapSelected());
+    string mapKey = "";
     switch (NetworkController::getMapSelected()) {
     case 1:
         mapKey = GRASS_MAP_KEY;
@@ -136,9 +137,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string m
     _UInode->setPosition(_worldOffset);
     _UInode->setContentSize(Application::get()->getDisplaySize() * 2);
     _UInode->doLayout(); // Repositions the HUD;
-    //Basically you want the inverse of camera zoom for the UInode scale, originally this wasn't set to the inverse
-    //so I had to hardcode 0.4 to compensate for how the UInode childen are currently set
-    _UInode->setScale(0.4/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
+    //It should be inverse of the camera zoom, so UI shrinks if zoom is more
+    _UInode->setScale(0.35/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
+    //_UInode->setScale(CAMERA_ZOOM);
     
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_score"));
     _framesHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_frames"));
@@ -160,8 +161,29 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string m
     
     _debugnode = _world->getDebugNode();
     
+    _settingsNode = std::make_shared<Settings>(assets, true);
+    _settingsNode->setVisible(false);
+    _settingsNode->setActive(false);
+    _settingsNode->setPosition(_worldOffset);
+    _settingsNode->setScale(1/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
+
+    _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("ui_settings"));
+//    _settingsButton->activate();
+    _settingsButton->setVisible(false);
+    _settingsButton->addListener([=](const std::string& name, bool down) {
+//        CULog("settings button pressed");
+        _settingsNode->setVisible(true);
+        _settingsNode->setActive(true);
+//        if(_settingsNode->isVisible()) {
+//            CULog("settings visible");
+//        }
+//
+
+    });
+    
     addChild(_rootnode);
     addChild(_UInode);
+    addChild(_settingsNode);
     
     _world->setAssets(_assets);
 
@@ -196,7 +218,6 @@ void GameScene::dispose() {
     }
     _active = false;
     _rootnode = nullptr;
-    _playerController.dispose();
 }
 
 
@@ -216,7 +237,6 @@ void GameScene::reset() {
     if(idopt.has_value()){
         CULog("playerid: %i",idopt.value());
         auto _player = _world->getPlayer(idopt.value());
-        _player->setUsername(NetworkController::getUsername());
         _player->setIsLocal(true);
         static_pointer_cast<cugl::OrthographicCamera>(getCamera())->set(Application::get()->getDisplaySize());
         
@@ -230,6 +250,13 @@ void GameScene::reset() {
         float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
         static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
     }
+
+    auto players = _world->getPlayers();
+    for (auto it = players.begin(); it != players.end(); it++) {
+        (*it)->setUsername(NetworkController::getUsername(it - players.begin()));
+        (*it)->allocUsernameNode(_assets->get<Font>("username"));
+    }
+
     _playerController.init();
     
     _world->setDebug(false);
@@ -340,6 +367,7 @@ void GameScene::update(float timestep) {
     getCamera()->translate(trans);
     getCamera()->update();
     _UInode->setPosition(camSpot + trans - _worldOffset);
+    _settingsNode->setPosition(camSpot + trans - _worldOffset);
 
 //    CULog("TIME %ld", time(NULL) - prevTime);
     if(NetworkController::isHost()){
@@ -440,6 +468,12 @@ void GameScene::update(float timestep) {
     
     //send new position
     NetworkController::sendPosition();
+    
+    //settings
+    if (_settingsNode->backPressed()) {
+        _settingsNode->setVisible(false);
+        _settingsNode->setActive(false);
+    }
 }
 
 
@@ -509,10 +543,10 @@ std::string GameScene::updateTimerText(const time_t time) {
     stringstream ss;
     time_t sec = time % 60;
     if (sec < 10) {
-        ss << "Timer: " << (time / 60) << ":0" << sec;
+        ss << (time / 60) << ":0" << sec;
     }
     else {
-        ss << "Timer: " << (time / 60) << ":" << sec;
+        ss << (time / 60) << ":" << sec;
     }
     return ss.str();
 }
@@ -523,7 +557,8 @@ std::map<std::string, int> GameScene::getResults() {
     for (int i = 0; i < players.size(); i++) {
         auto p = players[i];
         stringstream ss;
-        ss << "player" << " " << p->getID();
+//        ss << "player" << " " << p->getID()+1;
+        ss << NetworkController::getUsername(p->getID());
         results[ss.str()] = p->getScore();
     }
     

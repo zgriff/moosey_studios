@@ -154,8 +154,6 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         _worldNode->addChild(booster->getSceneNode(), 1);
     }
     
-
-    //this is for if we want to move projectile to world, but theres bug with this, with this being null for some reason
     for (int i = 0; i < _numPlayers; ++i) {
         Size projSize(projectileTexture->getSize() / _scale);
         std::shared_ptr<Projectile> projectile = Projectile::alloc(Vec2(0, 0), projSize, i);

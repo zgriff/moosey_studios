@@ -9,6 +9,7 @@
 #include "LobbyScene.h"
 #include <time.h>
 #include <string>
+#include "Settings.h"
 
 using namespace cugl;
 
@@ -52,6 +53,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     layer->setContentSize(dimen);
     layer->doLayout(); // This rearranges the children to fit the screen
     addChild(layer);
+    _layer = layer;
     
     _startButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_start"));
     _startButton->setVisible(false);
@@ -63,6 +65,10 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     _map2Button->setToggle(true);
     _map3Button->setToggle(true);
     _map4Button->setToggle(true);
+    _map1Button->setDown(false);
+    _map2Button->setDown(false);
+    _map3Button->setDown(false);
+    _map4Button->setDown(false);
     
     if(NetworkController::isHost()){
         _startButton->setVisible(true);
@@ -73,6 +79,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _active = down;
             }
         });
+        _map1Button->setVisible(true);
         _map1Button->addListener([&](const std::string& name, bool down) {
             if (_map1Button->isDown()) {
                 _map2Button->setDown(false);
@@ -88,6 +95,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 CULog("%f %f", _map1Button->getPositionX(), _map1Button->getPositionY());
             }
         });
+        _map2Button->setVisible(true);
         _map2Button->addListener([&](const std::string& name, bool down) {
             if (_map2Button->isDown()) {
                 _map1Button->setDown(false);
@@ -102,6 +110,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _selectedMap = GRASS_MAP2_KEY;
             }
         });
+        _map3Button->setVisible(true);
         _map3Button->addListener([&](const std::string& name, bool down) {
             if (_map3Button->isDown()) {
                 _map1Button->setDown(false);
@@ -116,6 +125,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _selectedMap = GRASS_MAP3_KEY;
             }
             });
+        _map4Button->setVisible(true);
         _map4Button->addListener([&](const std::string& name, bool down) {
             if (_map4Button->isDown()) {
                 _map1Button->setDown(false);
@@ -149,6 +159,28 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _map4Button->deactivate();
         _map4Button->setVisible(false);
     }
+    
+    _settingsNode = std::make_shared<Settings>(assets, false);
+    _settingsNode->setVisible(false);
+    _settingsNode->setActive(false);
+    addChild(_settingsNode);
+    
+    _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_settings"));
+    _settingsButton->activate();
+    _settingsButton->addListener([=](const std::string& name, bool down) {
+        _settingsNode->setVisible(true);
+        _settingsNode->setActive(true);
+        layer->setColor(Color4(255,255,255,100));
+        _map1Button->deactivate();
+        _map2Button->deactivate();
+        _map3Button->deactivate();
+        _map4Button->deactivate();
+        _startButton->deactivate();
+        if(_settingsNode->isVisible()) {
+            CULog("LOBBY: settings visible");
+        }
+    });
+
     
     _roomId = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("lobby_roomId"));
     
@@ -192,6 +224,7 @@ void LobbyScene::dispose() {
     _assets = nullptr;
     _active = false;
     _playAgain = false;
+    _currRoomId = "";
 }
 
 
@@ -209,6 +242,7 @@ void LobbyScene::update(float progress) {
     NetworkController::step();
     if (_currRoomId == "") {
         _currRoomId = NetworkController::getRoomId();
+//        CULog("room id in lobby %s", _currRoomId.c_str());
         stringstream ss;
         ss << "Room Id: " << _currRoomId;
         _roomId->setText(ss.str());
@@ -218,17 +252,27 @@ void LobbyScene::update(float progress) {
     for (auto it = _playerLabels.begin(); it!=_playerLabels.end();it++) {
         std::string  name = (*it)->getName();
         name = name.back();
-        int player_num = std::stoi(name);
-        
-        if (player_num <= NetworkController::getNumPlayers()) {
-            if (player_num == 2) {
-                //NetworkController::sendSetUsername(player_num, "testname2");
+        char nullChar = 0;
+        if (name[0] != nullChar) {
+            int player_num = std::stoi(name);
+
+            if (player_num <= NetworkController::getNumPlayers()) {
+                /*if (player_num == 1) {
+                    char nullChar = 0;
+                    std::string testUsername = "testname2";
+                    testUsername += nullChar;
+                    CULog("username with null is %s", testUsername.c_str());
+                    NetworkController::sendSetUsername(player_num, testUsername);
+                }*/
+                //NetworkController::sendSetUsername(player_num, "testname");
+                /*CULog("setting username label text %s for player %d",
+                    NetworkController::getUsername(it - _playerLabels.begin()).c_str(), it - _playerLabels.begin());*/
+                NetworkController::setUsername(NetworkController::getUsername(), NetworkController::getPlayerId().value());
+                char nullChar = 0;
+                NetworkController::sendSetUsername(NetworkController::getPlayerId().value(), NetworkController::getUsername() + nullChar);
+                (*it)->setText(NetworkController::getUsername(it - _playerLabels.begin()));
+                (*it)->setVisible(true);
             }
-            //CULog("index is %d", it - _playerLabels.begin());
-            //NetworkController::sendSetUsername(player_num, "testname");
-            //CULog("setting username label text %s", NetworkController::getUsername(it - _playerLabels.begin()));
-            //(*it)->setText(NetworkController::getUsername(it - _playerLabels.begin()));
-            (*it)->setVisible(true);
         }
     }
 
@@ -261,6 +305,17 @@ void LobbyScene::update(float progress) {
             _map2Button->setVisible(false);
             _map3Button->setVisible(false);
         }
+    }
+    
+    if (_settingsNode->backPressed()) {
+        _settingsNode->setActive(false);
+        _settingsNode->setVisible(false);
+        _layer->setColor(Color4(255,255,255,255));
+        _map1Button->activate();
+        _map2Button->activate();
+        _map3Button->activate();
+        _map4Button->activate();
+        _startButton->activate();
     }
 
 }

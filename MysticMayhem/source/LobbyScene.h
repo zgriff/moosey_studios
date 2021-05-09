@@ -17,6 +17,7 @@
 #include "World.h"
 #include "Globals.h"
 #include "MapConstants.h"
+#include "Settings.h"
 
 /**
  * This class is a simple loading screen for asychronous asset loading.
@@ -43,6 +44,10 @@ protected:
     string _selectedMap = GRASS_MAP_KEY;
     std::shared_ptr<cugl::scene2::Label> _roomId;
     std::vector<std::shared_ptr<cugl::scene2::Label>> _playerLabels;
+    std::shared_ptr<Settings> _settingsNode;
+    std::shared_ptr<cugl::scene2::SceneNode> _layer;
+    std::shared_ptr<cugl::scene2::Button> _settingsButton;
+    
     
     
     /**true host false client*/
@@ -118,6 +123,8 @@ public:
 
     string getSelectedMap() { return _selectedMap; };
     void setSelectedMap(string map) { _selectedMap = map; };
+    
+    std::shared_ptr<Settings> getSettings() { return _settingsNode; }
         
 };
 

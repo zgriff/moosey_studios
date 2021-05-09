@@ -241,12 +241,16 @@ Element Player::getPreyElement() {
 
 void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     _usernameNode = scene2::Label::alloc(_username, font);
-    _usernameNode->setPosition(-1*_usernameNode->getContentWidth()/2, 40);
+    _usernameNode->setPosition(-1*_usernameNode->getContentWidth()/2 * 10, 100);
     /*Hardcoded height because not sure how to get dimensions of the Player
     CULog("this width %d", this->getWidth());
     CULog("sceneNode width %d", _sceneNode->getContentWidth());
     CULog("animationNode width %d", _animationNode->getContentWidth());*/
     _sceneNode->addChild(_usernameNode);
+    _usernameNode->setScale(10.0f);
+    _usernameNode->setForeground(Color4::WHITE);
+    _usernameNode->setVisible(true);
+    CULog("username is %s", _username.c_str());
 }
 
 /**
@@ -474,7 +478,7 @@ void Player::animateMovement() {
     
     //iterate through nodes and animate at animation rate
     if (clock() - _animationTimer  >= _animationRate) {
-        CULog("body");
+//        CULog("body");
         for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
             if  ((*it).first != _staffTagKey && (*it).first != _ringKey) {
                 animationCycle((*it).second.get(), &_animCycles[(*it).first], (*it).first);
@@ -484,7 +488,7 @@ void Player::animateMovement() {
     }
     
     if (clock() - _ringAnimationTimer  >= _ringAnimationRate) {
-        CULog("ring");
+        //CULog("ring");
 
         animationCycle(_animNodes[_ringKey].get(), &_animCycles[_ringKey], _ringKey);
         _ringAnimationTimer = clock();

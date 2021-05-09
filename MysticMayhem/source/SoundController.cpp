@@ -16,6 +16,7 @@
 namespace SoundController{
 std::shared_ptr<cugl::AssetManager> _assets;
 bool spatialAudioEnabled = true;
+float soundVolume = 0.5;
 
 
 void useSpatialAudio(bool useSpatialAudio){
@@ -65,12 +66,16 @@ void playSound(Type s, cugl::Vec2 pos){
             node->setGain(1/gain);
         }
         //TODO: replace with key
-        cugl::AudioEngine::get()->play(std::to_string(rand()), spatial);
+        cugl::AudioEngine::get()->play(std::to_string(rand()), spatial, false, soundVolume);
     }else{
         //TODO: replace with key
-        cugl::AudioEngine::get()->play(std::to_string(rand()), node);
+        cugl::AudioEngine::get()->play(std::to_string(rand()), node, false, soundVolume);
     }
     
+}
+
+void setSoundVolume(float volume){
+    soundVolume = volume;
 }
 
 }

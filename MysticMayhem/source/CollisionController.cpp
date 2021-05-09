@@ -130,7 +130,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
         Player* p1 = (Player*) bd1;
         Player* p2 = (Player*) bd2;
 
-        if (!p1->getIsIntangible() && !p2->getIsIntangible()) {
+        if (!p1->getIsIntangible() && !p2->getIsIntangible() && !p1->getIsTagged() && !p2->getIsTagged()) {
             //p2 tags p1
             if ((p1->getCurrElement() == p2->getPreyElement()) || (p1->getCurrElement() == Element::None 
                 && p2->getCurrElement() != Element::None ) ||
@@ -184,7 +184,6 @@ void CollisionController::clientBeginContact(b2Contact* contact){
 
 void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_ptr<World> world, 
                                         bool dropEgg) {
-    CULog("tagged");
     tagged->setIsTagged(true);
     time_t timestamp = time(NULL);
     tagged->setTimeLastTagged(timestamp);
