@@ -466,12 +466,13 @@
             }
         },
         "lobby" : {
-            "type"      : "Node",
+            "type"      : "Solid",
             "format"    : {
                 "type" : "Anchored"
             },
             "data" : {
-                "anchor" :[0.5,0.5]
+                "anchor" :[0.5,0.5],
+                "color": [240,220,255,255]
             },
             "layout" : {
                 "x_anchor" : "center",
