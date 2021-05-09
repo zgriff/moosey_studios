@@ -201,6 +201,7 @@ void MenuScene::dispose() {
 //    removeAllChildren();
     _hostButton = nullptr;
     _joinButton = nullptr;
+    _settingsButton = nullptr;
 //    Input::deactivate<TextInput>();
     _codeField = nullptr;
     _usernameField = nullptr;
@@ -250,6 +251,7 @@ void MenuScene::setActive(bool value) {
         _joinButton->deactivate();
         _codeField->deactivate();
         _usernameField->deactivate();
+        _settingsButton->deactivate();
 //        _slider->deactivate();
     }
 }

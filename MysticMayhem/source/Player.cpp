@@ -165,8 +165,56 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     
     setElement(_currElt);
 
-    _body->SetUserData(this);
+}
 
+void Player::setBody() {
+    _body->SetUserData(this);
+}
+
+void Player::setSkin(int skin) {
+    switch (skin) {
+        case 0:
+            _animNodes[_skinKey]->setFrame(0);
+            break;
+        case 1:
+            _animNodes[_skinKey]->setFrame(4);
+            break;
+        default:
+            break;
+    }
+}
+
+int Player::getSkin(){
+    return floor(_animNodes[_skinKey]->getFrame()/PLAYER_ANIM_FRAMES);
+}
+
+void Player::setCustomization(int custom) {
+    switch (custom) {
+        case 0:
+            _animNodes[_hatKey]->setFrame(0);
+            break;
+        case 1:
+            _animNodes[_hatKey]->setFrame(2);
+            break;
+        case 2:
+            _animNodes[_hatKey]->setFrame(4);
+            break;
+        case 3:
+            _animNodes[_hatKey]->setFrame(6);
+            break;
+        case 4:
+            _animNodes[_hatKey]->setFrame(8);
+            break;
+        case 5:
+            _animNodes[_hatKey]->setFrame(10);
+            break;
+        default:
+            break;
+    }
+}
+
+int Player::getCustomization(){
+    return floor(_animNodes[_hatKey]->getFrame()/2);
 }
 
 void Player::setElement(Element e){

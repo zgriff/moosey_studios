@@ -278,6 +278,12 @@ struct NetworkData::Visitor {
         s.serializeBits(d.playerId, PLAYER_ID_BITS);
         s.serializeString(d.username);
     }
+    void operator()(SetCustomization & d) const {
+        s.serializeBits(d.playerId, PLAYER_ID_BITS);
+        s.serializeBits(d.skin, PLAYER_ID_BITS);
+        s.serializeBits(d.hat, PLAYER_ID_BITS);
+        s.serializeBits(d.element, PLAYER_ID_BITS);
+    }
     void operator()(SetMap & d) const {
         s.serializeBits(d.mapNumber, MAP_NUMBER_BITS);
     }

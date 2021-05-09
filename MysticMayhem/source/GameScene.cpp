@@ -97,6 +97,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     NetworkController::setWorld(_world);
     _world->setNumPlayers(NetworkController::getNumPlayers());
+    _world->setCustomizations(NetworkController::getCustomizations());
 
     SpawnController::setWorld(_world);
     

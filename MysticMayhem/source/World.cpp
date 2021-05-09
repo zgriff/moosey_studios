@@ -199,6 +199,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         
         _physicsWorld->addObstacle(player);
         player->setTextures(_assets);
+        player->setBody();
         player->setDrawScale(_scale);
         player->setDebugScene(_debugNode);
         player->setID(i);
@@ -207,6 +208,9 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->setOrbScore(0);
         player->setPC(i < _numPlayers);
         //player id is set to i right now, if that is changed, projectile's associated userid needs to change too
+        player->setSkin(std::get<0>(_customizations[i]));
+        player->setCustomization(std::get<1>(_customizations[i]));
+        player->setElement((Element) std::get<2>(_customizations[i]));
         if(i < _numPlayers) player->setProjectile(_projectiles[i]);
         player->allocUsernameNode(_assets->get<Font>("username"));
         _worldNode->addChild(player->getSceneNode(),1);
