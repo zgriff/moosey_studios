@@ -522,7 +522,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": -0.2,
+                                "x_offset": -0.35,
                                 "y_offset": 0.30
                             }
                         },
@@ -540,7 +540,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": 0.2,
+                                "x_offset": 0.35,
                                 "y_offset": 0.30
                             }
                         },
@@ -558,7 +558,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": -0.2,
+                                "x_offset": -0.35,
                                 "y_offset": 0.1
                             }
                         },
@@ -576,7 +576,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": 0.2,
+                                "x_offset": 0.35,
                                 "y_offset": 0.1
                             }
                         },
@@ -594,7 +594,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": -0.2,
+                                "x_offset": -0.35,
                                 "y_offset": -0.1
                             }
                         },
@@ -612,7 +612,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": 0.2,
+                                "x_offset": 0.35,
                                 "y_offset": -0.1
                             }
                         },
@@ -630,7 +630,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": -0.2,
+                                "x_offset": -0.35,
                                 "y_offset": -0.3
                             }
                         },
@@ -648,7 +648,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": 0.2,
+                                "x_offset": 0.35,
                                 "y_offset": -0.3
                             }
                         }
@@ -741,7 +741,7 @@
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
                                 "x_offset": -350,
-                                "y_offset": 200,
+                                "y_offset": 350,
                                 "absolute": true
                             }
                         },
@@ -767,7 +767,7 @@
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
                                 "x_offset": -200,
-                                "y_offset": 200,
+                                "y_offset": 250,
                                 "absolute": true
                             }
                         },
@@ -793,7 +793,7 @@
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
                                 "x_offset": -50,
-                                "y_offset": 200,
+                                "y_offset": 350,
                                 "absolute": true
                             }
                         },
@@ -819,13 +819,13 @@
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
                                 "x_offset": 100,
-                                "y_offset": 200,
+                                "y_offset": 350,
                                 "absolute": true
                             }
                         }
                     }
                 },
-                "custom": {
+                "customization": {
                     "type": "Node",
                     "format": {
                         "type": "Anchored"
@@ -990,6 +990,7 @@
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
                                 "x_offset": 100,
+
                                 "y_offset": 100,
                                 "absolute": true
                             }
