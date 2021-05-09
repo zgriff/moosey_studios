@@ -265,6 +265,12 @@ public:
     
     void setSkin(int i);
     
+    int getSkin();
+    
+    void setCustomization(int i);
+    
+    int getCustomization();
+    
     
 #pragma mark Constructors
     /**

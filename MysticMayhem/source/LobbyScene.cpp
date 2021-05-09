@@ -16,7 +16,7 @@ using namespace cugl;
 /** This is the ideal size of the logo */
 #define SCENE_SIZE  1024
 
-float PLAYER_POSITION[] = {3,  1};
+float PLAYER_POSITION[] = {4,  1};
 
 bool clientReady;
 
@@ -56,25 +56,6 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     layer->doLayout(); // This rearranges the children to fit the screen
     addChild(layer);
     _layer = layer;
-    
-    Vec2 playerPos = ((Vec2)PLAYER_POSITION);
-    Size playerSize(4, 8);
-    _playerCustom = Player::alloc(playerPos, playerSize, Element::Water);
-    _playerCustom->setSkinKey("player_skin");
-    _playerCustom->setColorKey("player_color");
-    _playerCustom->setFaceKey("player_face");
-    _playerCustom->setBodyKey("player_body_line");
-    _playerCustom->setHatKey("player_hat");
-    _playerCustom->setStaffKey("player_staff");
-    _playerCustom->setStaffTagKey("player_staff_tag");
-    _playerCustom->setRingKey("player_direction");
-    _playerCustom->setTextures(_assets);
-    _playerCustom->setDrawScale(100.0f);
-    _playerCustom->flipHorizontal(false);
-    _playerCustom->setSkin(1);
-    _playerCustom->getSceneNode()->setScale(0.5f);
-    addChild(_playerCustom->getSceneNode(),1);
-    
     
     
     
@@ -214,6 +195,106 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _playerLabels.push_back(label);
         label->setVisible(false);
     }
+    
+    
+    Vec2 playerPos = ((Vec2)PLAYER_POSITION);
+    Size playerSize(4, 8);
+    _playerCustom = Player::alloc(playerPos, playerSize, Element::Water);
+    _playerCustom->setSkinKey("player_skin");
+    _playerCustom->setColorKey("player_color");
+    _playerCustom->setFaceKey("player_face");
+    _playerCustom->setBodyKey("player_body_line");
+    _playerCustom->setHatKey("player_hat");
+    _playerCustom->setStaffKey("player_staff");
+    _playerCustom->setStaffTagKey("player_staff_tag");
+    _playerCustom->setRingKey("player_direction");
+    _playerCustom->setTextures(_assets);
+    _playerCustom->setDrawScale(100.0f);
+    _playerCustom->flipHorizontal(false);
+    _playerCustom->setSkin(1);
+    _playerCustom->getSceneNode()->setScale(0.25f);
+    addChild(_playerCustom->getSceneNode(),1);
+    
+    
+    _hatForwardButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_customization_hatforw"));
+    _hatBackButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_customization_hatback"));
+    _skinForwardButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_customization_skinforw"));
+    _skinBackButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_customization_skinback"));
+    _eleForwardButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_customization_eleforw"));
+    _eleBackButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_customization_eleback"));
+    
+    
+    
+    _hatForwardButton->activate();
+    _hatBackButton->activate();
+    _skinForwardButton->activate();
+    _skinBackButton->activate();
+    _eleForwardButton->activate();
+    _eleBackButton->activate();
+    
+    _hatForwardButton->setScale(0.2f);
+    _hatBackButton->setScale(0.2f);
+    _skinForwardButton->setScale(0.2f);
+    _skinBackButton->setScale(0.2f);
+    _eleForwardButton->setScale(0.2f);
+    _eleBackButton->setScale(0.2f);
+    
+    _hatForwardButton->addListener([=](const std::string& name, bool down) {
+        CULog("hat forw");
+        if (down) {
+            _playerCustom->setCustomization((_playerCustom->getCustomization()+1)%6);
+            _playerCustom->setDrawScale(100.0f);
+        }
+    });
+    
+    _hatBackButton->addListener([=](const std::string& name, bool down) {
+        CULog("hat back");
+        if (down) {
+            if (_playerCustom->getCustomization() == 0) {
+                _playerCustom->setCustomization(5);
+                _playerCustom->setDrawScale(100.0f);
+            } else {
+                _playerCustom->setCustomization((_playerCustom->getCustomization()-1));
+                _playerCustom->setDrawScale(100.0f);
+            }
+        }
+        
+    });
+    
+    _skinForwardButton->addListener([=](const std::string& name, bool down) {
+        CULog("skin forw");
+        if (down) {
+            _playerCustom->setSkin((_playerCustom->getSkin()+1)%2);
+            _playerCustom->setDrawScale(100.0f);
+            NetworkController::sendSetCustomization( NetworkController::getPlayerId().value(), _playerCustom->getSkin(), _playerCustom->getCustomization(), _playerCustom->getCurrElement());
+        }
+    });
+    
+    _skinBackButton->addListener([=](const std::string& name, bool down) {
+        CULog("skin back");
+        if (down) {
+            _playerCustom->setSkin((_playerCustom->getSkin()+1)%2);
+            _playerCustom->setDrawScale(100.0f);
+        }
+    });
+    
+    _eleForwardButton->addListener([=](const std::string& name, bool down) {
+        CULog("ele forw");
+        if (down) {
+            _playerCustom->setElement(_playerCustom->getPreyElement());
+            _playerCustom->setElement(_playerCustom->getPreyElement());
+            _playerCustom->setDrawScale(100.0f);
+        }
+    });
+    
+    _eleBackButton->addListener([=](const std::string& name, bool down) {
+        CULog("ele back");
+        if (down) {
+            _playerCustom->setElement(_playerCustom->getPreyElement());
+            _playerCustom->setDrawScale(100.0f);
+        }
+        
+    });
     
     
     Input::activate<TextInput>();
