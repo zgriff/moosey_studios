@@ -502,7 +502,7 @@ bool World::loadEgg(const std::shared_ptr<JsonValue> &json){
 }
 
 
-bool World::loadOrb(const std::shared_ptr<JsonValue> &json){
+bool World::loadOrbActive(const std::shared_ptr<JsonValue> &json){
     float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
     float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
     
@@ -517,7 +517,7 @@ bool World::loadOrb(const std::shared_ptr<JsonValue> &json){
     return true;
 }
 
-bool World::loadOrbLoc(const std::shared_ptr<JsonValue> &json){
+bool World::loadOrbInactive(const std::shared_ptr<JsonValue> &json){
     float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
     float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
     
@@ -560,10 +560,10 @@ GameObjectType World::getObjectType(std::string obj) {
         return GameObjectType::Booster;
     } else if (obj == EGG_SPAWN) {
         return GameObjectType::EggSpawn;
-    }  else if (obj == ORB_SPAWN) {
-        return GameObjectType::OrbSpawn;
-    } else if (obj == ORB_LOCATION) {
-        return GameObjectType::OrbLocation;
+    }  else if (obj == ORB_ACTIVE) {
+        return GameObjectType::OrbActive;
+    } else if (obj == ORB_INACTIVE) {
+        return GameObjectType::OrbInactive;
     } else {
         return GameObjectType::PlayerSpawn;
     }
@@ -587,12 +587,12 @@ bool World::loadGameObject(const std::shared_ptr<JsonValue>& json) {
             success = loadEgg(json);
             break;
             
-        case GameObjectType::OrbSpawn:
-            success = loadOrb(json);
+        case GameObjectType::OrbActive:
+            success = loadOrbActive(json);
             break;
             
-        case  GameObjectType::OrbLocation:
-            success = loadOrbLoc(json);
+        case  GameObjectType::OrbInactive:
+            success = loadOrbInactive(json);
             break;
             
         case GameObjectType::PlayerSpawn:

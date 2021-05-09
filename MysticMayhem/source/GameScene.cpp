@@ -28,14 +28,6 @@ using namespace std;
 #pragma mark -
 #pragma mark Level Layout
 
-/** Regardless of logo, lock the height to this */
-#define SCENE_WIDTH 1440
-#define SCENE_HEIGHT 720
-
-/** Width of the game world in Box2d units */
-#define DEFAULT_WIDTH   36.0f
-/** Height of the game world in Box2d units */
-#define DEFAULT_HEIGHT  18.0f
 /** The restitution for all physics objects */
 #define TURNS_PER_SPIN   55.0f
 /** how much the sideways velocity is subtracted per frame
@@ -142,7 +134,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets, string m
     _UInode = _assets->get<scene2::SceneNode>("ui");
     _UInode->setAnchor(Vec2::ANCHOR_CENTER);
     _UInode->setPosition(_worldOffset);
-    _UInode->setContentSize(Size(w,h));
+    _UInode->setContentSize(Application::get()->getDisplaySize() * 2);
     _UInode->doLayout(); // Repositions the HUD;
     //Basically you want the inverse of camera zoom for the UInode scale, originally this wasn't set to the inverse
     //so I had to hardcode 0.4 to compensate for how the UInode childen are currently set
@@ -192,7 +184,7 @@ void GameScene::dispose() {
     _abilitybar = nullptr;
     _abilityname = nullptr;
     _timerHUD = nullptr;
-    _framesHUD = nullptr;
+    //_framesHUD = nullptr;
     _debug = false;
     _assets = nullptr;
 //        Scene2::dispose();
@@ -227,8 +219,7 @@ void GameScene::reset() {
         _player->setUsername(NetworkController::getUsername());
         _player->setIsLocal(true);
         static_pointer_cast<cugl::OrthographicCamera>(getCamera())->set(Application::get()->getDisplaySize());
-        float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
-        static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
+        
         auto cameraInitPlayerPos = _player->getSceneNode()->getPosition();
         //cameraZoom = 1;
         //cameraInitPlayerPos.x = std::clamp(cameraInitPlayerPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
@@ -236,6 +227,8 @@ void GameScene::reset() {
         //cameraInitPlayerPos.y = std::clamp(cameraInitPlayerPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
         //    _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
         getCamera()->translate(cameraInitPlayerPos - getCamera()->getPosition());
+        float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+        static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
     }
     _playerController.init();
     
@@ -303,11 +296,11 @@ void GameScene::update(float timestep) {
             //accelerate to a maximum velocity
             auto forForce = _player->getForce();
             auto scaling = _player->getForce();
-
-            scaling.normalize().scale(_player->getMass() * 0.27f * pow(max(22.0f - vel.length(), 0.0f), 1.5f));
+            
+            scaling.normalize().scale(_player->getMass() * 0.26f * pow(max(22.0f - vel.length(), 0.0f), 1.5f));
 
             _player->setForce(scaling);
-            _player->applyForce();
+            if (vel.length() < 20.0f) _player->applyForce();
             _player->setForce(forForce);
         }
         else {
@@ -508,7 +501,7 @@ std::string GameScene::updateScoreText(const int score) {
 
 std::string GameScene::updateFramesText(const double score) {
     stringstream ss;
-    ss << "Frames: " << score;
+    ss << "Speed: " << score;
     return ss.str();
 }
 

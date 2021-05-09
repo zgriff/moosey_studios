@@ -93,9 +93,9 @@ protected:
     
     bool loadGameObject(const std::shared_ptr<JsonValue>& json);
     
-    bool loadOrb(const std::shared_ptr<JsonValue>& json);
+    bool loadOrbActive(const std::shared_ptr<JsonValue>& json);
     
-    bool loadOrbLoc(const std::shared_ptr<JsonValue>& json);
+    bool loadOrbInactive(const std::shared_ptr<JsonValue>& json);
     
     bool loadStation(const std::shared_ptr<JsonValue>& json);
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="11" height="7" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="531">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="11" height="7" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="549">
  <editorsettings>
   <export target="../../MysticMayhem/assets/maps/forest.json" format="mysticmayhem"/>
  </editorsettings>
@@ -58,24 +58,18 @@
   <object id="131" template="../templates/swap_station.tx" x="1345.96" y="558.99"/>
   <object id="132" template="../templates/swap_station.tx" x="1328.16" y="1120.82"/>
   <object id="240" template="../templates/booster_pad.tx" x="259.179" y="824.241"/>
-  <object id="241" template="../templates/active_orb.tx" x="283.73" y="482.157"/>
-  <object id="243" template="../templates/active_orb.tx" x="284.19" y="576.868"/>
-  <object id="245" template="../templates/active_orb.tx" x="284.833" y="666.659"/>
-  <object id="247" template="../templates/active_orb.tx" x="287.132" y="762.699"/>
-  <object id="248" template="../templates/active_orb.tx" x="286.404" y="979.996"/>
-  <object id="249" template="../templates/active_orb.tx" x="286.864" y="1074.71"/>
-  <object id="250" template="../templates/active_orb.tx" x="287.507" y="1164.5"/>
-  <object id="251" template="../templates/active_orb.tx" x="289.806" y="1260.54"/>
   <object id="331" template="../templates/player_spawn.tx" x="2305.03" y="346.225" rotation="180"/>
   <object id="333" template="../templates/booster_pad.tx" x="2504.64" y="885.585" rotation="180"/>
-  <object id="334" template="../templates/active_orb.tx" x="2480.09" y="493.501" rotation="180"/>
-  <object id="335" template="../templates/active_orb.tx" x="2479.63" y="588.212" rotation="180"/>
-  <object id="336" template="../templates/active_orb.tx" x="2478.99" y="678.003" rotation="180"/>
-  <object id="337" template="../templates/active_orb.tx" x="2476.69" y="774.043" rotation="180"/>
-  <object id="338" template="../templates/active_orb.tx" x="2477.42" y="991.34" rotation="180"/>
-  <object id="339" template="../templates/active_orb.tx" x="2476.96" y="1086.05" rotation="180"/>
-  <object id="340" template="../templates/active_orb.tx" x="2476.31" y="1175.84" rotation="180"/>
-  <object id="341" template="../templates/active_orb.tx" x="2474.01" y="1271.88" rotation="180"/>
+  <object id="536" template="../templates/inactive_orb.tx" x="268" y="482"/>
+  <object id="537" template="../templates/inactive_orb.tx" x="552" y="858"/>
+  <object id="538" template="../templates/inactive_orb.tx" x="276" y="1302"/>
+  <object id="540" template="../templates/inactive_orb.tx" x="948" y="1110"/>
+  <object id="541" template="../templates/inactive_orb.tx" x="890" y="638"/>
+  <object id="542" template="../templates/inactive_orb.tx" x="1830" y="668"/>
+  <object id="544" template="../templates/inactive_orb.tx" x="1906" y="1176"/>
+  <object id="545" template="../templates/inactive_orb.tx" x="2228" y="880"/>
+  <object id="547" template="../templates/inactive_orb.tx" x="2476" y="450"/>
+  <object id="548" template="../templates/inactive_orb.tx" x="2478" y="1334"/>
  </objectgroup>
  <objectgroup id="3" name="Decorations">
   <object id="136" gid="2" x="120.356" y="199.586" width="118" height="190"/>
@@ -146,7 +140,7 @@
   <object id="201" gid="2" x="1299.11" y="1708.94" width="118" height="190"/>
   <object id="202" gid="2" x="1203.38" y="1719.41" width="118" height="190"/>
   <object id="203" gid="2" x="1118.11" y="1723.89" width="118" height="190"/>
-  <object id="204" gid="2" x="1040.33" y="1716.42" width="118" height="190"/>
+  <object id="204" gid="2" x="1030.33" y="1704.42" width="118" height="190"/>
   <object id="205" gid="2" x="955.061" y="1716.42" width="118" height="190"/>
   <object id="206" gid="2" x="886.25" y="1713.42" width="118" height="190"/>
   <object id="207" gid="2" x="815.943" y="1711.93" width="118" height="190"/>
