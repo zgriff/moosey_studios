@@ -741,7 +741,7 @@
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
                                 "x_offset": -350,
-                                "y_offset": 100,
+                                "y_offset": 200,
                                 "absolute": true
                             }
                         },
@@ -767,7 +767,7 @@
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
                                 "x_offset": -200,
-                                "y_offset": 100,
+                                "y_offset": 200,
                                 "absolute": true
                             }
                         },
@@ -793,7 +793,7 @@
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
                                 "x_offset": -50,
-                                "y_offset": 100,
+                                "y_offset": 200,
                                 "absolute": true
                             }
                         },
@@ -812,6 +812,177 @@
                                     "type": "Image",
                                     "data": {
                                         "texture": "map4"
+                                    }
+                                }
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "bottom",
+                                "x_offset": 100,
+                                "y_offset": 200,
+                                "absolute": true
+                            }
+                        }
+                    }
+                },
+                "custom": {
+                    "type": "Node",
+                    "format": {
+                        "type": "Anchored"
+                    },
+                    "data": {
+                        "anchor": [ 0.5, 0.5 ]
+                    },
+                    "layout": {
+                        "x_anchor": "fill",
+                        "y_anchor": "fill"
+                    },
+                    "children": {
+                        "hatforw": {
+                            "type": "Button",
+                            "data": {
+                                "upnode": "up",
+                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                                "visible": true,
+                                "pushsize": true,
+                                "anchor": [ 0.7, 0.4 ],
+                                "scale": 0.3
+                            },
+                            "children": {
+                                "up": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "back"
+                                    }
+                                }
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "bottom",
+                                "x_offset": -350,
+                                "y_offset": 100,
+                                "absolute": true
+                            }
+                        },
+                        "hatback": {
+                            "type": "Button",
+                            "data": {
+                                "upnode": "up",
+                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                                "visible": true,
+                                "pushsize": true,
+                                "anchor": [ 0.7, 0.4 ],
+                                "scale": 0.3
+                            },
+                            "children": {
+                                "up": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "back"
+                                    }
+                                }
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "bottom",
+                                "x_offset": -200,
+                                "y_offset": 100,
+                                "absolute": true
+                            }
+                        },
+                        "skinforw": {
+                            "type": "Button",
+                            "data": {
+                                "upnode": "up",
+                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                                "visible": true,
+                                "pushsize": true,
+                                "anchor": [ 0.7, 0.4 ],
+                                "scale": 0.3
+                            },
+                            "children": {
+                                "up": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "back"
+                                    }
+                                }
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "bottom",
+                                "x_offset": -50,
+                                "y_offset": 100,
+                                "absolute": true
+                            }
+                        },
+                        "skinback": {
+                            "type": "Button",
+                            "data": {
+                                "upnode": "up",
+                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                                "visible": true,
+                                "pushsize": true,
+                                "anchor": [ 0.7, 0.4 ],
+                                "scale": 0.3
+                            },
+                            "children": {
+                                "up": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "back"
+                                    }
+                                }
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "bottom",
+                                "x_offset": 100,
+                                "y_offset": 100,
+                                "absolute": true
+                            }
+                        },
+                        "eleforw": {
+                            "type": "Button",
+                            "data": {
+                                "upnode": "up",
+                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                                "visible": true,
+                                "pushsize": true,
+                                "anchor": [ 0.7, 0.4 ],
+                                "scale": 0.3
+                            },
+                            "children": {
+                                "up": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "back"
+                                    }
+                                }
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "bottom",
+                                "x_offset": 100,
+                                "y_offset": 100,
+                                "absolute": true
+                            }
+                        },
+                        "eleback": {
+                            "type": "Button",
+                            "data": {
+                                "upnode": "up",
+                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                                "visible": true,
+                                "pushsize": true,
+                                "anchor": [ 0.7, 0.4 ],
+                                "scale": 0.3
+                            },
+                            "children": {
+                                "up": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "back"
                                     }
                                 }
                             },

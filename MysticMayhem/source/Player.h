@@ -224,6 +224,8 @@ public:
      */
     void setTextures(const std::shared_ptr<cugl::AssetManager>& assets);
     
+    void setBody();
+    
     
     const std::shared_ptr<cugl::Texture> getTexture() const {
         return _texture;
@@ -260,6 +262,8 @@ public:
     void setRingKey(std::string ring) {
         _ringKey = ring;
     }
+    
+    void setSkin(int i);
     
     
 #pragma mark Constructors

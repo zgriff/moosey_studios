@@ -165,8 +165,23 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     
     setElement(_currElt);
 
-    _body->SetUserData(this);
+}
 
+void Player::setBody() {
+    _body->SetUserData(this);
+}
+
+void Player::setSkin(int skin) {
+    switch (skin) {
+        case 0:
+            _animNodes[_skinKey]->setFrame(0);
+            break;
+        case 1:
+            _animNodes[_skinKey]->setFrame(4);
+            break;
+        default:
+            break;
+    }
 }
 
 void Player::setElement(Element e){

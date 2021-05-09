@@ -36,6 +36,14 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
 
     // VIEW
+    std::shared_ptr<Player> _playerCustom;
+    std::shared_ptr<cugl::scene2::Button> _hatForwardButton;
+    std::shared_ptr<cugl::scene2::Button> _hatBackButton;
+    std::shared_ptr<cugl::scene2::Button> _skinForwardButton;
+    std::shared_ptr<cugl::scene2::Button> _skinBackButton;
+    std::shared_ptr<cugl::scene2::Button> _eleForwardButton;
+    std::shared_ptr<cugl::scene2::Button> _eleBackButton;
+    
     std::shared_ptr<cugl::scene2::Button> _startButton;
     std::shared_ptr<cugl::scene2::Button> _map1Button;
     std::shared_ptr<cugl::scene2::Button> _map2Button;

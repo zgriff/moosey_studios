@@ -188,6 +188,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         
         _physicsWorld->addObstacle(player);
         player->setTextures(_assets);
+        player->setBody();
         player->setDrawScale(_scale);
         player->setDebugScene(_debugNode);
         player->setID(i);

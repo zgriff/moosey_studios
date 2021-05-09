@@ -16,6 +16,8 @@ using namespace cugl;
 /** This is the ideal size of the logo */
 #define SCENE_SIZE  1024
 
+float PLAYER_POSITION[] = {3,  1};
+
 bool clientReady;
 
 #pragma mark -
@@ -54,6 +56,27 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     layer->doLayout(); // This rearranges the children to fit the screen
     addChild(layer);
     _layer = layer;
+    
+    Vec2 playerPos = ((Vec2)PLAYER_POSITION);
+    Size playerSize(4, 8);
+    _playerCustom = Player::alloc(playerPos, playerSize, Element::Water);
+    _playerCustom->setSkinKey("player_skin");
+    _playerCustom->setColorKey("player_color");
+    _playerCustom->setFaceKey("player_face");
+    _playerCustom->setBodyKey("player_body_line");
+    _playerCustom->setHatKey("player_hat");
+    _playerCustom->setStaffKey("player_staff");
+    _playerCustom->setStaffTagKey("player_staff_tag");
+    _playerCustom->setRingKey("player_direction");
+    _playerCustom->setTextures(_assets);
+    _playerCustom->setDrawScale(100.0f);
+    _playerCustom->flipHorizontal(false);
+    _playerCustom->setSkin(1);
+    _playerCustom->getSceneNode()->setScale(0.5f);
+    addChild(_playerCustom->getSceneNode(),1);
+    
+    
+    
     
     _startButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_start"));
     _startButton->setVisible(false);
