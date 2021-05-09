@@ -136,10 +136,10 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _UInode = _assets->get<scene2::SceneNode>("ui");
     _UInode->setAnchor(Vec2::ANCHOR_CENTER);
     _UInode->setPosition(_worldOffset);
-    _UInode->setContentSize(Application::get()->getDisplaySize() * 2);
+    _UInode->setContentSize(Application::get()->getDisplaySize() * 2.0);
     _UInode->doLayout(); // Repositions the HUD;
     //It should be inverse of the camera zoom, so UI shrinks if zoom is more
-    _UInode->setScale(0.5/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
+    _UInode->setScale(0.47/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
 #ifdef CU_MOBILE
     _worldOffset = Vec2(0.0f,(dimen.height-h)/2.0f);
 #endif
@@ -148,6 +148,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_score"));
     _framesHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_frames"));
+    _framesHUD->setPositionX(_framesHUD->getPositionX() + 100);
     _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
     
     _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
