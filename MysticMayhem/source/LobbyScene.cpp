@@ -16,7 +16,7 @@ using namespace cugl;
 /** This is the ideal size of the logo */
 #define SCENE_SIZE  1024
 
-float PLAYER_POSITION[] = {4,  1};
+float PLAYER_POSITION[] = {2.1f,  1.0f};
 
 bool clientReady;
 
@@ -74,6 +74,16 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     _map3Button->setDown(false);
     _map4Button->setDown(false);
     
+    
+    _mapNextButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_mapnext"));
+    _mapPrevButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_mapprev"));
+    _mapNextButton->setVisible(false);
+    _mapPrevButton->setVisible(false);
+    _mapNextButton->activate();
+    _mapPrevButton->activate();
+    
+    
+    
     if(NetworkController::isHost()){
         _startButton->setVisible(true);
         _startButton->addListener([&](const std::string& name, bool down) {
@@ -83,67 +93,90 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
                 _active = down;
             }
         });
-        _map1Button->setVisible(true);
-        _map1Button->addListener([&](const std::string& name, bool down) {
-            if (_map1Button->isDown()) {
-                _map2Button->setDown(false);
-                _map3Button->setDown(false);
-                _map4Button->setDown(false);
-                /*_map1Button->deactivate();
-                _map2Button->activate();
-                _map3Button->activate();
-                _map4Button->activate();*/
-                _selectedMap = GRASS_MAP_KEY;
-                NetworkController::sendSetMapSelected(1);
-                NetworkController::setMapSelected(1);
-                CULog("%f %f", _map1Button->getPositionX(), _map1Button->getPositionY());
+        
+        //TODO: extend these to not use mod 4
+        _mapNextButton->setVisible(true);
+        _mapNextButton->addListener([&](const std::string& name, bool down) {
+            if (down) {
+                int map = NetworkController::getMapSelected()%4 +  1;
+                NetworkController::sendSetMapSelected(map);
+                NetworkController::setMapSelected(map);
             }
         });
-        _map2Button->setVisible(true);
-        _map2Button->addListener([&](const std::string& name, bool down) {
-            if (_map2Button->isDown()) {
-                _map1Button->setDown(false);
-                _map3Button->setDown(false);
-                _map4Button->setDown(false);
-                /*_map1Button->activate();
-                _map2Button->deactivate();
-                _map3Button->activate();
-                _map4Button->activate();*/
-                NetworkController::sendSetMapSelected(2);
-                NetworkController::setMapSelected(2);
-                _selectedMap = GRASS_MAP2_KEY;
+        
+        _mapPrevButton->setVisible(true);
+        _mapPrevButton->addListener([&](const std::string& name, bool down) {
+            if (down) {
+                int map = NetworkController::getMapSelected() - 1;
+                if (map == 0) {
+                    map = 4;
+                }
+                NetworkController::sendSetMapSelected(map);
+                NetworkController::setMapSelected(map);
             }
         });
-        _map3Button->setVisible(true);
-        _map3Button->addListener([&](const std::string& name, bool down) {
-            if (_map3Button->isDown()) {
-                _map1Button->setDown(false);
-                _map2Button->setDown(false);
-                _map4Button->setDown(false);
-                /*_map1Button->activate();
-                _map2Button->activate();
-                _map3Button->deactivate();
-                _map4Button->activate();*/
-                NetworkController::sendSetMapSelected(3);
-                NetworkController::setMapSelected(3);
-                _selectedMap = GRASS_MAP3_KEY;
-            }
-            });
-        _map4Button->setVisible(true);
-        _map4Button->addListener([&](const std::string& name, bool down) {
-            if (_map4Button->isDown()) {
-                _map1Button->setDown(false);
-                _map2Button->setDown(false);
-                _map3Button->setDown(false);
-               /* _map1Button->activate();
-                _map2Button->activate();
-                _map3Button->activate();
-                _map4Button->deactivate();*/
-                NetworkController::sendSetMapSelected(4);
-                NetworkController::setMapSelected(4);
-                _selectedMap = GRASS_MAP4_KEY;
-            }
-            });
+        
+//        _map1Button->setVisible(true);
+//        _map1Button->addListener([&](const std::string& name, bool down) {
+//            if (_map1Button->isDown()) {
+//                _map2Button->setDown(false);
+//                _map3Button->setDown(false);
+//                _map4Button->setDown(false);
+//                /*_map1Button->deactivate();
+//                _map2Button->activate();
+//                _map3Button->activate();
+//                _map4Button->activate();*/
+//                _selectedMap = GRASS_MAP_KEY;
+//                NetworkController::sendSetMapSelected(1);
+//                NetworkController::setMapSelected(1);
+//                CULog("%f %f", _map1Button->getPositionX(), _map1Button->getPositionY());
+//            }
+//        });
+//        _map2Button->setVisible(true);
+//        _map2Button->addListener([&](const std::string& name, bool down) {
+//            if (_map2Button->isDown()) {
+//                _map1Button->setDown(false);
+//                _map3Button->setDown(false);
+//                _map4Button->setDown(false);
+//                /*_map1Button->activate();
+//                _map2Button->deactivate();
+//                _map3Button->activate();
+//                _map4Button->activate();*/
+//                NetworkController::sendSetMapSelected(2);
+//                NetworkController::setMapSelected(2);
+//                _selectedMap = GRASS_MAP2_KEY;
+//            }
+//        });
+//        _map3Button->setVisible(true);
+//        _map3Button->addListener([&](const std::string& name, bool down) {
+//            if (_map3Button->isDown()) {
+//                _map1Button->setDown(false);
+//                _map2Button->setDown(false);
+//                _map4Button->setDown(false);
+//                /*_map1Button->activate();
+//                _map2Button->activate();
+//                _map3Button->deactivate();
+//                _map4Button->activate();*/
+//                NetworkController::sendSetMapSelected(3);
+//                NetworkController::setMapSelected(3);
+//                _selectedMap = GRASS_MAP3_KEY;
+//            }
+//            });
+//        _map4Button->setVisible(true);
+//        _map4Button->addListener([&](const std::string& name, bool down) {
+//            if (_map4Button->isDown()) {
+//                _map1Button->setDown(false);
+//                _map2Button->setDown(false);
+//                _map3Button->setDown(false);
+//               /* _map1Button->activate();
+//                _map2Button->activate();
+//                _map3Button->activate();
+//                _map4Button->deactivate();*/
+//                NetworkController::sendSetMapSelected(4);
+//                NetworkController::setMapSelected(4);
+//                _selectedMap = GRASS_MAP4_KEY;
+//            }
+//            });
     }
     else{
 //        _startButton->addListener([&](const std::string& name, bool down) {
@@ -154,14 +187,14 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
 //            }
 //            clientReady = !clientReady;
 //        });
-        _map1Button->deactivate();
-        _map1Button->setVisible(false);
-        _map2Button->deactivate();
-        _map2Button->setVisible(false);
-        _map3Button->deactivate();
-        _map3Button->setVisible(false);
-        _map4Button->deactivate();
-        _map4Button->setVisible(false);
+//        _map1Button->deactivate();
+//        _map1Button->setVisible(false);
+//        _map2Button->deactivate();
+//        _map2Button->setVisible(false);
+//        _map3Button->deactivate();
+//        _map3Button->setVisible(false);
+//        _map4Button->deactivate();
+//        _map4Button->setVisible(false);
     }
     
     _settingsNode = std::make_shared<Settings>(assets, false);
@@ -215,6 +248,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     _playerCustom->getSceneNode()->setScale(0.25f);
     addChild(_playerCustom->getSceneNode(),1);
     
+    NetworkController::sendSetCustomization( NetworkController::getPlayerId().value(), _playerCustom->getSkin(), _playerCustom->getCustomization(), _playerCustom->getCurrElement());
     
     _hatForwardButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_customization_hatforw"));
     _hatBackButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_customization_hatback"));
@@ -301,6 +335,8 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     });
     
     
+    
+    
     Input::activate<TextInput>();
     if(_active) {
 //        _slider->activate();
@@ -328,6 +364,15 @@ void LobbyScene::dispose() {
     _map2Button = nullptr;
     _map3Button = nullptr;
     _map4Button = nullptr;
+    _settingsButton = nullptr;
+    _hatForwardButton = nullptr;
+    _hatBackButton = nullptr;
+    _skinForwardButton = nullptr;
+    _skinBackButton = nullptr;
+    _eleForwardButton = nullptr;
+    _eleBackButton = nullptr;
+    _mapNextButton = nullptr;
+    _mapPrevButton = nullptr;
     _playerLabels.clear();
     _assets = nullptr;
     _active = false;
@@ -384,36 +429,37 @@ void LobbyScene::update(float progress) {
         }
     }
 
-    if (!NetworkController::isHost()) {
-        if (NetworkController::getMapSelected() == 1) {
-            _map1Button->setVisible(true);
-            _map1Button->setPosition(100, 160);
-            _map2Button->setVisible(false);
-            _map3Button->setVisible(false);
-            _map4Button->setVisible(false);
-        }
-        else if (NetworkController::getMapSelected() == 2) {
-            _map2Button->setVisible(true);
-            _map2Button->setPosition(100, 160);
-            _map1Button->setVisible(false);
-            _map3Button->setVisible(false);
-            _map4Button->setVisible(false);
-        }
-        else if (NetworkController::getMapSelected() == 3) {
-            _map3Button->setVisible(true);
-            _map3Button->setPosition(100, 160);
-            _map1Button->setVisible(false);
-            _map2Button->setVisible(false);
-            _map4Button->setVisible(false);
-        }
-        else if (NetworkController::getMapSelected() == 4) {
-            _map4Button->setVisible(true);
-            _map4Button->setPosition(100, 160);
-            _map1Button->setVisible(false);
-            _map2Button->setVisible(false);
-            _map3Button->setVisible(false);
-        }
+//    if (!NetworkController::isHost()) {
+    if (NetworkController::getMapSelected() == 1) {
+        _map1Button->setVisible(true);
+        _map1Button->setPosition(550, 100);
+        _map2Button->setVisible(false);
+        _map3Button->setVisible(false);
+        _map4Button->setVisible(false);
     }
+    else if (NetworkController::getMapSelected() == 2) {
+        _map2Button->setVisible(true);
+        _map2Button->setPosition(550, 100);
+        _map1Button->setVisible(false);
+        _map3Button->setVisible(false);
+        _map4Button->setVisible(false);
+    }
+    else if (NetworkController::getMapSelected() == 3) {
+        _map3Button->setVisible(true);
+        _map3Button->setPosition(550, 100);
+        _map1Button->setVisible(false);
+        _map2Button->setVisible(false);
+        _map4Button->setVisible(false);
+    }
+    else if (NetworkController::getMapSelected() == 4) {
+        
+        _map4Button->setVisible(true);
+        _map4Button->setPosition(550, 100);
+        _map1Button->setVisible(false);
+        _map2Button->setVisible(false);
+        _map3Button->setVisible(false);
+    }
+//    }
     
     if (_settingsNode->backPressed()) {
         _settingsNode->setActive(false);
@@ -449,6 +495,16 @@ void LobbyScene::setActive(bool value) {
         _map2Button->deactivate();
         _map3Button->deactivate();
         _map4Button->deactivate();
+        _mapNextButton->deactivate();
+        _mapPrevButton->deactivate();
+        _settingsButton->deactivate();
+        _hatForwardButton->deactivate();
+        _hatBackButton->deactivate();
+        _skinForwardButton->deactivate();
+        _skinBackButton->deactivate();
+        _eleForwardButton->deactivate();
+        _eleBackButton->deactivate();
+        
     }
 //    if (value && (!_hostButton->isActive() || !_joinButton->isActive())) {
 //        _hostButton->activate();

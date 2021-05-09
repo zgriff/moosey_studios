@@ -522,7 +522,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": -0.35,
+                                "x_offset": -0.30,
                                 "y_offset": 0.30
                             }
                         },
@@ -540,8 +540,8 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": 0.35,
-                                "y_offset": 0.30
+                                "x_offset": -0.30,
+                                "y_offset": 0.1
                             }
                         },
                         "player3": {
@@ -558,8 +558,8 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": -0.35,
-                                "y_offset": 0.1
+                                "x_offset": -0.1,
+                                "y_offset": 0.30
                             }
                         },
                         "player4": {
@@ -576,7 +576,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": 0.35,
+                                "x_offset": -0.1,
                                 "y_offset": 0.1
                             }
                         },
@@ -594,8 +594,8 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": -0.35,
-                                "y_offset": -0.1
+                                "x_offset": 0.1,
+                                "y_offset": 0.30
                             }
                         },
                         "player6": {
@@ -612,8 +612,8 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": 0.35,
-                                "y_offset": -0.1
+                                "x_offset": 0.1,
+                                "y_offset": 0.1
                             }
                         },
                         "player7": {
@@ -630,8 +630,8 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": -0.35,
-                                "y_offset": -0.3
+                                "x_offset": 0.30,
+                                "y_offset": 0.30
                             }
                         },
                         "player8": {
@@ -648,8 +648,8 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "middle",
-                                "x_offset": 0.35,
-                                "y_offset": -0.3
+                                "x_offset": 0.30,
+                                "y_offset": 0.1
                             }
                         }
                     }
@@ -822,6 +822,58 @@
                                 "y_offset": 350,
                                 "absolute": true
                             }
+                        },
+                        "mapnext": {
+                            "type": "Button",
+                            "data": {
+                                "upnode": "up",
+                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                                "visible": true,
+                                "pushsize": true,
+                                "anchor": [ 0.7, 0.4 ],
+                                "scale": 0.3
+                            },
+                            "children": {
+                                "up": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "back"
+                                    }
+                                }
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "bottom",
+                                "x_offset": 140,
+                                "y_offset": 100,
+                                "absolute": true
+                            }
+                        },
+                        "mapprev": {
+                            "type": "Button",
+                            "data": {
+                                "upnode": "up",
+                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
+                                "visible": true,
+                                "pushsize": true,
+                                "anchor": [ 0.7, 0.4 ],
+                                "scale": 0.3
+                            },
+                            "children": {
+                                "up": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "back"
+                                    }
+                                }
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "bottom",
+                                "x_offset": -60,
+                                "y_offset": 100,
+                                "absolute": true
+                            }
                         }
                     }
                 },
@@ -859,7 +911,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": 0,
+                                "x_offset": -200,
                                 "y_offset": 175,
                                 "absolute": true
                             }
@@ -885,7 +937,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -200,
+                                "x_offset": -400,
                                 "y_offset": 175,
                                 "absolute": true
                             }
@@ -911,7 +963,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": 0,
+                                "x_offset": -200,
                                 "y_offset": 100,
                                 "absolute": true
                             }
@@ -937,7 +989,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -200,
+                                "x_offset": -400,
                                 "y_offset": 100,
                                 "absolute": true
                             }
@@ -963,7 +1015,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": 0,
+                                "x_offset": -200,
                                 "y_offset": 25,
                                 "absolute": true
                             }
@@ -989,7 +1041,7 @@
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -200,
+                                "x_offset": -400,
                                 "y_offset": 25,
                                 "absolute": true
                             }

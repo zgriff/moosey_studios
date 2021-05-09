@@ -44,6 +44,9 @@ protected:
     std::shared_ptr<cugl::scene2::Button> _eleForwardButton;
     std::shared_ptr<cugl::scene2::Button> _eleBackButton;
     
+    std::shared_ptr<cugl::scene2::Button> _mapNextButton;
+    std::shared_ptr<cugl::scene2::Button> _mapPrevButton;
+    
     std::shared_ptr<cugl::scene2::Button> _startButton;
     std::shared_ptr<cugl::scene2::Button> _map1Button;
     std::shared_ptr<cugl::scene2::Button> _map2Button;
