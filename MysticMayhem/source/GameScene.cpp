@@ -139,7 +139,11 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _UInode->setContentSize(Application::get()->getDisplaySize() * 2);
     _UInode->doLayout(); // Repositions the HUD;
     //It should be inverse of the camera zoom, so UI shrinks if zoom is more
-    _UInode->setScale(0.35/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
+    _UInode->setScale(0.5/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
+#ifdef CU_MOBILE
+    _worldOffset = Vec2(0.0f,(dimen.height-h)/2.0f);
+#endif
+        
     //_UInode->setScale(CAMERA_ZOOM);
     
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_score"));
