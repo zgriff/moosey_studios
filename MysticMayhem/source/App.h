@@ -14,6 +14,7 @@
 #include "MenuScene.h"
 #include "EndScene.h"
 #include "LobbyScene.h"
+#include "Settings.h"
 #include "Globals.h"
 
 /**
@@ -37,6 +38,7 @@ protected:
     LobbyScene _lobby;
     /** The controller for the ending results screen  */
     EndScene _results;
+    
 
     /** Whether or not we have finished loading all assets */
     enum class SceneSelect {

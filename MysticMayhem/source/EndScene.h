@@ -10,6 +10,8 @@
 #define EndScene_h
 
 #include <cugl/cugl.h>
+#include <map>
+#include <vector>
 
 class EndScene : public cugl::Scene2 {
 protected:
@@ -17,12 +19,13 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
 
     // VIEW
-    std::shared_ptr<cugl::scene2::Button> _playAgainButton; //returns to same lobby
+    std::shared_ptr<cugl::scene2::Button> _playAgainButton;
     std::shared_ptr<cugl::scene2::Button> _mainMenuButton; //returns to main menu
-    std::shared_ptr<cugl::scene2::Label> _results;
+    std::shared_ptr<cugl::scene2::Label> _resultLabel;
+//    std::vector<std::shared_ptr<cugl::scene2::Label>>_playerScores;
     std::shared_ptr<cugl::scene2::Label> _message;
     
-    std::string _resStr;
+    std::map<std::string, int> _resultsMap;
     std::tuple<std::string, std::string> _winnerStr;
     bool _playAgain; //whether player clicked play again or not
     bool _mainMenu; //whether player clicked return to main menu or not
@@ -41,7 +44,7 @@ public:
      */
     void dispose();
     
-    bool init(const std::shared_ptr<cugl::AssetManager>& assets, std::string results, std::tuple<std::string, std::string> winner);
+    bool init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<std::string, int> results, std::string message);
 
     
 #pragma mark -

@@ -14,13 +14,6 @@
             "minfilter": "linear",
             "magfilter": "linear"
         },
-        "play": {
-            "file":      "textures/cugl-play.png",
-            "wrapS":     "clamp",
-            "wrapT":     "clamp",
-            "minfilter": "linear",
-            "magfilter": "linear"
-        },
         "progress": {
             "file":      "textures/progress.png",
             "wrapS":     "clamp",

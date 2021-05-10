@@ -9,9 +9,11 @@
 
 namespace NetworkController {
 
-	void createGame();
+    void createGame();
 
-	void joinGame(std::string roomId);
+    void joinGame(std::string roomId);
+
+    void destroyConn();
     
     /** isHost is true if the player is a host of a game and false otherwise */
     bool isHost();
@@ -43,6 +45,7 @@ namespace NetworkController {
     void sendTag(int taggedId, int taggerId, time_t timestamp, bool dropEgg);
     void sendEggRespawn(int eggId, Vec2 eggPosition);
     void sendSetUsername(int playerId, string username);
+    void sendSetCustomization(int playerId, int skin, int hat, int element);
     void sendSetMapSelected(int i);
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);
@@ -52,10 +55,13 @@ namespace NetworkController {
     int getMapSelected();
     void setMapSelected(int i);
 
+    std::unordered_map<int,std::tuple<int,int,int>> getCustomizations();
+
     std::string getUsername();
-    std::string getUsername(int i);
+    std::string getUsername(int playerId);
 
     void setUsername(std::string name);
+    void setUsername(std::string name, int playerId);
 
     void setReadyCallback(std::function<void(uint8_t, bool)> cb);
     void setStartCallback (std::function<void(void)> cb);

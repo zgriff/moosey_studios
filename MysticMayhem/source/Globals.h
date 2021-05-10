@@ -29,9 +29,9 @@ constexpr int HATCH_SCORE = 10;
 constexpr int GAME_TIMER= 180;
 
 /**convert Tiled coords to box2d w/ scalar*/
-constexpr float  TILE_TO_BOX2D = 50.0f/40.0f;
+constexpr float  TILE_TO_BOX2D = 250.0f/40.0f;
 
-constexpr float  TILE_TO_SCENE = 50.0f;
+constexpr float  TILE_TO_SCENE = 250.0f;
 
 /** roughly 40 pixels to 1 box2d unit */
 constexpr float  SCENE_TO_BOX2D = 1.0f/40.0f;

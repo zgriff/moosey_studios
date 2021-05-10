@@ -139,6 +139,9 @@
 		EBBF189B1D74904A008E2001 /* Mac.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBBF189A1D74904A008E2001 /* Mac.xcassets */; };
 		EBFE7C051E19B496001007C2 /* json in Resources */ = {isa = PBXBuildFile; fileRef = EBFE7C041E19B496001007C2 /* json */; };
 		EBFE7C091E19B4AC001007C2 /* json in Resources */ = {isa = PBXBuildFile; fileRef = EBFE7C041E19B496001007C2 /* json */; };
+		EC80F8FE263FA896001CC9EC /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC80F8FD263FA896001CC9EC /* Settings.cpp */; };
+		EC80F8FF263FA896001CC9EC /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC80F8FD263FA896001CC9EC /* Settings.cpp */; };
+		EC80F900263FA896001CC9EC /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC80F8FD263FA896001CC9EC /* Settings.cpp */; };
 		EC86E557261B5E0F00203FCA /* EndScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC86E556261B5E0F00203FCA /* EndScene.cpp */; };
 		EC86E558261B5E0F00203FCA /* EndScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC86E556261B5E0F00203FCA /* EndScene.cpp */; };
 		EC86E559261B5E0F00203FCA /* EndScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC86E556261B5E0F00203FCA /* EndScene.cpp */; };
@@ -259,6 +262,8 @@
 		EBBF189A1D74904A008E2001 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
 		EBBF189F1D74904A008E2001 /* Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
 		EBFE7C041E19B496001007C2 /* json */ = {isa = PBXFileReference; lastKnownFileType = folder; path = json; sourceTree = "<group>"; };
+		EC80F8F9263FA87E001CC9EC /* Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		EC80F8FD263FA896001CC9EC /* Settings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
 		EC86E555261B5DF900203FCA /* EndScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EndScene.h; sourceTree = "<group>"; };
 		EC86E556261B5E0F00203FCA /* EndScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EndScene.cpp; sourceTree = "<group>"; };
 		ECA583EF2603006C00DF6791 /* Egg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Egg.h; sourceTree = "<group>"; };
@@ -454,11 +459,12 @@
 		EBBF18B11D749176008E2001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				28BF96582622AE8B0050EDCD /* Booster.cpp */,
-				28BF965C2622AE8B0050EDCD /* Booster.h */,
 				925FC4F525F42B2800532483 /* main.cpp */,
 				925FC50025F42B6F00532483 /* App.h */,
 				925FC4FF25F42B6F00532483 /* App.cpp */,
+				2882167626098AEE0073F7D4 /* Globals.h */,
+				922094CC260D0AFB003C9263 /* MovementStyle.h */,
+				92165332261C370200FFE01E /* MapConstants.h */,
 				925FC50B25F42CFC00532483 /* LoadingScene.h */,
 				925FC50A25F42CFC00532483 /* LoadingScene.cpp */,
 				9220952E260DA500003C9263 /* MenuScene.h */,
@@ -467,38 +473,39 @@
 				92165312261B6DDA00FFE01E /* LobbyScene.cpp */,
 				925FC51325F42D0800532483 /* GameScene.h */,
 				925FC51225F42D0800532483 /* GameScene.cpp */,
-				288216482605A7910073F7D4 /* NetworkController.cpp */,
-				288216462605A7910073F7D4 /* NetworkController.h */,
-				925FC51B25F42D1800532483 /* InputController.h */,
-				925FC51A25F42D1800532483 /* InputController.cpp */,
-				925FC52B25F42D3700532483 /* Player.h */,
-				925FC52A25F42D3700532483 /* Player.cpp */,
-				921654462622999000FFE01E /* AbilityController.cpp */,
-				921654452622999000FFE01E /* AbilityController.h */,
-				9216543E2622997100FFE01E /* Projectile.cpp */,
-				9216543A2622997100FFE01E /* Projectile.h */,
-				925FC53325F42D4D00532483 /* Orb.h */,
-				925FC53225F42D4D00532483 /* Orb.cpp */,
-				925FC53B25F42D5C00532483 /* SpawnController.h */,
-				925FC53A25F42D5C00532483 /* SpawnController.cpp */,
-				925FC54325F42D6800532483 /* SwapStation.h */,
-				925FC54225F42D6800532483 /* SwapStation.cpp */,
-				28E6A53625F76E72004998CF /* Element.h */,
-				288216522605A90E0073F7D4 /* NetworkData.cpp */,
-				288216532605A90E0073F7D4 /* NetworkData.h */,
-				2882167626098AEE0073F7D4 /* Globals.h */,
-				28821696260A545C0073F7D4 /* World.h */,
-				28297955260CEE99002EC000 /* World.cpp */,
-				ECA583EF2603006C00DF6791 /* Egg.h */,
-				ECA583F32603008700DF6791 /* Egg.cpp */,
-				ECFA78E82605149B009D7949 /* CollisionController.h */,
-				ECFA78EC260514B1009D7949 /* CollisionController.cpp */,
-				922094CC260D0AFB003C9263 /* MovementStyle.h */,
-				92165332261C370200FFE01E /* MapConstants.h */,
 				EC86E555261B5DF900203FCA /* EndScene.h */,
 				EC86E556261B5E0F00203FCA /* EndScene.cpp */,
-				2844515A2633C287008343E2 /* SoundController.cpp */,
+				288216462605A7910073F7D4 /* NetworkController.h */,
+				288216482605A7910073F7D4 /* NetworkController.cpp */,
+				288216532605A90E0073F7D4 /* NetworkData.h */,
+				288216522605A90E0073F7D4 /* NetworkData.cpp */,
+				ECFA78E82605149B009D7949 /* CollisionController.h */,
+				ECFA78EC260514B1009D7949 /* CollisionController.cpp */,
 				2844515B2633C287008343E2 /* SoundController.h */,
+				2844515A2633C287008343E2 /* SoundController.cpp */,
+				925FC51B25F42D1800532483 /* InputController.h */,
+				925FC51A25F42D1800532483 /* InputController.cpp */,
+				925FC53B25F42D5C00532483 /* SpawnController.h */,
+				925FC53A25F42D5C00532483 /* SpawnController.cpp */,
+				921654452622999000FFE01E /* AbilityController.h */,
+				921654462622999000FFE01E /* AbilityController.cpp */,
+				28821696260A545C0073F7D4 /* World.h */,
+				28297955260CEE99002EC000 /* World.cpp */,
+				925FC52B25F42D3700532483 /* Player.h */,
+				925FC52A25F42D3700532483 /* Player.cpp */,
+				28E6A53625F76E72004998CF /* Element.h */,
+				9216543A2622997100FFE01E /* Projectile.h */,
+				9216543E2622997100FFE01E /* Projectile.cpp */,
+				925FC53325F42D4D00532483 /* Orb.h */,
+				925FC53225F42D4D00532483 /* Orb.cpp */,
+				ECA583EF2603006C00DF6791 /* Egg.h */,
+				ECA583F32603008700DF6791 /* Egg.cpp */,
+				925FC54325F42D6800532483 /* SwapStation.h */,
+				925FC54225F42D6800532483 /* SwapStation.cpp */,
+				28BF96582622AE8B0050EDCD /* Booster.cpp */,
+				28BF965C2622AE8B0050EDCD /* Booster.h */,
+				EC80F8F9263FA87E001CC9EC /* Settings.h */,
+				EC80F8FD263FA896001CC9EC /* Settings.cpp */,
 			);
 			name = Source;
 			path = ../source;
@@ -697,6 +704,7 @@
 				288216562605A90E0073F7D4 /* NetworkData.cpp in Sources */,
 				921654412622997200FFE01E /* Projectile.cpp in Sources */,
 				28D048A925F59412005AB6CC /* (null) in Sources */,
+				EC80F900263FA896001CC9EC /* Settings.cpp in Sources */,
 				2844515E2633C287008343E2 /* SoundController.cpp in Sources */,
 				925FC4F825F42B2800532483 /* main.cpp in Sources */,
 				2882164E2605A7920073F7D4 /* NetworkController.cpp in Sources */,
@@ -726,6 +734,7 @@
 				288216552605A90E0073F7D4 /* NetworkData.cpp in Sources */,
 				921654402622997200FFE01E /* Projectile.cpp in Sources */,
 				28D048A825F59412005AB6CC /* (null) in Sources */,
+				EC80F8FF263FA896001CC9EC /* Settings.cpp in Sources */,
 				2844515D2633C287008343E2 /* SoundController.cpp in Sources */,
 				925FC4F725F42B2800532483 /* main.cpp in Sources */,
 				2882164D2605A7920073F7D4 /* NetworkController.cpp in Sources */,
@@ -755,6 +764,7 @@
 				288216542605A90E0073F7D4 /* NetworkData.cpp in Sources */,
 				9216543F2622997200FFE01E /* Projectile.cpp in Sources */,
 				28D048A725F59412005AB6CC /* (null) in Sources */,
+				EC80F8FE263FA896001CC9EC /* Settings.cpp in Sources */,
 				2844515C2633C287008343E2 /* SoundController.cpp in Sources */,
 				925FC4F625F42B2800532483 /* main.cpp in Sources */,
 				2882164C2605A7920073F7D4 /* NetworkController.cpp in Sources */,
@@ -864,7 +874,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = R8WZHX75X7;
+				DEVELOPMENT_TEAM = 8V2ZJB7F6S;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
@@ -874,8 +884,9 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.1;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.mysticmayhem1;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.mysticmayhem;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -892,7 +903,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = R8WZHX75X7;
+				DEVELOPMENT_TEAM = 8V2ZJB7F6S;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
@@ -902,8 +913,9 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.1;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.mysticmayhem1;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.mysticmayhem;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

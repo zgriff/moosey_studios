@@ -138,23 +138,29 @@ void App::onResume() {
              break;
          }
          case SceneSelect::Menu:{
+             _menu.update();
              if (_menu.isActive()) {
  //                _menu.update(0.01f);
                  NetworkController::step();
  //                CULog("menu scene");
                  if((_menu.createPressed() || _menu.joinPressed()) && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected){
                      _menu.setActive(false);
+                     _menu.getSettings()->removeAllChildren();
+                     _menu.getSettings()->dispose();
+                     _menu.removeAllChildren();
+                     _menu.dispose();
                      _lobby.init(_assets);
                      _lobby.setActive(true);
                      //NetworkController::setLobbyScene(_lobby);
-                     _menu.dispose();
                      _currentScene = SceneSelect::Lobby;
                  }
-             } else {
+             }
+             else {
                  _menu.setActive(false);
+                 _menu.removeAllChildren();
+                 _menu.dispose();
                  _lobby.init(_assets);
                  _lobby.setActive(true);
-                 _menu.dispose();
                  _currentScene = SceneSelect::Lobby;
              }
              break;
@@ -164,11 +170,14 @@ void App::onResume() {
                  _lobby.update(0.01f);
              } else {
                  _lobby.setActive(false);
-                 _gameplay.init(_assets, _lobby.getSelectedMap());
+                 _lobby.getSettings()->removeAllChildren();
+                 _lobby.getSettings()->dispose();
+                 _lobby.removeAllChildren();
+                 _lobby.dispose();
+                 _gameplay.init(_assets);
                  _gameplay.setActive(true);
                  _gameplay.setMovementStyle(0);
                  startTimer = time(NULL);
-                 _lobby.dispose();
                  _currentScene = SceneSelect::Game;
              }
              break;
@@ -177,9 +186,24 @@ void App::onResume() {
              _gameplay.update(timestep);
              if (time(NULL) - startTimer >= gameTimer) {
                  _results.init(_assets, _gameplay.getResults(), _gameplay.getWinner());
+                 _gameplay.getSettings()->removeAllChildren();
+                 _gameplay.getSettings()->dispose();
                  _gameplay.dispose();
  //                _gameplay.reset();
                  _currentScene = SceneSelect::Results;
+                 
+             }
+             else {
+                 if (_gameplay.getSettings()->leaveGamePressed()) {
+                     CULog("leave game in app");
+                     NetworkController::destroyConn();
+                     _gameplay.getSettings()->removeAllChildren();
+                     _gameplay.getSettings()->dispose();
+                     _gameplay.dispose();
+                     _menu.init(_assets);
+                     _currentScene = SceneSelect::Menu;
+                     _menu.setActive(true);
+                 }
              }
              break;
          }
@@ -192,17 +216,13 @@ void App::onResume() {
                  _currentScene = SceneSelect::Lobby;
              }
              else if (_results.mainMenu()) {
+                 NetworkController::destroyConn();
                  _results.dispose();
                  _menu.init(_assets);
                  _currentScene = SceneSelect::Menu;
                  _menu.setActive(true);
 
              }
- //            else {
- //                _results.dispose();
- //                _gameplay.dispose();
- //            }
- //            _results.update(timestep);
              break;
          }
          default:

@@ -10,6 +10,7 @@
 #define __GAME_SCENE_H__
 #include <cugl/cugl.h>
 #include <vector>
+#include <map>
 #include <time.h>
 #include "InputController.h"
 #include "CollisionController.h"
@@ -24,6 +25,7 @@
 #include <Box2D/Collision/b2Collision.h>
 #include "World.h"
 #include "AbilityController.h"
+#include "Settings.h"
 
 class GameScene : public cugl::Scene2 {
 protected:
@@ -31,13 +33,7 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
     
     /** Reference to the physics root of the scene graph */
-    std::shared_ptr<cugl::scene2::SceneNode> _rootnode;
-
-    /** Reference to the physics root of the scene graph */
-//    std::shared_ptr<cugl::scene2::SceneNode> _worldnode;
-    /** The Box2D world */
-//    std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
-    
+    std::shared_ptr<cugl::scene2::SceneNode> _rootnode; 
     
     std::shared_ptr<World> _world;
     
@@ -46,6 +42,8 @@ protected:
 
     /** Reference to the debug root of the scene graph */
     std::shared_ptr<cugl::scene2::SceneNode> _debugnode;
+    
+    std::shared_ptr<Settings> _settingsNode;
     
     /** The scale between the physics world and the screen (MUST BE UNIFORM) */
     float _scale;
@@ -61,11 +59,16 @@ protected:
     std::shared_ptr<cugl::scene2::Label> _hatchnode;
 
     std::shared_ptr<cugl::scene2::ProgressBar>  _hatchbar;
+    std::shared_ptr<cugl::scene2::Button>  _settingsButton;
     std::string _currRoomId;
     
     time_t _hatchTextTimer = 5; //5 secs
     time_t _hatchedTime;
     time_t _startTime;
+    time_t prevTime;
+
+    /** Reference to the UI element exposing the frame rate */
+    std::shared_ptr<cugl::scene2::Label> _framesHUD;
 
     std::shared_ptr<cugl::scene2::Label> _scoreHUD;
     std::shared_ptr<cugl::scene2::Label> _timerHUD;
@@ -84,23 +87,10 @@ protected:
     /** Controller for the player */
     InputController _playerController;
 
-    /** Location and animation information for player (MODEL CLASS) */
-//    std::shared_ptr<Player> _player;
-//    std::shared_ptr<Player> _player2;
-//
-//    std::shared_ptr<Orb> _fireOrb;
-//    std::shared_ptr<Orb> _waterOrb;
-//    std::shared_ptr<Orb> _grassOrb;
-//
-//    std::shared_ptr<SwapStation> _swapStation;
-//
-//    std::shared_ptr<Egg> _egg;
-
-    /** The weapon fire sound for the blue player */
-//    std::shared_ptr<cugl::Sound> _blueSound;
     bool swap = false;
     
     std::string updateScoreText(const int score);
+    std::string updateFramesText(const double score);
     std::string updateTimerText(const time_t time);
     
     bool isDebug( ) const { return _debug; }
@@ -152,7 +142,7 @@ public:
      *
      * @return true if the controller is initialized properly, false otherwise.
      */
-    bool init(const std::shared_ptr<cugl::AssetManager>& assets, string mapkey);
+    bool init(const std::shared_ptr<cugl::AssetManager>& assets);
 
     
 #pragma mark -
@@ -220,8 +210,10 @@ public:
     
     void moveOrb(Orb* orb);
 
-    std::string getResults();
-    std::tuple<std::string, std::string> getWinner();
+    std::map<std::string, int> getResults();
+    std::string getWinner();
+    
+    std::shared_ptr<Settings> getSettings() { return _settingsNode; }
 
 };
 

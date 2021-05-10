@@ -9,89 +9,104 @@
 #ifndef NetworkData_h
 #define NetworkData_h
 
+#include <variant>
 #include <cugl/cugl.h>
 #include "Element.h"
 #include "Globals.h"
 
-namespace ND{
-
-struct NetworkData {
-    enum PacketType {
-        TAG_PACKET, ORB_RESPAWN, EGG_RESPAWN, ORB_CAPTURED, EGG_CAPTURED, EGG_HATCHED, SWAP_PACKET, POSITION_PACKET, 
-        ELEMENT_CHANGE, PROJECTILE_FIRED, PROJECTILE_GONE,
-        SET_USERNAME, SET_MAP_NUMBER, CLIENT_READY, CLIENT_UNREADY, HOST_STARTGAME
+class NetworkData{
+public:
+    struct None {};
+    struct Ready {
+        uint8_t player_id;
     };
-    uint8_t packetType;
-    union {
-        struct {
-            uint8_t player_id;
-        } readyData;
-        struct {
-            uint8_t taggedId;
-            uint8_t taggerId;
-            time_t timestamp;
-            bool dropEgg;
-        } tagData;
-        struct {
-            uint8_t orbId;
-            cugl::Vec2 position;
-        } orbRespawnData;
-        struct {
-            uint8_t eggId;
-            cugl::Vec2 position;
-        } eggRespawnData;
-        struct {
-            uint8_t playerId;
-            uint8_t eggId;
-        } eggCapData;
-        struct {
-            uint8_t playerId;
-            uint8_t eggId;
-        } eggHatchData;
-        struct {
-            uint8_t orbId;
-            uint8_t playerId;
-        } orbCapData;
-        struct {
-            uint8_t swapId;
-            uint8_t playerId;
-            Element newElement;
-        } swapData;
-        struct {
-            cugl::Vec2 playerPos;
-            cugl::Vec2 playerVelocity;
-            uint8_t playerId;
-        } positionData;
-        struct {
-            uint8_t playerId;
-            Element newElement;
-        } elementChangeData;
-        struct {
-            uint8_t projectileId;
-            cugl::Vec2 projectilePos;
-            float projectileAngle;
-            Element preyElement;
-        } projectileFiredData;
-        struct {
-            uint8_t projectileId;
-        } projectileGoneData;
-        struct {
-            uint8_t playerId;
-            int username_length;
-            char * username;
-        } setUsernameData;
-        struct {
-            uint8_t mapNumber;
-        } setMapNumber;
-    };     
+    struct Unready {
+        uint8_t player_id;
+    };
+    struct Tag {
+        uint8_t taggedId;
+        uint8_t taggerId;
+        time_t timestamp;
+        bool dropEgg;
+    };
+    struct StartGame {};
+    struct OrbRespawn {
+        uint8_t orbId;
+        cugl::Vec2 position;
+    };
+    struct EggRespawn {
+        uint8_t eggId;
+        cugl::Vec2 position;
+    };
+    struct EggCapture {
+        uint8_t playerId;
+        uint8_t eggId;
+    };
+    struct EggHatch {
+        uint8_t playerId;
+        uint8_t eggId;
+    };
+    struct OrbCapture {
+        uint8_t orbId;
+        uint8_t playerId;
+    };
+    struct Swap {
+        uint8_t swapId;
+        uint8_t playerId;
+        Element newElement;
+    };
+    struct Position {
+        cugl::Vec2 playerPos;
+        cugl::Vec2 playerVelocity;
+        float angle;
+        uint8_t playerId;
+    };
+    struct ElementChange {
+        uint8_t playerId;
+        Element newElement;
+    };
+    struct ProjectileFired {
+        uint8_t projectileId;
+        cugl::Vec2 projectilePos;
+        float projectileAngle;
+        Element preyElement;
+    };
+    struct ProjectileGone {
+        uint8_t projectileId;
+    };
+    struct SetUsername {
+        uint8_t playerId;
+        std::string username;
+    };
+    struct SetCustomization {
+        uint8_t playerId;
+        uint8_t skin;
+        uint8_t hat;
+        uint8_t element;
+    };
+    struct SetMap {
+        uint8_t mapNumber;
+    };
+    
+    typedef std::variant<None, Ready, Unready, Tag, StartGame, OrbRespawn, EggRespawn, EggCapture, EggHatch, OrbCapture, Swap, Position, ElementChange, ProjectileFired, ProjectileGone, SetUsername, SetCustomization, SetMap> DATA_T;
+
+    DATA_T data;
+    
+    NetworkData(){}
+    NetworkData(DATA_T d){
+        data = d;
+    }
+        
+    //convert the NetworkData to bytes
+    std::vector<uint8_t> toBytes();
+
+    //convert the src bytes to a NetworkData
+    static NetworkData fromBytes(const std::vector<uint8_t>& src);
+
+private:
+    template <typename Stream> struct Visitor;
+
 };
 
-//convert the bytes to a NetworkData struct, putting the result in dest
-//returns true on success, false on failure (if data is corrupted)
-bool toBytes(std::vector<uint8_t> & dest, const struct NetworkData & src);
 
-//convert the NetworkData struct to bytes, putting the result in dest
-//returns true on success, false on failure (if the data is corrupted)
-bool fromBytes(struct NetworkData & dest, const std::vector<uint8_t>& src);
-}
 #endif /* NetworkData_h */

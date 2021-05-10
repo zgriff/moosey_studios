@@ -25,12 +25,16 @@ using namespace cugl;
 /** The friction of the player */
 #define DEFAULT_FRICTION 0.0f
 /** The minimum total velocity for drag to apply */
-#define THRESHOLD_VELOCITY 29.0f
-/** The how much the player is slowed down to minimum velocity per frame*/
-#define SPEEDING_DRAG 0.90f
+#define THRESHOLD_VELOCITY 26.0f
+/** What proportion of the player's extra velocity is lost per frame*/
+#define SPEEDING_DRAG 0.007f
+/** What proportion of the player's extra velocity is lost per frame*/
+#define INVIS_TIME 3.0
+/** What proportion of the player's extra velocity is lost per frame*/
+#define INTANG_TIME 3.0
 
 /** The restitution of this rocket */
-#define DEFAULT_RESTITUTION 0.4f
+#define DEFAULT_RESTITUTION 0.5f
 /** The constant force applied to this rocket */
 #define DEFAULT_PLAYER_FORCE Vec2(0.0f, 8.3f)
 /** Number of rows in the player image filmstrip */
@@ -71,6 +75,10 @@ using namespace cugl;
 #define STAFF_COLS          24
 #define STAFF_FRAMES        24
 
+#define STAFF_TAG_ROWS      1
+#define STAFF_TAG_COLS      16
+#define STAFF_TAG_FRAMES    16
+
 #define RING_ROWS           1
 #define RING_COLS           6
 #define RING_FRAMES         6
@@ -79,6 +87,14 @@ using namespace cugl;
 
 #define WALKING_VELOCITY    0.5f
 #define RUNNING_VELOCITY    7.0F
+
+#define IDLE_ANIM_RATE      1.5f
+#define WALK_ANIM_RATE      0.5f
+#define RUN_ANIM_RATE       0.0075f
+
+#define RING_IDLE_RATE      1.5f
+#define RING_WALK_RATE      0.5f
+#define RING_RUN_RATE       0.02f
 
 /**
  * Sets the textures for this player.
@@ -99,6 +115,7 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     std::shared_ptr<scene2::AnimationNode>  bodyNode = scene2::AnimationNode::alloc(assets->get<Texture>(_bodyKey), BODY_ROWS, BODY_COLS, BODY_FRAMES);
     std::shared_ptr<scene2::AnimationNode>  hatNode = scene2::AnimationNode::alloc(assets->get<Texture>(_hatKey), HAT_ROWS, HAT_COLS, HAT_FRAMES);
     std::shared_ptr<scene2::AnimationNode>  staffNode = scene2::AnimationNode::alloc(assets->get<Texture>(_staffKey), STAFF_ROWS, STAFF_COLS, STAFF_FRAMES);
+    std::shared_ptr<scene2::AnimationNode>  staffTagNode = scene2::AnimationNode::alloc(assets->get<Texture>(_staffTagKey), STAFF_TAG_ROWS, STAFF_TAG_COLS, STAFF_TAG_FRAMES);
     std::shared_ptr<scene2::AnimationNode>  ringNode = scene2::AnimationNode::alloc(assets->get<Texture>(_ringKey), RING_ROWS, RING_COLS, RING_FRAMES);
     
     _animNodes[_skinKey] = skinNode;
@@ -107,6 +124,7 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _animNodes[_bodyKey] = bodyNode;
     _animNodes[_hatKey] = hatNode;
     _animNodes[_staffKey] = staffNode;
+    _animNodes[_staffTagKey] = staffTagNode;
     _animNodes[_ringKey] = ringNode;
     
     //TODO: fix hat animation
@@ -118,6 +136,7 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _frameNumbers[_bodyKey] = 4;
     _frameNumbers[_hatKey] = 1;
     _frameNumbers[_staffKey] = 4;
+    _frameNumbers[_staffTagKey] = 4;
     _frameNumbers[_ringKey] = 2;
     
     for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
@@ -133,17 +152,69 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _sceneNode->addChild(bodyNode);
     _sceneNode->addChild(hatNode);
     _sceneNode->addChild(staffNode);
+    _sceneNode->addChild(staffTagNode);
     _sceneNode->addChild(ringNode);
+    
+    _animNodes[_staffTagKey]->setVisible(false);
     
     
     _sceneNode->setScale(0.1f);
     
     _animationTimer = time(NULL);
+    _tagAnimationTimer = time(NULL);
     
     setElement(_currElt);
 
-    _body->SetUserData(this);
+}
 
+void Player::setBody() {
+    _body->SetUserData(this);
+}
+
+void Player::setSkin(int skin) {
+    switch (skin) {
+        case 0:
+            _animNodes[_skinKey]->setFrame(0);
+            break;
+        case 1:
+            _animNodes[_skinKey]->setFrame(4);
+            break;
+        default:
+            break;
+    }
+}
+
+int Player::getSkin(){
+    return floor(_animNodes[_skinKey]->getFrame()/PLAYER_ANIM_FRAMES);
+}
+
+void Player::setCustomization(int custom) {
+    switch (custom) {
+        case 0:
+            _animNodes[_hatKey]->setFrame(0);
+            break;
+        case 1:
+            _animNodes[_hatKey]->setFrame(2);
+            break;
+        case 2:
+            _animNodes[_hatKey]->setFrame(4);
+            break;
+        case 3:
+            _animNodes[_hatKey]->setFrame(6);
+            break;
+        case 4:
+            _animNodes[_hatKey]->setFrame(8);
+            break;
+        case 5:
+            _animNodes[_hatKey]->setFrame(10);
+            break;
+        default:
+            break;
+    }
+}
+
+int Player::getCustomization(){
+    return floor(_animNodes[_hatKey]->getFrame()/2);
 }
 
 void Player::setElement(Element e){
@@ -153,6 +224,7 @@ void Player::setElement(Element e){
         _prevElt = _currElt;
     }
     _currElt = e;
+    _swapTimer = time(NULL);
     
     //Need to flip before and after setting frame bc bug with texture on polygon
     //Staff asset faces opposite direction
@@ -195,6 +267,10 @@ void Player::setElement(Element e){
     }
 }
 
+bool Player::canSwap() {
+    return time(NULL)-_swapTimer > _swapCooldown;
+}
+
 Element Player::getPreyElement() {
     switch(_currElt){
         case Element::Grass:
@@ -213,12 +289,16 @@ Element Player::getPreyElement() {
 
 void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     _usernameNode = scene2::Label::alloc(_username, font);
-    _usernameNode->setPosition(-1*_usernameNode->getContentWidth()/2, 40);
+    _usernameNode->setPosition(-1*_usernameNode->getContentWidth()/2 * 10, 100);
     /*Hardcoded height because not sure how to get dimensions of the Player
     CULog("this width %d", this->getWidth());
     CULog("sceneNode width %d", _sceneNode->getContentWidth());
     CULog("animationNode width %d", _animationNode->getContentWidth());*/
     _sceneNode->addChild(_usernameNode);
+    _usernameNode->setScale(10.0f);
+    _usernameNode->setForeground(Color4::WHITE);
+    _usernameNode->setVisible(true);
+    CULog("username is %s", _username.c_str());
 }
 
 /**
@@ -266,8 +346,10 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
         _currElt = elt;
         _prevElt = elt;
         _score = 0;
-        _tagCooldown = 0;
+        _timeLastTagged = 0;
         _isTagged = false;
+        _isInvisible = false;
+        _isIntangible = false;
         _didTag = false;
         _positionError = Vec2::ZERO;
         _holdingEgg = false;
@@ -279,7 +361,7 @@ bool Player::init(const cugl::Vec2 pos, const cugl::Size size, Element elt) {
 /** sets the players direction
  *  don't use values outside of the range (-2 * PI, 4 * PI)
  */
-void Player::setDirection(double d) {
+void Player::setDirection(float d) {
     _direct = d > 2.0 * M_PI ? d - 2.0 * M_PI : (d < 0.0 ? d + 2.0 * M_PI : d);
 }
 
@@ -307,7 +389,7 @@ void Player::update(float delta) {
             _positionError.setZero();
         }
         _sceneNode->setPosition((getPosition() + _positionError) * _drawscale);
-        _sceneNode->setAngle(getAngle());
+//        _sceneNode->setAngle(getAngle());
         
         _positionError *= INTERPOLATION_AMOUNT;
     }
@@ -316,27 +398,33 @@ void Player::update(float delta) {
 
     if (getLinearVelocity().length() > THRESHOLD_VELOCITY) {
         auto adjust = getLinearVelocity();
-        adjust.scale(SPEEDING_DRAG + THRESHOLD_VELOCITY * (1 - SPEEDING_DRAG) / adjust.length());
+        adjust.normalize().scale(1.0f * getMass() * SPEEDING_DRAG * (adjust.length() - THRESHOLD_VELOCITY));
+        getBody()->ApplyLinearImpulseToCenter(b2Vec2(adjust.x, adjust.y), true);
     }
     
-    if (_isTagged) {
+    if (time(NULL) - _timeLastTagged < INVIS_TIME) {
         _isInvisible = true;
         _isIntangible = true;
+        _isTagged = true;
         _sceneNode->setColor(Color4(255,255,255,50));
     }
-    else {
+    else if (time(NULL) - _timeLastTagged < INTANG_TIME + INVIS_TIME) {
         _isInvisible = false;
+        if (_currElt != Element::Aether) {
+            _sceneNode->setColor(Color4(255, 255, 255, 140));
+        }
+    }
+    else {
         _isIntangible = false;
+        _isTagged = false;
         if (_currElt != Element::Aether) {
             _sceneNode->setColor(Color4(255, 255, 255, 255));
         }
     }
     
-    if (_isInvisible) {
-        //set invisible for other players
-        if(! _isLocal){
-            _sceneNode->setVisible(false);
-        }
+    //set invisible for other players
+    if (_isInvisible && !_isLocal) {
+         _sceneNode->setVisible(false);
     } else {
         _sceneNode->setVisible(true);
     }
@@ -367,15 +455,59 @@ void Player::setDrawScale(float scale) {
     }
 }
 
+
+void Player::animateTag() {
+    _animNodes[_staffTagKey]->setVisible(true);
+    _animNodes[_staffKey]->setVisible(false);
+    
+    if (_horizFlip) {
+        _animNodes[_staffTagKey]->flipHorizontal(false);
+    }
+    
+    switch(getCurrElement()){
+        case Element::Grass:
+            _animNodes[_staffTagKey]->setFrame(calculateFrame(8,_staffTagKey));
+            break;
+        case Element::Fire:
+            _animNodes[_staffTagKey]->setFrame(calculateFrame(0,_staffTagKey));
+            break;
+        case Element::Water:
+            _animNodes[_staffTagKey]->setFrame(calculateFrame(4,_staffTagKey));
+            break;
+        case Element::None:
+            _animNodes[_staffTagKey]->setVisible(false);
+            _animNodes[_staffKey]->setVisible(true);
+            break;
+        case Element::Aether:
+            _animNodes[_staffTagKey]->setFrame(calculateFrame(12,_staffTagKey));
+            break;
+    }
+    
+    if (_horizFlip) {
+        _animNodes[_staffTagKey]->flipHorizontal(true);
+    }
+    
+}
+
+void Player::finishTagAnim() {
+    _animNodes[_staffTagKey]->setVisible(false);
+    _animNodes[_staffKey]->setVisible(true);
+}
+
+
 void Player::animateMovement() {
     //TODO: change this to be more elegant
+    
     //Rotates directional ring around player, offset by orientation in png
     if (getLinearVelocity().length() < WALKING_VELOCITY)  {
-        _animationRate = 1.5f * CLOCKS_PER_SEC;
+        _animationRate = IDLE_ANIM_RATE * CLOCKS_PER_SEC;
+        _ringAnimationRate = RING_IDLE_RATE * CLOCKS_PER_SEC;
     } else if (getLinearVelocity().length() < RUNNING_VELOCITY) {
-        _animationRate = 0.5f * CLOCKS_PER_SEC;
+        _animationRate = WALK_ANIM_RATE * CLOCKS_PER_SEC;
+        _ringAnimationRate = RING_WALK_RATE * CLOCKS_PER_SEC;
     } else {
-        _animationRate = 0.075f * CLOCKS_PER_SEC;
+        _animationRate = RUN_ANIM_RATE * CLOCKS_PER_SEC;
+        _ringAnimationRate = RING_RUN_RATE * CLOCKS_PER_SEC;
     }
     
     
@@ -394,10 +526,32 @@ void Player::animateMovement() {
     
     //iterate through nodes and animate at animation rate
     if (clock() - _animationTimer  >= _animationRate) {
+//        CULog("body");
         for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
-            animationCycle((*it).second.get(), &_animCycles[(*it).first], (*it).first);
+            if  ((*it).first != _staffTagKey && (*it).first != _ringKey) {
+                animationCycle((*it).second.get(), &_animCycles[(*it).first], (*it).first);
+            }
         }
         _animationTimer = clock();
+    }
+    
+    if (clock() - _ringAnimationTimer  >= _ringAnimationRate) {
+        //CULog("ring");
+
+        animationCycle(_animNodes[_ringKey].get(), &_animCycles[_ringKey], _ringKey);
+        _ringAnimationTimer = clock();
+    }
+    
+    if (clock() - _tagAnimationTimer  >= _tagAnimationRate) {
+        //TODO: Tidy this up hehe
+        //This checks to see if the tag animation is on its last frame for both
+        //  forward and flipped, then swaps it back to normal staff
+        if (((_animNodes[_staffTagKey]->getFrame()%_frameNumbers[_staffTagKey] == _frameNumbers[_staffTagKey]-1 && !_animNodes[_staffTagKey]->isFlipHorizontal()) || (_animNodes[_staffTagKey]->getFrame()%_frameNumbers[_staffTagKey] == 0 && _animNodes[_staffTagKey]->isFlipHorizontal()) ) && _animNodes[_staffTagKey]->isVisible()) {
+            finishTagAnim();
+        } else if (_animNodes[_staffTagKey]->isVisible()) {
+            animationCycle(_animNodes[_staffTagKey].get(), &_animCycles[_staffTagKey], _staffTagKey);
+        }
+        _tagAnimationTimer = clock();
     }
 }
 

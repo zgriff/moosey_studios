@@ -21,6 +21,8 @@
     <ClCompile Include="..\..\source\Projectile.cpp" />
     <ClCompile Include="..\..\source\Booster.cpp" />
     <ClCompile Include="..\..\source\LobbyScene.cpp" />
+    <ClCompile Include="..\..\source\Settings.cpp" />
+    <ClCompile Include="..\..\source\SoundController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\AbilityController.h" />
@@ -46,5 +48,7 @@
     <ClInclude Include="..\..\source\Booster.h" />
     <ClInclude Include="..\..\source\LobbyScene.h" />
     <ClInclude Include="..\..\source\MapConstants.h" />
+    <ClInclude Include="..\..\source\Settings.h" />
+    <ClInclude Include="..\..\source\SoundController.h" />
   </ItemGroup>
 </Project>

@@ -154,8 +154,6 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         _worldNode->addChild(booster->getSceneNode(), 1);
     }
     
-
-    //this is for if we want to move projectile to world, but theres bug with this, with this being null for some reason
     for (int i = 0; i < _numPlayers; ++i) {
         Size projSize(projectileTexture->getSize() / _scale);
         std::shared_ptr<Projectile> projectile = Projectile::alloc(Vec2(0, 0), projSize, i);
@@ -171,32 +169,49 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     }
     
     Vec2 playerPos = ((Vec2)PLAYER_POS);
-    Size playerSize(1, 2);
-    for(int i = 0; i < _numPlayers; ++i){
-        if (_playerSpawns.size()-1>=i) {
-            playerPos = _playerSpawns[i];
-        } else {
-            playerPos = ((Vec2)PLAYER_POS);
+    Size playerSize(.75, 1.5);
+    _numNPCs = _NPCSpawns.size();
+    for(int i = 0; i < _numPlayers + _numNPCs; ++i){
+        int r;
+        if (i < _numPlayers) {
+            if (_playerSpawns.size() - 1 >= i) {
+                playerPos = Vec2(_playerSpawns[i]);
+            }
+            else {
+                playerPos = ((Vec2)PLAYER_POS);
+            }
+            r = rand() % 3;
         }
-        auto player = Player::alloc(playerPos, playerSize, Element::Water);
+        else {
+            playerPos = Vec2(_NPCSpawns[i - _numPlayers].x, _NPCSpawns[i - _numPlayers].y);
+            r = _NPCSpawns[i - _numPlayers].z;
+        }
+        auto ele = r == 0 ? Element::Water : (r == 1 ? Element::Fire : Element::Grass);
+        auto player = Player::alloc(playerPos, playerSize, ele);
         player->setSkinKey("player_skin");
         player->setColorKey("player_color");
         player->setFaceKey("player_face");
         player->setBodyKey("player_body_line");
         player->setHatKey("player_hat");
         player->setStaffKey("player_staff");
+        player->setStaffTagKey("player_staff_tag");
         player->setRingKey("player_direction");
         
         _physicsWorld->addObstacle(player);
         player->setTextures(_assets);
+        player->setBody();
         player->setDrawScale(_scale);
         player->setDebugScene(_debugNode);
         player->setID(i);
         player->setDebugColor(Color4::YELLOW);
         player->setHoldingEgg(false);
         player->setOrbScore(0);
+        player->setPC(i < _numPlayers);
         //player id is set to i right now, if that is changed, projectile's associated userid needs to change too
-        player->setProjectile(_projectiles[i]);
+        player->setSkin(std::get<0>(_customizations[i]));
+        player->setCustomization(std::get<1>(_customizations[i]));
+        if(i < _numPlayers) player->setElement((Element) std::get<2>(_customizations[i]));
+        if(i < _numPlayers) player->setProjectile(_projectiles[i]);
         player->allocUsernameNode(_assets->get<Font>("username"));
         _worldNode->addChild(player->getSceneNode(),1);
         _players.push_back(player);
@@ -226,6 +241,7 @@ void World::clearRootNode() {
     _debugNode = nullptr;
 
     _root = nullptr;
+    _boosters.clear();
     _players.clear();
     _eggs.clear();
     _orbs.clear();
@@ -393,7 +409,6 @@ bool World::loadBackground(const std::shared_ptr<JsonValue> &json) {
     float yCoord = json->getFloat(Y_FIELD) * globals::TILE_TO_BOX2D;
     
     std::string assetName = json->getString("asset");
-//    std::string assetName = "grass";
     
     _bgTiles.push_back(std::make_tuple(assetName,Vec2(xCoord,yCoord)));
     
@@ -403,7 +418,6 @@ bool World::loadBackground(const std::shared_ptr<JsonValue> &json) {
 
 bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
     bool success = true;
-    CULog("loading wall");
     
     std::string wname = "wall";
     
@@ -426,7 +440,8 @@ bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
         // You cannot add constant "".  Must stringify
         wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
         wallobj->setName(wname);
-        wallobj->setFriction(0.15);
+        wallobj->setFriction(0.0);
+        wallobj->setRestitution(0.4);
         // Set the physics attributes
         wallobj->setBodyType(b2_staticBody);
 
@@ -482,7 +497,6 @@ bool World::loadEgg(const std::shared_ptr<JsonValue> &json){
 //    Size eggSize(eggTexture->getSize() / _scale);
     Size eggSize(1, 2);
     auto egg = Egg::alloc(eggPos, eggSize);
-    CULog("orbPos: %f   y %f",eggPos.x,eggPos.y);
 
     _initEggLocs.push_back(eggPos);
     _eggSpawns.push_back(eggPos);
@@ -490,7 +504,7 @@ bool World::loadEgg(const std::shared_ptr<JsonValue> &json){
 }
 
 
-bool World::loadOrb(const std::shared_ptr<JsonValue> &json){
+bool World::loadOrbActive(const std::shared_ptr<JsonValue> &json){
     float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
     float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
     
@@ -505,7 +519,7 @@ bool World::loadOrb(const std::shared_ptr<JsonValue> &json){
     return true;
 }
 
-bool World::loadOrbLoc(const std::shared_ptr<JsonValue> &json){
+bool World::loadOrbInactive(const std::shared_ptr<JsonValue> &json){
     float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
     float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
     
@@ -521,9 +535,23 @@ bool World::loadPlayerSpawn(const std::shared_ptr<JsonValue> &json) {
     float xCoord = json->getFloat(X_FIELD) * globals::SCENE_TO_BOX2D;
     float yCoord = json->getFloat(Y_FIELD) * globals::SCENE_TO_BOX2D;
     
-    Vec2 spawnPos = Vec2(xCoord,yCoord);
+    auto e = json->getString("element");
+    float ret = 0;
+    if(e == "fire") {
+        ret = 1;
+    }
+    else if (e == "grass") {
+        ret = 2;
+    }
+
+    Vec3 spawnPos = Vec3(xCoord,yCoord, ret);
     
-    _playerSpawns.push_back(spawnPos);
+    if (e == "none") {
+        _playerSpawns.push_back(spawnPos);
+    }
+    else {
+        _NPCSpawns.push_back(spawnPos);
+    }
     return true;
 }
 
@@ -534,10 +562,10 @@ GameObjectType World::getObjectType(std::string obj) {
         return GameObjectType::Booster;
     } else if (obj == EGG_SPAWN) {
         return GameObjectType::EggSpawn;
-    }  else if (obj == ORB_SPAWN) {
-        return GameObjectType::OrbSpawn;
-    } else if (obj == ORB_LOCATION) {
-        return GameObjectType::OrbLocation;
+    }  else if (obj == ORB_ACTIVE) {
+        return GameObjectType::OrbActive;
+    } else if (obj == ORB_INACTIVE) {
+        return GameObjectType::OrbInactive;
     } else {
         return GameObjectType::PlayerSpawn;
     }
@@ -561,12 +589,12 @@ bool World::loadGameObject(const std::shared_ptr<JsonValue>& json) {
             success = loadEgg(json);
             break;
             
-        case GameObjectType::OrbSpawn:
-            success = loadOrb(json);
+        case GameObjectType::OrbActive:
+            success = loadOrbActive(json);
             break;
             
-        case  GameObjectType::OrbLocation:
-            success = loadOrbLoc(json);
+        case  GameObjectType::OrbInactive:
+            success = loadOrbInactive(json);
             break;
             
         case GameObjectType::PlayerSpawn:

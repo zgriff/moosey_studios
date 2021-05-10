@@ -26,13 +26,13 @@
 #define SWAP_STATION        "swap_station"
 #define BOOSTER             "booster"
 #define EGG_SPAWN           "egg_spawn"
-#define ORB_SPAWN           "active_orb"
-#define ORB_LOCATION        "inactive_orb"
+#define ORB_ACTIVE           "active_orb"
+#define ORB_INACTIVE        "inactive_orb"
 #define PLAYER_SPAWN        "player_spawn"
 
-#define TILE_SIZE           50.0f
+#define TILE_SIZE           250.0f
 
-#define GRASS_MAP_JSON      "json/forest.json"
+#define GRASS_MAP_JSON      "maps/forest.json"
 #define GRASS_MAP_KEY       "grass_map"
 
 #define GRASS_MAP2_JSON      "maps/forest2.json"
@@ -46,7 +46,7 @@
 
 
 enum class GameObjectType {
-    PlayerSpawn, OrbSpawn, OrbLocation, Station, EggSpawn, Booster
+    PlayerSpawn, OrbActive, OrbInactive, Station, EggSpawn, Booster
 };
 
 

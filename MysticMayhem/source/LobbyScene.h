@@ -17,6 +17,7 @@
 #include "World.h"
 #include "Globals.h"
 #include "MapConstants.h"
+#include "Settings.h"
 
 /**
  * This class is a simple loading screen for asychronous asset loading.
@@ -35,6 +36,17 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
 
     // VIEW
+    std::shared_ptr<Player> _playerCustom;
+    std::shared_ptr<cugl::scene2::Button> _hatForwardButton;
+    std::shared_ptr<cugl::scene2::Button> _hatBackButton;
+    std::shared_ptr<cugl::scene2::Button> _skinForwardButton;
+    std::shared_ptr<cugl::scene2::Button> _skinBackButton;
+    std::shared_ptr<cugl::scene2::Button> _eleForwardButton;
+    std::shared_ptr<cugl::scene2::Button> _eleBackButton;
+    
+    std::shared_ptr<cugl::scene2::Button> _mapNextButton;
+    std::shared_ptr<cugl::scene2::Button> _mapPrevButton;
+    
     std::shared_ptr<cugl::scene2::Button> _startButton;
     std::shared_ptr<cugl::scene2::Button> _map1Button;
     std::shared_ptr<cugl::scene2::Button> _map2Button;
@@ -43,6 +55,10 @@ protected:
     string _selectedMap = GRASS_MAP_KEY;
     std::shared_ptr<cugl::scene2::Label> _roomId;
     std::vector<std::shared_ptr<cugl::scene2::Label>> _playerLabels;
+    std::shared_ptr<Settings> _settingsNode;
+    std::shared_ptr<cugl::scene2::SceneNode> _layer;
+    std::shared_ptr<cugl::scene2::Button> _settingsButton;
+    
     
     
     /**true host false client*/
@@ -118,6 +134,8 @@ public:
 
     string getSelectedMap() { return _selectedMap; };
     void setSelectedMap(string map) { _selectedMap = map; };
+    
+    std::shared_ptr<Settings> getSettings() { return _settingsNode; }
         
 };
 
