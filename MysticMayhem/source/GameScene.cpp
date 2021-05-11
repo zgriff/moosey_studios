@@ -174,12 +174,14 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _settingsNode->setScale(1/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
 
     _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("ui_settings"));
-//    _settingsButton->activate();
-    _settingsButton->setVisible(false);
+    _settingsButton->activate();
+    _settings = false;
+//    _settingsButton->setVisible(false);
     _settingsButton->addListener([=](const std::string& name, bool down) {
 //        CULog("settings button pressed");
         _settingsNode->setVisible(true);
         _settingsNode->setActive(true);
+        _settings = true;
 //        if(_settingsNode->isVisible()) {
 //            CULog("settings visible");
 //        }
@@ -224,6 +226,7 @@ void GameScene::dispose() {
     }
     _active = false;
     _rootnode = nullptr;
+    _settings = false;
 }
 
 
@@ -296,7 +299,7 @@ void GameScene::update(float timestep) {
     if(! playerId_option.has_value()) return;
     uint8_t playerId = playerId_option.value();
     auto _player = _world->getPlayer(playerId);
-    if (_player->getPC()) {
+    if (_player->getPC() && !_settings) {
         _playerController.readInput();
 
         auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI * timestep * 60.0 / TURNS_PER_SPIN;
@@ -479,6 +482,7 @@ void GameScene::update(float timestep) {
     if (_settingsNode->backPressed()) {
         _settingsNode->setVisible(false);
         _settingsNode->setActive(false);
+        _settings = false;
     }
 }
 

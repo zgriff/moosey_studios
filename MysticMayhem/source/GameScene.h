@@ -75,6 +75,7 @@ protected:
     
     /** Whether or not debug mode is active */
     bool _debug;
+    bool _settings; //whether settings is open or not
     /**
      * Activates the UI elements to make them interactive
      *
