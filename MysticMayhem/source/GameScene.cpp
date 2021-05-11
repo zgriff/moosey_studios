@@ -240,6 +240,7 @@ void GameScene::reset() {
         getCamera()->translate(cameraInitPlayerPos - getCamera()->getPosition());
     }
 
+    // Puts the username label in game
     auto players = _world->getPlayers();
     for (auto it = players.begin(); it != players.end(); it++) {
         (*it)->setUsername(NetworkController::getUsername(it - players.begin()));
@@ -267,7 +268,7 @@ void GameScene::update(float timestep) {
     uint8_t playerId = playerId_option.value();
     auto _player = _world->getPlayer(playerId);
 
-        // CAMERA + HUD
+        // HUD
     _world->getPhysicsWorld()->update(timestep);
 
 
@@ -298,16 +299,36 @@ void GameScene::update(float timestep) {
 
         // CHECK BEGINNING OF GAME
     if (!_startTimePassed) {
-        if (time(NULL) - NetworkController::getStartTimestamp() < 3) {
+        if (time(NULL) - NetworkController::getStartTimestamp() < 2) {
             CULog("time passed is %d", time(NULL) - NetworkController::getStartTimestamp());
+            float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+            //static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(2*cameraZoom/3);
+            getCamera()->update();
+            return;
+        }
+        else if (time(NULL) - NetworkController::getStartTimestamp() < 3) {
+            // I'll make the zoom more smooth by switching to CUGL timestamp
+            float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+            //static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(5*cameraZoom/6);
+            getCamera()->update();
             return;
         }
         else {
             // Just having this bool so time(NULL) isn't called every frame when not needed, not sure if it really matters
             _startTimePassed = true;
+            static_pointer_cast<cugl::OrthographicCamera>(getCamera())->set(Application::get()->getDisplaySize());
+            float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+            static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
+            auto cameraInitPlayerPos = _player->getSceneNode()->getPosition();
+            //cameraZoom = 1;
+            //cameraInitPlayerPos.x = std::clamp(cameraInitPlayerPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
+            //    _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
+            //cameraInitPlayerPos.y = std::clamp(cameraInitPlayerPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
+            //    _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
+            getCamera()->translate(cameraInitPlayerPos - getCamera()->getPosition());
         }
     }
-        // BEGIN PLATER MOVEMENT //
+        // BEGIN PLAYER MOVEMENT //
     _playerController.readInput();
     switch (_playerController.getMoveStyle()) {
         case Movement::AlwaysForward: {
