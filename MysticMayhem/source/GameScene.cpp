@@ -130,12 +130,12 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _rootnode = scene2::SceneNode::alloc();
     _rootnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
-    _rootnode->setPosition(_worldOffset);
-    _rootnode->setContentSize(Size(w,h));
+    //_rootnode->setPosition(_worldOffset);
+    _rootnode->setContentSize(Application::get()->getDisplaySize() * 2.0);
 
     _UInode = _assets->get<scene2::SceneNode>("ui");
     _UInode->setAnchor(Vec2::ANCHOR_CENTER);
-    _UInode->setPosition(_worldOffset);
+    //_UInode->setPosition(_worldOffset);
     _UInode->setContentSize(Application::get()->getDisplaySize() * 2.0);
     _UInode->doLayout(); // Repositions the HUD;
     //It should be inverse of the camera zoom, so UI shrinks if zoom is more
