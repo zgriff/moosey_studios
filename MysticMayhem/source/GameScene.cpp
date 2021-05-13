@@ -337,8 +337,9 @@ void GameScene::update(float timestep) {
             _player->setForce(forForce);
         }
         else {
+
             auto forForce = _player->getForce();
-            auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * 0.9f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
+            auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * 0.92f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
             if (_playerController.getMov().x < 0) {
                 turnForce.scale(-1.0f);
             }
