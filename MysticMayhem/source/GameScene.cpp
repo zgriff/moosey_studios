@@ -219,9 +219,10 @@ void GameScene::dispose() {
 void GameScene::reset() {
     prevTime = time(NULL);
     _world->setEggSpawnCooldown(time(NULL));
-    _world->setRootNode(_rootnode,_scale);
+    _world->setRootNode(_rootnode, _scale);
     CollisionController::setWorld(_world);
     NetworkController::setWorld(_world);
+
     
     auto idopt = NetworkController::getPlayerId();
     if(idopt.has_value()){
