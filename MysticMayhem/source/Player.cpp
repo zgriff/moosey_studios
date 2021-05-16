@@ -24,13 +24,15 @@ using namespace cugl;
 #define DEFAULT_DENSITY 1.0f
 /** The friction of the player */
 #define DEFAULT_FRICTION 0.0f
-/** The minimum total velocity for drag to apply */
+/** The minimum total speed for drag to apply */
 #define THRESHOLD_VELOCITY 26.0f
+/** The player's spped upon boosting */
+#define BOOST_VELOCITY 38.0f
 /** What proportion of the player's extra velocity is lost per frame*/
 #define SPEEDING_DRAG 0.007f
-/** What proportion of the player's extra velocity is lost per frame*/
-#define INVIS_TIME 3.0
-/** What proportion of the player's extra velocity is lost per frame*/
+/** How long the player is invisible for after getting tagged*/
+#define INVIS_TIME 2.0
+/** How long the player is intangible after being invisible*/
 #define INTANG_TIME 3.0
 
 /** The restitution of this rocket */
@@ -446,6 +448,10 @@ void Player::applyForce() {
     
     // Apply force to the rocket BODY, not the rocket
     _body->ApplyForceToCenter(b2Vec2(netforce.x,netforce.y), true);
+}
+
+void Player::boostMeBaby() {
+    setLinearVelocity(Vec2(BOOST_VELOCITY, 0.0).rotate(getDirection() + M_PI / 2.0));
 }
 
 void Player::setDrawScale(float scale) {

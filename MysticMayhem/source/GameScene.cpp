@@ -339,7 +339,7 @@ void GameScene::update(float timestep) {
         else {
 
             auto forForce = _player->getForce();
-            auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * 0.92f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
+            auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * .93f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
             if (_playerController.getMov().x < 0) {
                 turnForce.scale(-1.0f);
             }
@@ -441,16 +441,7 @@ void GameScene::update(float timestep) {
     if (time(NULL) - _hatchedTime >= _hatchTextTimer) {
         _hatchnode->setVisible(false);
     }
-    
-    //cooldown for player after it's tagged
-    //for(auto p : _world->getPlayers()){
-    //    if (p->getIsTagged()) {
-    //        if (time(NULL) - p->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
-    //            p->setIsTagged(false);
-    //        }
-    //    }
-    //}
-    
+        
     // ability stuff here
     _abilitybar->setProgress(_player->getOrbScore() * 0.2);
     if (_player->getOrbScore() == 5 && _abilityController.getQueuedAbility() == AbilityController::Ability::NoAbility) {
@@ -466,7 +457,7 @@ void GameScene::update(float timestep) {
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
     _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
-    _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
+    _framesHUD->setText(updateFramesText(1 / timestep));
     
     for(auto p : _world->getPlayers()){
         p->animateMovement();
@@ -540,9 +531,9 @@ std::string GameScene::updateScoreText(const int score) {
     return ss.str();
 }
 
-std::string GameScene::updateFramesText(const double score) {
+std::string GameScene::updateFramesText(const double frames) {
     stringstream ss;
-    ss << "Speed: " << score;
+    ss << "frames: " << frames;
     return ss.str();
 }
 

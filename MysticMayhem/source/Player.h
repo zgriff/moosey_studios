@@ -341,6 +341,11 @@ public:
     void applyForce();
 
     /**
+     * Boosts the player to a set velocity in the direction they're facing
+     */
+    void boostMeBaby();
+
+    /**
      * Updates the object's physics state (NOT GAME LOGIC).
      *
      * This method is called AFTER the collision resolution state. Therefore, it

@@ -47,7 +47,7 @@ void AbilityController::activateAbility(std::shared_ptr<Player> player) {
 				break;
 			case Ability::SpeedBoost:
 			{
-				player->setLinearVelocity(player->getLinearVelocity() * 2.0);
+				player->boostMeBaby();
 				_activeAbility = Ability::SpeedBoost;
 				_queuedAbility = Ability::NoAbility;
 				break;
