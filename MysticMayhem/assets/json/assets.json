@@ -1238,7 +1238,7 @@
                     "data": {
                         "texture": "results_board",
                         "anchor": [ 0.5, 0.5 ],
-                        "scale": 0.7
+                        "scale": 0.6
                     },
                     "layout": {
                         "x_anchor": "center",
@@ -1275,7 +1275,7 @@
                         "x_anchor": "center",
                         "y_anchor": "middle",
                         "x_offset": -0.05,
-                        "y_offset": 0.3
+                        "y_offset": 0.27
                     }
                 },
                 "playerscore1": {
@@ -1292,7 +1292,7 @@
                         "x_anchor": "center",
                         "y_anchor": "middle",
                         "x_offset": 0.09,
-                        "y_offset": 0.22
+                        "y_offset": 0.195
                     }
                 },
                 "playerscore2": {
@@ -1414,7 +1414,7 @@
                         "x_anchor": "center",
                         "y_anchor": "middle",
                         "x_offset": -0.11,
-                        "y_offset": 0.215
+                        "y_offset": 0.20
                     }
                 },
                 "playername2": {
