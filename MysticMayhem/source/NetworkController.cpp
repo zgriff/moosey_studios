@@ -1,4 +1,3 @@
-
 #include "NetworkController.h"
 #include "NetworkData.h"
 #include "Player.h"
@@ -19,6 +18,9 @@ namespace NetworkController {
         std::string username = "";
         //Networked usernames indexed by playerId
         array<std::string, 8> usernames = {"test1", "test2", "test3" , "test4" , "test5" , "test6" , "test7" , "test8" };
+    
+        std::unordered_map<int,std::tuple<int,int,int>> customizations;
+    
         int _networkFrame;
         int mapSelected = 1;
         std::function<void(uint8_t, bool)> readyCallback;
@@ -43,6 +45,11 @@ namespace NetworkController {
         network =
             std::make_shared<cugl::CUNetworkConnection>(cugl::CUNetworkConnection::ConnectionConfig(SERVER_ADDRESS, SERVER_PORT, globals::MAX_PLAYERS, 0), roomId);
         NetworkController::roomId = roomId;
+    }
+
+    void destroyConn() {
+        network = nullptr;
+        roomId = "";
     }
 
     cugl::CUNetworkConnection::NetStatus getStatus(){
@@ -98,6 +105,10 @@ namespace NetworkController {
         usernames[playerId] = name;
     }
 
+    std::unordered_map<int,std::tuple<int,int,int>> getCustomizations() {
+        return customizations;
+    }
+
     int getMapSelected() {
         return mapSelected;
     }
@@ -137,6 +148,10 @@ struct LobbyHandler {
         int id1 = data.playerId;
         string username1 = data.username;
         usernames[id1] = username1;
+    }
+    void operator()(NetworkData::SetCustomization& data) const {
+        int id1 = data.playerId;
+        customizations[id1] = make_tuple(data.skin, data.hat, data.element);
     }
     //generic. do nothing
     template<typename T>
@@ -366,6 +381,16 @@ struct GameHandler {
         NetworkData::SetUsername data;
         data.playerId = playerId;
         data.username = username;
+        send(NetworkData(data));
+    }
+
+    void sendSetCustomization(int playerId, int skin, int hat, int element) {
+        NetworkData::SetCustomization data;
+        customizations[playerId] =  make_tuple(skin, hat, element);
+        data.playerId = playerId;
+        data.skin = skin;
+        data.hat = hat;
+        data.element = element;
         send(NetworkData(data));
     }
 

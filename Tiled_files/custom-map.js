@@ -81,11 +81,20 @@ var customMapFormat = {
                   }else if(obj.name == "active_orb" || obj.name == "inactive_orb"){
                     m.totalOrbs += 1;
                   }
-                  m.gameObjects.push({
-                    x: obj.x,
-                    y: flipY(obj.y),
-                    type: obj.name
+                  if(obj.name == "player_spawn") {
+                    m.gameObjects.push({
+                      x: obj.x,
+                      y: flipY(obj.y),
+                      type: obj.name,
+                      element: obj.type
+                    });
+                  } else {
+                    m.gameObjects.push({
+                      x: obj.x,
+                      y: flipY(obj.y),
+                      type: obj.name
                   });
+                  }
                 }
                 break;
               case "Background":

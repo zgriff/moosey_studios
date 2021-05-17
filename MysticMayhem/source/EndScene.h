@@ -19,7 +19,7 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
 
     // VIEW
-    std::shared_ptr<cugl::scene2::Button> _playAgainButton; //returns to same lobby
+    std::shared_ptr<cugl::scene2::Button> _playAgainButton;
     std::shared_ptr<cugl::scene2::Button> _mainMenuButton; //returns to main menu
     std::shared_ptr<cugl::scene2::Label> _resultLabel;
 //    std::vector<std::shared_ptr<cugl::scene2::Label>>_playerScores;

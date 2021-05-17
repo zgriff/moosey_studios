@@ -80,11 +80,17 @@ public:
         uint8_t playerId;
         std::string username;
     };
+    struct SetCustomization {
+        uint8_t playerId;
+        uint8_t skin;
+        uint8_t hat;
+        uint8_t element;
+    };
     struct SetMap {
         uint8_t mapNumber;
     };
     
-    typedef std::variant<None, Ready, Unready, Tag, StartGame, OrbRespawn, EggRespawn, EggCapture, EggHatch, OrbCapture, Swap, Position, ElementChange, ProjectileFired, ProjectileGone, SetUsername, SetMap> DATA_T;
+    typedef std::variant<None, Ready, Unready, Tag, StartGame, OrbRespawn, EggRespawn, EggCapture, EggHatch, OrbCapture, Swap, Position, ElementChange, ProjectileFired, ProjectileGone, SetUsername, SetCustomization, SetMap> DATA_T;
 
     DATA_T data;
     

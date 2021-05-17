@@ -165,8 +165,56 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     
     setElement(_currElt);
 
-    _body->SetUserData(this);
+}
 
+void Player::setBody() {
+    _body->SetUserData(this);
+}
+
+void Player::setSkin(int skin) {
+    switch (skin) {
+        case 0:
+            _animNodes[_skinKey]->setFrame(0);
+            break;
+        case 1:
+            _animNodes[_skinKey]->setFrame(4);
+            break;
+        default:
+            break;
+    }
+}
+
+int Player::getSkin(){
+    return floor(_animNodes[_skinKey]->getFrame()/PLAYER_ANIM_FRAMES);
+}
+
+void Player::setCustomization(int custom) {
+    switch (custom) {
+        case 0:
+            _animNodes[_hatKey]->setFrame(0);
+            break;
+        case 1:
+            _animNodes[_hatKey]->setFrame(2);
+            break;
+        case 2:
+            _animNodes[_hatKey]->setFrame(4);
+            break;
+        case 3:
+            _animNodes[_hatKey]->setFrame(6);
+            break;
+        case 4:
+            _animNodes[_hatKey]->setFrame(8);
+            break;
+        case 5:
+            _animNodes[_hatKey]->setFrame(10);
+            break;
+        default:
+            break;
+    }
+}
+
+int Player::getCustomization(){
+    return floor(_animNodes[_hatKey]->getFrame()/2);
 }
 
 void Player::setElement(Element e){
@@ -358,7 +406,7 @@ void Player::update(float delta) {
         _isInvisible = true;
         _isIntangible = true;
         _isTagged = true;
-        _sceneNode->setColor(Color4(255,255,255,50));
+        _sceneNode->setColor(Color4(255,255,255,40));
     }
     else if (time(NULL) - _timeLastTagged < INTANG_TIME + INVIS_TIME) {
         _isInvisible = false;
@@ -478,7 +526,7 @@ void Player::animateMovement() {
     
     //iterate through nodes and animate at animation rate
     if (clock() - _animationTimer  >= _animationRate) {
-        CULog("body");
+//        CULog("body");
         for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
             if  ((*it).first != _staffTagKey && (*it).first != _ringKey) {
                 animationCycle((*it).second.get(), &_animCycles[(*it).first], (*it).first);

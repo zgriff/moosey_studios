@@ -11,25 +11,27 @@
 
 #include <cugl/cugl.h>
 
-class Settings : public cugl::Scene2 {
+class Settings : public cugl::scene2::SceneNode {
 protected:
-    /** The asset manager for loading. */
-    std::shared_ptr<cugl::AssetManager> _assets;
-
     // VIEW
     std::shared_ptr<cugl::scene2::Slider> _musicVolume;
     std::shared_ptr<cugl::scene2::Slider> _soundVolume;
     std::shared_ptr<cugl::scene2::Button> _backButton;
+    std::shared_ptr<cugl::scene2::Button> _leavegameButton;
     
     bool _back;
+    bool _leaveGame;
+    bool _inGame;
     
     
     
 public:
+    /** The asset manager for loading. */
+//    std::shared_ptr<cugl::AssetManager> _assets;
 #pragma mark -
 #pragma mark Constructors
     
-    Settings() : cugl::Scene2() {}
+    explicit Settings(const std::shared_ptr<cugl::AssetManager> &assets, bool inGame);
     
     
     ~Settings() { dispose(); }
@@ -39,7 +41,7 @@ public:
      */
     void dispose();
     
-    bool init(const std::shared_ptr<cugl::AssetManager>& assets);
+    bool init(const std::shared_ptr<cugl::AssetManager>& assets, bool inGame);
 
     
 #pragma mark -
@@ -52,6 +54,11 @@ public:
 //    void update(float timestep);
     
     bool backPressed() { return _back; }
+    
+    bool leaveGamePressed() { return _leaveGame; }
+    
+    void setActive(bool b);
+    
 
 };
 

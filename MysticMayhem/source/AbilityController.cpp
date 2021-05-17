@@ -65,16 +65,8 @@ void AbilityController::activateAbility(std::shared_ptr<Player> player) {
 				projectile->setAngle(player->getAngle());
 				projectile->getSceneNode()->setAngle(player->getAngle() + M_PI);
 				projectile->setIsGone(false);
-				NetworkController::sendProjectileFired(projectile->getPlayerID(), player->getPosition(), player->getAngle(), Element::None);
-
-
-				CULog("player speed is %f, %f", player->getLinearVelocity().x, player->getLinearVelocity().y);
-
-				/*CULog("player angle is %f", player->getAngle());
-				CULog("projectile angle is %f", projectile->getAngle());
-
-				CULog("player position is %f , %f", player->getPosition().x, player->getPosition().y);
-				CULog("projectile position is %f , %f", projectile->getPosition().x, projectile->getPosition().y);*/
+				NetworkController::sendProjectileFired(projectile->getPlayerID(), player->getPosition(), 
+					player->getAngle(), Element::None);
 				_activeAbility = Ability::Projectile;
 				_queuedAbility = Ability::NoAbility;
 				break;

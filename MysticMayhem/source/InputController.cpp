@@ -48,10 +48,11 @@ bool InputController::init() {
 #else
     success = Input::activate<Accelerometer>();
     Touchscreen* touch = Input::get<Touchscreen>();
-    touch->addBeginListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+    Uint32 touchListenerKey = touch->acquireKey();
+    touch->addBeginListener(touchListenerKey,[=](const cugl::TouchEvent& event, bool focus) {
         this->touchBeganCB(event,focus);
     });
-    touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+    touch->addEndListener(touchListenerKey,[=](const cugl::TouchEvent& event, bool focus) {
         this->touchEndedCB(event,focus);
     });
 #endif
@@ -64,8 +65,9 @@ void InputController::dispose() {
 #else
         Input::deactivate<Accelerometer>();
         Touchscreen* touch = Input::get<Touchscreen>();
-        touch->removeBeginListener(LISTENER_KEY);
-        touch->removeEndListener(LISTENER_KEY);
+        Uint32 touchListenerKey = touch->acquireKey();
+        touch->removeBeginListener(touchListenerKey);
+        touch->removeEndListener(touchListenerKey);
 #endif
 }
 
@@ -97,6 +99,7 @@ void InputController::readInput() {
         default:
             _abilityPressed = false;
             if (_keydown && touch->touchCount() == 1) {
+                CULog("touching");
                 _abilityQueued = false;
                 if (_dtouch.x < 640) {
                     mov.x = -1;

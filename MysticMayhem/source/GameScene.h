@@ -25,6 +25,9 @@
 #include <Box2D/Collision/b2Collision.h>
 #include "World.h"
 #include "AbilityController.h"
+#include "Settings.h"
+#include <chrono>
+#include <ctime> 
 
 class GameScene : public cugl::Scene2 {
 protected:
@@ -42,6 +45,8 @@ protected:
     /** Reference to the debug root of the scene graph */
     std::shared_ptr<cugl::scene2::SceneNode> _debugnode;
     
+    std::shared_ptr<Settings> _settingsNode;
+    
     /** The scale between the physics world and the screen (MUST BE UNIFORM) */
     float _scale;
     
@@ -56,6 +61,7 @@ protected:
     std::shared_ptr<cugl::scene2::Label> _hatchnode;
 
     std::shared_ptr<cugl::scene2::ProgressBar>  _hatchbar;
+    std::shared_ptr<cugl::scene2::Button>  _settingsButton;
     std::string _currRoomId;
     
     time_t _hatchTextTimer = 5; //5 secs
@@ -64,6 +70,7 @@ protected:
     time_t prevTime;
 
     bool _startTimePassed = false;
+    std::chrono::system_clock::time_point _beginStartTimer;
 
     /** Reference to the UI element exposing the frame rate */
     std::shared_ptr<cugl::scene2::Label> _framesHUD;
@@ -210,6 +217,8 @@ public:
 
     std::map<std::string, int> getResults();
     std::string getWinner();
+    
+    std::shared_ptr<Settings> getSettings() { return _settingsNode; }
 
 };
 

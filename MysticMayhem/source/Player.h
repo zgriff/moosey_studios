@@ -36,6 +36,8 @@ private:
     cugl::Vec2 _positionError;
     bool _horizFlip;
     
+    /** True if the player is computer controlled, false if playter controlled*/
+    bool _playerCharacter = true;
     
     
     //map to iterate through all animation nodes
@@ -143,6 +145,10 @@ public:
     int getScore() { return _score; }
     
     void incScore(int s) { _score = _score + s; }
+
+    bool getPC() { return _playerCharacter; }
+
+    void setPC(bool p) { _playerCharacter = p; }
     
     bool getIsInvisible() { return _isInvisible; }
     
@@ -224,6 +230,8 @@ public:
      */
     void setTextures(const std::shared_ptr<cugl::AssetManager>& assets);
     
+    void setBody();
+    
     
     const std::shared_ptr<cugl::Texture> getTexture() const {
         return _texture;
@@ -260,6 +268,14 @@ public:
     void setRingKey(std::string ring) {
         _ringKey = ring;
     }
+    
+    void setSkin(int i);
+    
+    int getSkin();
+    
+    void setCustomization(int i);
+    
+    int getCustomization();
     
     
 #pragma mark Constructors

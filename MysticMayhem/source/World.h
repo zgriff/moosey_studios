@@ -43,6 +43,8 @@ protected:
     /** The Box2D world */
     std::shared_ptr<cugl::physics2::ObstacleWorld> _physicsWorld;
     
+    std::unordered_map<int,std::tuple<int,int,int>> _customizations;
+    
     std::vector<std::tuple<std::string,Vec2>> _bgTiles;
     
     std::vector<std::tuple<std::string,Vec2>> _decorations;
@@ -51,7 +53,8 @@ protected:
     
     std::vector<std::shared_ptr<Player>> _players;
     
-    std::vector<Vec2> _playerSpawns;
+    std::vector<Vec3> _playerSpawns;
+    std::vector<Vec3> _NPCSpawns;
 
     std::vector<std::shared_ptr<Projectile>> _projectiles;
     
@@ -75,6 +78,7 @@ protected:
     
     float _scale;
     uint8_t _numPlayers;
+    uint8_t _numNPCs;
     uint8_t _initOrbCount;
     uint8_t _currOrbCount;
     uint8_t _currEggCount;
@@ -91,9 +95,9 @@ protected:
     
     bool loadGameObject(const std::shared_ptr<JsonValue>& json);
     
-    bool loadOrb(const std::shared_ptr<JsonValue>& json);
+    bool loadOrbActive(const std::shared_ptr<JsonValue>& json);
     
-    bool loadOrbLoc(const std::shared_ptr<JsonValue>& json);
+    bool loadOrbInactive(const std::shared_ptr<JsonValue>& json);
     
     bool loadStation(const std::shared_ptr<JsonValue>& json);
 
@@ -229,6 +233,10 @@ public:
     
     std::vector<std::shared_ptr<Player>> getPlayers(){
         return _players;
+    }
+    
+    void setCustomizations(std::unordered_map<int,std::tuple<int,int,int>> cust) {
+        _customizations = cust;
     }
 
     std::shared_ptr<Projectile> getProjectile(int id) {
