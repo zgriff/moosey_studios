@@ -406,7 +406,7 @@ void Player::update(float delta) {
         _isInvisible = true;
         _isIntangible = true;
         _isTagged = true;
-        _sceneNode->setColor(Color4(255,255,255,50));
+        _sceneNode->setColor(Color4(255,255,255,40));
     }
     else if (time(NULL) - _timeLastTagged < INTANG_TIME + INVIS_TIME) {
         _isInvisible = false;

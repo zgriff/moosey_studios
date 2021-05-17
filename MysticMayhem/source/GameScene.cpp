@@ -130,12 +130,12 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _rootnode = scene2::SceneNode::alloc();
     _rootnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
-    _rootnode->setPosition(_worldOffset);
-    _rootnode->setContentSize(Size(w,h));
+    //_rootnode->setPosition(_worldOffset);
+    _rootnode->setContentSize(Application::get()->getDisplaySize() * 2.0);
 
     _UInode = _assets->get<scene2::SceneNode>("ui");
     _UInode->setAnchor(Vec2::ANCHOR_CENTER);
-    _UInode->setPosition(_worldOffset);
+    //_UInode->setPosition(_worldOffset);
     _UInode->setContentSize(Application::get()->getDisplaySize() * 2.0);
     _UInode->doLayout(); // Repositions the HUD;
     //It should be inverse of the camera zoom, so UI shrinks if zoom is more
@@ -340,8 +340,9 @@ void GameScene::update(float timestep) {
             _player->setForce(forForce);
         }
         else {
+
             auto forForce = _player->getForce();
-            auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * 0.9f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
+            auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * 0.92f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
             if (_playerController.getMov().x < 0) {
                 turnForce.scale(-1.0f);
             }

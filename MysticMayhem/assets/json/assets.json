@@ -37,7 +37,7 @@
             "file": "textures/big_grass.png"
         },
         "booster": {
-            "file": "textures/sped.png"
+            "file": "textures/boost.png"
         },
         "swapstation": {
             "file": "textures/swapstation.png"
