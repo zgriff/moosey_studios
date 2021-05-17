@@ -35,7 +35,7 @@
 #define GRASS_MAP_JSON      "maps/forest.json"
 #define GRASS_MAP_KEY       "grass_map"
 
-#define GRASS_MAP2_JSON      "maps/forest2.json"
+#define GRASS_MAP2_JSON      "maps/forest2_edit.json"
 #define GRASS_MAP2_KEY       "grass_map2"
 
 #define GRASS_MAP3_JSON      "maps/bigforest.json" //replace this with the new maps once they have been made

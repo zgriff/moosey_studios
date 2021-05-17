@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="13" height="11" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="595">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="13" height="11" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="600">
  <editorsettings>
   <export target="../../../../../../../../Downloads/notrees.json" format="mysticmayhem"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/decorations.tsx"/>
- <tileset firstgid="7" source="../tilesets/tiles.tsx"/>
+ <tileset firstgid="5" source="../tilesets/tiles.tsx"/>
  <layer id="1" name="Background" width="13" height="11">
   <data encoding="csv">
-12,12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,12,12,12
+10,10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,10,10,10
 </data>
  </layer>
  <objectgroup id="2" name="Hitboxes">
@@ -75,6 +75,11 @@
   <object id="156" template="../templates/inactive_orb.tx" x="1066.45" y="2246.17"/>
   <object id="157" template="../templates/inactive_orb.tx" x="2783.89" y="1892.37"/>
   <object id="158" template="../templates/booster_pad.tx" x="2739.37" y="2225.08"/>
+  <object id="595" template="../templates/egg_spawn.tx" x="362.694" y="720.678"/>
+  <object id="596" template="../templates/egg_spawn.tx" x="2755.53" y="1248.23"/>
+  <object id="597" template="../templates/egg_spawn.tx" x="1163.45" y="343.853"/>
+  <object id="598" template="../templates/egg_spawn.tx" x="2260.95" y="1252.94"/>
+  <object id="599" template="../templates/egg_spawn.tx" x="442.77" y="2242.11"/>
  </objectgroup>
  <objectgroup id="3" name="Decorations">
   <object id="170" gid="2" x="2427.13" y="1446.42" width="118" height="190"/>

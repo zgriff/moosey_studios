@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="11" height="7" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="549">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="11" height="7" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="554">
  <editorsettings>
   <export target="../../MysticMayhem/assets/maps/forest.json" format="mysticmayhem"/>
  </editorsettings>
@@ -47,7 +47,7 @@
   </object>
  </objectgroup>
  <objectgroup id="4" name="GameObjects">
-  <object id="120" template="../templates/egg_spawn.tx" x="1340.56" y="864.863"/>
+  <object id="120" template="../templates/egg_spawn.tx" x="1937.15" y="475.253"/>
   <object id="121" template="../templates/player_spawn.tx" x="436.977" y="387.857"/>
   <object id="122" template="../templates/player_spawn.tx" x="472.954" y="1435.14"/>
   <object id="123" template="../templates/player_spawn.tx" x="2306.53" y="1414.66"/>
@@ -70,6 +70,10 @@
   <object id="545" template="../templates/inactive_orb.tx" x="2228" y="880"/>
   <object id="547" template="../templates/inactive_orb.tx" x="2476" y="450"/>
   <object id="548" template="../templates/inactive_orb.tx" x="2478" y="1334"/>
+  <object id="549" template="../templates/egg_spawn.tx" x="1339.29" y="864.448"/>
+  <object id="550" template="../templates/egg_spawn.tx" x="430.195" y="864.448"/>
+  <object id="551" template="../templates/egg_spawn.tx" x="2487.82" y="965.909"/>
+  <object id="553" template="../templates/egg_spawn.tx" x="868.506" y="1229.71"/>
  </objectgroup>
  <objectgroup id="3" name="Decorations">
   <object id="136" gid="2" x="120.356" y="199.586" width="118" height="190"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="12" height="8" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="748">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="12" height="8" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="754">
  <editorsettings>
   <export target="../../MysticMayhem/assets/maps/annoyances.json" format="mysticmayhem"/>
  </editorsettings>
@@ -96,7 +96,13 @@
   <object id="744" template="../templates/active_orb.tx" x="1684.26" y="501.63"/>
   <object id="745" template="../templates/inactive_orb.tx" x="2616.26" y="889.63"/>
   <object id="746" template="../templates/active_orb.tx" x="2236.26" y="361.63"/>
-  <object id="747" template="../templates/egg_spawn.tx" x="460.259" y="1609.63"/>
+  <object id="747" template="../templates/egg_spawn.tx" x="2528.1" y="1656.71"/>
+  <object id="748" template="../templates/egg_spawn.tx" x="463.544" y="1604.3"/>
+  <object id="749" template="../templates/egg_spawn.tx" x="2100.43" y="488.894"/>
+  <object id="750" template="../templates/egg_spawn.tx" x="1553.6" y="1673.1"/>
+  <object id="751" template="../templates/egg_spawn.tx" x="760.502" y="391.115"/>
+  <object id="752" template="../templates/egg_spawn.tx" x="1430.47" y="347.658"/>
+  <object id="753" template="../templates/egg_spawn.tx" x="2520.52" y="1245.77"/>
  </objectgroup>
  <objectgroup id="3" name="Decorations">
   <object id="138" gid="2" x="1923.14" y="1546.78" width="118" height="190"/>

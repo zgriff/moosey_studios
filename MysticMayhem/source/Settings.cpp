@@ -86,9 +86,6 @@ bool Settings::init(const std::shared_ptr<AssetManager>& assets, bool inGame) {
 //        CULog("in game");
         _leavegameButton->setVisible(true);
         _leavegameButton->activate();
-//        if (_leavegameButton->isActive()) {
-//            CULog("leave game activated");
-//        }
         _leavegameButton->addListener([=](const std::string& name, bool down) {
             _leaveGame = down;
             CULog("leave game pressed");
@@ -125,6 +122,7 @@ void Settings::setActive(bool b) {
         }
     }
     else {
+        CULog("deactivate");
         _soundVolume->deactivate();
         _backButton->deactivate();
         _back = false;

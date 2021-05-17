@@ -97,20 +97,38 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
     std::set<std::pair<std::string, int>, Comparator> setPlayerScores(
             _resultsMap.begin(), _resultsMap.end(), compFunctor);
     
-    Vec2 pos = _resultLabel->getPosition();
-    int i = 1;
+    _player1NameLabel= std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_playername1"));
+    _player1ScoreLabel= std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_playerscore1"));
+    Vec2 scorepos = _player1ScoreLabel->getPosition();
+    Vec2 namepos = _player1NameLabel->getPosition();
+    int i = 0;
     for (std::pair<std::string, int> element : setPlayerScores) {
 //    for (const auto& [key, value] : _resultsMap) {
-        stringstream ss;
-        std::shared_ptr<cugl::scene2::Label> playerScore = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_playerscore"+std::to_string(i)));
-        playerScore->setPosition(pos.x, pos.y - (i * 30));
-        ss << element.first << " SCORE: " << element.second;
-        playerScore->setText(ss.str());
+        if (i == 0) {
+            stringstream ss;
+             ss << std::to_string(i+1) << ". " << element.first;
+            _player1NameLabel->setText(ss.str());
+            stringstream score;
+            score << element.second;
+            _player1ScoreLabel->setText(score.str());
+        }
+        else {
+            stringstream ss;
+            std::shared_ptr<cugl::scene2::Label> playerScore = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_playerscore"+std::to_string(i+1)));
+            std::shared_ptr<cugl::scene2::Label> playerName = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_playername"+std::to_string(i+1)));
+            playerScore->setPosition(scorepos.x, scorepos.y - (i * 30));
+            playerName->setPosition(namepos.x, namepos.y - (i * 30));
+             ss << std::to_string(i+1) << ". " << element.first;
+            playerName->setText(ss.str());
+            stringstream score;
+            score << element.second;
+            playerScore->setText(score.str());
+        }
         i++;
     }
     
-    _message = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_message"));
-    _message->setText(message);
+//    _message = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_message"));
+//    _message->setText(message);
 
     
     Application::get()->setClearColor(Color4(190,187,191,255));
