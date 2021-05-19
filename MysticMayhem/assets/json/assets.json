@@ -10,7 +10,10 @@
             "file": "textures/end_scene.png"
         },
         "orb": {
-            "file": "textures/orb.png"
+            "file": "textures/orb_one.png"
+        },
+        "orb_shadow": {
+            "file": "textures/orb_shadow.png"
         },
         "player": {
             "file": "textures/character_sprite.png"
@@ -135,8 +138,15 @@
         "direction_water":{
             "file": "textures/Direction_FireRing.png"
         },
-        "ability-bar": {
+        "ability-bar-full": {
             "file": "textures/AbilityBar.png",
+            "wrapS": "clamp",
+            "wrapT": "clamp",
+            "minfilter": "linear",
+            "magfilter": "linear"
+        },
+        "ability-bar": {
+            "file": "textures/ability_bar_empty.png",
             "wrapS": "clamp",
             "wrapT": "clamp",
             "minfilter": "linear",
@@ -1696,6 +1706,20 @@
                         "y_anchor": "top",
                         "x_offset": 0.05,
                         "y_offset": -0.02
+                    }
+                },
+                "abilityBarFull": {
+                    "type": "Progress",
+                    "data": {
+                        "anchor": [ 0.5, 0.5 ],
+                        "background": "ability-bar-full",
+                        "foreground": "ability-bar-fill"
+                    },
+                    "layout": {
+                        "x_anchor": "right",
+                        "y_anchor": "top",
+                        "x_offset" : -0.1,
+                        "y_offset" : -0.1
                     }
                 },
                 "abilityBar": {

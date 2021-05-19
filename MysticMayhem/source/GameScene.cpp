@@ -164,6 +164,11 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _abilitybar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_abilityBar"));
     _abilitybar->setForegroundColor(Color4(255, 255, 255, 100));
     
+    _abilitybarFull = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_abilityBarFull"));
+    _abilitybarFull->setForegroundColor(Color4(255, 255, 255, 100));
+    _abilitybar->setProgress(1);
+    _abilitybarFull->setVisible(false);
+    
     
     _debugnode = _world->getDebugNode();
     
@@ -456,12 +461,19 @@ void GameScene::update(float timestep) {
     
     // ability stuff here
     _abilitybar->setProgress(_player->getOrbScore() * 0.2);
+    if (_abilitybar->getProgress() == 1) {
+        _abilitybar->setVisible(false);
+        _abilitybarFull->setProgress(1);
+        _abilitybarFull->setVisible(true);
+    }
     if (_player->getOrbScore() == 5 && _abilityController.getQueuedAbility() == AbilityController::Ability::NoAbility) {
         _abilityController.updateAbility(_abilityname);
-        _abilityname->setVisible(true);
+//        _abilityname->setVisible(true);
     }
     if (_playerController.isAbilityPressed()) {
         _abilityController.activateAbility(_player);
+        _abilitybar->setVisible(true);
+        _abilitybarFull->setVisible(false);
     }
     _abilityController.deactivateAbility(_player, _abilityname);
 

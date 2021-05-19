@@ -53,6 +53,7 @@ protected:
     std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
 	
 	std::shared_ptr<cugl::scene2::ProgressBar>  _abilitybar;
+    std::shared_ptr<cugl::scene2::ProgressBar>  _abilitybarFull;
     std::shared_ptr<cugl::scene2::Label> _abilityname;
     AbilityController _abilityController;
 
