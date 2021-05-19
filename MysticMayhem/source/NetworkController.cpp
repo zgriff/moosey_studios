@@ -385,7 +385,7 @@ struct GameHandler {
         send(NetworkData(data));
     }
 
-    void sendSetCustomization(int playerId, int skin, int hat, int element) {
+    void sendSetCustomization(int playerId, int skin, int hat, Element element) {
         NetworkData::SetCustomization data;
         customizations[playerId] =  make_tuple(skin, hat, element);
         data.playerId = playerId;

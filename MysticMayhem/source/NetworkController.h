@@ -45,7 +45,7 @@ namespace NetworkController {
     void sendTag(int taggedId, int taggerId, time_t timestamp, bool dropEgg);
     void sendEggRespawn(int eggId, Vec2 eggPosition);
     void sendSetUsername(int playerId, string username);
-    void sendSetCustomization(int playerId, int skin, int hat, int element);
+    void sendSetCustomization(int playerId, int skin, int hat, Element element);
     void sendSetMapSelected(int i);
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);
