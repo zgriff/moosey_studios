@@ -139,7 +139,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _UInode->setContentSize(Application::get()->getDisplaySize() * 2.0);
     _UInode->doLayout(); // Repositions the HUD;
     //It should be inverse of the camera zoom, so UI shrinks if zoom is more
-    _UInode->setScale(0.47/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
+    _UInode->setScale(0.47 / ((double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
 #ifdef CU_MOBILE
     _worldOffset = Vec2(0.0f,(dimen.height-h)/2.0f);
 #endif
@@ -340,6 +340,7 @@ void GameScene::update(float timestep) {
         if (networkTimePassed < 2) {
             float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
             static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom( cameraZoom * (2.0 + realTimePassed.count())/4.0 );
+            _UInode->setScale(0.47 / (cameraZoom * (2.0 + realTimePassed.count()) / 4.0));
             getCamera()->update();
             return;
         }
@@ -348,6 +349,7 @@ void GameScene::update(float timestep) {
             float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
             if (realTimePassed.count() < 2.0) {
                 static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom * (2.0 + realTimePassed.count()) / 4.0);
+                _UInode->setScale(0.47 / (cameraZoom * (2.0 + realTimePassed.count()) / 4.0));
             }
             else {
                 if (realTimePassed.count() >= 2.25) {
@@ -355,6 +357,7 @@ void GameScene::update(float timestep) {
                     _startTimePassed = true;
                 }
                 static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
+                _UInode->setScale(0.47 / cameraZoom);
             }
             getCamera()->update();
         }
