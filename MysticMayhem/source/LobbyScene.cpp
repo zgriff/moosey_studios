@@ -143,6 +143,12 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _mapPrevButton->deactivate();
         _mapNextButton->deactivate();
         _startButton->deactivate();
+        _hatForwardButton->deactivate();
+        _hatBackButton->deactivate();
+        _skinForwardButton->deactivate();
+        _skinBackButton->deactivate();
+        _eleForwardButton->deactivate();
+        _eleBackButton->deactivate();
         if(_settingsNode->isVisible()) {
             CULog("LOBBY: settings visible");
         }
@@ -379,11 +385,15 @@ void LobbyScene::update(float progress) {
         _settingsNode->setActive(false);
         _settingsNode->setVisible(false);
         _layer->setColor(Color4(255,255,255,255));
-        _map1Button->activate();
-        _map2Button->activate();
-        _map3Button->activate();
-        _map4Button->activate();
+        _mapNextButton->activate();
+        _mapPrevButton->activate();
         _startButton->activate();
+        _hatForwardButton->activate();
+        _hatBackButton->activate();
+        _skinForwardButton->activate();
+        _skinBackButton->activate();
+        _eleForwardButton->activate();
+        _eleBackButton->activate();
     }
 
 }
