@@ -123,9 +123,6 @@
         "staff_tag_fire":{
             "file": "textures/Character7_TagFire.png"
         },
-        "staff_tag_aether":{
-            "file": "textures/Character7_TagGrass.png"
-        },
         "staff_tag_water":{
             "file": "textures/Character7_TagWater.png"
         },
@@ -182,13 +179,6 @@
         },
         "play_again": {
             "file": "textures/play_again.png",
-            "wrapS": "clamp",
-            "wrapT": "clamp",
-            "minfilter": "linear",
-            "magfilter": "linear"
-        },
-        "main_menu": {
-            "file": "textures/main_menu.png",
             "wrapS": "clamp",
             "wrapT": "clamp",
             "minfilter": "linear",
@@ -1584,22 +1574,22 @@
                 "y_anchor" : "middle"
             },
             "children": {
-                "frames" : {
+                "frames": {
                     "type": "Label",
                     "data": {
-                        "font"       : "ingame",
-                        "text"       : "Frames: 0",
-                        "foreground" : [255,255,255,255],
-                        "size"       : [500,70],
-                        "valign"     : "bottom",
-                        "halign"     : "left"
+                        "font": "ingame",
+                        "text": "Frames: 0",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 500, 70 ],
+                        "valign": "bottom",
+                        "halign": "left"
                     },
-                    "layout" : {
-                        "x_anchor" : "left",
-                        "y_anchor" : "bottom",
-                        "x_offset" : -0.2,
-                        "y_offset" : -0.2,
-                        "absolute" : true
+                    "layout": {
+                        "x_anchor": "left",
+                        "y_anchor": "bottom",
+                        "x_offset": -0.2,
+                        "y_offset": -0.2,
+                        "absolute": true
                     }
                 },
                 "timericon": {
@@ -1610,29 +1600,29 @@
                         "scale": 0.8
                     },
                     "layout": {
-                        "x_anchor" : "center",
-                        "y_anchor" : "top",
-                        "y_offset" : -0.1,
-                        "x_offset" : -0.1
+                        "x_anchor": "center",
+                        "y_anchor": "top",
+                        "y_offset": -0.1,
+                        "x_offset": -0.1
                     }
                 },
-                "timer" : {
-                       "type": "Label",
-                       "data": {
-                           "font"       : "ingame",
-                           "text"       : "0",
-                           "foreground" : [255,255,255,255],
-                           "size"       : [500,70],
-                           "valign"     : "bottom",
-                           "halign"     : "center"
-                       },
-                       "layout" : {
-                           "x_anchor" : "center",
-                           "y_anchor" : "top",
-                           "x_offset" : -0.04,
-                           "y_offset" : -0.13
-                       }
-                   },
+                "timer": {
+                    "type": "Label",
+                    "data": {
+                        "font": "ingame",
+                        "text": "0",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 500, 70 ],
+                        "valign": "bottom",
+                        "halign": "center"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "top",
+                        "x_offset": -0.04,
+                        "y_offset": -0.13
+                    }
+                },
                 "score": {
                     "type": "Label",
                     "data": {
@@ -1646,8 +1636,25 @@
                     "layout": {
                         "x_anchor": "left",
                         "y_anchor": "top",
-                        "x_offset" : 0.1,
-                        "y_offset" : -0.1
+                        "x_offset": 0.1,
+                        "y_offset": -0.1
+                    }
+                },
+                "countdown": {
+                    "type": "Label",
+                    "data": {
+                        "font": "ingame",
+                        "text": "Ready",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 500, 70 ],
+                        "valign": "bottom",
+                        "halign": "center"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": 0,
+                        "y_offset": 0
                     }
                 },
                 "bar": {
@@ -1732,8 +1739,8 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset" : -0.1,
-                        "y_offset" : -0.1
+                        "x_offset": -0.1,
+                        "y_offset": -0.1
                     },
                     "children": {
                         "abilityName": {

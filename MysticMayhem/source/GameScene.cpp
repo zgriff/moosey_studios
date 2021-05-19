@@ -150,6 +150,11 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _framesHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_frames"));
     _framesHUD->setPositionX(_framesHUD->getPositionX() + 100);
     _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
+    _countdownHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_countdown"));
+    _countdownHUD->setColor(Color4::YELLOW);
+    _countdownHUD->setText("READY");
+    _countdownHUD->setVisible(true);
+    _startTimePassed = false;
     
     _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
     _hatchbar->setVisible(false);
@@ -166,7 +171,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _abilitybarFull = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_abilityBarFull"));
     _abilitybarFull->setForegroundColor(Color4(255, 255, 255, 100));
-    _abilitybar->setProgress(1);
+    _abilitybarFull->setProgress(1);
     _abilitybarFull->setVisible(false);
     
     
@@ -214,6 +219,7 @@ void GameScene::dispose() {
     _camera = nullptr;
     _UInode = nullptr;
     _scoreHUD = nullptr;
+    _countdownHUD = nullptr;
     _hatchnode = nullptr;
     _hatchbar = nullptr;
     _abilitybar = nullptr;
@@ -243,9 +249,10 @@ void GameScene::dispose() {
 void GameScene::reset() {
     prevTime = time(NULL);
     _world->setEggSpawnCooldown(time(NULL));
-    _world->setRootNode(_rootnode,_scale);
+    _world->setRootNode(_rootnode, _scale);
     CollisionController::setWorld(_world);
     NetworkController::setWorld(_world);
+
     
     auto idopt = NetworkController::getPlayerId();
     if(idopt.has_value()){
@@ -265,6 +272,7 @@ void GameScene::reset() {
         static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
     }
 
+    // Puts the username label in game
     auto players = _world->getPlayers();
     for (auto it = players.begin(); it != players.end(); it++) {
         (*it)->setUsername(NetworkController::getUsername(it - players.begin()));
@@ -272,6 +280,8 @@ void GameScene::reset() {
     }
 
     _playerController.init();
+
+    _beginStartTimer = std::chrono::system_clock::now();
     
     _world->setDebug(false);
 
@@ -282,28 +292,74 @@ void GameScene::update(float timestep) {
     
     if (_playerController.didDebug()) { _world->setDebug(!_world->getDebug()); }
     
-    // NETWORK //
+        // NETWORK //
     
-    /*std::string currRoomId = NetworkController::getRoomId();
-    _roomIdHUD->setText(currRoomId);*/
-//    NetworkController::step();
     NetworkController::update(timestep);
 
-//    if (_currRoomId == "") {
-//        _currRoomId = NetworkController::getRoomId();
-//        stringstream ss;
-//        ss << "Room Id: " << _currRoomId;
-//        _roomIdHUD->setText(ss.str());
-//    }
-        
-
-
-        // BEGIN PLAYER MOVEMENT //
-    
+        // GET PLAYER //    
     auto playerId_option = NetworkController::getPlayerId();
     if(! playerId_option.has_value()) return;
     uint8_t playerId = playerId_option.value();
     auto _player = _world->getPlayer(playerId);
+
+        // HUD
+    _world->getPhysicsWorld()->update(timestep);
+
+    auto playPos = _player->getSceneNode()->getPosition();
+    playPos += _player->getLinearVelocity().scale(40.0 / pow(max(_player->getLinearVelocity().length(), .000001f), .35));
+    auto camSpot = getCamera()->getPosition();
+
+    //Camera Clamping
+    ////playPos is only used for camera to calculate camera translation, we clamp it so camera doesn't display offmap
+    //float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+    //playPos.x = std::clamp(playPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
+    //    _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
+    ///*CULog("right boundary should be %f", _world->getSceneSize().x);
+    //CULog("should be cutoff at %f", _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom));
+    //CULog("player pos x %f", _player->getSceneNode()->getPosition().x);*/
+    //playPos.y = std::clamp(playPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
+    //    _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
+    ////CULog("viewport x %f", getCamera()->getViewport().size.width);
+
+    auto trans = (playPos - camSpot)*CAMERA_STICKINESS;
+    //CULog("camera x: %f camera y: %f", getCamera()->getPosition().x, getCamera()->getPosition().y);
+    getCamera()->translate(trans);
+    getCamera()->update();
+    _UInode->setPosition(camSpot + trans - _worldOffset);
+    _settingsNode->setPosition(camSpot + trans - _worldOffset);
+
+    _scoreHUD->setText(updateScoreText(_player->getScore()));
+    _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
+    _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
+
+        // CHECK BEGINNING OF GAME
+    if (!_startTimePassed) {
+        auto curr = std::chrono::system_clock::now();
+        std::chrono::duration<double> realTimePassed = curr - _beginStartTimer;
+        auto networkTimePassed = time(NULL) - NetworkController::getStartTimestamp();
+        if (networkTimePassed < 2) {
+            float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+            static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom( cameraZoom * (2.0 + realTimePassed.count())/4.0 );
+            getCamera()->update();
+            return;
+        }
+        else {
+            _countdownHUD->setText("GO!");
+            float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
+            if (realTimePassed.count() < 2.0) {
+                static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom * (2.0 + realTimePassed.count()) / 4.0);
+            }
+            else {
+                if (realTimePassed.count() >= 2.25) {
+                    _countdownHUD->setVisible(false);
+                    _startTimePassed = true;
+                }
+                static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
+            }
+            getCamera()->update();
+        }
+    }
+        // BEGIN PLAYER MOVEMENT //
     if (_player->getPC() && !_settings) {
         _playerController.readInput();
 
@@ -360,29 +416,6 @@ void GameScene::update(float timestep) {
             _player->setForce(forForce);
         }
     }
-    _world->getPhysicsWorld()->update(timestep);
-
-    auto playPos = _player->getSceneNode()->getPosition();
-    playPos += _player->getLinearVelocity().scale(40.0 / pow(max(_player->getLinearVelocity().length(), .000001f), .35));
-    auto camSpot = getCamera()->getPosition();
-
-    ////playPos is only used for camera to calculate camera translation, we clamp it so camera doesn't display offmap
-    //float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
-    //playPos.x = std::clamp(playPos.x, Application::get()->getDisplaySize().width / 2 / cameraZoom,
-    //    _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom) + 300); //right side clamp not work
-    ///*CULog("right boundary should be %f", _world->getSceneSize().x);
-    //CULog("should be cutoff at %f", _world->getSceneSize().x - (Application::get()->getDisplaySize().width / 2 / cameraZoom));
-    //CULog("player pos x %f", _player->getSceneNode()->getPosition().x);*/
-    //playPos.y = std::clamp(playPos.y, Application::get()->getDisplaySize().height / 2 / cameraZoom,
-    //    _world->getSceneSize().y - (Application::get()->getDisplaySize().height / 2 / cameraZoom));
-    ////CULog("viewport x %f", getCamera()->getViewport().size.width);
-
-    auto trans = (playPos - camSpot)*CAMERA_STICKINESS;
-    //CULog("camera x: %f camera y: %f", getCamera()->getPosition().x, getCamera()->getPosition().y);
-    getCamera()->translate(trans);
-    getCamera()->update();
-    _UInode->setPosition(camSpot + trans - _worldOffset);
-    _settingsNode->setPosition(camSpot + trans - _worldOffset);
 
 //    CULog("TIME %ld", time(NULL) - prevTime);
     if(NetworkController::isHost()){
@@ -476,17 +509,10 @@ void GameScene::update(float timestep) {
         _abilitybarFull->setVisible(false);
     }
     _abilityController.deactivateAbility(_player, _abilityname);
-
-  
-
-    _scoreHUD->setText(updateScoreText(_player->getScore()));
-    _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
-    _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
     
     for(auto p : _world->getPlayers()){
         p->animateMovement();
     }
-    
     
     //send new position
     NetworkController::sendPosition();

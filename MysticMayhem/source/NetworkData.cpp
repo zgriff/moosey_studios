@@ -229,7 +229,9 @@ struct NetworkData::Visitor {
         s.serializeTimestamp(t.timestamp);
         s.serializeBool(t.dropEgg);
     }
-    void operator()(StartGame & s) const {}
+    void operator()(StartGame & start) const {
+        s.serializeTimestamp(start.timestamp);
+    }
     void operator()(OrbRespawn & o) const {
         s.serializeBits(o.orbId, ORB_ID_BITS);
         s.serializeVec2(o.position);

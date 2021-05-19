@@ -17,7 +17,8 @@ namespace NetworkController {
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username = "";
         //Networked usernames indexed by playerId
-        array<std::string, 8> usernames = {"test1", "test2", "test3" , "test4" , "test5" , "test6" , "test7" , "test8" };
+        array<std::string, 8> usernames = {"Player 1", "Player 2", "Player 3" , "Player 4" , 
+            "Player 5" , "Player 6" , "Player 7" , "Player 8" };
     
         std::unordered_map<int,std::tuple<int,int,int>> customizations;
     
@@ -25,6 +26,7 @@ namespace NetworkController {
         int mapSelected = 1;
         std::function<void(uint8_t, bool)> readyCallback;
         std::function<void(void)> startCallback;
+        time_t startTimestamp;
     }
 
     /** IP of the NAT punchthrough server */
@@ -124,6 +126,10 @@ namespace NetworkController {
         startCallback = cb;
     }
 
+    time_t getStartTimestamp() {
+        return startTimestamp;
+    }
+
 struct LobbyHandler {
     LobbyHandler(){};
     void operator()(NetworkData::Ready & data) const {
@@ -133,6 +139,7 @@ struct LobbyHandler {
         readyCallback(data.player_id, false);
     }
     void operator()(NetworkData::StartGame & data) const {
+        startTimestamp = data.timestamp;
         startCallback();
     }
     void operator()(NetworkData::SetMap & data) const {
@@ -410,6 +417,8 @@ struct GameHandler {
     void startGame(){
         network->startGame();
         NetworkData::StartGame s;
+        startTimestamp = time(NULL);
+        s.timestamp = startTimestamp;
         send(NetworkData(s));
     }
 

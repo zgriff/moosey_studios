@@ -29,7 +29,9 @@ public:
         time_t timestamp;
         bool dropEgg;
     };
-    struct StartGame {};
+    struct StartGame {
+        time_t timestamp;
+    };
     struct OrbRespawn {
         uint8_t orbId;
         cugl::Vec2 position;
