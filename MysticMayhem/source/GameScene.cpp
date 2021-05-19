@@ -169,6 +169,11 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _abilitybar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_abilityBar"));
     _abilitybar->setForegroundColor(Color4(255, 255, 255, 100));
     
+    _abilitybarFull = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_abilityBarFull"));
+    _abilitybarFull->setForegroundColor(Color4(255, 255, 255, 100));
+    _abilitybarFull->setProgress(1);
+    _abilitybarFull->setVisible(false);
+    
     
     _debugnode = _world->getDebugNode();
     
@@ -179,12 +184,14 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _settingsNode->setScale(1/((double) CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL));
 
     _settingsButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("ui_settings"));
-//    _settingsButton->activate();
-    _settingsButton->setVisible(false);
+    _settingsButton->activate();
+    _settings = false;
+//    _settingsButton->setVisible(false);
     _settingsButton->addListener([=](const std::string& name, bool down) {
 //        CULog("settings button pressed");
         _settingsNode->setVisible(true);
         _settingsNode->setActive(true);
+        _settings = true;
 //        if(_settingsNode->isVisible()) {
 //            CULog("settings visible");
 //        }
@@ -230,6 +237,7 @@ void GameScene::dispose() {
     }
     _active = false;
     _rootnode = nullptr;
+    _settings = false;
 }
 
 
@@ -328,10 +336,8 @@ void GameScene::update(float timestep) {
     if (!_startTimePassed) {
         auto curr = std::chrono::system_clock::now();
         std::chrono::duration<double> realTimePassed = curr - _beginStartTimer;
-        CULog("beginStartTimer %f", realTimePassed.count());
         auto networkTimePassed = time(NULL) - NetworkController::getStartTimestamp();
         if (networkTimePassed < 2) {
-            CULog("starts in %d", 3 - (time(NULL) - NetworkController::getStartTimestamp()));
             float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
             static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom( cameraZoom * (2.0 + realTimePassed.count())/4.0 );
             getCamera()->update();
@@ -354,7 +360,7 @@ void GameScene::update(float timestep) {
         }
     }
         // BEGIN PLAYER MOVEMENT //
-    if (_player->getPC()) {
+    if (_player->getPC() && !_settings) {
         _playerController.readInput();
 
         auto ang = _player->getDirection() + _playerController.getMov().x * -2.0f * M_PI * timestep * 60.0 / TURNS_PER_SPIN;
@@ -488,9 +494,18 @@ void GameScene::update(float timestep) {
     
     // ability stuff here
     _abilitybar->setProgress(_player->getOrbScore() * 0.2);
+    if (_abilitybar->getProgress() == 1) {
+        _abilitybar->setVisible(false);
+        _abilitybarFull->setProgress(1);
+        _abilitybarFull->setVisible(true);
+    }
+    else {
+        _abilitybar->setVisible(true);
+        _abilitybarFull->setVisible(false);
+    }
     if (_player->getOrbScore() == 5 && _abilityController.getQueuedAbility() == AbilityController::Ability::NoAbility) {
         _abilityController.updateAbility(_abilityname);
-        _abilityname->setVisible(true);
+//        _abilityname->setVisible(true);
     }
     if (_playerController.isAbilityPressed()) {
         _abilityController.activateAbility(_player);
@@ -508,6 +523,7 @@ void GameScene::update(float timestep) {
     if (_settingsNode->backPressed()) {
         _settingsNode->setVisible(false);
         _settingsNode->setActive(false);
+        _settings = false;
     }
 }
 

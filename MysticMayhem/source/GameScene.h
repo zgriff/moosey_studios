@@ -55,6 +55,7 @@ protected:
     std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
 	
 	std::shared_ptr<cugl::scene2::ProgressBar>  _abilitybar;
+    std::shared_ptr<cugl::scene2::ProgressBar>  _abilitybarFull;
     std::shared_ptr<cugl::scene2::Label> _abilityname;
     AbilityController _abilityController;
 
@@ -82,6 +83,7 @@ protected:
     
     /** Whether or not debug mode is active */
     bool _debug;
+    bool _settings; //whether settings is open or not
     /**
      * Activates the UI elements to make them interactive
      *

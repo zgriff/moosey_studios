@@ -84,7 +84,7 @@ public:
         uint8_t playerId;
         uint8_t skin;
         uint8_t hat;
-        uint8_t element;
+        Element element;
     };
     struct SetMap {
         uint8_t mapNumber;

@@ -173,8 +173,9 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     });
     
     _usernameLabel = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_usernamelabel"));
-
+    _usernameLabel->setVisible(true);
     _usernameField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_username"));
+    _usernameField->setVisible(true);
     _usernameField->addTypeListener([=](const std::string& name, const std::string& value) {
         CULog("Change to %s", value.c_str());
         });

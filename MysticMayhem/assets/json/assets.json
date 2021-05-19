@@ -10,7 +10,10 @@
             "file": "textures/end_scene.png"
         },
         "orb": {
-            "file": "textures/orb.png"
+            "file": "textures/orb_one.png"
+        },
+        "orb_shadow": {
+            "file": "textures/orb_shadow.png"
         },
         "player": {
             "file": "textures/character_sprite.png"
@@ -132,8 +135,15 @@
         "direction_water":{
             "file": "textures/Direction_FireRing.png"
         },
-        "ability-bar": {
+        "ability-bar-full": {
             "file": "textures/AbilityBar.png",
+            "wrapS": "clamp",
+            "wrapT": "clamp",
+            "minfilter": "linear",
+            "magfilter": "linear"
+        },
+        "ability-bar": {
+            "file": "textures/ability_bar_empty.png",
             "wrapS": "clamp",
             "wrapT": "clamp",
             "minfilter": "linear",
@@ -210,6 +220,21 @@
         },
         "timer_icon": {
             "file": "textures/timer_icon.png"
+        },
+        "slider_bar": {
+            "file": "textures/slider_bar.png"
+        },
+        "slider_bar_fill": {
+            "file": "textures/slider_bar_fill.png"
+        },
+        "slider_knob": {
+            "file": "textures/sfx_knob.png"
+        },
+        "results_board": {
+            "file": "textures/results_board.png"
+        },
+        "results_crown": {
+            "file": "textures/crown.png"
         }
     },
     "sounds": {
@@ -1094,6 +1119,25 @@
                         
                     }
                 },
+                "musiclabel": {
+                    "type": "Label",
+                    "data": {
+                        "font": "settings_font",
+                        "text": "MUSIC VOLUME",
+                        "foreground": [ 0,0,0, 255],
+                        "size": [ 30,  15],
+                        "valign": "bottom",
+                        "halign": "left",
+                        "anchor" : [0.5,0.5]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "top",
+                        "x_offset": -0.2,
+                        "y_offset": -0.4
+                        
+                    }
+                },
                 "backbutton" : {
                     "type": "Button",
                     "data": {
@@ -1122,7 +1166,6 @@
                     "type": "Button",
                     "data": {
                         "upnode": "up",
-                        "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.7, 0.4 ],
@@ -1170,7 +1213,6 @@
                     "type": "Button",
                     "data": {
                         "upnode": "up",
-                        "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.5, 0.5 ],
@@ -1186,10 +1228,37 @@
                     },
                     "layout": {
                         "x_anchor": "center",
+                        "y_anchor": "bottom",
+                        "y_offset": 0.1,
+                        "x_offset": 0
+                    }
+                },
+                "resultsboard": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "results_board",
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 0.6
+                    },
+                    "layout": {
+                        "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": 180,
-                        "x_offset": 200,
-                        "absolute": true
+                        "y_offset": 0.07,
+                        "x_offset": 0
+                    }
+                },
+                "crown": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "results_crown",
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 0.6
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": 0.29,
+                        "x_offset": -0.115
                     }
                 },
                 "results": {
@@ -1205,8 +1274,8 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "x_offset": -0.25,
-                        "y_offset": 0.25
+                        "x_offset": -0.05,
+                        "y_offset": 0.27
                     }
                 },
                 "playerscore1": {
@@ -1221,7 +1290,9 @@
                     },
                     "layout": {
                         "x_anchor": "center",
-                        "y_anchor": "middle"
+                        "y_anchor": "middle",
+                        "x_offset": 0.09,
+                        "y_offset": 0.195
                     }
                 },
                 "playerscore2": {
@@ -1315,6 +1386,128 @@
                     }
                 },
                 "playerscore8": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername1": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": -0.11,
+                        "y_offset": 0.20
+                    }
+                },
+                "playername2": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername3": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername4": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername5": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername6": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername7": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername8": {
                     "type": "Label",
                     "data": {
                         "font": "results",
@@ -1505,7 +1698,7 @@
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.5, 0.5 ],
-                        "scale": 0.7
+                        "scale": 0.6
                     },
                     "children": {
                         "up": {
@@ -1518,9 +1711,22 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset": -0.1,
-                        "y_offset": -1,
-                        "absolute": true
+                        "x_offset": 0.05,
+                        "y_offset": -0.02
+                    }
+                },
+                "abilityBarFull": {
+                    "type": "Progress",
+                    "data": {
+                        "anchor": [ 0.5, 0.5 ],
+                        "background": "ability-bar-full",
+                        "foreground": "ability-bar-fill"
+                    },
+                    "layout": {
+                        "x_anchor": "right",
+                        "y_anchor": "top",
+                        "x_offset" : -0.1,
+                        "y_offset" : -0.1
                     }
                 },
                 "abilityBar": {
