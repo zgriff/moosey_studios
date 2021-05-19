@@ -499,14 +499,16 @@ void GameScene::update(float timestep) {
         _abilitybarFull->setProgress(1);
         _abilitybarFull->setVisible(true);
     }
+    else {
+        _abilitybar->setVisible(true);
+        _abilitybarFull->setVisible(false);
+    }
     if (_player->getOrbScore() == 5 && _abilityController.getQueuedAbility() == AbilityController::Ability::NoAbility) {
         _abilityController.updateAbility(_abilityname);
 //        _abilityname->setVisible(true);
     }
     if (_playerController.isAbilityPressed()) {
         _abilityController.activateAbility(_player);
-        _abilitybar->setVisible(true);
-        _abilitybarFull->setVisible(false);
     }
     _abilityController.deactivateAbility(_player, _abilityname);
     
