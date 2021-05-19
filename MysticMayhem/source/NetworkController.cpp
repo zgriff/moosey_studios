@@ -17,7 +17,8 @@ namespace NetworkController {
         //Username would need to go from LoadingScene to GameScene so more convenient as a global variable
         std::string username = "";
         //Networked usernames indexed by playerId
-        array<std::string, 8> usernames = {"test1", "test2", "test3" , "test4" , "test5" , "test6" , "test7" , "test8" };
+        array<std::string, 8> usernames = {"Player 1", "Player 2", "Player 3" , "Player 4" , 
+            "Player 5" , "Player 6" , "Player 7" , "Player 8" };
     
         std::unordered_map<int,std::tuple<int,int,int>> customizations;
     

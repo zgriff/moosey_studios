@@ -344,7 +344,7 @@ void GameScene::update(float timestep) {
                 static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom * (2.0 + realTimePassed.count()) / 4.0);
             }
             else {
-                if (realTimePassed.count() >= 3.0) {
+                if (realTimePassed.count() >= 2.25) {
                     _countdownHUD->setVisible(false);
                     _startTimePassed = true;
                 }
