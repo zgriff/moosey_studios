@@ -150,6 +150,11 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _framesHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_frames"));
     _framesHUD->setPositionX(_framesHUD->getPositionX() + 100);
     _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
+    _countdownHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_countdown"));
+    _countdownHUD->setColor(Color4::YELLOW);
+    _countdownHUD->setText("READY");
+    _countdownHUD->setVisible(true);
+    _startTimePassed = false;
     
     _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
     _hatchbar->setVisible(false);
@@ -207,6 +212,7 @@ void GameScene::dispose() {
     _camera = nullptr;
     _UInode = nullptr;
     _scoreHUD = nullptr;
+    _countdownHUD = nullptr;
     _hatchnode = nullptr;
     _hatchbar = nullptr;
     _abilitybar = nullptr;
@@ -332,12 +338,16 @@ void GameScene::update(float timestep) {
             return;
         }
         else {
+            _countdownHUD->setText("GO!");
             float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
             if (realTimePassed.count() < 2.0) {
                 static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom * (2.0 + realTimePassed.count()) / 4.0);
             }
             else {
-                _startTimePassed = true;
+                if (realTimePassed.count() >= 3.0) {
+                    _countdownHUD->setVisible(false);
+                    _startTimePassed = true;
+                }
                 static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
             }
             getCamera()->update();
