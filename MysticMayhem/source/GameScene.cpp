@@ -38,7 +38,7 @@ using namespace std;
 /** how quickly the camera catches up to the player*/
 #define CAMERA_STICKINESS .07f
 /** How much the camera */
-#define CAMERA_ZOOM 0.65f
+#define CAMERA_ZOOM 0.73f
 /** baseline aspect ratio, 1468.604 is from 1280x720 */
 #define BASELINE_DIAGONAL 1468.60478005
 #define BASELINE_HEIGHT 720 //if we want to scale by height instead just change the places w/ length and diagonal to height
@@ -383,8 +383,6 @@ void GameScene::update(float timestep) {
             correction.scale(KINETIC_FRICTION / correction.length());
         }
 
-        _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()*sin(offset)));
-
         //apply friction if going backwards IE braking
         if (abs(offset) < M_PI / 2.0) {
             auto backwards = _player->getLinearVelocity().rotate(-1.0f * offset).scale(-1.0f * cos(offset) * _player->getMass());
@@ -405,7 +403,7 @@ void GameScene::update(float timestep) {
             scaling.normalize().scale(_player->getMass() * 0.26f * pow(max(22.0f - vel.length(), 0.0f), 1.5f));
 
             _player->setForce(scaling);
-            if (vel.length() < 20.0f) _player->applyForce();
+            if (vel.length() < 19.0f) _player->applyForce();
             _player->setForce(forForce);
         }
         else {

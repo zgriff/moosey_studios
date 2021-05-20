@@ -27,11 +27,11 @@ using namespace cugl;
 /** The restitution of the player */
 #define DEFAULT_RESTITUTION 0.2f
 /** The minimum total speed for drag to apply */
-#define THRESHOLD_VELOCITY 26.0f
+#define THRESHOLD_VELOCITY 25.0f
 /** The player's spped upon boosting */
-#define BOOST_VELOCITY 38.0f
+#define BOOST_VELOCITY 36.0f
 /** What proportion of the player's extra velocity is lost per frame*/
-#define SPEEDING_DRAG 0.007f
+#define SPEEDING_DRAG 0.008f
 /** How long it takes for sideways friction to kick in after a wall contact*/
 #define RESUME_FRICTION_TIMER 0.0
 /** How long the player is invisible for after getting tagged*/
