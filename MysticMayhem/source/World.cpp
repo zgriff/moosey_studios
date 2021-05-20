@@ -65,6 +65,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     
     auto playerTexture = _assets->get<Texture>("player");
     auto orbTexture = _assets->get<Texture>("orb");
+    auto orbShadowTexture = _assets->get<Texture>("orb_shadow");
     auto swapStTexture = _assets->get<Texture>("swapstation");
     auto eggTexture = _assets->get<Texture>("egg");
     auto boosterTexture = _assets->get<Texture>("booster");
@@ -115,7 +116,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         CULog("orb");
         std::shared_ptr<Orb> orb = Orb::alloc(*it);
         _physicsWorld->addObstacle(orb);
-        orb->setTextures(orbTexture);
+        orb->setTextures(orbTexture, orbShadowTexture);
         orb->setDrawScale(_scale);
         orb->setCollected(false);
         orb->setActive(true);

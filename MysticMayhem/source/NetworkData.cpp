@@ -229,7 +229,9 @@ struct NetworkData::Visitor {
         s.serializeTimestamp(t.timestamp);
         s.serializeBool(t.dropEgg);
     }
-    void operator()(StartGame & s) const {}
+    void operator()(StartGame & start) const {
+        s.serializeTimestamp(start.timestamp);
+    }
     void operator()(OrbRespawn & o) const {
         s.serializeBits(o.orbId, ORB_ID_BITS);
         s.serializeVec2(o.position);
@@ -281,8 +283,9 @@ struct NetworkData::Visitor {
     void operator()(SetCustomization & d) const {
         s.serializeBits(d.playerId, PLAYER_ID_BITS);
         s.serializeBits(d.skin, PLAYER_ID_BITS);
+        //TODO:   change to hat
         s.serializeBits(d.hat, PLAYER_ID_BITS);
-        s.serializeBits(d.element, PLAYER_ID_BITS);
+        s.serializeElement(d.element);
     }
     void operator()(SetMap & d) const {
         s.serializeBits(d.mapNumber, MAP_NUMBER_BITS);

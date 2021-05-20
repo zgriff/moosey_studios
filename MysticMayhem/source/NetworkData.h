@@ -29,7 +29,9 @@ public:
         time_t timestamp;
         bool dropEgg;
     };
-    struct StartGame {};
+    struct StartGame {
+        time_t timestamp;
+    };
     struct OrbRespawn {
         uint8_t orbId;
         cugl::Vec2 position;
@@ -82,7 +84,7 @@ public:
         uint8_t playerId;
         uint8_t skin;
         uint8_t hat;
-        uint8_t element;
+        Element element;
     };
     struct SetMap {
         uint8_t mapNumber;

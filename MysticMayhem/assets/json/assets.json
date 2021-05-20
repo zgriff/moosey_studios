@@ -10,7 +10,10 @@
             "file": "textures/end_scene.png"
         },
         "orb": {
-            "file": "textures/orb.png"
+            "file": "textures/orb_one.png"
+        },
+        "orb_shadow": {
+            "file": "textures/orb_shadow.png"
         },
         "player": {
             "file": "textures/character_sprite.png"
@@ -120,9 +123,6 @@
         "staff_tag_fire":{
             "file": "textures/Character7_TagFire.png"
         },
-        "staff_tag_aether":{
-            "file": "textures/Character7_TagGrass.png"
-        },
         "staff_tag_water":{
             "file": "textures/Character7_TagWater.png"
         },
@@ -135,8 +135,15 @@
         "direction_water":{
             "file": "textures/Direction_FireRing.png"
         },
-        "ability-bar": {
+        "ability-bar-full": {
             "file": "textures/AbilityBar.png",
+            "wrapS": "clamp",
+            "wrapT": "clamp",
+            "minfilter": "linear",
+            "magfilter": "linear"
+        },
+        "ability-bar": {
+            "file": "textures/ability_bar_empty.png",
             "wrapS": "clamp",
             "wrapT": "clamp",
             "minfilter": "linear",
@@ -184,13 +191,6 @@
             "minfilter": "linear",
             "magfilter": "linear"
         },
-        "main_menu": {
-            "file": "textures/main_menu.png",
-            "wrapS": "clamp",
-            "wrapT": "clamp",
-            "minfilter": "linear",
-            "magfilter": "linear"
-        },
         "map1": {
             "file": "textures/map1.png"
         },
@@ -220,6 +220,21 @@
         },
         "timer_icon": {
             "file": "textures/timer_icon.png"
+        },
+        "slider_bar": {
+            "file": "textures/slider_bar.png"
+        },
+        "slider_bar_fill": {
+            "file": "textures/slider_bar_fill.png"
+        },
+        "slider_knob": {
+            "file": "textures/sfx_knob.png"
+        },
+        "results_board": {
+            "file": "textures/results_board.png"
+        },
+        "results_crown": {
+            "file": "textures/crown.png"
         }
     },
     "sounds": {
@@ -1104,6 +1119,25 @@
                         
                     }
                 },
+                "musiclabel": {
+                    "type": "Label",
+                    "data": {
+                        "font": "settings_font",
+                        "text": "MUSIC VOLUME",
+                        "foreground": [ 0,0,0, 255],
+                        "size": [ 30,  15],
+                        "valign": "bottom",
+                        "halign": "left",
+                        "anchor" : [0.5,0.5]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "top",
+                        "x_offset": -0.2,
+                        "y_offset": -0.4
+                        
+                    }
+                },
                 "backbutton" : {
                     "type": "Button",
                     "data": {
@@ -1132,7 +1166,6 @@
                     "type": "Button",
                     "data": {
                         "upnode": "up",
-                        "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.7, 0.4 ],
@@ -1180,7 +1213,6 @@
                     "type": "Button",
                     "data": {
                         "upnode": "up",
-                        "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.5, 0.5 ],
@@ -1196,10 +1228,37 @@
                     },
                     "layout": {
                         "x_anchor": "center",
+                        "y_anchor": "bottom",
+                        "y_offset": 0.1,
+                        "x_offset": 0
+                    }
+                },
+                "resultsboard": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "results_board",
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 0.6
+                    },
+                    "layout": {
+                        "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": 180,
-                        "x_offset": 200,
-                        "absolute": true
+                        "y_offset": 0.07,
+                        "x_offset": 0
+                    }
+                },
+                "crown": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "results_crown",
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 0.6
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": 0.29,
+                        "x_offset": -0.115
                     }
                 },
                 "results": {
@@ -1215,8 +1274,8 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "x_offset": -0.25,
-                        "y_offset": 0.25
+                        "x_offset": -0.05,
+                        "y_offset": 0.27
                     }
                 },
                 "playerscore1": {
@@ -1231,7 +1290,9 @@
                     },
                     "layout": {
                         "x_anchor": "center",
-                        "y_anchor": "middle"
+                        "y_anchor": "middle",
+                        "x_offset": 0.09,
+                        "y_offset": 0.195
                     }
                 },
                 "playerscore2": {
@@ -1339,6 +1400,128 @@
                         "y_anchor": "middle"
                     }
                 },
+                "playername1": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": -0.11,
+                        "y_offset": 0.20
+                    }
+                },
+                "playername2": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername3": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername4": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername5": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername6": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername7": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
+                "playername8": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "",
+                        "foreground": [ 255, 255, 255, 255],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle"
+                    }
+                },
                 "message" : {
                     "type": "Label",
                     "data": {
@@ -1391,22 +1574,22 @@
                 "y_anchor" : "middle"
             },
             "children": {
-                "frames" : {
+                "frames": {
                     "type": "Label",
                     "data": {
-                        "font"       : "ingame",
-                        "text"       : "Frames: 0",
-                        "foreground" : [255,255,255,255],
-                        "size"       : [500,70],
-                        "valign"     : "bottom",
-                        "halign"     : "left"
+                        "font": "ingame",
+                        "text": "Frames: 0",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 500, 70 ],
+                        "valign": "bottom",
+                        "halign": "left"
                     },
-                    "layout" : {
-                        "x_anchor" : "left",
-                        "y_anchor" : "bottom",
-                        "x_offset" : -0.2,
-                        "y_offset" : -0.2,
-                        "absolute" : true
+                    "layout": {
+                        "x_anchor": "left",
+                        "y_anchor": "bottom",
+                        "x_offset": -0.2,
+                        "y_offset": -0.2,
+                        "absolute": true
                     }
                 },
                 "timericon": {
@@ -1417,29 +1600,29 @@
                         "scale": 0.8
                     },
                     "layout": {
-                        "x_anchor" : "center",
-                        "y_anchor" : "top",
-                        "y_offset" : -0.1,
-                        "x_offset" : -0.1
+                        "x_anchor": "center",
+                        "y_anchor": "top",
+                        "y_offset": -0.1,
+                        "x_offset": -0.1
                     }
                 },
-                "timer" : {
-                       "type": "Label",
-                       "data": {
-                           "font"       : "ingame",
-                           "text"       : "0",
-                           "foreground" : [255,255,255,255],
-                           "size"       : [500,70],
-                           "valign"     : "bottom",
-                           "halign"     : "center"
-                       },
-                       "layout" : {
-                           "x_anchor" : "center",
-                           "y_anchor" : "top",
-                           "x_offset" : -0.04,
-                           "y_offset" : -0.13
-                       }
-                   },
+                "timer": {
+                    "type": "Label",
+                    "data": {
+                        "font": "ingame",
+                        "text": "0",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 500, 70 ],
+                        "valign": "bottom",
+                        "halign": "center"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "top",
+                        "x_offset": -0.04,
+                        "y_offset": -0.13
+                    }
+                },
                 "score": {
                     "type": "Label",
                     "data": {
@@ -1453,8 +1636,25 @@
                     "layout": {
                         "x_anchor": "left",
                         "y_anchor": "top",
-                        "x_offset" : 0.1,
-                        "y_offset" : -0.1
+                        "x_offset": 0.1,
+                        "y_offset": -0.1
+                    }
+                },
+                "countdown": {
+                    "type": "Label",
+                    "data": {
+                        "font": "ingame",
+                        "text": "Ready",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 500, 70 ],
+                        "valign": "bottom",
+                        "halign": "center"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": 0,
+                        "y_offset": 0
                     }
                 },
                 "bar": {
@@ -1498,7 +1698,7 @@
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.5, 0.5 ],
-                        "scale": 0.7
+                        "scale": 0.6
                     },
                     "children": {
                         "up": {
@@ -1511,9 +1711,22 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset": -0.1,
-                        "y_offset": -1,
-                        "absolute": true
+                        "x_offset": 0,
+                        "y_offset": -0.1
+                    }
+                },
+                "abilityBarFull": {
+                    "type": "Progress",
+                    "data": {
+                        "anchor": [ 0.5, 0.5 ],
+                        "background": "ability-bar-full",
+                        "foreground": "ability-bar-fill"
+                    },
+                    "layout": {
+                        "x_anchor": "right",
+                        "y_anchor": "top",
+                        "x_offset" : -0.15,
+                        "y_offset" : -0.1
                     }
                 },
                 "abilityBar": {
@@ -1526,8 +1739,8 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset" : -0.1,
-                        "y_offset" : -0.1
+                        "x_offset": -0.15,
+                        "y_offset": -0.1
                     },
                     "children": {
                         "abilityName": {

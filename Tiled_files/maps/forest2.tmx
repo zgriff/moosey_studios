@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="10" height="7" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="347">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="10" height="7" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="352">
  <editorsettings>
   <export target="../../Roshamboogie/assets/maps/forest2.json" format="roshamboogie"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/decorations.tsx"/>
- <tileset firstgid="7" source="../tilesets/tiles.tsx"/>
+ <tileset firstgid="5" source="../tilesets/tiles.tsx"/>
  <layer id="1" name="Background" width="10" height="7">
   <data encoding="csv">
-12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12,
-12,12,12,12,12,12,12,12,12,12
+10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10,
+10,10,10,10,10,10,10,10,10,10
 </data>
  </layer>
  <objectgroup id="2" name="Hitboxes">
@@ -24,7 +24,7 @@
    <polygon points="0,0 55.883,-5.08027 55.883,30.4816 2.54013,27.9415"/>
   </object>
   <object id="121" x="51.5152" y="363.182">
-   <polygon points="-12.1212,81.8182 318.182,36.3636 236.364,596.97 93.9394,603.03 -21.2121,693.939"/>
+   <polygon points="-12.1212,81.8182 298.959,51.3145 203.258,584.155 59.766,601.962 -21.2121,693.939"/>
   </object>
   <object id="122" x="409.091" y="78.3333">
    <polygon points="0,0 27.2727,166.667 1687.88,103.03 1812.12,-3.0303"/>
@@ -36,22 +36,22 @@
    <polygon points="0,0 112.121,-127.273 1442.42,-142.424 1448.48,-3.0303"/>
   </object>
   <object id="125" x="2051.52" y="1072.27">
-   <polygon points="0,0 -3.0303,69.697 -657.576,69.697 -554.545,-15.1515 -404.485,-56.1818 -304.303,-26.7879 -182.727,-56.8485 0,-48.4848"/>
+   <polygon points="0,0 -3.0303,69.697 -562.531,63.2895 -554.545,-15.1515 -404.485,-56.1818 -304.303,-26.7879 -182.727,-56.8485 0,-48.4848"/>
   </object>
   <object id="126" x="945.455" y="1126.82">
-   <polygon points="0,0 272.727,0 515.152,-196.97 509.091,-321.212 315.152,-439.394 -115.152,-124.242"/>
+   <polygon points="2.13584,-5.3396 259.912,-4.27168 515.152,-196.97 509.091,-321.212 320.492,-423.375 -94.8615,-96.4761"/>
   </object>
   <object id="128" x="1072.73" y="566.212">
-   <polygon points="0,0 -321.212,303.03 -500,272.727 -557.576,275.758 -548.485,-93.9394 -342.424,-75.7576 -178.788,-200"/>
+   <polygon points="-7.47544,-1.06792 -321.212,303.03 -500,272.727 -545.829,274.69 -541.01,-78.9885 -342.424,-75.7576 -174.516,-191.457"/>
   </object>
   <object id="129" x="1706.06" y="293.485">
-   <polygon points="21.2121,42.4242 27.2727,100 -518.182,203.03 -609.091,106.061"/>
+   <polygon points="-8.01342,49.3827 -34.674,164.296 -309.008,196.695 -568.863,207.374 -604.905,171.922 -652.531,114.749"/>
   </object>
   <object id="130" x="1948.48" y="693.485">
-   <polygon points="0,0 100,-81.8182 106.061,227.273 -39.7576,227.273"/>
+   <polygon points="0,0 100,-81.8182 79.363,223.001 -1.31249,227.273"/>
   </object>
   <object id="132" x="1963.64" y="772.273">
-   <polygon points="0,0 87.8788,-81.8182 90.9091,-151.515 -33.3333,-312.121 -551.515,-157.576 -357.576,-9.09091 -210,-53.8182"/>
+   <polygon points="0,0 87.8788,-81.8182 90.9091,-151.515 -33.3333,-312.121 -551.515,-157.576 -354.372,-17.6343 -219.611,-64.4974"/>
   </object>
  </objectgroup>
  <objectgroup id="4" name="GameObjects">
@@ -92,6 +92,10 @@
   <object id="344" template="../templates/inactive_orb.tx" x="927.273" y="781.364"/>
   <object id="345" template="../templates/inactive_orb.tx" x="1442.42" y="714.697"/>
   <object id="346" template="../templates/inactive_orb.tx" x="1557.58" y="960.152"/>
+  <object id="348" template="../templates/egg_spawn.tx" x="2181.14" y="1107.19"/>
+  <object id="349" template="../templates/egg_spawn.tx" x="1004.16" y="1310.16"/>
+  <object id="350" template="../templates/egg_spawn.tx" x="519.905" y="1176.47"/>
+  <object id="351" template="../templates/egg_spawn.tx" x="2293.52" y="380.273"/>
  </objectgroup>
  <objectgroup id="3" name="Decorations">
   <object id="67" gid="2" x="1525.78" y="1145.9" width="118" height="190"/>

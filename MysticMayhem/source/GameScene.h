@@ -26,6 +26,8 @@
 #include "World.h"
 #include "AbilityController.h"
 #include "Settings.h"
+#include <chrono>
+#include <ctime> 
 
 class GameScene : public cugl::Scene2 {
 protected:
@@ -53,6 +55,7 @@ protected:
     std::shared_ptr<cugl::scene2::Label> _roomIdHUD;
 	
 	std::shared_ptr<cugl::scene2::ProgressBar>  _abilitybar;
+    std::shared_ptr<cugl::scene2::ProgressBar>  _abilitybarFull;
     std::shared_ptr<cugl::scene2::Label> _abilityname;
     AbilityController _abilityController;
 
@@ -67,14 +70,20 @@ protected:
     time_t _startTime;
     time_t prevTime;
 
+    bool _startTimePassed;
+    std::chrono::system_clock::time_point _beginStartTimer;
+
     /** Reference to the UI element exposing the frame rate */
     std::shared_ptr<cugl::scene2::Label> _framesHUD;
 
     std::shared_ptr<cugl::scene2::Label> _scoreHUD;
     std::shared_ptr<cugl::scene2::Label> _timerHUD;
+
+    std::shared_ptr<cugl::scene2::Label> _countdownHUD;
     
     /** Whether or not debug mode is active */
     bool _debug;
+    bool _settings; //whether settings is open or not
     /**
      * Activates the UI elements to make them interactive
      *
