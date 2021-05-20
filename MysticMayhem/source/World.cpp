@@ -183,8 +183,8 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
             r = rand() % 3;
         }
         else {
-            playerPos = Vec2(_NPCSpawns[i - _numPlayers].x, _NPCSpawns[i - _numPlayers].y);
-            r = _NPCSpawns[i - _numPlayers].z;
+            playerPos = Vec2(_NPCSpawns[i + -_numPlayers].x, _NPCSpawns[i + -_numPlayers].y);
+            r = _NPCSpawns[i + -_numPlayers].z;
         }
         auto ele = r == 0 ? Element::Water : (r == 1 ? Element::Fire : Element::Grass);
         auto player = Player::alloc(playerPos, playerSize, ele);
@@ -215,6 +215,16 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->allocUsernameNode(_assets->get<Font>("username"));
         _worldNode->addChild(player->getSceneNode(),1);
         _players.push_back(player);
+
+        auto surround = b2FixtureDef();
+        auto shape = b2CircleShape();
+        shape.m_radius = 1.03;
+        shape.m_p = b2Vec2(0, 0);
+        surround.shape = &shape;
+        surround.density = 0;
+        surround.isSensor = true;
+        player->getBody()->CreateFixture(&surround);
+
     }
     
     for(auto it = _decorations.begin(); it!= _decorations.end();  ++it) {
@@ -438,10 +448,9 @@ bool World::loadWalls(const std::shared_ptr<JsonValue> &json) {
         wallobj = physics2::PolygonObstacle::alloc(wall);
         wallobj->setDebugColor(Color4::WHITE);
         // You cannot add constant "".  Must stringify
-        wallobj->setName(std::string("wall")+cugl::strtool::to_string(ii));
         wallobj->setName(wname);
-        wallobj->setFriction(0.0);
-        wallobj->setRestitution(0.4);
+        wallobj->setFriction(0.4);
+        wallobj->setRestitution(0.2);
         // Set the physics attributes
         wallobj->setBodyType(b2_staticBody);
 

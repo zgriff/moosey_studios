@@ -31,10 +31,10 @@ using namespace std;
 /** The restitution for all physics objects */
 #define TURNS_PER_SPIN   55.0f
 /** how much the sideways velocity is subtracted per frame
-    1.0 decelerates turning player to 14.6 velocity*/
+    1.0 decelerates turning player to ~14.6 velocity*/
 #define KINETIC_FRICTION 2.5f
 /** how much the backwards velocity is subtracted per frame if the player is going backwards*/
-#define BACKWARDS_FRICTION 0.5f
+#define BACKWARDS_FRICTION 0.3f
 /** how quickly the camera catches up to the player*/
 #define CAMERA_STICKINESS .07f
 /** How much the camera */
@@ -118,6 +118,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     }else{
         world->onBeginContact = [this](b2Contact* contact) {
             CollisionController::clientBeginContact(contact);
+        };
+        world->onEndContact = [this](b2Contact* contact) {
+            CollisionController::endContact(contact);
         };
     }
     world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
@@ -303,9 +306,8 @@ void GameScene::update(float timestep) {
         _player->setDirection(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
 
         auto vel = _player->getLinearVelocity();
-        //Please don't delete this comment, angles were difficult to derive and easy to forget
-        //vel angle originates from x axis, player angle orginates from y axis
-        auto offset = vel.getAngle() - _player->getDirection() + M_PI / 2.0f;
+        //vel angle originates from x axis, player angle orginates from -y axis
+        auto offset = vel.getAngle() - _player->getVelocityAngleFromDirection();
         offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
         //applies sideways friction, capped at a flat value
@@ -313,6 +315,8 @@ void GameScene::update(float timestep) {
         if (correction.length() > KINETIC_FRICTION) {
             correction.scale(KINETIC_FRICTION / correction.length());
         }
+
+        _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()*sin(offset)));
 
         //apply friction if going backwards IE braking
         if (abs(offset) < M_PI / 2.0) {
@@ -322,7 +326,8 @@ void GameScene::update(float timestep) {
             }
             _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(backwards.x, backwards.y), true);
         }
-        _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
+
+        if(!_player->isOnWall()) _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
 
         if (_playerController.getMov().x == 0) {
 
@@ -457,7 +462,6 @@ void GameScene::update(float timestep) {
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
     _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
-    _framesHUD->setText(updateFramesText(1 / timestep));
     
     for(auto p : _world->getPlayers()){
         p->animateMovement();

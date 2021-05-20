@@ -38,11 +38,12 @@ void CollisionController::hostBeginContact(b2Contact* contact){
     cugl::physics2::Obstacle* bd2 = (cugl::physics2::Obstacle*) bodyB->GetUserData();
     if (bd1->getName() > bd2->getName()) {
         std::swap(bd1, bd2);
+        std::swap(fixA, fixB);
     }
     //object that comes first lexograpically
 
     //orb and player collision
-    if(bd1->getName() == "orb" && bd2->getName() == "player") {
+    if(bd1->getName() == "orb" && bd2->getName() == "player" && !fixB->IsSensor()) {
         Orb* o = (Orb*) bd1;
         Player* p = (Player*) bd2;
         if (!o->getCollected() && p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
@@ -56,7 +57,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
     }
           
     //swap station and player collision
-    else if(bd1->getName() == "player" && bd2->getName() == "swapstation") {
+    else if(bd1->getName() == "player" && !fixA->IsSensor() && bd2->getName() == "swapstation") {
         Player* p = (Player*) bd1;
         SwapStation* s = (SwapStation*) bd2;
 
@@ -91,7 +92,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
     }
     
     //egg and player collision
-    else if (bd1->getName() == "egg" && bd2->getName() == "player") {
+    else if (bd1->getName() == "egg" && bd2->getName() == "player" && !fixB->IsSensor()) {
         Egg* e = (Egg*) bd1;
         Player* p = (Player*) bd2;
         if (e->getCollected() == false && !p->getIsIntangible() && !p->getHoldingEgg()) {
@@ -106,13 +107,20 @@ void CollisionController::hostBeginContact(b2Contact* contact){
     }
 
     //booster and player collision
-    else if (bd1->getName() == "booster" && bd2->getName() == "player") {
+    else if (bd1->getName() == "booster" && bd2->getName() == "player" && !fixB->IsSensor()) {
         Player* p = (Player*)bd2;
         p->boostMeBaby();
     }
 
+    //wall and player collision
+    else if (bd1->getName() == "player" && fixA->IsSensor() && bd2->getName() == "wall") {
+        Player* p = (Player*)bd1;
+        p->incrementWalls(true);
+        CULog("host hit the wall");
+    }
+
     //projectile and player collision (basically an ability tag)
-    else if (bd1->getName() == "player" && bd2->getName() == "projectile") {
+    else if (bd1->getName() == "player" && !fixA->IsSensor() && bd2->getName() == "projectile") {
         Player* p1 = (Player*) bd1;
         Projectile* proj = (Projectile*) bd2;
         auto p2 = world->getPlayer(proj->getPlayerID());
@@ -125,7 +133,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
     }
         
     //player and player collision (tagging)
-    else if ((bd1->getName() == "player" && bd2->getName() == "player") || (bd2->getName() == "player" && bd1->getName() == "player")) {
+    else if (bd1->getName() == "player" && !fixA->IsSensor() && bd2->getName() == "player" && !fixB->IsSensor()) {
         Player* p1 = (Player*) bd1;
         Player* p2 = (Player*) bd2;
 
@@ -163,6 +171,7 @@ void CollisionController::clientBeginContact(b2Contact* contact){
     cugl::physics2::Obstacle* bd2 = (cugl::physics2::Obstacle*) bodyB->GetUserData();
     if (bd1->getName() > bd2->getName()) {
         std::swap(bd1, bd2);
+        std::swap(fixA, fixB);
     }
 
     //orb and player collision
@@ -176,8 +185,13 @@ void CollisionController::clientBeginContact(b2Contact* contact){
     //booster and player collision
     else if (bd1->getName() == "booster" && bd2->getName() == "player") {
         Player* p = (Player*)bd2;
-        auto adjust = p->getLinearVelocity();
-        p->setLinearVelocity(adjust.scale(45.0f / adjust.length()));
+        p->boostMeBaby();
+    }
+    //wall and player collision
+    else if (bd1->getName() == "player" && fixA->IsSensor() && bd2->getName() == "wall") {
+        Player* p = (Player*)bd1;
+        p->incrementWalls(true);
+        CULog("client hit the wall");
     }
 }
 
@@ -213,22 +227,24 @@ void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_
 
 
 void CollisionController::endContact(b2Contact* contact) {
-//    b2Fixture * fixA = contact->GetFixtureA();
-//    b2Body * bodyA = fixA->GetBody();
-//    b2Fixture * fixB = contact->GetFixtureB();
-//    b2Body * bodyB = fixB->GetBody();
-//    
-//    cugl::physics2::Obstacle* bd1 = (cugl::physics2::Obstacle*) bodyA->GetUserData();
-//    cugl::physics2::Obstacle* bd2 = (cugl::physics2::Obstacle*) bodyB->GetUserData();
-//    
-//    if ((bd1->getName() == "player" && bd2->getName() == "player") || (bd2->getName() == "player" && bd1->getName() == "player")) {
-//        Player* p1 = (Player*) bd1;
-//        Player* p2 = (Player*) bd2;
-////        p1->setIsTagged(false);
-////        p2->setIsTagged(false);
-//        p1->setDidTag(false);
-//        p2->setDidTag(false);
-//    }
+    b2Fixture * fixA = contact->GetFixtureA();
+    b2Body * bodyA = fixA->GetBody();
+    b2Fixture * fixB = contact->GetFixtureB();
+    b2Body * bodyB = fixB->GetBody();
+    
+    cugl::physics2::Obstacle* bd1 = (cugl::physics2::Obstacle*)bodyA->GetUserData();
+    cugl::physics2::Obstacle* bd2 = (cugl::physics2::Obstacle*)bodyB->GetUserData();
+    if (bd1->getName() > bd2->getName()) {
+        std::swap(bd1, bd2);
+        std::swap(fixA, fixB);
+    }
+    //object that comes first lexograpically
+    
+    if (bd1->getName() == "player" && fixA->IsSensor() && bd2->getName() == "wall") {
+        Player* p = (Player*)bd1;
+        p->incrementWalls(false);
+        CULog("slippy no more");
+    }
 }
 
 void CollisionController::beforeSolve(b2Contact* contact, const b2Manifold* oldManifold){
