@@ -172,6 +172,7 @@ void App::onResume() {
                  _lobby.setActive(false);
                  _lobby.getSettings()->removeAllChildren();
                  _lobby.getSettings()->dispose();
+                 _lobby.clearListeners();
                  _lobby.removeAllChildren();
                  _lobby.dispose();
                  _gameplay.init(_assets);
