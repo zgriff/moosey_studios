@@ -58,6 +58,7 @@ protected:
     std::shared_ptr<Settings> _settingsNode;
     std::shared_ptr<cugl::scene2::SceneNode> _layer;
     std::shared_ptr<cugl::scene2::Button> _settingsButton;
+    std::shared_ptr<cugl::scene2::SceneNode> _background;
     
     
     
@@ -104,6 +105,8 @@ public:
      * @return true if the controller is initialized properly, false otherwise.
      */
     bool init(const std::shared_ptr<cugl::AssetManager>& assets);
+    
+    void clearListeners();
 
 
 #pragma mark -

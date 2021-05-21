@@ -10,6 +10,13 @@
 #include "Globals.h"
 #include "MapConstants.h"
 
+/** half a player's hitbox width */
+#define PLAYER_HALF_WIDTH .375f
+/** half a player's hitbox height */
+#define PLAYER_HALF_HEIGHT 0.75f
+/** how much the outer hitbox puffs out by */
+#define ADDITIONAL_HITBOX_LENGTH 0.05f
+
 /** The initial player position */
 float PLAYER_POS[] = {24,  4};
 
@@ -89,6 +96,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         wall->setName("wall");
     }
     
+    _eggSpawns = _initEggLocs;
     _currEggCount = 0;
     _totalEggCount = 0;
     for(auto it = _initEggLocs.begin(); it != _initEggLocs.end(); ++it) {
@@ -113,7 +121,6 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     _currOrbCount = 0;
     _initOrbCount = 0;
     for(auto it = _initOrbLocs.begin(); it != _initOrbLocs.end(); ++it) {
-        CULog("orb");
         std::shared_ptr<Orb> orb = Orb::alloc(*it);
         _physicsWorld->addObstacle(orb);
         orb->setTextures(orbTexture, orbShadowTexture);
@@ -170,7 +177,10 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     }
     
     Vec2 playerPos = ((Vec2)PLAYER_POS);
-    Size playerSize(.75, 1.5);
+    b2FixtureDef surround;
+    b2PolygonShape rect;
+    b2CircleShape circ;
+    Size playerSize(2*PLAYER_HALF_WIDTH, 2*PLAYER_HALF_HEIGHT);
     _numNPCs = _NPCSpawns.size();
     for(int i = 0; i < _numPlayers + _numNPCs; ++i){
         int r;
@@ -217,15 +227,31 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         _worldNode->addChild(player->getSceneNode(),1);
         _players.push_back(player);
 
-        auto surround = b2FixtureDef();
-        auto shape = b2CircleShape();
-        shape.m_radius = 1.03;
-        shape.m_p = b2Vec2(0, 0);
-        surround.shape = &shape;
+        surround = b2FixtureDef();
+        circ = b2CircleShape();
+        circ.m_radius = PLAYER_HALF_WIDTH + ADDITIONAL_HITBOX_LENGTH;
+        circ.m_p = b2Vec2(0, PLAYER_HALF_HEIGHT - PLAYER_HALF_WIDTH);
+        surround.shape = &circ;
         surround.density = 0;
         surround.isSensor = true;
         player->getBody()->CreateFixture(&surround);
 
+        surround = b2FixtureDef();
+        circ = b2CircleShape();
+        circ.m_radius = PLAYER_HALF_WIDTH + ADDITIONAL_HITBOX_LENGTH;
+        circ.m_p = b2Vec2(0, PLAYER_HALF_WIDTH - PLAYER_HALF_HEIGHT);
+        surround.shape = &circ;
+        surround.density = 0;
+        surround.isSensor = true;
+        player->getBody()->CreateFixture(&surround);
+
+        surround = b2FixtureDef();
+        rect = b2PolygonShape();
+        rect.SetAsBox(PLAYER_HALF_WIDTH + ADDITIONAL_HITBOX_LENGTH, PLAYER_HALF_HEIGHT);
+        surround.shape = &circ;
+        surround.density = 0;
+        surround.isSensor = true;
+        player->getBody()->CreateFixture(&surround);
     }
     
     for(auto it = _decorations.begin(); it!= _decorations.end();  ++it) {
@@ -252,7 +278,6 @@ void World::clearRootNode() {
     _debugNode = nullptr;
 
     _root = nullptr;
-    _boosters.clear();
     _players.clear();
     _eggs.clear();
     _orbs.clear();
@@ -355,7 +380,6 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
 
 //Used to unload objects for memory, likely will not need for now.
 void World::unload()  {
-    CULog("Unloading world");
     for (auto it = _players.begin(); it != _players.end(); ++it)  {
         if (_physicsWorld != nullptr  && (*it).get()->getBody() != nullptr) {
             _physicsWorld->removeObstacle((*it).get());

@@ -235,6 +235,33 @@
         },
         "results_crown": {
             "file": "textures/crown.png"
+        },
+        "backward": {
+            "file": "textures/backward_button.png"
+        },
+        "forward": {
+            "file": "textures/forward_button.png"
+        },
+        "lobby_background": {
+            "file": "textures/lobby_background.png"
+        },
+        "map1_img": {
+            "file": "textures/map1_img.png"
+        },
+        "map2_img": {
+            "file": "textures/map2_img.png"
+        },
+        "map3_img": {
+            "file": "textures/map3_img.png"
+        },
+        "map4_img": {
+            "file": "textures/map4_img.png"
+        },
+        "select_map": {
+            "file": "textures/select_map.png"
+        },
+        "customization": {
+            "file": "textures/customization.png"
         }
     },
     "sounds": {
@@ -487,19 +514,31 @@
             },
             "data" : {
                 "anchor" :[0.5,0.5],
-                "color": [240,220,255,255]
+                "color": [255, 255, 255,255]
             },
             "layout" : {
                 "x_anchor" : "center",
                 "y_anchor" : "middle"
             },
             "children": {
+                "background": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "lobby_background",
+                        "anchor": [ 0.0, 0.5 ],
+                        "color": [255,255,255,200]
+                    },
+                    "layout": {
+                        "x_anchor": "fill",
+                        "y_anchor": "fill"
+                    }
+                },
                 "roomId": {
                     "type": "Label",
                     "data": {
                         "font": "roomid",
                         "text": "",
-                        "foreground": [ 0, 0, 0, 255 ],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 100, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -507,7 +546,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "x_offset": -0.4,
+                        "x_offset": -0.2,
                         "y_offset": 0.35
                     }
                 },
@@ -529,7 +568,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 1",
-                                "foreground": [ 0, 0, 0, 255 ],
+                                "foreground": [ 255, 255, 255, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -547,7 +586,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 2",
-                                "foreground": [ 0, 0, 0, 255 ],
+                                "foreground": [ 255, 255, 255, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -565,7 +604,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 3",
-                                "foreground": [ 0, 0, 0, 255 ],
+                                "foreground": [ 255, 255, 255, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -583,7 +622,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 4",
-                                "foreground": [ 0, 0, 0, 255 ],
+                                "foreground": [ 255, 255, 255, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -601,7 +640,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 5",
-                                "foreground": [ 0, 0, 0, 255 ],
+                                "foreground": [ 255, 255, 255, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -619,7 +658,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 6",
-                                "foreground": [ 0, 0, 0, 255 ],
+                                "foreground": [ 255, 255, 255, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -678,7 +717,7 @@
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.7, 0.4 ],
-                        "scale": 0.6
+                        "scale": 0.5
                     },
                     "children": {
                         "up": {
@@ -739,17 +778,16 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
-                                "anchor": [ 0.7, 0.4 ],
-                                "scale": 0.3
+                                "anchor": [ 0.39, 0.5 ],
+                                "scale": 1
                             },
                             "children": {
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "map1"
+                                        "texture": "map1_img"
                                     }
                                 }
                             },
@@ -765,17 +803,16 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
-                                "anchor": [ 0.7, 0.4 ],
-                                "scale": 0.3
+                                "anchor": [ 0.39, 0.5 ],
+                                "scale": 1
                             },
                             "children": {
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "map2"
+                                        "texture": "map2_img"
                                     }
                                 }
                             },
@@ -791,17 +828,16 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
-                                "anchor": [ 0.7, 0.4 ],
-                                "scale": 0.3
+                                "anchor": [ 0.39, 0.5 ],
+                                "scale": 1
                             },
                             "children": {
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "map3"
+                                        "texture": "map3_img"
                                     }
                                 }
                             },
@@ -817,17 +853,16 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
-                                "anchor": [ 0.7, 0.4 ],
-                                "scale": 0.3
+                                "anchor": [ 0.39, 0.5 ],
+                                "scale": 1
                             },
                             "children": {
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "map4"
+                                        "texture": "map4_img"
                                     }
                                 }
                             },
@@ -839,28 +874,41 @@
                                 "absolute": true
                             }
                         },
+                        "selectmap": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "select_map",
+                                "anchor": [ 0.0, 0.5 ],
+                                "scale": 0.7
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "middle",
+                                "x_offset": -0.045,
+                                "y_offset": -0.04
+                            }
+                        },
                         "mapnext": {
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
-                                "scale": 0.3
+                                "scale": 0.4
                             },
                             "children": {
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "forward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": 140,
+                                "x_offset": 200,
                                 "y_offset": 100,
                                 "absolute": true
                             }
@@ -869,17 +917,16 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
-                                "scale": 0.3
+                                "scale": 0.4
                             },
                             "children": {
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "backward"
                                     }
                                 }
                             },
@@ -906,11 +953,24 @@
                         "y_anchor": "fill"
                     },
                     "children": {
+                        "customizationlabel": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "customization",
+                                "anchor": [ 0.5, 0.5 ],
+                                "scale" : 0.7
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "middle",
+                                "x_offset": -0.25,
+                                "y_offset": -0.04
+                            }
+                        },
                         "hatforw": {
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
@@ -920,15 +980,15 @@
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "forward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -200,
-                                "y_offset": 175,
+                                "x_offset": -150,
+                                "y_offset": 155,
                                 "absolute": true
                             }
                         },
@@ -936,7 +996,6 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
@@ -946,15 +1005,15 @@
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "backward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -400,
-                                "y_offset": 175,
+                                "x_offset": -350,
+                                "y_offset": 155,
                                 "absolute": true
                             }
                         },
@@ -962,7 +1021,6 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
@@ -972,15 +1030,15 @@
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "forward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -200,
-                                "y_offset": 100,
+                                "x_offset": -150,
+                                "y_offset": 90,
                                 "absolute": true
                             }
                         },
@@ -988,7 +1046,6 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
@@ -998,15 +1055,15 @@
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "backward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -400,
-                                "y_offset": 100,
+                                "x_offset": -350,
+                                "y_offset": 90,
                                 "absolute": true
                             }
                         },
@@ -1014,7 +1071,6 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
@@ -1024,14 +1080,14 @@
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "forward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -200,
+                                "x_offset": -150,
                                 "y_offset": 25,
                                 "absolute": true
                             }
@@ -1040,7 +1096,6 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
@@ -1050,14 +1105,14 @@
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "backward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -400,
+                                "x_offset": -350,
                                 "y_offset": 25,
                                 "absolute": true
                             }
