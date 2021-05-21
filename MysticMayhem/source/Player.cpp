@@ -305,7 +305,7 @@ void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     _usernameNode->setScale(8.0f);
     _usernameNode->setForeground(Color4::WHITE);
     _usernameNode->setVisible(true);
-    CULog("username is %s", _username.c_str());
+//    CULog("username is %s", _username.c_str());
 }
 
 /**

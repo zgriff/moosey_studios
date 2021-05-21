@@ -111,7 +111,6 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
     }
     
     for (std::pair<std::string, int> element : setPlayerScores) {
-        CULog("in for end scene");
 //    for (const auto& [key, value] : _resultsMap) {
         if (i == 0) {
             stringstream ss;
