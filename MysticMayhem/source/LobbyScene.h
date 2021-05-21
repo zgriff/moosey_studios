@@ -58,6 +58,7 @@ protected:
     std::shared_ptr<Settings> _settingsNode;
     std::shared_ptr<cugl::scene2::SceneNode> _layer;
     std::shared_ptr<cugl::scene2::Button> _settingsButton;
+    std::shared_ptr<cugl::scene2::SceneNode> _background;
     
     
     
