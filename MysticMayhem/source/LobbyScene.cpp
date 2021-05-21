@@ -88,7 +88,10 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _startButton->setVisible(true);
         _startButton->addListener([&](const std::string& name, bool down) {
             if(true){ //TODO: if everyone ready
-                NetworkController::sendSetCustomization( NetworkController::getPlayerId().value(), _playerCustom->getSkin(), _playerCustom->getCustomization(), _playerCustom->getCurrElement());
+                for (int i = 0; i < NetworkController::getNumPlayers(); i++) {
+                    std::tuple pCust = NetworkController::getCustomization(i);
+                    NetworkController::sendSetCustomization(i, get<0>(pCust), get<1>(pCust), get<2>(pCust));
+                }
                 NetworkController::sendSetMapSelected(NetworkController::getMapSelected());
                 NetworkController::startGame();
                 _active = down;
@@ -288,7 +291,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void LobbyScene::dispose() {
-//    removeAllChildren();
+    removeAllChildren();
     _startButton = nullptr;
     _map1Button = nullptr;
     _map2Button = nullptr;

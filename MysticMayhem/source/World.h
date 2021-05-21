@@ -43,7 +43,7 @@ protected:
     /** The Box2D world */
     std::shared_ptr<cugl::physics2::ObstacleWorld> _physicsWorld;
     
-    std::unordered_map<int,std::tuple<int,int,int>> _customizations;
+    std::unordered_map<int,std::tuple<int,int,Element>> _customizations;
     
     std::vector<std::tuple<std::string,Vec2>> _bgTiles;
     
@@ -235,7 +235,7 @@ public:
         return _players;
     }
     
-    void setCustomizations(std::unordered_map<int,std::tuple<int,int,int>> cust) {
+    void setCustomizations(std::unordered_map<int,std::tuple<int,int,Element>> cust) {
         _customizations = cust;
     }
 
