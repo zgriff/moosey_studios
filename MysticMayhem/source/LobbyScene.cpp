@@ -311,6 +311,20 @@ void LobbyScene::dispose() {
 }
 
 
+void LobbyScene::clearListeners() {
+    _mapPrevButton->clearListeners();
+    _mapNextButton->clearListeners();
+    _startButton->clearListeners();
+    _settingsButton->clearListeners();
+    _hatForwardButton->clearListeners();
+    _hatBackButton->clearListeners();
+    _skinForwardButton->clearListeners();
+    _skinBackButton->clearListeners();
+    _eleForwardButton->clearListeners();
+    _eleBackButton->clearListeners();
+}
+
+
 #pragma mark -
 #pragma mark Progress Monitoring
 /**
