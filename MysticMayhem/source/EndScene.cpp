@@ -102,6 +102,14 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
     Vec2 scorepos = _player1ScoreLabel->getPosition();
     Vec2 namepos = _player1NameLabel->getPosition();
     int i = 0;
+    //setting all the player labels to be not visible at init
+    for (int i = 0; i < 8; i++) {
+        std::shared_ptr<cugl::scene2::Label> playerScore = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_playerscore"+std::to_string(i+1)));
+        std::shared_ptr<cugl::scene2::Label> playerName = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_playername"+std::to_string(i+1)));
+        playerScore->setVisible(false);
+        playerName->setVisible(false);
+    }
+    
     for (std::pair<std::string, int> element : setPlayerScores) {
 //    for (const auto& [key, value] : _resultsMap) {
         if (i == 0) {
@@ -111,6 +119,8 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
             stringstream score;
             score << element.second;
             _player1ScoreLabel->setText(score.str());
+            _player1ScoreLabel->setVisible(true);
+            _player1NameLabel->setVisible(true);
         }
         else {
             stringstream ss;
@@ -123,6 +133,8 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
             stringstream score;
             score << element.second;
             playerScore->setText(score.str());
+            playerScore->setVisible(true);
+            playerName->setVisible(true);
         }
         i++;
     }
@@ -144,9 +156,13 @@ void EndScene::dispose() {
     _assets = nullptr;
     _playAgainButton = nullptr;
     _mainMenuButton = nullptr;
+    _player1ScoreLabel = nullptr;
+    _player1NameLabel = nullptr;
+    _resultLabel = nullptr;
     _mainMenu = false;
     _playAgain = false;
     _active = false;
+    _resultsMap.clear();
     Scene2::dispose();
     
 }

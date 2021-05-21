@@ -96,6 +96,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         wall->setName("wall");
     }
     
+    _eggSpawns = _initEggLocs;
     _currEggCount = 0;
     _totalEggCount = 0;
     for(auto it = _initEggLocs.begin(); it != _initEggLocs.end(); ++it) {
@@ -120,7 +121,6 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     _currOrbCount = 0;
     _initOrbCount = 0;
     for(auto it = _initOrbLocs.begin(); it != _initOrbLocs.end(); ++it) {
-        CULog("orb");
         std::shared_ptr<Orb> orb = Orb::alloc(*it);
         _physicsWorld->addObstacle(orb);
         orb->setTextures(orbTexture, orbShadowTexture);
@@ -278,7 +278,6 @@ void World::clearRootNode() {
     _debugNode = nullptr;
 
     _root = nullptr;
-    _boosters.clear();
     _players.clear();
     _eggs.clear();
     _orbs.clear();
@@ -381,7 +380,6 @@ bool World::preload(const std::shared_ptr<cugl::JsonValue>& json) {
 
 //Used to unload objects for memory, likely will not need for now.
 void World::unload()  {
-    CULog("Unloading world");
     for (auto it = _players.begin(); it != _players.end(); ++it)  {
         if (_physicsWorld != nullptr  && (*it).get()->getBody() != nullptr) {
             _physicsWorld->removeObstacle((*it).get());

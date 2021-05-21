@@ -116,7 +116,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
     else if (bd1->getName() == "player" && fixA->IsSensor() && bd2->getName() == "wall") {
         Player* p = (Player*)bd1;
         p->incrementWalls(true);
-        CULog("host hit the wall");
+//        CULog("host hit the wall");
     }
 
     //projectile and player collision (basically an ability tag)
@@ -191,7 +191,7 @@ void CollisionController::clientBeginContact(b2Contact* contact){
     else if (bd1->getName() == "player" && fixA->IsSensor() && bd2->getName() == "wall") {
         Player* p = (Player*)bd1;
         p->incrementWalls(true);
-        CULog("client hit the wall");
+//        CULog("client hit the wall");
     }
 }
 
@@ -243,7 +243,7 @@ void CollisionController::endContact(b2Contact* contact) {
     if (bd1->getName() == "player" && fixA->IsSensor() && bd2->getName() == "wall") {
         Player* p = (Player*)bd1;
         p->incrementWalls(false);
-        CULog("slippy no more");
+//        CULog("slippy no more");
     }
 }
 

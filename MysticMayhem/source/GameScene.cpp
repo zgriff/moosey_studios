@@ -59,7 +59,7 @@ using namespace std;
 bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Initialize the scene to a locked width
     //create world
-    CULog("map selected is %d", NetworkController::getMapSelected());
+//    CULog("map selected is %d", NetworkController::getMapSelected());
     string mapKey = "";
     switch (NetworkController::getMapSelected()) {
     case 1:
@@ -129,7 +129,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     //TODO: Change from hardcoded 8.0, figure out actual offset for phones
     _worldOffset = Vec2((dimen.width-w)/8.0f,(dimen.height-h)/2.0f);
-    CULog("world off x: %f y: %f", _worldOffset.x, _worldOffset.y);
+//    CULog("world off x: %f y: %f", _worldOffset.x, _worldOffset.y);
     
     _rootnode = scene2::SceneNode::alloc();
     _rootnode->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
@@ -216,7 +216,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void GameScene::dispose() {
-    CULog("game scene dispose");
+//    CULog("game scene dispose");
     removeAllChildren();
     _debugnode = nullptr;
     _camera = nullptr;
@@ -285,6 +285,9 @@ void GameScene::reset() {
     _playerController.init();
 
     _beginStartTimer = std::chrono::system_clock::now();
+
+    //Initialize the texture to 0, need this for play again functionality
+    _abilitybar->setProgress(0);
     
     _world->setDebug(false);
 
@@ -439,7 +442,7 @@ void GameScene::update(float timestep) {
             int eggSpawnProb = rand() % 100;
             if (eggSpawnProb < 40) {
                 int maxEggs = ceil((float)_world->getPlayers().size()/3);
-//                CULog("max eggs %d",maxEggs);
+//                CULog("max eggs %d",maxEggs)
                 if (_world->getCurrEggCount() < maxEggs && time(NULL) - _world->getEggSpawnCooldown() >= 5) {
                     SpawnController::spawnEggs();
                 }
