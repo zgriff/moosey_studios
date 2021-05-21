@@ -285,6 +285,9 @@ void GameScene::reset() {
     _playerController.init();
 
     _beginStartTimer = std::chrono::system_clock::now();
+
+    //Initialize the texture to 0, need this for play again functionality
+    _abilitybar->setProgress(0);
     
     _world->setDebug(false);
 
