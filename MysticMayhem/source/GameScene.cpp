@@ -31,14 +31,14 @@ using namespace std;
 /** The restitution for all physics objects */
 #define TURNS_PER_SPIN   55.0f
 /** how much the sideways velocity is subtracted per frame
-    1.0 decelerates turning player to 14.6 velocity*/
+    1.0 decelerates turning player to ~14.6 velocity*/
 #define KINETIC_FRICTION 2.5f
 /** how much the backwards velocity is subtracted per frame if the player is going backwards*/
-#define BACKWARDS_FRICTION 0.5f
+#define BACKWARDS_FRICTION 0.3f
 /** how quickly the camera catches up to the player*/
 #define CAMERA_STICKINESS .07f
 /** How much the camera */
-#define CAMERA_ZOOM 0.65f
+#define CAMERA_ZOOM 0.73f
 /** baseline aspect ratio, 1468.604 is from 1280x720 */
 #define BASELINE_DIAGONAL 1468.60478005
 #define BASELINE_HEIGHT 720 //if we want to scale by height instead just change the places w/ length and diagonal to height
@@ -118,6 +118,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     }else{
         world->onBeginContact = [this](b2Contact* contact) {
             CollisionController::clientBeginContact(contact);
+        };
+        world->onEndContact = [this](b2Contact* contact) {
+            CollisionController::endContact(contact);
         };
     }
     world->beforeSolve = [this](b2Contact* contact, const b2Manifold* oldManifold) {
@@ -370,9 +373,8 @@ void GameScene::update(float timestep) {
         _player->setDirection(ang > M_PI ? ang - 2.0f * M_PI : (ang < -M_PI ? ang + 2.0f * M_PI : ang));
 
         auto vel = _player->getLinearVelocity();
-        //Please don't delete this comment, angles were difficult to derive and easy to forget
-        //vel angle originates from x axis, player angle orginates from y axis
-        auto offset = vel.getAngle() - _player->getDirection() + M_PI / 2.0f;
+        //vel angle originates from x axis, player angle orginates from -y axis
+        auto offset = vel.getAngle() - _player->getVelocityAngleFromDirection();
         offset = offset > M_PI ? offset - 2.0f * M_PI : (offset < -M_PI ? offset + 2.0f * M_PI : offset);
 
         //applies sideways friction, capped at a flat value
@@ -389,7 +391,8 @@ void GameScene::update(float timestep) {
             }
             _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(backwards.x, backwards.y), true);
         }
-        _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
+
+        if(!_player->isOnWall()) _player->getBody()->ApplyLinearImpulseToCenter(b2Vec2(correction.x, correction.y), true);
 
         if (_playerController.getMov().x == 0) {
 
@@ -400,13 +403,13 @@ void GameScene::update(float timestep) {
             scaling.normalize().scale(_player->getMass() * 0.26f * pow(max(22.0f - vel.length(), 0.0f), 1.5f));
 
             _player->setForce(scaling);
-            if (vel.length() < 20.0f) _player->applyForce();
+            if (vel.length() < 19.0f) _player->applyForce();
             _player->setForce(forForce);
         }
         else {
 
             auto forForce = _player->getForce();
-            auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * 0.92f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
+            auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * .93f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
             if (_playerController.getMov().x < 0) {
                 turnForce.scale(-1.0f);
             }
@@ -485,16 +488,7 @@ void GameScene::update(float timestep) {
     if (time(NULL) - _hatchedTime >= _hatchTextTimer) {
         _hatchnode->setVisible(false);
     }
-    
-    //cooldown for player after it's tagged
-    //for(auto p : _world->getPlayers()){
-    //    if (p->getIsTagged()) {
-    //        if (time(NULL) - p->getTagCooldown() >= 7) { //tag cooldown is 7 secs rn
-    //            p->setIsTagged(false);
-    //        }
-    //    }
-    //}
-    
+        
     // ability stuff here
     _abilitybar->setProgress(_player->getOrbScore() * 0.2);
     if (_abilitybar->getProgress() == 1) {
@@ -514,6 +508,8 @@ void GameScene::update(float timestep) {
         _abilityController.activateAbility(_player);
     }
     _abilityController.deactivateAbility(_player, _abilityname);
+    
+    
     
     for(auto p : _world->getPlayers()){
         p->animateMovement();
@@ -587,9 +583,9 @@ std::string GameScene::updateScoreText(const int score) {
     return ss.str();
 }
 
-std::string GameScene::updateFramesText(const double score) {
+std::string GameScene::updateFramesText(const double frames) {
     stringstream ss;
-    ss << "Speed: " << score;
+    ss << "frames: " << frames;
     return ss.str();
 }
 

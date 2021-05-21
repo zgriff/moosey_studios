@@ -76,9 +76,12 @@ private:
     /** severity of screenshake*/
     float _trauma = 0.0;
     /** the direction the player is pointing
-        0.0 directed in the positive x axis
+    *   Radians, not degrees
+        0.0 directed in the positive -y axis
         adding rotates counterclockwise      */
     float _direct = 0.0;
+    /** counts the number of walls the player is touching*/
+    int _contactedWalls = 0;
     
     // Asset references.  These should be set by GameMode
     /** Reference to the node for the player */
@@ -168,9 +171,23 @@ public:
     
     bool canSwap();
 
+    /** _direct originates from the -y axis,
+    */
     float getDirection() { return _direct; }
 
+    /** _direct originates from the positive -y axis,
+    */
     void setDirection(float d);
+
+    /** _direct originates from the -y axis
+    *   This method accounts for that by subtracting PI/2
+    */
+    float getVelocityAngleFromDirection() { return _direct - M_PI/2; }
+
+    /** _direct originates from the positive -y axis,
+    *   This method accounts for that by adding PI/2
+    */
+    void setDirectionFromVelocityAngle(float d);
     
     bool getHoldingEgg() { return _holdingEgg; }
     
@@ -339,6 +356,24 @@ public:
      * This method should be called after the force attribute is set.
      */
     void applyForce();
+
+    /**
+     * Boosts the player to a set velocity in the direction they're facing
+     */
+    void boostMeBaby();
+
+    /**
+     * increments the number of contacted walls if true
+     * decrements the number of walls if false
+     */
+    void incrementWalls(bool up);
+
+    /**
+     * checks to see if the player is on a wall
+     * does this by averaging the last positions of the player to see if
+     * they're more likely to be on a wall
+     */
+    bool isOnWall();
 
     /**
      * Updates the object's physics state (NOT GAME LOGIC).

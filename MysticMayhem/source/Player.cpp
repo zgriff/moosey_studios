@@ -23,18 +23,25 @@ using namespace cugl;
 /** The density of the player */
 #define DEFAULT_DENSITY 1.0f
 /** The friction of the player */
-#define DEFAULT_FRICTION 0.0f
-/** The minimum total velocity for drag to apply */
-#define THRESHOLD_VELOCITY 26.0f
+#define DEFAULT_FRICTION 0.4f
+/** The restitution of the player */
+#define DEFAULT_RESTITUTION 0.2f
+/** The minimum total speed for drag to apply */
+#define THRESHOLD_VELOCITY 25.0f
+/** The player's spped upon boosting */
+#define BOOST_VELOCITY 36.0f
 /** What proportion of the player's extra velocity is lost per frame*/
-#define SPEEDING_DRAG 0.007f
-/** What proportion of the player's extra velocity is lost per frame*/
-#define INVIS_TIME 3.0
-/** What proportion of the player's extra velocity is lost per frame*/
+#define SPEEDING_DRAG 0.008f
+/** How long it takes for sideways friction to kick in after a wall contact*/
+#define RESUME_FRICTION_TIMER 0.0
+/** How long the player is invisible for after getting tagged*/
+#define INVIS_TIME 2.0
+/** How long the player is intangible after being invisible*/
 #define INTANG_TIME 3.0
+/** The number of previous steps the poller remembers*/
+#define POLLING_STEPS 8
 
-/** The restitution of this rocket */
-#define DEFAULT_RESTITUTION 0.5f
+
 /** The constant force applied to this rocket */
 #define DEFAULT_PLAYER_FORCE Vec2(0.0f, 8.3f)
 /** Number of rows in the player image filmstrip */
@@ -365,6 +372,10 @@ void Player::setDirection(float d) {
     _direct = d > 2.0 * M_PI ? d - 2.0 * M_PI : (d < 0.0 ? d + 2.0 * M_PI : d);
 }
 
+void Player::setDirectionFromVelocityAngle(float d) {
+    setDirection(d - M_PI / 2);
+}
+
 /**
  * Updates the object's physics state (NOT GAME LOGIC).
  *
@@ -401,7 +412,7 @@ void Player::update(float delta) {
         adjust.normalize().scale(1.0f * getMass() * SPEEDING_DRAG * (adjust.length() - THRESHOLD_VELOCITY));
         getBody()->ApplyLinearImpulseToCenter(b2Vec2(adjust.x, adjust.y), true);
     }
-    
+
     if (time(NULL) - _timeLastTagged < INVIS_TIME) {
         _isInvisible = true;
         _isIntangible = true;
@@ -448,13 +459,24 @@ void Player::applyForce() {
     _body->ApplyForceToCenter(b2Vec2(netforce.x,netforce.y), true);
 }
 
+void Player::boostMeBaby() {
+    setLinearVelocity(Vec2(BOOST_VELOCITY, 0.0).rotate(getDirection() + M_PI / 2.0));
+}
+
+void Player::incrementWalls(bool up) {
+    _contactedWalls += up ? 1 : -1;
+}
+
+bool Player::isOnWall() {
+    return _contactedWalls > 0;
+}
+
 void Player::setDrawScale(float scale) {
     _drawscale = scale;
     if (_sceneNode != nullptr) {
         _sceneNode->setPosition(getPosition()*_drawscale);
     }
 }
-
 
 void Player::animateTag() {
     _animNodes[_staffTagKey]->setVisible(true);

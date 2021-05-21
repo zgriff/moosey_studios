@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="12" height="8" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="754">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="12" height="8" tilewidth="250" tileheight="250" infinite="0" nextlayerid="6" nextobjectid="759">
  <editorsettings>
   <export target="../../MysticMayhem/assets/maps/annoyances.json" format="mysticmayhem"/>
  </editorsettings>
@@ -23,10 +23,10 @@
   <object id="261" x="2704.87" y="231.085" width="111.273" height="1518.18"/>
   <object id="264" x="253.107" y="67.4478" width="2553.76" height="200"/>
   <object id="289" x="2235.96" y="422.297">
-   <polygon points="0,0 4,139.333 228,175.333 252,310 292,384 348,336 340,72 270,6"/>
+   <polygon points="17.3333,-14.6667 17.3333,145.333 224.667,170 252,310 292.667,358.667 348,336 336,73.3333 249.333,-0.666667"/>
   </object>
   <object id="314" x="440.956" y="1200.3">
-   <polygon points="0,0 -7,103 52,286 96,329 247,393 343,406 373,337 341,228 293,201 185,179 132,80 90,-9 49,-43"/>
+   <polygon points="0,0 -7,103 61,277 107,316 241,381 336,394 362,329 331,237 287,206 180,180 132,80 89,6 50,-33"/>
   </object>
   <object id="700" x="2582.93" y="268.297">
    <polygon points="0,0 66.6667,25.3333 122.667,109.333 125.333,-5.33333"/>
@@ -41,25 +41,25 @@
    <polygon points="0,0 77.3333,-81.3333 173.333,-140 188,-156 4,-156"/>
   </object>
   <object id="704" x="624.259" y="837.63">
-   <polygon points="0,0 62,-30 136,16 166,114 166,194 132,236 46,252 -38,196 -64,132 -36,48"/>
+   <polygon points="4,3 64,-23 130,19 160,117 162,186 128,228 39,238 -27,190 -54,133 -26,49"/>
   </object>
   <object id="705" x="880.259" y="643.63">
-   <polygon points="0,0 68,68 140,102 220,68 238,-6 232,-110 170,-178 96,-190 48,-144 18,-84"/>
+   <polygon points="15,1 83,69 134,92 214,58 229,-10 218,-107 165,-171 97,-184 55,-142 28,-84"/>
   </object>
   <object id="706" x="1402.26" y="1077.63">
-   <polygon points="0,0 20,-108 88,-180 132,-198 198,-158 224,-104 240,-30 230,38 192,74 116,88 40,48"/>
+   <polygon points="7,-7 29,-106 81,-162 138,-189 198,-143 218,-104 227,-43 218,24 185,65 117,77 43,47"/>
   </object>
   <object id="707" x="1864.26" y="1467.63">
-   <polygon points="0,0 56,52 116,94 200,74 242,8 226,-116 158,-202 86,-194 30,-122"/>
+   <polygon points="0,0 58,41 112,70 189,61 228,0 218,-117 157,-187 87,-188 30,-122"/>
   </object>
   <object id="708" x="1798.26" y="653.63">
-   <polygon points="0,0 68,62 128,96 208,66 238,6 242,-82 192,-172 118,-198 60,-152 18,-90"/>
+   <polygon points="13,-2 72,55 131,85 203,61 238,6 227,-74 185,-162 120,-187 60,-152 18,-90"/>
   </object>
   <object id="709" x="2214.26" y="1071.63">
-   <polygon points="0,0 100,78 202,76 242,-6 236,-102 186,-170 108,-196 30,-114 10,-24"/>
+   <polygon points="13.3333,5.33333 108,72.6667 199.333,64.6667 238,-5.33333 227.333,-93.3333 190,-162.667 112,-188.667 30,-114 10,-24"/>
   </object>
   <object id="736" x="1028.26" y="1293.63">
-   <polygon points="0,0 68,-60 144,-24 184,76 176,180 120,220 52,224 -12,176 -44,100"/>
+   <polygon points="0,0 71,-48 144,-24 184,76 176,180 117,216 55,211 -12,176 -30,98"/>
   </object>
  </objectgroup>
  <objectgroup id="4" name="GameObjects">
@@ -69,7 +69,7 @@
   <object id="716" template="../templates/booster_pad.tx" x="1300.26" y="1237.63"/>
   <object id="717" template="../templates/booster_pad.tx" x="1680.26" y="805.63"/>
   <object id="718" template="../templates/player_spawn.tx" type="none" x="552.259" y="537.63"/>
-  <object id="719" template="../templates/player_spawn.tx" type="none" x="740.259" y="1281.63"/>
+  <object id="719" template="../templates/player_spawn.tx" type="none" x="758.259" y="1273.63"/>
   <object id="720" template="../templates/player_spawn.tx" type="none" x="1092.26" y="977.63"/>
   <object id="721" template="../templates/player_spawn.tx" type="none" x="1420.26" y="553.63"/>
   <object id="722" template="../templates/player_spawn.tx" type="none" x="1520.26" y="1453.63"/>
@@ -89,13 +89,10 @@
   <object id="737" template="../templates/inactive_orb.tx" x="628.259" y="689.63"/>
   <object id="738" template="../templates/inactive_orb.tx" x="1312.26" y="829.63"/>
   <object id="739" template="../templates/inactive_orb.tx" x="1552.26" y="1569.63"/>
-  <object id="740" template="../templates/inactive_orb.tx" x="896.259" y="1429.63"/>
+  <object id="740" template="../templates/inactive_orb.tx" x="894.259" y="1359.63"/>
   <object id="741" template="../templates/inactive_orb.tx" x="336.259" y="1249.63"/>
-  <object id="742" template="../templates/active_orb.tx" x="860.259" y="1661.63"/>
   <object id="743" template="../templates/inactive_orb.tx" x="2012.26" y="1157.63"/>
-  <object id="744" template="../templates/active_orb.tx" x="1684.26" y="501.63"/>
   <object id="745" template="../templates/inactive_orb.tx" x="2616.26" y="889.63"/>
-  <object id="746" template="../templates/active_orb.tx" x="2236.26" y="361.63"/>
   <object id="747" template="../templates/egg_spawn.tx" x="2528.1" y="1656.71"/>
   <object id="748" template="../templates/egg_spawn.tx" x="463.544" y="1604.3"/>
   <object id="749" template="../templates/egg_spawn.tx" x="2100.43" y="488.894"/>
@@ -103,6 +100,10 @@
   <object id="751" template="../templates/egg_spawn.tx" x="760.502" y="391.115"/>
   <object id="752" template="../templates/egg_spawn.tx" x="1430.47" y="347.658"/>
   <object id="753" template="../templates/egg_spawn.tx" x="2520.52" y="1245.77"/>
+  <object id="755" template="../templates/inactive_orb.tx" x="1656" y="544"/>
+  <object id="756" template="../templates/inactive_orb.tx" x="1182" y="478"/>
+  <object id="757" template="../templates/inactive_orb.tx" x="1298" y="1068"/>
+  <object id="758" template="../templates/inactive_orb.tx" x="828" y="1652"/>
  </objectgroup>
  <objectgroup id="3" name="Decorations">
   <object id="138" gid="2" x="1923.14" y="1546.78" width="118" height="190"/>
@@ -487,5 +488,6 @@
   <object id="686" gid="4" x="2411.84" y="697.175" width="168" height="258"/>
   <object id="689" gid="4" x="917.835" y="723.175" width="168" height="258"/>
   <object id="690" gid="4" x="609.835" y="1077.18" width="168" height="258"/>
+  <object id="754" gid="2" x="1850.09" y="1510.15" width="118" height="190"/>
  </objectgroup>
 </map>

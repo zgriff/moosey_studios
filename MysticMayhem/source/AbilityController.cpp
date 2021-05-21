@@ -47,14 +47,7 @@ void AbilityController::activateAbility(std::shared_ptr<Player> player) {
 				break;
 			case Ability::SpeedBoost:
 			{
-				//35 is based on current movement values, you can print out the speed and change the number if speeds are changed
-				if ((player->getLinearVelocity() * 2.0).length() < 35) {
-					player->setLinearVelocity(player->getLinearVelocity() * 35 / player->getLinearVelocity().length());
-				}
-				else {
-					player->setLinearVelocity(player->getLinearVelocity() * 2.0);
-				}
-				CULog("speed is %f", player->getLinearVelocity().length());
+				player->boostMeBaby();
 				_activeAbility = Ability::SpeedBoost;
 				_queuedAbility = Ability::NoAbility;
 				break;

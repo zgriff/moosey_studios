@@ -43,6 +43,7 @@ bool Booster::init(const cugl::Vec2 pos) {
 }
 
 void Booster::dispose(){
+    _animationNode = nullptr;
     _sceneNode = nullptr;
     _texture = nullptr;
 }
