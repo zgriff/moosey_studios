@@ -46,7 +46,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
     if(bd1->getName() == "orb" && bd2->getName() == "player" && !fixB->IsSensor()) {
         Orb* o = (Orb*) bd1;
         Player* p = (Player*) bd2;
-        if (!o->getCollected() && p->getCurrElement() != Element::None && p->getIsIntangible() == false) {
+        if (!o->getCollected() && p->getIsIntangible() == false) {
             world->addOrbSpawn(o->getPosition());
             o->setCollected(true);
             p->setOrbScore(p->getOrbScore() + 1);

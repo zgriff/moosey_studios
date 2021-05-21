@@ -51,7 +51,7 @@ void Egg::setDrawScale(float scale) {
 void Egg::update(float delta) {
     Obstacle::update(delta);
     if (_sceneNode != nullptr) {
-        _sceneNode->setPosition(getPosition()*_drawscale);
+        _sceneNode->setPosition(getPosition() * _drawscale);
     }
     
     if (_collected) {
