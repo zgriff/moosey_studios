@@ -129,6 +129,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     //TODO: Change from hardcoded 8.0, figure out actual offset for phones
     _worldOffset = Vec2((dimen.width-w)/8.0f,(dimen.height-h)/2.0f);
+    _worldOffset = Vec2(0, 0);
 //    CULog("world off x: %f y: %f", _worldOffset.x, _worldOffset.y);
     
     _rootnode = scene2::SceneNode::alloc();
@@ -336,7 +337,9 @@ void GameScene::update(float timestep) {
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
     _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
-    _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
+    //_framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
+    _framesHUD->setText(updateFramesText(1 / timestep));
+
 
         // CHECK BEGINNING OF GAME
     if (!_startTimePassed) {
@@ -347,6 +350,7 @@ void GameScene::update(float timestep) {
             float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
             static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom( cameraZoom * (2.0 + realTimePassed.count())/4.0 );
             _UInode->setScale(0.47 / (cameraZoom * (2.0 + realTimePassed.count()) / 4.0));
+            _settingsNode->setScale( 1 / (cameraZoom * (2.0 + realTimePassed.count()) / 4.0));
             getCamera()->update();
             return;
         }
@@ -356,6 +360,7 @@ void GameScene::update(float timestep) {
             if (realTimePassed.count() < 2.0) {
                 static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom * (2.0 + realTimePassed.count()) / 4.0);
                 _UInode->setScale(0.47 / (cameraZoom * (2.0 + realTimePassed.count()) / 4.0));
+                _settingsNode->setScale(1 / (cameraZoom * (2.0 + realTimePassed.count()) / 4.0));
             }
             else {
                 if (realTimePassed.count() >= 2.25) {
@@ -364,6 +369,7 @@ void GameScene::update(float timestep) {
                 }
                 static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
                 _UInode->setScale(0.47 / cameraZoom);
+                _settingsNode->setScale(1 / cameraZoom);
             }
             getCamera()->update();
         }

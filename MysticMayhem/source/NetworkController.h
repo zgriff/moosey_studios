@@ -55,7 +55,8 @@ namespace NetworkController {
     int getMapSelected();
     void setMapSelected(int i);
 
-    std::unordered_map<int,std::tuple<int,int,int>> getCustomizations();
+    std::unordered_map<int,std::tuple<int,int,Element>> getCustomizations();
+    std::tuple<int,int,Element> getCustomization(int playerId);
 
     std::string getUsername();
     std::string getUsername(int playerId);
