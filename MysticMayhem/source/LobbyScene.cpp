@@ -16,7 +16,7 @@ using namespace cugl;
 /** This is the ideal size of the logo */
 #define SCENE_SIZE  1024
 
-float PLAYER_POSITION[] = {2.1f,  1.0f};
+float PLAYER_POSITION[] = {2.7f,  1.0f};
 
 bool clientReady;
 
@@ -88,7 +88,10 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _startButton->setVisible(true);
         _startButton->addListener([&](const std::string& name, bool down) {
             if(true){ //TODO: if everyone ready
-                NetworkController::sendSetCustomization( NetworkController::getPlayerId().value(), _playerCustom->getSkin(), _playerCustom->getCustomization(), _playerCustom->getCurrElement());
+                for (int i = 0; i < NetworkController::getNumPlayers(); i++) {
+                    std::tuple pCust = NetworkController::getCustomization(i);
+                    NetworkController::sendSetCustomization(i, get<0>(pCust), get<1>(pCust), get<2>(pCust));
+                }
                 NetworkController::sendSetMapSelected(NetworkController::getMapSelected());
                 NetworkController::startGame();
                 _active = down;
@@ -129,6 +132,8 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
 //        });
     }
     
+    _background = assets->get<scene2::SceneNode>("lobby_background");
+    
     _settingsNode = std::make_shared<Settings>(assets, false);
     _settingsNode->setVisible(false);
     _settingsNode->setActive(false);
@@ -139,7 +144,8 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     _settingsButton->addListener([=](const std::string& name, bool down) {
         _settingsNode->setVisible(true);
         _settingsNode->setActive(true);
-        layer->setColor(Color4(255,255,255,100));
+//        _background->setColor(Color4(255,255,255,100));
+//        _layer->setColor(Color4(255,255,255,100));
         _mapPrevButton->deactivate();
         _mapNextButton->deactivate();
         _startButton->deactivate();
@@ -202,12 +208,12 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     _eleForwardButton->activate();
     _eleBackButton->activate();
     
-    _hatForwardButton->setScale(0.2f);
-    _hatBackButton->setScale(0.2f);
-    _skinForwardButton->setScale(0.2f);
-    _skinBackButton->setScale(0.2f);
-    _eleForwardButton->setScale(0.2f);
-    _eleBackButton->setScale(0.2f);
+//    _hatForwardButton->setScale(0.2f);
+//    _hatBackButton->setScale(0.2f);
+//    _skinForwardButton->setScale(0.2f);
+//    _skinBackButton->setScale(0.2f);
+//    _eleForwardButton->setScale(0.2f);
+//    _eleBackButton->setScale(0.2f);
     
     _hatForwardButton->addListener([=](const std::string& name, bool down) {
         CULog("hat forw");
@@ -288,7 +294,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void LobbyScene::dispose() {
-//    removeAllChildren();
+    removeAllChildren();
     _startButton = nullptr;
     _map1Button = nullptr;
     _map2Button = nullptr;
@@ -398,7 +404,7 @@ void LobbyScene::update(float progress) {
     if (_settingsNode->backPressed()) {
         _settingsNode->setActive(false);
         _settingsNode->setVisible(false);
-        _layer->setColor(Color4(255,255,255,255));
+//        _layer->setColor(Color4(255,255,255,255));
         _mapNextButton->activate();
         _mapPrevButton->activate();
         _startButton->activate();

@@ -20,7 +20,7 @@ namespace NetworkController {
         array<std::string, 8> usernames = {"Player 1", "Player 2", "Player 3" , "Player 4" , 
             "Player 5" , "Player 6" , "Player 7" , "Player 8" };
     
-        std::unordered_map<int,std::tuple<int,int,int>> customizations;
+        std::unordered_map<int,std::tuple<int,int,Element>> customizations;
     
         int _networkFrame;
         int mapSelected = 1;
@@ -106,8 +106,12 @@ namespace NetworkController {
         usernames[playerId] = name;
     }
 
-    std::unordered_map<int,std::tuple<int,int,int>> getCustomizations() {
+    std::unordered_map<int,std::tuple<int,int,Element>> getCustomizations() {
         return customizations;
+    }
+
+    std::tuple<int,int,Element> getCustomization(int playerId) {
+        return customizations[playerId];
     }
 
     int getMapSelected() {

@@ -110,9 +110,12 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
         playerName->setVisible(false);
     }
     
+    int prevScore = 0;
+    int prevPlace = 1;
     for (std::pair<std::string, int> element : setPlayerScores) {
 //    for (const auto& [key, value] : _resultsMap) {
         if (i == 0) {
+            prevScore = element.second;
             stringstream ss;
              ss << std::to_string(i+1) << ". " << element.first;
             _player1NameLabel->setText(ss.str());
@@ -128,7 +131,14 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
             std::shared_ptr<cugl::scene2::Label> playerName = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_playername"+std::to_string(i+1)));
             playerScore->setPosition(scorepos.x, scorepos.y - (i * 30));
             playerName->setPosition(namepos.x, namepos.y - (i * 30));
-             ss << std::to_string(i+1) << ". " << element.first;
+            if (prevScore == element.second) {
+                ss << std::to_string(prevPlace) << ". " << element.first;
+            }
+            else {
+                prevScore = element.second;
+                prevPlace = i+1;
+                ss << std::to_string(i+1) << ". " << element.first;
+            }
             playerName->setText(ss.str());
             stringstream score;
             score << element.second;

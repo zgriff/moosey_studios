@@ -61,34 +61,23 @@ bool Settings::init(const std::shared_ptr<AssetManager>& assets, bool inGame) {
     _soundVolume->activate();
     _soundVolume->addListener([=](const std::string& name, float value) {
         SoundController::setSoundVolume(value);
-        CULog("volume %f",value);
     });
     
     _backButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("settings_backbutton"));
     _backButton->activate();
-    CULog("max X pushable %f" ,_backButton->getPushable().getBounds().getMaxX());
-    CULog("max Y pushable %f" ,_backButton->getPushable().getBounds().getMaxY());
     _backButton->addListener([=](const std::string& name, bool down) {
         _back = down;
     });
     
     _leavegameButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("settings_leavegamebutton"));
-//    _leavegameButton->setVisible(true);
-//    _leavegameButton->activate();
-//    _leavegameButton->addListener([=](const std::string& name, bool down) {
-//        _leaveGame = down;
-//        CULog("leave game pressed");
-//    });
     
     _inGame = inGame;
     // initialize leave game button if in game
     if (inGame) {
-//        CULog("in game");
         _leavegameButton->setVisible(true);
         _leavegameButton->activate();
         _leavegameButton->addListener([=](const std::string& name, bool down) {
             _leaveGame = down;
-            CULog("leave game pressed");
         });
     }
     else {
@@ -111,18 +100,13 @@ void Settings::dispose() {
 
 void Settings::setActive(bool b) {
     if (b) {
-//        if (_leavegameButton->isActive()) {
-//            CULog("leave game active");
-//        }
         _soundVolume->activate();
         _backButton->activate();
         if (_inGame) {
-//            CULog("set active true");
             _leavegameButton->activate();
         }
     }
     else {
-        CULog("deactivate");
         _soundVolume->deactivate();
         _backButton->deactivate();
         _back = false;

@@ -10,6 +10,13 @@
 #include "Globals.h"
 #include "MapConstants.h"
 
+/** half a player's hitbox width */
+#define PLAYER_HALF_WIDTH .375f
+/** half a player's hitbox height */
+#define PLAYER_HALF_HEIGHT 0.75f
+/** how much the outer hitbox puffs out by */
+#define ADDITIONAL_HITBOX_LENGTH 0.05f
+
 /** The initial player position */
 float PLAYER_POS[] = {24,  4};
 
@@ -170,7 +177,10 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
     }
     
     Vec2 playerPos = ((Vec2)PLAYER_POS);
-    Size playerSize(.75, 1.5);
+    b2FixtureDef surround;
+    b2PolygonShape rect;
+    b2CircleShape circ;
+    Size playerSize(2*PLAYER_HALF_WIDTH, 2*PLAYER_HALF_HEIGHT);
     _numNPCs = _NPCSpawns.size();
     for(int i = 0; i < _numPlayers + _numNPCs; ++i){
         int r;
@@ -211,21 +221,37 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         //player id is set to i right now, if that is changed, projectile's associated userid needs to change too
         player->setSkin(std::get<0>(_customizations[i]));
         player->setCustomization(std::get<1>(_customizations[i]));
-        if(i < _numPlayers) player->setElement((Element) std::get<2>(_customizations[i]));
+        if(i < _numPlayers) player->setElement(std::get<2>(_customizations[i]));
         if(i < _numPlayers) player->setProjectile(_projectiles[i]);
         player->allocUsernameNode(_assets->get<Font>("username"));
         _worldNode->addChild(player->getSceneNode(),1);
         _players.push_back(player);
 
-        auto surround = b2FixtureDef();
-        auto shape = b2CircleShape();
-        shape.m_radius = 1.03;
-        shape.m_p = b2Vec2(0, 0);
-        surround.shape = &shape;
+        surround = b2FixtureDef();
+        circ = b2CircleShape();
+        circ.m_radius = PLAYER_HALF_WIDTH + ADDITIONAL_HITBOX_LENGTH;
+        circ.m_p = b2Vec2(0, PLAYER_HALF_HEIGHT - PLAYER_HALF_WIDTH);
+        surround.shape = &circ;
         surround.density = 0;
         surround.isSensor = true;
         player->getBody()->CreateFixture(&surround);
 
+        surround = b2FixtureDef();
+        circ = b2CircleShape();
+        circ.m_radius = PLAYER_HALF_WIDTH + ADDITIONAL_HITBOX_LENGTH;
+        circ.m_p = b2Vec2(0, PLAYER_HALF_WIDTH - PLAYER_HALF_HEIGHT);
+        surround.shape = &circ;
+        surround.density = 0;
+        surround.isSensor = true;
+        player->getBody()->CreateFixture(&surround);
+
+        surround = b2FixtureDef();
+        rect = b2PolygonShape();
+        rect.SetAsBox(PLAYER_HALF_WIDTH + ADDITIONAL_HITBOX_LENGTH, PLAYER_HALF_HEIGHT);
+        surround.shape = &circ;
+        surround.density = 0;
+        surround.isSensor = true;
+        player->getBody()->CreateFixture(&surround);
     }
     
     for(auto it = _decorations.begin(); it!= _decorations.end();  ++it) {
