@@ -43,7 +43,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
     //object that comes first lexograpically
 
     //orb and player collision
-    if(bd1->getName() == "orb" && bd2->getName() == "player" && !fixB->IsSensor()) {
+    if(bd1->getName() == "orb" && bd2->getName() == "player") {
         Orb* o = (Orb*) bd1;
         Player* p = (Player*) bd2;
         if (!o->getCollected() && p->getIsIntangible() == false) {
@@ -133,7 +133,7 @@ void CollisionController::hostBeginContact(b2Contact* contact){
     }
         
     //player and player collision (tagging)
-    else if (bd1->getName() == "player" && !fixA->IsSensor() && bd2->getName() == "player" && !fixB->IsSensor()) {
+    else if (bd1->getName() == "player" && bd2->getName() == "player") {
         Player* p1 = (Player*) bd1;
         Player* p2 = (Player*) bd2;
 
