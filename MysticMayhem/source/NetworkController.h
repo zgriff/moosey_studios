@@ -23,6 +23,8 @@ namespace NetworkController {
     std::string getRoomId();
 
     uint8_t getNumPlayers();
+
+    bool isPlayerActive(uint8_t playerID);
     
     cugl::CUNetworkConnection::NetStatus getStatus();
 
@@ -47,6 +49,7 @@ namespace NetworkController {
     void sendSetUsername(int playerId, string username);
     void sendSetCustomization(int playerId, int skin, int hat, Element element);
     void sendSetMapSelected(int i);
+    void sendLeftGame(int i);
     //Give the network controller a reference to the world
     void setWorld(std::shared_ptr<World> w);
     std::shared_ptr<World> getWorld();

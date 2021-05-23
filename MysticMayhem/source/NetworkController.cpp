@@ -87,6 +87,10 @@ namespace NetworkController {
         return network->getNumPlayers();
     }
 
+    bool isPlayerActive(uint8_t playerID) {
+        return network->isPlayerActive(playerID);
+    }
+
     std::string getUsername() {
         if (username == "") {
             return "Player";
@@ -265,6 +269,14 @@ struct GameHandler {
         projectile->setLinearVelocity(Vec2(0, 0));
         projectile->setPosition(Vec2(0, 0));
     }
+    void operator()(NetworkData::LeftGame& data) const {
+        auto player = world->getPlayer(data.playerId);
+        player->setActive(false);
+        player->getSceneNode()->setVisible(false);
+        player->setLinearVelocity(Vec2(0, 0));
+        player->setPosition(Vec2(0, 0));
+        //player->deactivatePhysics(world); 
+    }
     //generic. do nothing
     template<typename T>
     void operator()(T & d) const {}
@@ -403,6 +415,12 @@ struct GameHandler {
         NetworkData::SetMap data;
         data.mapNumber = i;
         CULog("sending set map to %d", i);
+        send(NetworkData(data));
+    }
+
+    void sendLeftGame(int i) {
+        NetworkData::LeftGame data;
+        data.playerId = i;
         send(NetworkData(data));
     }
 

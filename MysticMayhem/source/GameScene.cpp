@@ -159,6 +159,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _countdownHUD->setText("READY");
     _countdownHUD->setVisible(true);
     _startTimePassed = false;
+
+    _endGameEarly = false;
+    _playersExited = {};
     
     _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
     _hatchbar->setVisible(false);
@@ -374,6 +377,28 @@ void GameScene::update(float timestep) {
             getCamera()->update();
         }
     }
+
+    if (NetworkController::isHost()) {
+        for (int i = 1; i < _world->getNumPlayers(); i++) {
+            CULog("checking if player connected %d", i);
+            if (_playersExited.find(i) == _playersExited.end() && !NetworkController::isPlayerActive(i)) {
+                NetworkController::sendLeftGame(i);
+                auto playerExited = _world->getPlayer(i);
+                playerExited->setActive(false);
+                playerExited->getSceneNode()->setVisible(false);
+                playerExited->setLinearVelocity(Vec2(0, 0));
+                playerExited->setPosition(Vec2(0, 0));
+                _playersExited.insert(i);
+            }
+        }
+    }
+    if (!NetworkController::isPlayerActive(0) && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Reconnecting) {
+        CULog("host is dc");
+        //_endGameEarly = true;
+    }
+    
+
+    CULog("network status is %d", NetworkController::getStatus());
         // BEGIN PLAYER MOVEMENT //
     if (_player->getPC() && !_settings) {
         _playerController.readInput();

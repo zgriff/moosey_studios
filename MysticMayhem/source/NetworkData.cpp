@@ -290,6 +290,9 @@ struct NetworkData::Visitor {
     void operator()(SetMap & d) const {
         s.serializeBits(d.mapNumber, MAP_NUMBER_BITS);
     }
+    void operator()(LeftGame& d) const {
+        s.serializeBits(d.playerId, PLAYER_ID_BITS);
+    }
 
 };
 

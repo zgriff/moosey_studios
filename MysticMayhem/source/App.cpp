@@ -185,7 +185,7 @@ void App::onResume() {
          }
          case SceneSelect::Game:{
              _gameplay.update(timestep);
-             if (time(NULL) - startTimer >= gameTimer) {
+             if (time(NULL) - startTimer >= gameTimer || _gameplay.getEndGameEarly()) {
                  _results.init(_assets, _gameplay.getResults(), _gameplay.getWinner());
                  _gameplay.getSettings()->removeAllChildren();
                  _gameplay.getSettings()->dispose();
@@ -197,6 +197,7 @@ void App::onResume() {
              else {
                  if (_gameplay.getSettings()->leaveGamePressed()) {
                      CULog("leave game in app");
+                     NetworkController::sendLeftGame(NetworkController::getPlayerId().value());
                      NetworkController::destroyConn();
                      _gameplay.getSettings()->removeAllChildren();
                      _gameplay.getSettings()->dispose();

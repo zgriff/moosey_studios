@@ -73,6 +73,9 @@ protected:
     bool _startTimePassed;
     std::chrono::system_clock::time_point _beginStartTimer;
 
+    bool _endGameEarly;
+    std::set<int> _playersExited;
+
     /** Reference to the UI element exposing the frame rate */
     std::shared_ptr<cugl::scene2::Label> _framesHUD;
 
@@ -223,6 +226,8 @@ public:
     std::string getWinner();
     
     std::shared_ptr<Settings> getSettings() { return _settingsNode; }
+
+    bool getEndGameEarly() { return _endGameEarly; }
 
 };
 

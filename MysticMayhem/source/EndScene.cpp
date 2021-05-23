@@ -88,11 +88,12 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
     typedef std::function<bool(std::pair<std::string, int>, std::pair<std::string, int>)> Comparator;
 
     Comparator compFunctor =
-            [](std::pair<std::string, int> elem1 ,std::pair<std::string, int> elem2)
+            [](std::pair<std::string, int> elem1, std::pair<std::string, int> elem2)
             {
                 return elem1.second >= elem2.second;
             };
     
+    //std::set<std::pair<std::string, int>, Comparator> setPlayerScores = {};
     // sorting by the player scores is happening here
     std::set<std::pair<std::string, int>, Comparator> setPlayerScores(
             _resultsMap.begin(), _resultsMap.end(), compFunctor);
