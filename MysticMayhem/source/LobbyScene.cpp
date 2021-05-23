@@ -183,6 +183,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     _playerCustom->setStaffKey("player_staff");
     _playerCustom->setStaffTagKey("player_staff_tag");
     _playerCustom->setRingKey("player_direction");
+    _playerCustom->setExplosionKey("player_explosion");
     _playerCustom->setTextures(_assets);
     _playerCustom->setDrawScale(100.0f);
     _playerCustom->flipHorizontal(false);
