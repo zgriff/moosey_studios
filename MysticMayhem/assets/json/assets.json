@@ -60,26 +60,8 @@
         "player_skin":{
             "file": "textures/Character1_Skin.png"
         },
-        "skin2":{
-            "file": "textures/Character1_Skin2.png"
-        },
-        "aether":{
-            "file": "textures/Character2_ColorAether.png"
-        },
         "player_color":{
             "file": "textures/Character2_Color.png"
-        },
-        "egg_color":{
-            "file": "textures/Character2_ColorEgg.png"
-        },
-        "fire_color":{
-            "file": "textures/Character2_ColorFire.png"
-        },
-        "grass_color":{
-            "file": "textures/Character2_ColorGrass.png"
-        },
-        "water_color":{
-            "file": "textures/Character2_ColorWater.png"
         },
         "player_face":{
             "file": "textures/Character3_Face.png"
@@ -93,47 +75,17 @@
         "player_hat":{
             "file": "textures/Character5_Personalization.png"
         },
-        "hat_star":{
-            "file": "textures/Character5_PersonalizationStar.png"
-        },
-        "hat_swirl":{
-            "file": "textures/Character5_PersonalizationSwirl.png"
-        },
         "player_staff":{
             "file": "textures/Character7_Staff.png"
-        },
-        "staff_egg":{
-            "file": "textures/Character7_StaffEggState.png"
-        },
-        "staff_fire":{
-            "file": "textures/Character7_StaffFire.png"
-        },
-        "staff_grass":{
-            "file": "textures/Character7_StaffGrass.png"
-        },
-        "staff_water":{
-            "file": "textures/Character7_StaffWater.png"
         },
         "player_staff_tag":{
             "file": "textures/Character7_Tag.png"
         },
-        "staff_tag_aether":{
-            "file": "textures/Character7_TagAether.png"
-        },
-        "staff_tag_fire":{
-            "file": "textures/Character7_TagFire.png"
-        },
-        "staff_tag_water":{
-            "file": "textures/Character7_TagWater.png"
-        },
         "player_direction":{
             "file": "textures/Direction_Ring.png"
         },
-        "direction_grass":{
-            "file": "textures/Direction_GrassRing.png"
-        },
-        "direction_water":{
-            "file": "textures/Direction_FireRing.png"
+        "player_explosion":{
+            "file": "textures/explosion_ring.png"
         },
         "ability-bar-full": {
             "file": "textures/AbilityBar.png",

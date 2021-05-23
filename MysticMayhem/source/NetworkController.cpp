@@ -169,9 +169,19 @@ struct GameHandler {
         auto tagged = world->getPlayer(t.taggedId);
         auto tagger = world->getPlayer(t.taggerId);
         auto self = world->getPlayer(network->getPlayerID().value());
+        auto players = world->getPlayers();
+        for (auto it = players.begin(); it != players.end(); it++) {
+            if (Vec2((*it)->getPosition() - tagged->getPosition()).length() < globals::TAG_ASSIST_DIST &&
+                (*it)->getPreyElement() == tagged->getCurrElement() &&
+                (*it)->getID() != tagger->getID()) {
+                (*it)->incScore(globals::TAG_ASSIST_SCORE);
+            }
+        }
         tagged->setIsTagged(true);
         tagged->setTimeLastTagged(t.timestamp);
+        tagged->animateTagged();
         tagger->incScore(globals::TAG_SCORE);
+        tagger->animateTag();
         SoundController::playSound(SoundController::Type::TAG, tagger->getPosition() - self->getPosition());
         if (tagged->getCurrElement() == Element::None && !t.dropEgg) {
             auto egg = world->getEgg(tagged->getEggId());
