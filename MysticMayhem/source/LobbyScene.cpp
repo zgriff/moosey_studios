@@ -162,8 +162,6 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     });
 
     
-    _roomId = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("lobby_roomId"));
-    
     _codeNode = std::dynamic_pointer_cast<scene2::SceneNode>(assets->get<scene2::SceneNode>("lobby_codenode"));
     
     
@@ -299,6 +297,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
  */
 void LobbyScene::dispose() {
     removeAllChildren();
+    _playerCustom = nullptr;
     _startButton = nullptr;
     _map1Button = nullptr;
     _map2Button = nullptr;
@@ -313,7 +312,10 @@ void LobbyScene::dispose() {
     _eleBackButton = nullptr;
     _mapNextButton = nullptr;
     _mapPrevButton = nullptr;
+    _settingsNode = nullptr;
     _codeNode = nullptr;
+    _layer = nullptr;
+    _background = nullptr;
     _playerLabels.clear();
     _assets = nullptr;
     _active = false;
@@ -360,12 +362,11 @@ void LobbyScene::update(float progress) {
                 decimalCode = floor(decimalCode / 7);
                 counter--;
             }
+            if (counter != -1) {
+                _codeNode->getChild(counter)->getChildByName(buttonToCode(0))->setVisible(true);
+            }
             
         }
-//        CULog("room id in lobby %s", _currRoomId.c_str());
-//        stringstream ss;
-//        ss << "Room Id: " << _currRoomId;
-//        _roomId->setText(ss.str());
         
     }
     std::string s = NetworkController::getRoomId();

@@ -262,10 +262,12 @@ void MenuScene::dispose() {
     _lobbyButton = nullptr;
     _hostButton = nullptr;
     _joinButton = nullptr;
+    _exitJoinButton = nullptr;
     _settingsButton = nullptr;
 //    Input::deactivate<TextInput>();
 //    _codeField = nullptr;
     _usernameField = nullptr;
+    _usernameLabel = nullptr;
     _assets = nullptr;
     _active = false;
     _create = false;
