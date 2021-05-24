@@ -147,6 +147,7 @@ void App::onResume() {
                      _menu.setActive(false);
                      _menu.getSettings()->removeAllChildren();
                      _menu.getSettings()->dispose();
+                     _menu.clearListeners();
                      _menu.removeAllChildren();
                      _menu.dispose();
                      _lobby.init(_assets);

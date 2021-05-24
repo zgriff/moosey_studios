@@ -331,6 +331,12 @@ void MenuScene::setActive(bool value) {
             _codeButtons[i]->setVisible(false);
             _codeIcons[i]->setVisible(false);
         }
+        for (int i = 0; i < (int)_codeNode->getChildren().size(); i++) {
+            auto nodeChild = _codeNode->getChild(i)->getChildren();
+            for (auto it = nodeChild.begin(); it != nodeChild.end(); it++) {
+                (*it)->setVisible(false);
+            }
+        }
 //        _codeField->deactivate();
         _usernameField->deactivate();
         _settingsButton->deactivate();
