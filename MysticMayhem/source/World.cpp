@@ -207,6 +207,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->setStaffKey("player_staff");
         player->setStaffTagKey("player_staff_tag");
         player->setRingKey("player_direction");
+        player->setExplosionKey("player_explosion");
         
         _physicsWorld->addObstacle(player);
         player->setTextures(_assets);

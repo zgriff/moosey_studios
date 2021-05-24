@@ -195,11 +195,19 @@ void CollisionController::clientBeginContact(b2Contact* contact){
     }
 }
 
-void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_ptr<World> world, 
-                                        bool dropEgg) {
+void CollisionController::helperTag(Player* tagged, Player* tagger, std::shared_ptr<World> world, bool dropEgg) {
+    auto players = world->getPlayers();
+    for (auto it = players.begin(); it != players.end(); it++) {
+        if (Vec2((*it)->getPosition() - tagged->getPosition()).length() < globals::TAG_ASSIST_DIST &&
+            (*it)->getPreyElement() == tagged->getCurrElement() &&
+            (*it)->getID() != tagger->getID()) {
+            (*it)->incScore(globals::TAG_ASSIST_SCORE);
+        }
+    }
     tagged->setIsTagged(true);
     time_t timestamp = time(NULL);
     tagged->setTimeLastTagged(timestamp);
+    tagged->animateTagged();
     tagger->incScore(globals::TAG_SCORE);
     tagger->animateTag();
     SoundController::playSound(SoundController::Type::TAG, tagger->getPosition() - localPlayer->getPosition());
