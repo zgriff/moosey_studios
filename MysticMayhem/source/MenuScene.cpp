@@ -55,7 +55,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     
     _background = assets->get<scene2::SceneNode>("menu_background");
     
-//    _create = false;
+    _create = false;
     _host = false;
     _join = false;
     _tutorial = false;
