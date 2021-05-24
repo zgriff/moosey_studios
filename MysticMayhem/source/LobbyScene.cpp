@@ -14,8 +14,9 @@
 using namespace cugl;
 
 /** This is the ideal size of the logo */
-#define SCENE_SIZE  1024
+#define SCENE_SIZE      1024
 #define NUM_CODE_ICONS  7
+#define NUM_MAPS        5
 
 float PLAYER_POSITION[] = {2.7f,  1.0f};
 
@@ -62,18 +63,11 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     
     _startButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_start"));
     _startButton->setVisible(false);
-    _map1Button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_map1"));
-    _map2Button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_map2"));
-    _map3Button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_map3"));
-    _map4Button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_map4"));
-    _map1Button->setToggle(true);
-    _map2Button->setToggle(true);
-    _map3Button->setToggle(true);
-    _map4Button->setToggle(true);
-    _map1Button->setDown(false);
-    _map2Button->setDown(false);
-    _map3Button->setDown(false);
-    _map4Button->setDown(false);
+    _map1Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map1"));
+    _map2Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map2"));
+    _map3Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map3"));
+    _map4Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map4"));
+    _map5Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map5"));
     
     
     _mapNextButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_mapnext"));
@@ -103,7 +97,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _mapNextButton->setVisible(true);
         _mapNextButton->addListener([&](const std::string& name, bool down) {
             if (down) {
-                int map = NetworkController::getMapSelected()%4 +  1;
+                int map = NetworkController::getMapSelected()%NUM_MAPS +  1;
                 NetworkController::sendSetMapSelected(map);
                 NetworkController::setMapSelected(map);
             }
@@ -114,7 +108,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
             if (down) {
                 int map = NetworkController::getMapSelected() - 1;
                 if (map == 0) {
-                    map = 4;
+                    map = NUM_MAPS;
                 }
                 NetworkController::sendSetMapSelected(map);
                 NetworkController::setMapSelected(map);
@@ -299,10 +293,11 @@ void LobbyScene::dispose() {
     removeAllChildren();
     _playerCustom = nullptr;
     _startButton = nullptr;
-    _map1Button = nullptr;
-    _map2Button = nullptr;
-    _map3Button = nullptr;
-    _map4Button = nullptr;
+    _map1Node = nullptr;
+    _map2Node = nullptr;
+    _map3Node = nullptr;
+    _map4Node = nullptr;
+    _map5Node = nullptr;
     _settingsButton = nullptr;
     _hatForwardButton = nullptr;
     _hatBackButton = nullptr;
@@ -390,33 +385,46 @@ void LobbyScene::update(float progress) {
 
 //    if (!NetworkController::isHost()) {
     if (NetworkController::getMapSelected() == 1) {
-        _map1Button->setVisible(true);
-        _map1Button->setPosition(550, 100);
-        _map2Button->setVisible(false);
-        _map3Button->setVisible(false);
-        _map4Button->setVisible(false);
+        _map1Node->setVisible(true);
+        _map1Node->setPosition(550, 100);
+        _map2Node->setVisible(false);
+        _map3Node->setVisible(false);
+        _map4Node->setVisible(false);
+        _map5Node->setVisible(false);
     }
     else if (NetworkController::getMapSelected() == 2) {
-        _map2Button->setVisible(true);
-        _map2Button->setPosition(550, 100);
-        _map1Button->setVisible(false);
-        _map3Button->setVisible(false);
-        _map4Button->setVisible(false);
+        _map2Node->setVisible(true);
+        _map2Node->setPosition(550, 100);
+        _map1Node->setVisible(false);
+        _map3Node->setVisible(false);
+        _map4Node->setVisible(false);
+        _map5Node->setVisible(false);
     }
     else if (NetworkController::getMapSelected() == 3) {
-        _map3Button->setVisible(true);
-        _map3Button->setPosition(550, 100);
-        _map1Button->setVisible(false);
-        _map2Button->setVisible(false);
-        _map4Button->setVisible(false);
+        _map3Node->setVisible(true);
+        _map3Node->setPosition(550, 100);
+        _map1Node->setVisible(false);
+        _map2Node->setVisible(false);
+        _map4Node->setVisible(false);
+        _map5Node->setVisible(false);
     }
     else if (NetworkController::getMapSelected() == 4) {
         
-        _map4Button->setVisible(true);
-        _map4Button->setPosition(550, 100);
-        _map1Button->setVisible(false);
-        _map2Button->setVisible(false);
-        _map3Button->setVisible(false);
+        _map4Node->setVisible(true);
+        _map4Node->setPosition(550, 100);
+        _map1Node->setVisible(false);
+        _map2Node->setVisible(false);
+        _map3Node->setVisible(false);
+        _map5Node->setVisible(false);
+    }
+    else if (NetworkController::getMapSelected() == 5) {
+        
+        _map5Node->setVisible(true);
+        _map5Node->setPosition(550, 100);
+        _map1Node->setVisible(false);
+        _map2Node->setVisible(false);
+        _map3Node->setVisible(false);
+        _map4Node->setVisible(false);
     }
 //    }
     
@@ -460,10 +468,6 @@ void LobbyScene::setActive(bool value) {
             }
         }
         _startButton->deactivate();
-        _map1Button->deactivate();
-        _map2Button->deactivate();
-        _map3Button->deactivate();
-        _map4Button->deactivate();
         _mapNextButton->deactivate();
         _mapPrevButton->deactivate();
         _settingsButton->deactivate();

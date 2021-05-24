@@ -251,6 +251,9 @@
         "map4_img": {
             "file": "textures/map4_img.png"
         },
+        "map5_img": {
+            "file": "textures/map1_img.png"
+        },
         "select_map": {
             "file": "textures/select_map.png"
         },
@@ -2501,21 +2504,12 @@
                     },
                     "children": {
                         "map1": {
-                            "type": "Button",
+                            "type": "Image",
                             "data": {
-                                "upnode": "up",
                                 "visible": true,
-                                "pushsize": true,
                                 "anchor": [ 0.39, 0.4 ],
-                                "scale": 0.7
-                            },
-                            "children": {
-                                "up": {
-                                    "type": "Image",
-                                    "data": {
-                                        "texture": "tutorial"
-                                    }
-                                }
+                                "scale": 0.7,
+                                "texture": "tutorial"
                             },
                             "layout": {
                                 "x_anchor": "center",
@@ -2526,76 +2520,65 @@
                             }
                         },
                         "map2": {
-                            "type": "Button",
+                            "type": "Image",
                             "data": {
-                                "upnode": "up",
                                 "visible": true,
-                                "pushsize": true,
-                                "anchor": [ 0.39, 0.5 ],
-                                "scale": 1
-                            },
-                            "children": {
-                                "up": {
-                                    "type": "Image",
-                                    "data": {
-                                        "texture": "map2_img"
-                                    }
-                                }
+                                "anchor": [ 0.39, 0.4 ],
+                                "scale": 0.9,
+                                "texture": "map2_img"
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -200,
-                                "y_offset": 250,
+                                "x_offset": -350,
+                                "y_offset": 350,
                                 "absolute": true
                             }
                         },
                         "map3": {
-                            "type": "Button",
+                            "type": "Image",
                             "data": {
-                                "upnode": "up",
                                 "visible": true,
-                                "pushsize": true,
-                                "anchor": [ 0.39, 0.5 ],
-                                "scale": 1
-                            },
-                            "children": {
-                                "up": {
-                                    "type": "Image",
-                                    "data": {
-                                        "texture": "map3_img"
-                                    }
-                                }
+                                "anchor": [ 0.39, 0.4 ],
+                                "scale": 0.9,
+                                "texture": "map3_img"
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -50,
+                                "x_offset": -350,
                                 "y_offset": 350,
                                 "absolute": true
                             }
                         },
                         "map4": {
-                            "type": "Button",
+                            "type": "Image",
                             "data": {
-                                "upnode": "up",
                                 "visible": true,
-                                "pushsize": true,
-                                "anchor": [ 0.39, 0.5 ],
-                                "scale": 1
-                            },
-                            "children": {
-                                "up": {
-                                    "type": "Image",
-                                    "data": {
-                                        "texture": "map4_img"
-                                    }
-                                }
+                                "anchor": [ 0.39, 0.4 ],
+                                "scale": 0.9,
+                                "texture": "map4_img"
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": 100,
+                                "x_offset": -350,
+                                "y_offset": 350,
+                                "absolute": true
+                            }
+                        },
+                        "map5": {
+                            "type": "Image",
+                            "data": {
+                                "visible": true,
+                                "anchor": [ 0.39, 0.4 ],
+                                "scale": 0.9,
+                                "texture": "map5_img"
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "bottom",
+                                "x_offset": -350,
                                 "y_offset": 350,
                                 "absolute": true
                             }

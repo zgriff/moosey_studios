@@ -48,10 +48,11 @@ protected:
     std::shared_ptr<cugl::scene2::Button> _mapPrevButton;
     
     std::shared_ptr<cugl::scene2::Button> _startButton;
-    std::shared_ptr<cugl::scene2::Button> _map1Button;
-    std::shared_ptr<cugl::scene2::Button> _map2Button;
-    std::shared_ptr<cugl::scene2::Button> _map3Button;
-    std::shared_ptr<cugl::scene2::Button> _map4Button;
+    std::shared_ptr<cugl::scene2::PolygonNode> _map1Node;
+    std::shared_ptr<cugl::scene2::PolygonNode> _map2Node;
+    std::shared_ptr<cugl::scene2::PolygonNode> _map3Node;
+    std::shared_ptr<cugl::scene2::PolygonNode> _map4Node;
+    std::shared_ptr<cugl::scene2::PolygonNode> _map5Node;
     string _selectedMap = GRASS_MAP_KEY;
     std::shared_ptr<cugl::scene2::SceneNode> _codeNode;
     std::vector<std::shared_ptr<cugl::scene2::Label>> _playerLabels;

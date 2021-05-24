@@ -52,6 +52,7 @@ void App::onStartup() {
     _assets->loadAsync<World>(GRASS_MAP2_KEY, GRASS_MAP2_JSON, nullptr);
     _assets->loadAsync<World>(GRASS_MAP3_KEY, GRASS_MAP3_JSON, nullptr);
     _assets->loadAsync<World>(GRASS_MAP4_KEY, GRASS_MAP4_JSON, nullptr);
+    _assets->loadAsync<World>(GRASS_MAP5_KEY, GRASS_MAP5_JSON, nullptr);
 
     AudioEngine::start();
     SoundController::init(_assets);

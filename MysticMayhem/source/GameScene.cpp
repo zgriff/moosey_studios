@@ -75,6 +75,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     case 4:
         mapKey = GRASS_MAP4_KEY;
         break;
+    case 5:
+        mapKey = GRASS_MAP5_KEY;
+        break;
     }
     _world = assets->get<World>(mapKey);
     if (_world == nullptr) {

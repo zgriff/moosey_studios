@@ -44,6 +44,9 @@
 #define GRASS_MAP4_JSON      "maps/annoyances.json"
 #define GRASS_MAP4_KEY       "grass_map4"
 
+#define GRASS_MAP5_JSON      "maps/forest_edit.json"
+#define GRASS_MAP5_KEY       "grass_map5"
+
 
 enum class GameObjectType {
     PlayerSpawn, OrbActive, OrbInactive, Station, EggSpawn, Booster
