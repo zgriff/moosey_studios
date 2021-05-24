@@ -157,6 +157,7 @@ void App::onResume() {
              }
              else {
                  _menu.setActive(false);
+                 _menu.clearListeners();
                  _menu.removeAllChildren();
                  _menu.dispose();
                  _lobby.init(_assets);
