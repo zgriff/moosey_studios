@@ -83,6 +83,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _usernameField->deactivate();
         _usernameField->setVisible(false);
         _usernameLabel->setVisible(false);
+        _usernamePlate->setVisible(false);
         _joinButton->setVisible(false);
         _codeField->activate();
         _codeField->setVisible(true);
@@ -107,6 +108,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _background->setColor(Color4(255,255,255,100));
         _joinButton->setVisible(false);
         _hostButton->setVisible(false);
+        _usernamePlate->setVisible(false);
         if (_join) {
             _codeField->deactivate();
             _codeField->setVisible(false);
@@ -124,6 +126,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _usernameField->activate();
         _usernameField->setVisible(true);
         _usernameLabel->setVisible(true);
+        _usernamePlate->setVisible(true);
         _joinButton->setVisible(true);
         _joinButton->activate();
         _codeField->deactivate();
@@ -183,6 +186,8 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         CULog("Finish to %s", value.c_str());
         NetworkController::setUsername(value);
     });
+    _usernamePlate = std::dynamic_pointer_cast<scene2::SceneNode>(assets->get<scene2::SceneNode>("menu_usernameplate"));
+    _usernamePlate->setVisible(true);
     
 //    _usernameField->setPosition(dimen.width/2, dimen.height/6);
     
@@ -278,6 +283,7 @@ void MenuScene::update() {
             _hostButton->activate();
             _usernameLabel->setVisible(true);
             _usernameField->setVisible(true);
+            _usernamePlate->setVisible(true);
             _usernameField->activate();
         }
     }

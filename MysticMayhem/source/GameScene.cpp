@@ -42,6 +42,7 @@ using namespace std;
 /** baseline aspect ratio, 1468.604 is from 1280x720 */
 #define BASELINE_DIAGONAL 1468.60478005
 #define BASELINE_HEIGHT 720 //if we want to scale by height instead just change the places w/ length and diagonal to height
+#define SCENE_SIZE  1024
 
 #pragma mark -
 #pragma mark Constructors
@@ -153,6 +154,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_score"));
     _framesHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_frames"));
     _framesHUD->setPositionX(_framesHUD->getPositionX() + 100);
+    _framesHUD->setVisible(false);
     _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
     _countdownHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_countdown"));
     _countdownHUD->setColor(Color4::YELLOW);
@@ -178,6 +180,18 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _abilitybarFull->setProgress(1);
     _abilitybarFull->setVisible(false);
     
+    Size dimension = Application::get()->getDisplaySize();
+    dimension *= SCENE_SIZE/dimension.width;
+    auto elementTriTexture = assets->get<Texture>("element_triangle");
+    _elementTriangle = scene2::AnimationNode::alloc(elementTriTexture, 1, 3, 3);
+    _elementTriangle->setAnchor(Vec2::ANCHOR_CENTER);
+    _elementTriangle->setFrame(1);
+    _elementTriangle->setPosition(120, 1300);
+#ifdef CU_MOBILE
+    _elementTriangle->setPosition(120, 1500);
+#endif
+    
+    _UInode->addChild(_elementTriangle);
     
     _debugnode = _world->getDebugNode();
     
@@ -532,6 +546,23 @@ void GameScene::update(float timestep) {
         _settingsNode->setVisible(false);
         _settingsNode->setActive(false);
         _settings = false;
+    }
+    
+    //showing element triangle
+    if (_player->getCurrElement() == Element::Water) {
+        _elementTriangle->setFrame(1);
+        _elementTriangle->setColor(Color4(255, 255, 255, 255));
+    }
+    else if (_player->getCurrElement() == Element::Fire) {
+        _elementTriangle->setFrame(0);
+        _elementTriangle->setColor(Color4(255, 255, 255, 255));
+    }
+    else if (_player->getCurrElement() == Element::Grass) {
+        _elementTriangle->setFrame(2);
+        _elementTriangle->setColor(Color4(255, 255, 255, 255));
+    }
+    else if (_player->getCurrElement() == Element::None) {
+        _elementTriangle->setColor(Color4(255, 255, 255, 100));
     }
 }
 

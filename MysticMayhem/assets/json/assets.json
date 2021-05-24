@@ -262,6 +262,12 @@
         },
         "customization": {
             "file": "textures/customization.png"
+        },
+        "name_plate": {
+            "file": "textures/name_backplate.png"
+        },
+        "element_triangle": {
+            "file": "textures/elemental_triangle.png"
         }
     },
     "sounds": {
@@ -314,6 +320,10 @@
         "username": {
             "file": "fonts/SHOWG.TTF",
             "size": 30
+        },
+        "username_label": {
+            "file": "fonts/SHOWG.TTF",
+            "size": 40
         },
         "joincode": {
             "file": "fonts/SHOWG.TTF",
@@ -371,7 +381,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": -60,
+                        "y_offset": -70,
                         "x_offset": 280,
                         "absolute": true
                     }
@@ -397,7 +407,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": -50,
+                        "y_offset": -60,
                         "x_offset": -100,
                         "absolute": true
                     }
@@ -471,14 +481,10 @@
                         "absolute": true
                     }
                 },
-                "username": {
-                    "type": "TextField",
+                "usernameplate": {
+                    "type": "Image",
                     "data": {
-                        "font": "username",
-                        "text": "",
-                        "foreground": [ 255, 255, 255, 255 ],
-                        "background": [ 0, 0, 0, 255 ],
-                        "size": [ 300, 50 ],
+                        "texture": "name_plate",
                         "anchor": [ 0.5, 0.5 ]
                     },
                     "layout": {
@@ -488,12 +494,29 @@
                         "y_offset": 0.05
                     }
                 },
+                "username": {
+                    "type": "TextField",
+                    "data": {
+                        "font": "username",
+                        "text": "",
+                        "foreground": [ 0,0,0, 150 ],
+                        "background": [ 0, 0, 0, 0 ],
+                        "size": [ 300, 50 ],
+                        "anchor": [ 0.5, 0.5 ]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": 0.2,
+                        "y_offset": 0.06
+                    }
+                },
                 "usernamelabel": {
                     "type": "Label",
                     "data": {
-                        "font": "username",
-                        "text": "Enter username: ",
-                        "foreground": [ 0, 0, 0, 255 ],
+                        "font": "username_label",
+                        "text": "Username: ",
+                        "foreground": [ 0, 0, 0, 200 ],
                         "size": [ 100, 15 ],
                         "valign": "bottom",
                         "halign": "left"
