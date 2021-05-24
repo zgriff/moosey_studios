@@ -185,7 +185,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     _usernameField->addExitListener([=](const std::string& name, const std::string& value) {
         CULog("Finish to %s", value.c_str());
         std::string final = value;
-        std::transform(final.begin(), final.end(), final.begin(), std::tolower);
+        std::transform(final.begin(), final.end(), final.begin(), ::tolower);
         NetworkController::setUsername(final);
     });
     _usernamePlate = std::dynamic_pointer_cast<scene2::SceneNode>(assets->get<scene2::SceneNode>("menu_usernameplate"));
