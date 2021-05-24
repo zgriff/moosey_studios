@@ -90,6 +90,8 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _lobbyButton->activate();
         _deleteButton->setVisible(true);
         _deleteButton->activate();
+        _tutorialButton->setVisible(false);
+        _tutorialButton->deactivate();
         for (int i = 0; i < NUM_CODE_ICONS; i++) {
             _codeButtons[i]->activate();
             _codeButtons[i]->setVisible(true);
@@ -154,6 +156,8 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _lobbyButton->deactivate();
         _deleteButton->setVisible(false);
         _deleteButton->deactivate();
+        _tutorialButton->setVisible(true);
+        _tutorialButton->activate();
         for (int i = 0; i < NUM_CODE_ICONS; i++) {
             _codeButtons[i]->deactivate();
             _codeButtons[i]->setVisible(false);
@@ -367,6 +371,7 @@ void MenuScene::setActive(bool value) {
 //        _codeField->deactivate();
         _usernameField->deactivate();
         _settingsButton->deactivate();
+        _tutorialButton->deactivate();
     }
 }
 
@@ -392,8 +397,6 @@ void MenuScene::update() {
 //            _codeField->setVisible(true);
             _exitJoinButton->setVisible(true);
             _exitJoinButton->activate();
-            _tutorialButton->setVisible(true);
-            _tutorialButton->activate();
         }
         else {
             _joinButton->setVisible(true);
