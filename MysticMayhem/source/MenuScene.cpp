@@ -118,6 +118,8 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _joinButton->setVisible(false);
         _hostButton->setVisible(false);
         _usernamePlate->setVisible(false);
+        _tutorialButton->setVisible(false);
+        _tutorialButton->deactivate();
         if (_join) {
             _codeNode->setVisible(false);
             _lobbyButton->setVisible(false);
@@ -244,6 +246,16 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     
     Input::activate<TextInput>();
 //    _codeField->setVisible(false);
+    
+    //tutorial button
+    _tutorialButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_tutorial"));
+    _tutorialButton->activate();
+    _tutorialButton->addListener([=](const std::string& name, bool down) {
+        NetworkController::createGame();
+        NetworkController::setMapSelected(5);
+        NetworkController::startGame();
+        _tutorial = true;
+    });
 
     Application::get()->setClearColor(Color4(255,255,255,255));
     return true;
@@ -273,7 +285,9 @@ void MenuScene::dispose() {
     _create = false;
     _join = false;
     _settings = false;
+    _tutorial = false;
     _settingsNode = nullptr;
+    _tutorialButton = nullptr;
 }
 
 void MenuScene::clearListeners() {
@@ -283,6 +297,7 @@ void MenuScene::clearListeners() {
     _exitJoinButton->clearListeners();
     _settingsButton->clearListeners();
     _deleteButton->clearListeners();
+    _tutorialButton->clearListeners();
     for (auto it = _codeButtons.begin(); it != _codeButtons.end(); it++) {
         (*it)->clearListeners();
     }
@@ -356,7 +371,6 @@ void MenuScene::setActive(bool value) {
 
 void MenuScene::update() {
     if (_settingsNode->backPressed()) {
-        CULog("MENU: settings back pressed");
         _settings = false;
         _settingsNode->setVisible(false);
         _settingsNode->setActive(false);
@@ -377,6 +391,8 @@ void MenuScene::update() {
 //            _codeField->setVisible(true);
             _exitJoinButton->setVisible(true);
             _exitJoinButton->activate();
+            _tutorialButton->setVisible(true);
+            _tutorialButton->activate();
         }
         else {
             _joinButton->setVisible(true);
@@ -387,6 +403,8 @@ void MenuScene::update() {
             _usernameField->setVisible(true);
             _usernamePlate->setVisible(true);
             _usernameField->activate();
+            _tutorialButton->setVisible(true);
+            _tutorialButton->activate();
         }
     }
     

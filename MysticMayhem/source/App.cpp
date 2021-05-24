@@ -157,6 +157,20 @@ void App::onResume() {
                      //NetworkController::setLobbyScene(_lobby);
                      _currentScene = SceneSelect::Lobby;
                  }
+                 else if (_menu.tutorialPressed() && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected) {
+                     _menu.setActive(false);
+                     _menu.getSettings()->clearListeners();
+                     _menu.getSettings()->removeAllChildren();
+                     _menu.getSettings()->dispose();
+                     _menu.clearListeners();
+                     _menu.removeAllChildren();
+                     _menu.dispose();
+                     _gameplay.init(_assets);
+                     _gameplay.setActive(true);
+                     _gameplay.setMovementStyle(0);
+                     startTimer = time(NULL);
+                     _currentScene = SceneSelect::Game;
+                 }
              }
              else {
                  _menu.setActive(false);

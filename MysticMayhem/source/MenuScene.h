@@ -46,6 +46,7 @@ protected:
     std::shared_ptr<cugl::scene2::SceneNode> _codeNode;
     std::shared_ptr<cugl::scene2::Button> _deleteButton;
     std::shared_ptr<cugl::scene2::Button> _lobbyButton;
+    std::shared_ptr<cugl::scene2::Button> _tutorialButton;
     std::shared_ptr<cugl::scene2::TextField> _codeField;
     std::shared_ptr<cugl::scene2::TextField> _usernameField;
     std::shared_ptr<cugl::scene2::Label> _usernameLabel;
@@ -60,6 +61,7 @@ protected:
     bool _create;
     bool _join;
     bool _settings;
+    bool _tutorial;
     int _codeCount;
     std::vector<int> _joinCode;
         
@@ -135,6 +137,7 @@ public:
     bool createPressed() { return _create; }
     bool joinPressed() { return _join; }
     bool settingsPressed() { return _settings; }
+    bool tutorialPressed() { return _tutorial; }
     
     std::shared_ptr<Settings> getSettings() { return _settingsNode; }
 

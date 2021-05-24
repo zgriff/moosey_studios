@@ -484,6 +484,30 @@
                         "y_offset": 0
                     }
                 },
+                "tutorial": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "visible": true,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 0.6
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "tutorial"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "right",
+                        "y_anchor": "top",
+                        "x_offset": -0.15,
+                        "y_offset": -0.05
+                    }
+                },
                 "joinlobby": {
                     "type": "Button",
                     "data": {
@@ -2508,8 +2532,8 @@
                             "data": {
                                 "visible": true,
                                 "anchor": [ 0.39, 0.4 ],
-                                "scale": 0.7,
-                                "texture": "tutorial"
+                                "scale": 0.9,
+                                "texture": "map5_img"
                             },
                             "layout": {
                                 "x_anchor": "center",
@@ -2558,22 +2582,6 @@
                                 "anchor": [ 0.39, 0.4 ],
                                 "scale": 0.9,
                                 "texture": "map4_img"
-                            },
-                            "layout": {
-                                "x_anchor": "center",
-                                "y_anchor": "bottom",
-                                "x_offset": -350,
-                                "y_offset": 350,
-                                "absolute": true
-                            }
-                        },
-                        "map5": {
-                            "type": "Image",
-                            "data": {
-                                "visible": true,
-                                "anchor": [ 0.39, 0.4 ],
-                                "scale": 0.9,
-                                "texture": "map5_img"
                             },
                             "layout": {
                                 "x_anchor": "center",

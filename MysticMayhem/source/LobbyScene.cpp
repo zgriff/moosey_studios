@@ -16,7 +16,7 @@ using namespace cugl;
 /** This is the ideal size of the logo */
 #define SCENE_SIZE      1024
 #define NUM_CODE_ICONS  7
-#define NUM_MAPS        5
+#define NUM_MAPS        4
 
 float PLAYER_POSITION[] = {2.7f,  1.0f};
 
@@ -67,7 +67,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     _map2Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map2"));
     _map3Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map3"));
     _map4Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map4"));
-    _map5Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map5"));
+//    _map5Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map5"));
     
     
     _mapNextButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_mapnext"));
@@ -296,7 +296,7 @@ void LobbyScene::dispose() {
     _map2Node = nullptr;
     _map3Node = nullptr;
     _map4Node = nullptr;
-    _map5Node = nullptr;
+//    _map5Node = nullptr;
     _settingsButton = nullptr;
     _hatForwardButton = nullptr;
     _hatBackButton = nullptr;
@@ -393,7 +393,7 @@ void LobbyScene::update(float progress) {
         _map2Node->setVisible(false);
         _map3Node->setVisible(false);
         _map4Node->setVisible(false);
-        _map5Node->setVisible(false);
+//        _map5Node->setVisible(false);
     }
     else if (NetworkController::getMapSelected() == 2) {
         _map2Node->setVisible(true);
@@ -401,7 +401,7 @@ void LobbyScene::update(float progress) {
         _map1Node->setVisible(false);
         _map3Node->setVisible(false);
         _map4Node->setVisible(false);
-        _map5Node->setVisible(false);
+//        _map5Node->setVisible(false);
     }
     else if (NetworkController::getMapSelected() == 3) {
         _map3Node->setVisible(true);
@@ -409,7 +409,7 @@ void LobbyScene::update(float progress) {
         _map1Node->setVisible(false);
         _map2Node->setVisible(false);
         _map4Node->setVisible(false);
-        _map5Node->setVisible(false);
+//        _map5Node->setVisible(false);
     }
     else if (NetworkController::getMapSelected() == 4) {
         
@@ -418,17 +418,17 @@ void LobbyScene::update(float progress) {
         _map1Node->setVisible(false);
         _map2Node->setVisible(false);
         _map3Node->setVisible(false);
-        _map5Node->setVisible(false);
+//        _map5Node->setVisible(false);
     }
-    else if (NetworkController::getMapSelected() == 5) {
-        
-        _map5Node->setVisible(true);
-        _map5Node->setPosition(550, 100);
-        _map1Node->setVisible(false);
-        _map2Node->setVisible(false);
-        _map3Node->setVisible(false);
-        _map4Node->setVisible(false);
-    }
+//    else if (NetworkController::getMapSelected() == 5) {
+//
+//        _map5Node->setVisible(true);
+//        _map5Node->setPosition(550, 100);
+//        _map1Node->setVisible(false);
+//        _map2Node->setVisible(false);
+//        _map3Node->setVisible(false);
+//        _map4Node->setVisible(false);
+//    }
 //    }
     
     if (_settingsNode->backPressed()) {

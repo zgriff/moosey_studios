@@ -52,7 +52,7 @@ protected:
     std::shared_ptr<cugl::scene2::PolygonNode> _map2Node;
     std::shared_ptr<cugl::scene2::PolygonNode> _map3Node;
     std::shared_ptr<cugl::scene2::PolygonNode> _map4Node;
-    std::shared_ptr<cugl::scene2::PolygonNode> _map5Node;
+//    std::shared_ptr<cugl::scene2::PolygonNode> _map5Node;
     string _selectedMap = GRASS_MAP_KEY;
     std::shared_ptr<cugl::scene2::SceneNode> _codeNode;
     std::vector<std::shared_ptr<cugl::scene2::Label>> _playerLabels;
