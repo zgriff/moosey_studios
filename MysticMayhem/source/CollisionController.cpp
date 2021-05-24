@@ -75,10 +75,10 @@ void CollisionController::hostBeginContact(b2Contact* contact){
             SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - localPlayer->getPosition());
         }*/
 
-        if (p->getCurrElement() != Element::None && p->getCurrElement() != Element::Aether && s->getActive()) {
+        if (p->getCurrElement() != Element::None && p->getCurrElement() != Element::Aether && s->getActive() && p->canSwap()) {
             p->setElement(p->getPreyElement());
             SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - localPlayer->getPosition());
-            if (!p->getIsInvisible()) {
+            if (!p->getIsInvisible() && !p->getIsIntangible()) {
                 s->setLastUsed(time(NULL));
                 s->setActive(false);
             } 
