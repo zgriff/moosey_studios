@@ -19,7 +19,10 @@ namespace NetworkController {
         //Networked usernames indexed by playerId
         array<std::string, 8> usernames = {"Player 1", "Player 2", "Player 3" , "Player 4" , 
             "Player 5" , "Player 6" , "Player 7" , "Player 8" };
-    
+        
+        bool disconnected = false;
+        std::string disconnectedMessage = "";
+
         std::unordered_map<int,std::tuple<int,int,Element>> customizations;
     
         int _networkFrame;
@@ -87,6 +90,10 @@ namespace NetworkController {
         return network->getNumPlayers();
     }
 
+    bool isPlayerActive(uint8_t playerID) {
+        return network->isPlayerActive(playerID);
+    }
+
     std::string getUsername() {
         if (username == "") {
             return "Player";
@@ -105,6 +112,12 @@ namespace NetworkController {
     void setUsername(std::string name, int playerId) {
         usernames[playerId] = name;
     }
+
+    bool getDisconnected() { return disconnected; }
+
+    void setDisconnected(bool b) { disconnected = b; }
+
+    std::string getDisconnectedMessage() { return disconnectedMessage; }
 
     std::unordered_map<int,std::tuple<int,int,Element>> getCustomizations() {
         return customizations;
@@ -152,6 +165,30 @@ struct LobbyHandler {
     void operator()(NetworkData::SetUsername& data) const {
         int id1 = data.playerId;
         string username1 = data.username;
+        char nullChar = 0;
+        for (int i = 0; i < id1; i++) {
+            if (username1 == usernames[i]) {
+                char lastChar = username1.back();
+                if (isdigit(lastChar)) {
+                    if (lastChar == '9') {
+                        username1 = username1.substr(0, username1.size() - 1) + "2";
+                    }
+                    else {
+                        int charToInt = lastChar - '0' + 1;
+                        username1 = username1.substr(0, username1.size() - 1) + std::to_string(charToInt);
+                    }
+                }
+                else {
+                    username1 = username1 + "2";
+                }
+                sendSetUsername(id1, username1);
+            }
+        }
+        if (network->getPlayerID().has_value()) {
+            if (network->getPlayerID().value() == id1) {
+                username = username1;
+            }
+        }
         usernames[id1] = username1;
     }
     void operator()(NetworkData::SetCustomization& data) const {
@@ -274,6 +311,16 @@ struct GameHandler {
         projectile->getSceneNode()->setVisible(false);
         projectile->setLinearVelocity(Vec2(0, 0));
         projectile->setPosition(Vec2(0, 0));
+    }
+    void operator()(NetworkData::LeftGame& data) const {
+        auto player = world->getPlayer(data.playerId);
+        player->setActive(false);
+        player->getSceneNode()->setVisible(false);
+        player->setLinearVelocity(Vec2(0, 0));
+        player->setPosition(Vec2(0, 0));
+        disconnected = true;
+        disconnectedMessage = usernames[data.playerId] + " has disconnected.";
+        //player->deactivatePhysics(world); 
     }
     //generic. do nothing
     template<typename T>
@@ -413,6 +460,12 @@ struct GameHandler {
         NetworkData::SetMap data;
         data.mapNumber = i;
         CULog("sending set map to %d", i);
+        send(NetworkData(data));
+    }
+
+    void sendLeftGame(int i) {
+        NetworkData::LeftGame data;
+        data.playerId = i;
         send(NetworkData(data));
     }
 

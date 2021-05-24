@@ -70,9 +70,13 @@ protected:
     time_t _hatchedTime;
     time_t _startTime;
     time_t prevTime;
+    time_t disconnectedMessageTime;
 
     bool _startTimePassed;
     std::chrono::system_clock::time_point _beginStartTimer;
+
+    bool _endGameEarly;
+    std::set<int> _playersExited;
 
     /** Reference to the UI element exposing the frame rate */
     std::shared_ptr<cugl::scene2::Label> _framesHUD;
@@ -81,6 +85,7 @@ protected:
     std::shared_ptr<cugl::scene2::Label> _timerHUD;
 
     std::shared_ptr<cugl::scene2::Label> _countdownHUD;
+    std::shared_ptr<cugl::scene2::Label> _disconnectHUD;
     
     /** Whether or not debug mode is active */
     bool _debug;
@@ -224,6 +229,8 @@ public:
     std::string getWinner();
     
     std::shared_ptr<Settings> getSettings() { return _settingsNode; }
+
+    bool getEndGameEarly() { return _endGameEarly; }
 
 };
 

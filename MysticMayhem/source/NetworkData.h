@@ -89,8 +89,13 @@ public:
     struct SetMap {
         uint8_t mapNumber;
     };
+    struct LeftGame {
+        uint8_t playerId;
+    };
     
-    typedef std::variant<None, Ready, Unready, Tag, StartGame, OrbRespawn, EggRespawn, EggCapture, EggHatch, OrbCapture, Swap, Position, ElementChange, ProjectileFired, ProjectileGone, SetUsername, SetCustomization, SetMap> DATA_T;
+    typedef std::variant<None, Ready, Unready, Tag, StartGame, OrbRespawn, EggRespawn, EggCapture, EggHatch, OrbCapture, 
+        Swap, Position, ElementChange, ProjectileFired, ProjectileGone, SetUsername, SetCustomization, SetMap, 
+        LeftGame> DATA_T;
 
     DATA_T data;
     

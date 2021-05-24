@@ -22,6 +22,7 @@ protected:
     std::shared_ptr<cugl::scene2::Button> _playAgainButton;
     std::shared_ptr<cugl::scene2::Button> _mainMenuButton; //returns to main menu
     std::shared_ptr<cugl::scene2::Label> _resultLabel;
+    std::shared_ptr<cugl::scene2::Label> _hostDisconnectLabel;
     std::shared_ptr<cugl::scene2::Label> _player1ScoreLabel;
     std::shared_ptr<cugl::scene2::Label> _player1NameLabel;
 //    std::vector<std::shared_ptr<cugl::scene2::Label>>_playerScores;
@@ -46,7 +47,7 @@ public:
      */
     void dispose();
     
-    bool init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<std::string, int> results, std::string message);
+    bool init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<std::string, int> results, std::string message, bool endEarly);
 
     
 #pragma mark -

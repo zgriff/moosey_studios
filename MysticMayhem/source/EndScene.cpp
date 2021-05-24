@@ -29,7 +29,8 @@ using namespace cugl;
  *
  * @return true if the controller is initialized properly, false otherwise.
  */
-bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<std::string, int> results, std::string message) {
+bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<std::string, int> results, std::string message, 
+    bool endEarly) {
     // Initialize the scene to a locked width
     Size dimen = Application::get()->getDisplaySize();
     dimen *= SCENE_SIZE/dimen.width; // Lock the game to a reasonable resolution
@@ -83,16 +84,22 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
 
     _resultLabel = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_results"));
     _resultLabel->setText("Results:");
+
+    _hostDisconnectLabel = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_hostDisconnect"));
+    _hostDisconnectLabel->setVisible(endEarly);
+    _hostDisconnectLabel->setColor(cugl::Color4::RED);
+    _hostDisconnectLabel->setScale(0.5);
     
 
     typedef std::function<bool(std::pair<std::string, int>, std::pair<std::string, int>)> Comparator;
 
     Comparator compFunctor =
-            [](std::pair<std::string, int> elem1 ,std::pair<std::string, int> elem2)
+            [](std::pair<std::string, int> elem1, std::pair<std::string, int> elem2)
             {
                 return elem1.second >= elem2.second;
             };
     
+    //std::set<std::pair<std::string, int>, Comparator> setPlayerScores = {};
     // sorting by the player scores is happening here
     std::set<std::pair<std::string, int>, Comparator> setPlayerScores(
             _resultsMap.begin(), _resultsMap.end(), compFunctor);
@@ -169,6 +176,7 @@ void EndScene::dispose() {
     _player1ScoreLabel = nullptr;
     _player1NameLabel = nullptr;
     _resultLabel = nullptr;
+    _hostDisconnectLabel = nullptr;
     _mainMenu = false;
     _playAgain = false;
     _active = false;
