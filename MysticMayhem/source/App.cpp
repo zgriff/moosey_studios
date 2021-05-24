@@ -191,6 +191,7 @@ void App::onResume() {
                  _results.init(_assets, _gameplay.getResults(), _gameplay.getWinner());
                  _gameplay.getSettings()->removeAllChildren();
                  _gameplay.getSettings()->dispose();
+                 _gameplay.clearListeners();
                  _gameplay.dispose();
  //                _gameplay.reset();
                  _currentScene = SceneSelect::Results;

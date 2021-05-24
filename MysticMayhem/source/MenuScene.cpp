@@ -334,7 +334,9 @@ void MenuScene::setActive(bool value) {
         for (int i = 0; i < (int)_codeNode->getChildren().size(); i++) {
             auto nodeChild = _codeNode->getChild(i)->getChildren();
             for (auto it = nodeChild.begin(); it != nodeChild.end(); it++) {
-                (*it)->setVisible(false);
+                if ((*it)->getName() != "label") {
+                    (*it)->setVisible(false);
+                }
             }
         }
 //        _codeField->deactivate();
