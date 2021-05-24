@@ -171,15 +171,15 @@ struct LobbyHandler {
                 char lastChar = username1.back();
                 if (isdigit(lastChar)) {
                     if (lastChar == '9') {
-                        username1 = username1.substr(0, username1.size() - 1) + "2";
+                        username1 = username1.substr(0, username1.size() - 1) + " 2";
                     }
                     else {
                         int charToInt = lastChar - '0' + 1;
-                        username1 = username1.substr(0, username1.size() - 1) + std::to_string(charToInt);
+                        username1 = username1.substr(0, username1.size() - 1) + " " + std::to_string(charToInt);
                     }
                 }
                 else {
-                    username1 = username1 + "2";
+                    username1 = username1 + " 2";
                 }
                 sendSetUsername(id1, username1);
             }
