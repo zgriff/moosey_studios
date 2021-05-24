@@ -84,6 +84,11 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
 
     _resultLabel = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_results"));
     _resultLabel->setText("Results:");
+
+    _hostDisconnectLabel = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("end_hostDisconnect"));
+    _hostDisconnectLabel->setVisible(true);
+    _hostDisconnectLabel->setColor(cugl::Color4::RED);
+    _hostDisconnectLabel->setScale(0.5);
     
 
     typedef std::function<bool(std::pair<std::string, int>, std::pair<std::string, int>)> Comparator;
@@ -171,6 +176,7 @@ void EndScene::dispose() {
     _player1ScoreLabel = nullptr;
     _player1NameLabel = nullptr;
     _resultLabel = nullptr;
+    _hostDisconnectLabel = nullptr;
     _mainMenu = false;
     _playAgain = false;
     _active = false;

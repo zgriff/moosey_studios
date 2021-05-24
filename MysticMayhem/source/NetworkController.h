@@ -67,6 +67,10 @@ namespace NetworkController {
     void setUsername(std::string name);
     void setUsername(std::string name, int playerId);
 
+    bool getDisconnected();
+    void setDisconnected(bool b);
+    std::string getDisconnectedMessage();
+
     void setReadyCallback(std::function<void(uint8_t, bool)> cb);
     void setStartCallback (std::function<void(void)> cb);
 

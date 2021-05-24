@@ -158,6 +158,10 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _countdownHUD->setColor(Color4::YELLOW);
     _countdownHUD->setText("READY");
     _countdownHUD->setVisible(true);
+    _disconnectHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_disconnect"));
+    _disconnectHUD->setColor(Color4::RED);
+    _disconnectHUD->setVisible(false);
+    _disconnectHUD->setScale(0.5);
     _startTimePassed = false;
 
     _endGameEarly = false;
@@ -227,6 +231,7 @@ void GameScene::dispose() {
     _UInode = nullptr;
     _scoreHUD = nullptr;
     _countdownHUD = nullptr;
+    _disconnectHUD = nullptr;
     _hatchnode = nullptr;
     _hatchbar = nullptr;
     _abilitybar = nullptr;
@@ -403,6 +408,18 @@ void GameScene::update(float timestep) {
     if (!NetworkController::isPlayerActive(0) && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Reconnecting) {
         CULog("host is dc");
         _endGameEarly = true;
+    }
+
+    if (NetworkController::getDisconnected()) {
+        disconnectedMessageTime = time(NULL);
+        _disconnectHUD->setText(NetworkController::getDisconnectedMessage());
+        _disconnectHUD->setVisible(true);
+        NetworkController::setDisconnected(false);
+    }
+    if (_disconnectHUD->isVisible()) {
+        if (time(NULL) - disconnectedMessageTime > 3) {
+            _disconnectHUD->setVisible(false);
+        }
     }
     
 

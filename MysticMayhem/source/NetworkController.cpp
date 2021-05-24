@@ -19,7 +19,10 @@ namespace NetworkController {
         //Networked usernames indexed by playerId
         array<std::string, 8> usernames = {"Player 1", "Player 2", "Player 3" , "Player 4" , 
             "Player 5" , "Player 6" , "Player 7" , "Player 8" };
-    
+        
+        bool disconnected = false;
+        std::string disconnectedMessage = "";
+
         std::unordered_map<int,std::tuple<int,int,Element>> customizations;
     
         int _networkFrame;
@@ -109,6 +112,12 @@ namespace NetworkController {
     void setUsername(std::string name, int playerId) {
         usernames[playerId] = name;
     }
+
+    bool getDisconnected() { return disconnected; }
+
+    void setDisconnected(bool b) { disconnected = b; }
+
+    std::string getDisconnectedMessage() { return disconnectedMessage; }
 
     std::unordered_map<int,std::tuple<int,int,Element>> getCustomizations() {
         return customizations;
@@ -299,6 +308,8 @@ struct GameHandler {
         player->getSceneNode()->setVisible(false);
         player->setLinearVelocity(Vec2(0, 0));
         player->setPosition(Vec2(0, 0));
+        disconnected = true;
+        disconnectedMessage = usernames[data.playerId] + " has disconnected.";
         //player->deactivatePhysics(world); 
     }
     //generic. do nothing
