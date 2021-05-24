@@ -453,12 +453,14 @@ void Player::update(float delta) {
                 (*it).second->setVisible(false);
             }
         }
+        _usernameNode->setVisible(false);
     } else {
         for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
             if ((*it).first != _explosionKey && (*it).first != _staffTagKey) {
                 (*it).second->setVisible(true);
             }
         }
+        _usernameNode->setVisible(true);
     }
 }
 
