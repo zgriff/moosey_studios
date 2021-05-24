@@ -15,6 +15,7 @@ using namespace cugl;
 
 /** This is the ideal size of the logo */
 #define SCENE_SIZE  1024
+#define NUM_CODE_ICONS  7
 
 float PLAYER_POSITION[] = {2.7f,  1.0f};
 
@@ -161,7 +162,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     });
 
     
-    _roomId = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("lobby_roomId"));
+    _codeNode = std::dynamic_pointer_cast<scene2::SceneNode>(assets->get<scene2::SceneNode>("lobby_codenode"));
     
     
     auto kids = assets->get<scene2::SceneNode>("lobby_players")->getChildren();
@@ -296,6 +297,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
  */
 void LobbyScene::dispose() {
     removeAllChildren();
+    _playerCustom = nullptr;
     _startButton = nullptr;
     _map1Button = nullptr;
     _map2Button = nullptr;
@@ -310,6 +312,10 @@ void LobbyScene::dispose() {
     _eleBackButton = nullptr;
     _mapNextButton = nullptr;
     _mapPrevButton = nullptr;
+    _settingsNode = nullptr;
+    _codeNode = nullptr;
+    _layer = nullptr;
+    _background = nullptr;
     _playerLabels.clear();
     _assets = nullptr;
     _active = false;
@@ -346,10 +352,22 @@ void LobbyScene::update(float progress) {
     NetworkController::step();
     if (_currRoomId == "") {
         _currRoomId = NetworkController::getRoomId();
-//        CULog("room id in lobby %s", _currRoomId.c_str());
-        stringstream ss;
-        ss << "Room Id: " << _currRoomId;
-        _roomId->setText(ss.str());
+        if (_currRoomId != "") {
+            int decimalCode = std::stoi(_currRoomId);
+            std::string heptCode = "";
+            int counter = (int) _codeNode->getChildren().size()-1;
+            while (decimalCode != 0) {
+                CUAssertLog(counter >= 0, "Code counter error");
+                _codeNode->getChild(counter)->getChildByName(buttonToCode(decimalCode % 7))->setVisible(true);
+                decimalCode = floor(decimalCode / 7);
+                counter--;
+            }
+            if (counter != -1) {
+                _codeNode->getChild(counter)->getChildByName(buttonToCode(0))->setVisible(true);
+            }
+            
+        }
+        
     }
     std::string s = NetworkController::getRoomId();
     
@@ -433,6 +451,14 @@ void LobbyScene::setActive(bool value) {
         _mapNextButton->activate();
         _mapPrevButton->activate();
     } else {
+        for (int i = 0; i < (int)_codeNode->getChildren().size(); i++) {
+            auto nodeChild = _codeNode->getChild(i)->getChildren();
+            for (auto it = nodeChild.begin(); it != nodeChild.end(); it++) {
+                if ((*it)->getName() != "label") {
+                    (*it)->setVisible(false);
+                }
+            }
+        }
         _startButton->deactivate();
         _map1Button->deactivate();
         _map2Button->deactivate();
@@ -457,4 +483,35 @@ void LobbyScene::setActive(bool value) {
 //        _joinButton->deactivate();
 //        _codeField->deactivate();
 //    }
+}
+
+
+std::string LobbyScene::buttonToCode(int button) {
+    std::string result = "";
+    switch (button) {
+        case 0:
+            result = "fire";
+            break;
+        case 1:
+            result = "water";
+            break;
+        case 2:
+            result = "leaf";
+            break;
+        case 3:
+            result = "egg";
+            break;
+        case 4:
+            result = "orb";
+            break;
+        case 5:
+            result = "tree";
+            break;
+        case 6:
+            result = "bush";
+            break;
+        default:
+            break;
+    }
+    return result;
 }

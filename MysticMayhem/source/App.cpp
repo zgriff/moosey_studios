@@ -145,8 +145,10 @@ void App::onResume() {
  //                CULog("menu scene");
                  if((_menu.createPressed() || _menu.joinPressed()) && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected){
                      _menu.setActive(false);
+                     _menu.getSettings()->clearListeners();
                      _menu.getSettings()->removeAllChildren();
                      _menu.getSettings()->dispose();
+                     _menu.clearListeners();
                      _menu.removeAllChildren();
                      _menu.dispose();
                      _lobby.init(_assets);
@@ -157,6 +159,7 @@ void App::onResume() {
              }
              else {
                  _menu.setActive(false);
+                 _menu.clearListeners();
                  _menu.removeAllChildren();
                  _menu.dispose();
                  _lobby.init(_assets);
@@ -170,6 +173,7 @@ void App::onResume() {
                  _lobby.update(0.01f);
              } else {
                  _lobby.setActive(false);
+                 _lobby.getSettings()->clearListeners();
                  _lobby.getSettings()->removeAllChildren();
                  _lobby.getSettings()->dispose();
                  _lobby.clearListeners();
@@ -187,8 +191,10 @@ void App::onResume() {
              _gameplay.update(timestep);
              if (time(NULL) - startTimer >= gameTimer || _gameplay.getEndGameEarly()) {
                  _results.init(_assets, _gameplay.getResults(), _gameplay.getWinner(), _gameplay.getEndGameEarly());
+                 _gameplay.getSettings()->clearListeners();
                  _gameplay.getSettings()->removeAllChildren();
                  _gameplay.getSettings()->dispose();
+                 _gameplay.clearListeners();
                  _gameplay.dispose();
  //                _gameplay.reset();
                  _currentScene = SceneSelect::Results;
@@ -199,8 +205,10 @@ void App::onResume() {
                      CULog("leave game in app");
                      NetworkController::sendLeftGame(NetworkController::getPlayerId().value());
                      NetworkController::destroyConn();
+                     _gameplay.getSettings()->clearListeners();
                      _gameplay.getSettings()->removeAllChildren();
                      _gameplay.getSettings()->dispose();
+                     _gameplay.clearListeners();
                      _gameplay.dispose();
                      _menu.init(_assets);
                      _currentScene = SceneSelect::Menu;

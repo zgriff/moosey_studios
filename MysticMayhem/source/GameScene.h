@@ -144,6 +144,8 @@ public:
      */
     void dispose() override;
     
+    void clearListeners();
+    
     
     
     /**

@@ -93,9 +93,28 @@ bool Settings::init(const std::shared_ptr<AssetManager>& assets, bool inGame) {
  */
 void Settings::dispose() {
 //    removeAllChildren();
+    _musicVolume = nullptr;
+    _leavegameButton = nullptr;
     _soundVolume = nullptr;
+    _backButton = nullptr;
     _back = false;
     _leaveGame = false;
+}
+
+void Settings::clearListeners() {
+    if (_musicVolume != nullptr) {
+        _musicVolume->clearListeners();
+    }
+    if (_leavegameButton != nullptr) {
+        _leavegameButton->clearListeners();
+    }
+    if (_soundVolume != nullptr) {
+        _soundVolume->clearListeners();
+    }
+    if (_backButton != nullptr) {
+        _backButton->clearListeners();
+    }
+
 }
 
 void Settings::setActive(bool b) {

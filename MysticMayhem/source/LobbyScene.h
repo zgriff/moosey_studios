@@ -53,7 +53,7 @@ protected:
     std::shared_ptr<cugl::scene2::Button> _map3Button;
     std::shared_ptr<cugl::scene2::Button> _map4Button;
     string _selectedMap = GRASS_MAP_KEY;
-    std::shared_ptr<cugl::scene2::Label> _roomId;
+    std::shared_ptr<cugl::scene2::SceneNode> _codeNode;
     std::vector<std::shared_ptr<cugl::scene2::Label>> _playerLabels;
     std::shared_ptr<Settings> _settingsNode;
     std::shared_ptr<cugl::scene2::SceneNode> _layer;
@@ -68,6 +68,7 @@ protected:
     bool _playAgain;
 //    int _movement;
         
+    std::string buttonToCode(int button);
 
 public:
 #pragma mark -

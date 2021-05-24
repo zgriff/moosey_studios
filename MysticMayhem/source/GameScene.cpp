@@ -266,6 +266,10 @@ void GameScene::dispose() {
     _settings = false;
 }
 
+void GameScene::clearListeners() {
+    _settingsButton->clearListeners();
+}
+
 
 #pragma mark -
 #pragma mark Gameplay Handling

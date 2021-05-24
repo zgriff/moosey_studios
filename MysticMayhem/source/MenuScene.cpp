@@ -13,7 +13,10 @@
 using namespace cugl;
 
 /** This is the ideal size of the logo */
-#define SCENE_SIZE  1024
+#define SCENE_SIZE      1024
+
+#define CODE_LENGTH     6
+#define NUM_CODE_ICONS  7
 
 #pragma mark -
 #pragma mark Constructors
@@ -63,8 +66,6 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _joinButton->deactivate();
         _usernameField->deactivate();
         _usernameField->setVisible(false);
-//        _slider->setVisible(false);
-//        _slider->deactivate();
 //        _label->setVisible(false);
 //        _joinButton->dispose();
         this->_active = down;
@@ -75,8 +76,6 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
     _joinButton->addListener([=](const std::string& name, bool down) {
         CULog("join button pressed");
         _host = false;
-//        _slider->setVisible(false);
-//        _slider->deactivate();
 //        _label->setVisible(false);
         _hostButton->setVisible(false);
         _hostButton->deactivate();
@@ -85,8 +84,18 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _usernameLabel->setVisible(false);
         _usernamePlate->setVisible(false);
         _joinButton->setVisible(false);
-        _codeField->activate();
-        _codeField->setVisible(true);
+        _codeNode->setVisible(true);
+        _lobbyButton->setVisible(true);
+        _lobbyButton->activate();
+        _deleteButton->setVisible(true);
+        _deleteButton->activate();
+        for (int i = 0; i < NUM_CODE_ICONS; i++) {
+            _codeButtons[i]->activate();
+            _codeButtons[i]->setVisible(true);
+            _codeIcons[i]->setVisible(true);
+        }
+//        _codeField->activate();
+//        _codeField->setVisible(true);
         _join = true;
         _exitJoinButton->setVisible(true);
         _exitJoinButton->activate();
@@ -110,8 +119,16 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _hostButton->setVisible(false);
         _usernamePlate->setVisible(false);
         if (_join) {
-            _codeField->deactivate();
-            _codeField->setVisible(false);
+            _codeNode->setVisible(false);
+            _lobbyButton->setVisible(false);
+            _lobbyButton->deactivate();
+            _deleteButton->setVisible(false);
+            _deleteButton->deactivate();
+            for (int i = 0; i < NUM_CODE_ICONS; i++) {
+                _codeButtons[i]->deactivate();
+                _codeButtons[i]->setVisible(false);
+                _codeIcons[i]->setVisible(false);
+            }
         }
         _joinButton->deactivate();
         _hostButton->deactivate();
@@ -129,51 +146,83 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
         _usernamePlate->setVisible(true);
         _joinButton->setVisible(true);
         _joinButton->activate();
-        _codeField->deactivate();
-        _codeField->setVisible(false);
+        _codeNode->setVisible(false);
+        _lobbyButton->setVisible(false);
+        _lobbyButton->deactivate();
+        _deleteButton->setVisible(false);
+        _deleteButton->deactivate();
+        for (int i = 0; i < NUM_CODE_ICONS; i++) {
+            _codeButtons[i]->deactivate();
+            _codeButtons[i]->setVisible(false);
+            _codeIcons[i]->setVisible(false);
+        }
         _join = false;
         _exitJoinButton->setVisible(false);
     });
     
-//    _slider = std::dynamic_pointer_cast<scene2::Slider>(assets->get<scene2::SceneNode>("menu_slider"));
-//    _label  = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_slider_label"));
-//    _label->setText("Always Forward");
-//    _movement = 0;
-//    _slider->addListener([=](const std::string& name, float value) {
-//        if (value != _sliderValue) {
-//            _sliderValue = value;
-//            _movement = static_cast<int>(value);
-//            switch (_movement) {
-//                case 0:
-//                    _label->setText("Always Forward");
-//                    break;
-//                case 1:
-//                    _label->setText("Swipe Force");
-//                    break;
-//                case 2:
-//                    _label->setText("Tilt to Move");
-//                    break;
-//                case 3:
-//                    _label->setText("Golfing");
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//    });
-//
-//    _slider->setVisible(false);
-//    _label->setVisible(false);
+
+//    int button_offset = 100;
+    for (int i = 0; i < NUM_CODE_ICONS; i++) {
+        auto codeButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_joincode"+to_string(i+1)));
+        _codeButtons.push_back(codeButton);
+        auto codeIcon = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("menu_codeicon"+to_string(i+1)));
+        _codeIcons.push_back(codeIcon);
+    }
     
-    _codeField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_joincode"));
-    _codeField->addTypeListener([=](const std::string& name, const std::string& value) {
-        CULog("Change to %s", value.c_str());
+    _codeNode = std::dynamic_pointer_cast<scene2::SceneNode>(assets->get<scene2::SceneNode>("menu_codenode"));
+    
+    _codeCount = 0;
+    int buttonId = 0;
+    for (auto it = _codeButtons.begin(); it != _codeButtons.end(); it++) {
+        (*it)->addListener([=](const std::string& name, bool down) {
+            if (down && _codeCount < CODE_LENGTH) {
+                auto icon = std::dynamic_pointer_cast<scene2::PolygonNode>(_codeNode->getChild(_codeCount)->getChildByName(buttonToCode(buttonId)));
+                icon->setVisible(true);
+                _joinCode.push_back(buttonId);
+                _codeCount++;
+            }
         });
-    _codeField->addExitListener([=](const std::string& name, const std::string& value) {
-        CULog("Finish to %s", value.c_str());
-        NetworkController::joinGame(value);
-        //this->_active = false;
+        buttonId++;
+    }
+    
+    _deleteButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_codeback"));
+    _deleteButton->setVisible(false);
+    _deleteButton->deactivate();
+    _deleteButton->addListener([=](const std::string& name, bool down) {
+        if (down && _codeCount != 0) {
+            auto children = _codeNode->getChild(_codeCount-1)->getChildren();
+            for (auto it = children.begin(); it != children.end(); it++) {
+                if ((*it)->getName() != "label") {
+                    (*it)->setVisible(false);
+                }
+            }
+            _joinCode.pop_back();
+            _codeCount--;
+        }
     });
+    
+    _lobbyButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_joinlobby"));
+    _lobbyButton->setVisible(false);
+    _lobbyButton->deactivate();
+    _lobbyButton->addListener([=](const std::string& name, bool down) {
+        if (down) {
+            int value = 0;
+            for (int i = 0; i < _joinCode.size(); i++) {
+                value += _joinCode[i]*(pow(7,(_joinCode.size()-i-1)));
+            }
+            NetworkController::joinGame(to_string(value));
+        }
+    });
+    
+//    _codeField = std::dynamic_pointer_cast<scene2::TextField>(assets->get<scene2::SceneNode>("menu_joincode"));
+//    _codeField->addTypeListener([=](const std::string& name, const std::string& value) {
+//        CULog("Change to %s", value.c_str());
+//        });
+//    _codeField->addExitListener([=](const std::string& name, const std::string& value) {
+//        CULog("Finish to %s", value.c_str());
+//        NetworkController::joinGame(value);
+//        //this->_active = false;
+//    });
     
     _usernameLabel = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("menu_usernamelabel"));
     _usernameLabel->setVisible(true);
@@ -194,10 +243,8 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
 //    _usernameField->setPosition(dimen.width/2, dimen.height/6);
     
     Input::activate<TextInput>();
-    _codeField->setVisible(false);
-//    if(_active) {
-//        _slider->activate();
-//    }
+//    _codeField->setVisible(false);
+
     Application::get()->setClearColor(Color4(255,255,255,255));
     return true;
 }
@@ -207,19 +254,38 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
  */
 void MenuScene::dispose() {
 //    removeAllChildren();
+    _codeNode = nullptr;
+    _joinCode.clear();
+    _codeIcons.clear();
+    _codeButtons.clear();
+    _deleteButton = nullptr;
+    _lobbyButton = nullptr;
     _hostButton = nullptr;
     _joinButton = nullptr;
+    _exitJoinButton = nullptr;
     _settingsButton = nullptr;
 //    Input::deactivate<TextInput>();
-    _codeField = nullptr;
+//    _codeField = nullptr;
     _usernameField = nullptr;
-    _slider = nullptr;
+    _usernameLabel = nullptr;
     _assets = nullptr;
     _active = false;
     _create = false;
     _join = false;
     _settings = false;
     _settingsNode = nullptr;
+}
+
+void MenuScene::clearListeners() {
+    _hostButton->clearListeners();
+    _joinButton->clearListeners();
+    _lobbyButton->clearListeners();
+    _exitJoinButton->clearListeners();
+    _settingsButton->clearListeners();
+    _deleteButton->clearListeners();
+    for (auto it = _codeButtons.begin(); it != _codeButtons.end(); it++) {
+        (*it)->clearListeners();
+    }
 }
 
 
@@ -244,23 +310,47 @@ void MenuScene::setActive(bool value) {
     _active = value;
 //    Input::activate<TextInput>();
     if (value && (!_hostButton->isActive() || !_joinButton->isActive())) {
-//        _slider->setVisible(true);
-//        _label->setVisible(true);
-//        _slider->activate();
         _hostButton->activate();
         _joinButton->activate();
         _hostButton->setVisible(true);
         _joinButton->setVisible(true);
-        _codeField->deactivate();
-        _codeField->setVisible(false);
+        _codeNode->setVisible(false);
+        _lobbyButton->setVisible(false);
+        _lobbyButton->deactivate();
+        _deleteButton->setVisible(false);
+        _deleteButton->deactivate();
+        for (int i = 0; i < NUM_CODE_ICONS; i++) {
+            _codeButtons[i]->deactivate();
+            _codeButtons[i]->setVisible(false);
+            _codeIcons[i]->setVisible(false);
+        }
+//        _codeField->deactivate();
+//        _codeField->setVisible(false);
         _usernameField->activate();
-    } else if (!value && (_hostButton->isActive() || _joinButton->isActive() || !_codeField->isActive())) {
+    } else if (!value && (_hostButton->isActive() || _joinButton->isActive())) {
         _hostButton->deactivate();
         _joinButton->deactivate();
-        _codeField->deactivate();
+        _codeNode->setVisible(false);
+        _lobbyButton->setVisible(false);
+        _lobbyButton->deactivate();
+        _deleteButton->setVisible(false);
+        _deleteButton->deactivate();
+        for (int i = 0; i < NUM_CODE_ICONS; i++) {
+            _codeButtons[i]->deactivate();
+            _codeButtons[i]->setVisible(false);
+            _codeIcons[i]->setVisible(false);
+        }
+        for (int i = 0; i < (int)_codeNode->getChildren().size(); i++) {
+            auto nodeChild = _codeNode->getChild(i)->getChildren();
+            for (auto it = nodeChild.begin(); it != nodeChild.end(); it++) {
+                if ((*it)->getName() != "label") {
+                    (*it)->setVisible(false);
+                }
+            }
+        }
+//        _codeField->deactivate();
         _usernameField->deactivate();
         _settingsButton->deactivate();
-//        _slider->deactivate();
     }
 }
 
@@ -273,8 +363,18 @@ void MenuScene::update() {
         _background->setColor(Color4(255,255,255,255));
         if (_join) {
 //            CULog("join true");
-            _codeField->activate();
-            _codeField->setVisible(true);
+            _codeNode->setVisible(true);
+            _lobbyButton->setVisible(true);
+            _lobbyButton->activate();
+            _deleteButton->setVisible(true);
+            _deleteButton->activate();
+            for (int i = 0; i < NUM_CODE_ICONS; i++) {
+                _codeButtons[i]->activate();
+                _codeButtons[i]->setVisible(true);
+                _codeIcons[i]->setVisible(true);
+            }
+//            _codeField->activate();
+//            _codeField->setVisible(true);
             _exitJoinButton->setVisible(true);
             _exitJoinButton->activate();
         }
@@ -294,4 +394,35 @@ void MenuScene::update() {
         CULog("MENU: settings visible");
     }
     
+}
+
+
+std::string MenuScene::buttonToCode(int button) {
+    std::string result = "";
+    switch (button) {
+        case 0:
+            result = "fire";
+            break;
+        case 1:
+            result = "water";
+            break;
+        case 2:
+            result = "leaf";
+            break;
+        case 3:
+            result = "egg";
+            break;
+        case 4:
+            result = "orb";
+            break;
+        case 5:
+            result = "tree";
+            break;
+        case 6:
+            result = "bush";
+            break;
+        default:
+            break;
+    }
+    return result;
 }
