@@ -290,7 +290,6 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void LobbyScene::dispose() {
-    removeAllChildren();
     _playerCustom = nullptr;
     _startButton = nullptr;
     _map1Node = nullptr;
