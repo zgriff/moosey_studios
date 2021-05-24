@@ -49,6 +49,8 @@ protected:
     std::shared_ptr<cugl::scene2::TextField> _codeField;
     std::shared_ptr<cugl::scene2::TextField> _usernameField;
     std::shared_ptr<cugl::scene2::Label> _usernameLabel;
+
+    std::shared_ptr<cugl::scene2::SceneNode> _usernamePlate;
     std::shared_ptr<cugl::scene2::Label> _label;
     std::shared_ptr<Settings> _settingsNode;
     std::shared_ptr<cugl::scene2::SceneNode> _background;

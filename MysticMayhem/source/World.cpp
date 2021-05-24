@@ -145,7 +145,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         station->setLastUsed(time(NULL));
         station->setDebugColor(Color4::YELLOW);
         station->setDebugScene(_debugNode);
-        station->setID(0);
+        station->setID(it - _swapStations.begin());
         station->setTextures(swapStTexture);
         _worldNode->addChild(station->getSceneNode(),1);
     }

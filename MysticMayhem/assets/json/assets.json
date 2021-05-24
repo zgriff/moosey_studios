@@ -256,6 +256,12 @@
         },
         "customization": {
             "file": "textures/customization.png"
+        },
+        "name_plate": {
+            "file": "textures/name_backplate.png"
+        },
+        "element_triangle": {
+            "file": "textures/elemental_triangle.png"
         }
     },
     "sounds": {
@@ -308,6 +314,10 @@
         "username": {
             "file": "fonts/SHOWG.TTF",
             "size": 30
+        },
+        "username_label": {
+            "file": "fonts/SHOWG.TTF",
+            "size": 40
         },
         "joincode": {
             "file": "fonts/SHOWG.TTF",
@@ -365,7 +375,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": -60,
+                        "y_offset": -70,
                         "x_offset": 280,
                         "absolute": true
                     }
@@ -391,7 +401,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": -50,
+                        "y_offset": -60,
                         "x_offset": -100,
                         "absolute": true
                     }
@@ -419,6 +429,53 @@
                         "y_offset": 58,
                         "x_offset": -310,
                         "absolute": true
+                    }
+                },
+                "usernameplate": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "name_plate",
+                        "anchor": [ 0.5, 0.5 ]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": 0.2,
+                        "y_offset": 0.05
+                    }
+                },
+                "username": {
+                    "type": "TextField",
+                    "data": {
+                        "font": "username",
+                        "text": "",
+                        "foreground": [ 0,0,0, 150 ],
+                        "background": [ 0, 0, 0, 0 ],
+                        "size": [ 300, 50 ],
+                        "anchor": [ 0.5, 0.5 ]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": 0.2,
+                        "y_offset": 0.06
+                    }
+                },
+                "usernamelabel": {
+                    "type": "Label",
+                    "data": {
+                        "font": "username_label",
+                        "text": "Username: ",
+                        "foreground": [ 0, 0, 0, 200 ],
+                        "size": [ 100, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": -0.21,
+                        "y_offset": 0
                     }
                 },
                 "joinlobby": {
@@ -1464,40 +1521,6 @@
                         "x_offset": -10,
                         "y_offset": -40,
                         "absolute": true
-                    }
-                },
-                "username": {
-                    "type": "TextField",
-                    "data": {
-                        "font": "username",
-                        "text": "",
-                        "foreground": [ 255, 255, 255, 255 ],
-                        "background": [ 0, 0, 0, 255 ],
-                        "size": [ 300, 50 ],
-                        "anchor": [ 0.5, 0.5 ]
-                    },
-                    "layout": {
-                        "x_anchor": "center",
-                        "y_anchor": "middle",
-                        "x_offset": 0.2,
-                        "y_offset": 0.05
-                    }
-                },
-                "usernamelabel": {
-                    "type": "Label",
-                    "data": {
-                        "font": "username",
-                        "text": "Enter username: ",
-                        "foreground": [ 0, 0, 0, 255 ],
-                        "size": [ 100, 15 ],
-                        "valign": "bottom",
-                        "halign": "left"
-                    },
-                    "layout": {
-                        "x_anchor": "center",
-                        "y_anchor": "middle",
-                        "x_offset": -0.21,
-                        "y_offset": 0
                     }
                 }
             }
@@ -3021,7 +3044,7 @@
                     "data": {
                         "font": "results",
                         "text": "Winner: ",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3033,12 +3056,29 @@
                         "y_offset": 0.27
                     }
                 },
+                "hostDisconnect": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "*Host disconnected",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "center"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": 0,
+                        "y_offset": 0.35
+                    }
+                },
                 "playerscore1": {
                     "type": "Label",
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3055,7 +3095,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3070,7 +3110,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3085,7 +3125,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3100,7 +3140,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3115,7 +3155,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3130,7 +3170,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3145,7 +3185,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3160,7 +3200,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3177,7 +3217,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3192,7 +3232,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3207,7 +3247,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3222,7 +3262,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3237,7 +3277,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3252,7 +3292,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3267,7 +3307,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -3277,7 +3317,7 @@
                         "y_anchor": "middle"
                     }
                 },
-                "message" : {
+                "message": {
                     "type": "Label",
                     "data": {
                         "font": "results",
@@ -3412,6 +3452,23 @@
                         "y_offset": 0
                     }
                 },
+                "disconnect": {
+                    "type": "Label",
+                    "data": {
+                        "font": "ingame",
+                        "text": "Ready",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 500, 70 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "left",
+                        "y_anchor": "middle",
+                        "x_offset": 0,
+                        "y_offset": 0
+                    }
+                },
                 "bar": {
                     "type": "Progress",
                     "data": {
@@ -3480,8 +3537,8 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset" : -0.15,
-                        "y_offset" : -0.1
+                        "x_offset": -0.15,
+                        "y_offset": -0.1
                     }
                 },
                 "abilityBar": {

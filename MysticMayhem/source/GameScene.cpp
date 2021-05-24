@@ -42,6 +42,7 @@ using namespace std;
 /** baseline aspect ratio, 1468.604 is from 1280x720 */
 #define BASELINE_DIAGONAL 1468.60478005
 #define BASELINE_HEIGHT 720 //if we want to scale by height instead just change the places w/ length and diagonal to height
+#define SCENE_SIZE  1024
 
 #pragma mark -
 #pragma mark Constructors
@@ -153,12 +154,20 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_score"));
     _framesHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_frames"));
     _framesHUD->setPositionX(_framesHUD->getPositionX() + 100);
+    _framesHUD->setVisible(false);
     _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
     _countdownHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_countdown"));
     _countdownHUD->setColor(Color4::YELLOW);
     _countdownHUD->setText("READY");
     _countdownHUD->setVisible(true);
+    _disconnectHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_disconnect"));
+    _disconnectHUD->setColor(Color4::RED);
+    _disconnectHUD->setVisible(false);
+    _disconnectHUD->setScale(0.5);
     _startTimePassed = false;
+
+    _endGameEarly = false;
+    _playersExited = {};
     
     _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
     _hatchbar->setVisible(false);
@@ -178,6 +187,18 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _abilitybarFull->setProgress(1);
     _abilitybarFull->setVisible(false);
     
+    Size dimension = Application::get()->getDisplaySize();
+    dimension *= SCENE_SIZE/dimension.width;
+    auto elementTriTexture = assets->get<Texture>("element_triangle");
+    _elementTriangle = scene2::AnimationNode::alloc(elementTriTexture, 1, 3, 3);
+    _elementTriangle->setAnchor(Vec2::ANCHOR_CENTER);
+    _elementTriangle->setFrame(1);
+    _elementTriangle->setPosition(120, 1300);
+#ifdef CU_MOBILE
+    _elementTriangle->setPosition(120, 1500);
+#endif
+    
+    _UInode->addChild(_elementTriangle);
     
     _debugnode = _world->getDebugNode();
     
@@ -224,6 +245,7 @@ void GameScene::dispose() {
     _UInode = nullptr;
     _scoreHUD = nullptr;
     _countdownHUD = nullptr;
+    _disconnectHUD = nullptr;
     _hatchnode = nullptr;
     _hatchbar = nullptr;
     _abilitybar = nullptr;
@@ -378,6 +400,48 @@ void GameScene::update(float timestep) {
             getCamera()->update();
         }
     }
+
+    if (NetworkController::isHost()) {
+        bool anotherPlayerActive = false;
+        for (int i = 1; i < _world->getNumPlayers(); i++) {
+            CULog("checking if player connected %d", i);
+            if (_playersExited.find(i) == _playersExited.end() && !NetworkController::isPlayerActive(i)) {
+                NetworkController::sendLeftGame(i);
+                auto playerExited = _world->getPlayer(i);
+                playerExited->setActive(false);
+                playerExited->getSceneNode()->setVisible(false);
+                playerExited->setLinearVelocity(Vec2(0, 0));
+                playerExited->setPosition(Vec2(0, 0));
+                _playersExited.insert(i);
+            }
+            else if (NetworkController::isPlayerActive(i)) {
+                anotherPlayerActive = true;
+            }
+        }
+        if (!anotherPlayerActive && NetworkController::getNumPlayers() > 1) {
+            //All clients have left the game. Clients don't need this check as host will need to be in game with client.
+            _endGameEarly = true;
+        }
+    }
+    if (!NetworkController::isPlayerActive(0) && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Reconnecting) {
+        CULog("host is dc");
+        _endGameEarly = true;
+    }
+
+    if (NetworkController::getDisconnected()) {
+        disconnectedMessageTime = time(NULL);
+        _disconnectHUD->setText(NetworkController::getDisconnectedMessage());
+        _disconnectHUD->setVisible(true);
+        NetworkController::setDisconnected(false);
+    }
+    if (_disconnectHUD->isVisible()) {
+        if (time(NULL) - disconnectedMessageTime > 3) {
+            _disconnectHUD->setVisible(false);
+        }
+    }
+    
+
+    CULog("network status is %d", NetworkController::getStatus());
         // BEGIN PLAYER MOVEMENT //
     if (_player->getPC() && !_settings) {
         _playerController.readInput();
@@ -536,6 +600,23 @@ void GameScene::update(float timestep) {
         _settingsNode->setVisible(false);
         _settingsNode->setActive(false);
         _settings = false;
+    }
+    
+    //showing element triangle
+    if (_player->getCurrElement() == Element::Water) {
+        _elementTriangle->setFrame(1);
+        _elementTriangle->setColor(Color4(255, 255, 255, 255));
+    }
+    else if (_player->getCurrElement() == Element::Fire) {
+        _elementTriangle->setFrame(0);
+        _elementTriangle->setColor(Color4(255, 255, 255, 255));
+    }
+    else if (_player->getCurrElement() == Element::Grass) {
+        _elementTriangle->setFrame(2);
+        _elementTriangle->setColor(Color4(255, 255, 255, 255));
+    }
+    else if (_player->getCurrElement() == Element::None) {
+        _elementTriangle->setColor(Color4(255, 255, 255, 100));
     }
 }
 

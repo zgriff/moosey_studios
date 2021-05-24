@@ -342,6 +342,8 @@ public:
     const Rect& getBounds() const   { return _bounds; }
     
     void setNumPlayers(uint8_t num) {_numPlayers = num;}
+
+    int getNumPlayers() { return _numPlayers; }
     
     void setDebugNode(const std::shared_ptr<cugl::scene2::SceneNode> & debugNode){
         _debugNode = debugNode;
