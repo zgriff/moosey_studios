@@ -885,7 +885,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.mysticmayhem1;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -915,7 +915,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.mooseystudios.mysticmayhem1;
 				PROVISIONING_PROFILE_SPECIFIER = "";

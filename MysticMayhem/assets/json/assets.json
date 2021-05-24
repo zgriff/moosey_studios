@@ -3384,7 +3384,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "top",
-                        "y_offset": -0.1,
+                        "y_offset": -0.06,
                         "x_offset": -0.1
                     }
                 },
@@ -3402,7 +3402,7 @@
                         "x_anchor": "center",
                         "y_anchor": "top",
                         "x_offset": -0.04,
-                        "y_offset": -0.13
+                        "y_offset": -0.1
                     }
                 },
                 "score": {
@@ -3511,7 +3511,7 @@
                         "x_anchor": "right",
                         "y_anchor": "top",
                         "x_offset": 0,
-                        "y_offset": -0.1
+                        "y_offset": -0.065
                     }
                 },
                 "abilityBarFull": {
@@ -3525,7 +3525,7 @@
                         "x_anchor": "right",
                         "y_anchor": "top",
                         "x_offset": -0.15,
-                        "y_offset": -0.1
+                        "y_offset": -0.06
                     }
                 },
                 "abilityBar": {
@@ -3539,7 +3539,7 @@
                         "x_anchor": "right",
                         "y_anchor": "top",
                         "x_offset": -0.15,
-                        "y_offset": -0.1
+                        "y_offset": -0.06
                     },
                     "children": {
                         "abilityName": {

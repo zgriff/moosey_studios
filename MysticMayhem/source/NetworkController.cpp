@@ -277,8 +277,10 @@ struct GameHandler {
     void operator()(NetworkData::Swap & data) const {
         world->getPlayer(data.playerId)->setElement(data.newElement);
         auto s = world->getSwapStation(data.swapId);
-        s->setLastUsed(time(NULL));
-        s->setActive(false);
+        if (!world->getPlayer(data.playerId)->getIsInvisible() && !world->getPlayer(data.playerId)->getIsIntangible()) {
+            s->setLastUsed(time(NULL));
+            s->setActive(false);
+        }
         auto self = world->getPlayer(network->getPlayerID().value());
         SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - self->getPosition());
     }
