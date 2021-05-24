@@ -383,6 +383,10 @@ void LobbyScene::update(float progress) {
         }
     }
 
+    if (NetworkController::isHost()) {
+        NetworkController::sendSetMapSelected(NetworkController::getMapSelected());
+    }
+
 //    if (!NetworkController::isHost()) {
     if (NetworkController::getMapSelected() == 1) {
         _map1Node->setVisible(true);

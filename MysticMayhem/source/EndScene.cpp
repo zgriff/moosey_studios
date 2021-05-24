@@ -96,7 +96,9 @@ bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<
     Comparator compFunctor =
             [](std::pair<std::string, int> elem1, std::pair<std::string, int> elem2)
             {
-                return elem1.second >= elem2.second;
+                if (elem1.second == elem2.second)
+                    return elem1.first < elem2.first;
+                return elem1.second > elem2.second;
             };
     
     //std::set<std::pair<std::string, int>, Comparator> setPlayerScores = {};
