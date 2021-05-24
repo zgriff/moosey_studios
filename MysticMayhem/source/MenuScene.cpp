@@ -58,6 +58,7 @@ bool MenuScene::init(const std::shared_ptr<AssetManager>& assets) {
 //    _create = false;
     _host = false;
     _join = false;
+    _tutorial = false;
     
     _hostButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("menu_host"));
     _hostButton->addListener([=](const std::string& name, bool down) {
