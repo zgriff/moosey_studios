@@ -191,15 +191,12 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _abilitybarFull->setVisible(false);
     
     Size dimension = Application::get()->getDisplaySize();
-    dimension *= SCENE_SIZE/dimension.width;
+//    dimension *= SCENE_SIZE/dimension.width;
     auto elementTriTexture = assets->get<Texture>("element_triangle");
     _elementTriangle = scene2::AnimationNode::alloc(elementTriTexture, 1, 3, 3);
     _elementTriangle->setAnchor(Vec2::ANCHOR_CENTER);
     _elementTriangle->setFrame(1);
-    _elementTriangle->setPosition(120, 1300);
-#ifdef CU_MOBILE
-    _elementTriangle->setPosition(120, 1500);
-#endif
+    _elementTriangle->setPosition(120, 2 * dimension.height - 100);
     
     _UInode->addChild(_elementTriangle);
     
