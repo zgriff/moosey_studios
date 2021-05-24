@@ -156,6 +156,30 @@ struct LobbyHandler {
     void operator()(NetworkData::SetUsername& data) const {
         int id1 = data.playerId;
         string username1 = data.username;
+        char nullChar = 0;
+        for (int i = 0; i < id1; i++) {
+            if (username1 == usernames[i]) {
+                char lastChar = username1.back();
+                if (isdigit(lastChar)) {
+                    if (lastChar == '9') {
+                        username1 = username1.substr(0, username1.size() - 1) + "2";
+                    }
+                    else {
+                        int charToInt = lastChar - '0' + 1;
+                        username1 = username1.substr(0, username1.size() - 1) + std::to_string(charToInt);
+                    }
+                }
+                else {
+                    username1 = username1 + "2";
+                }
+                sendSetUsername(id1, username1);
+            }
+        }
+        if (network->getPlayerID().has_value()) {
+            if (network->getPlayerID().value() == id1) {
+                username = username1;
+            }
+        }
         usernames[id1] = username1;
     }
     void operator()(NetworkData::SetCustomization& data) const {

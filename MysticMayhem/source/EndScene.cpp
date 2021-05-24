@@ -29,7 +29,8 @@ using namespace cugl;
  *
  * @return true if the controller is initialized properly, false otherwise.
  */
-bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<std::string, int> results, std::string message) {
+bool EndScene::init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<std::string, int> results, std::string message, 
+    bool endEarly) {
     // Initialize the scene to a locked width
     Size dimen = Application::get()->getDisplaySize();
     dimen *= SCENE_SIZE/dimen.width; // Lock the game to a reasonable resolution

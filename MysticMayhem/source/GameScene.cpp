@@ -379,6 +379,7 @@ void GameScene::update(float timestep) {
     }
 
     if (NetworkController::isHost()) {
+        bool anotherPlayerActive = false;
         for (int i = 1; i < _world->getNumPlayers(); i++) {
             CULog("checking if player connected %d", i);
             if (_playersExited.find(i) == _playersExited.end() && !NetworkController::isPlayerActive(i)) {
@@ -390,11 +391,18 @@ void GameScene::update(float timestep) {
                 playerExited->setPosition(Vec2(0, 0));
                 _playersExited.insert(i);
             }
+            else if (NetworkController::isPlayerActive(i)) {
+                anotherPlayerActive = true;
+            }
+        }
+        if (!anotherPlayerActive && NetworkController::getNumPlayers() > 1) {
+            //All clients have left the game. Clients don't need this check as host will need to be in game with client.
+            _endGameEarly = true;
         }
     }
     if (!NetworkController::isPlayerActive(0) && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Reconnecting) {
         CULog("host is dc");
-        //_endGameEarly = true;
+        _endGameEarly = true;
     }
     
 

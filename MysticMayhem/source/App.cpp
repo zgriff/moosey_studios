@@ -186,7 +186,7 @@ void App::onResume() {
          case SceneSelect::Game:{
              _gameplay.update(timestep);
              if (time(NULL) - startTimer >= gameTimer || _gameplay.getEndGameEarly()) {
-                 _results.init(_assets, _gameplay.getResults(), _gameplay.getWinner());
+                 _results.init(_assets, _gameplay.getResults(), _gameplay.getWinner(), _gameplay.getEndGameEarly());
                  _gameplay.getSettings()->removeAllChildren();
                  _gameplay.getSettings()->dispose();
                  _gameplay.dispose();

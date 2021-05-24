@@ -46,7 +46,7 @@ public:
      */
     void dispose();
     
-    bool init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<std::string, int> results, std::string message);
+    bool init(const std::shared_ptr<cugl::AssetManager>& assets, std::map<std::string, int> results, std::string message, bool endEarly);
 
     
 #pragma mark -
