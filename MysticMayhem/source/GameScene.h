@@ -76,6 +76,9 @@ protected:
     /** Reference to the UI element exposing the frame rate */
     std::shared_ptr<cugl::scene2::Label> _framesHUD;
 
+    /** Reference to the UI element exposing the tutorial text */
+    std::shared_ptr<cugl::scene2::Label> _tutorialHUD;
+
     std::shared_ptr<cugl::scene2::Label> _scoreHUD;
     std::shared_ptr<cugl::scene2::Label> _timerHUD;
 
@@ -84,6 +87,19 @@ protected:
     /** Whether or not debug mode is active */
     bool _debug;
     bool _settings; //whether settings is open or not
+
+    /** Is true if the player is in the tutorial*/
+    bool _isTutorial = false;
+    /** Used to store queued up tutorial text*/
+    queue<string> _tutorialText;
+    time_t _lastUpdatedTutorialText;
+
+    //tutorial flags
+    // 0 means untouched, 1 means passed, 2 means used
+    int _startedTutorial = 0;
+    int _eggTutorial = 0;
+    int _powerupTutorial = 0;
+
     /**
      * Activates the UI elements to make them interactive
      *
@@ -103,7 +119,7 @@ protected:
     std::string updateTimerText(const time_t time);
     
     bool isDebug( ) const { return _debug; }
-    
+
     /**
      * Sets whether debug mode is active.
      *
@@ -111,11 +127,21 @@ protected:
      *
      * @param value whether debug mode is active.
      */
-    void setDebug(bool value) { _debug = value; _debugnode->setVisible(value); }
+    void setDebug(bool value);
 
     
 public:
 #pragma mark -
+
+
+    /** Flag that this level is the tutorial
+        enables tutorial logic */
+    void setTutorialTrue();
+
+    /** Flag that this level is the tutorial
+        enables tutorial logic */
+    bool isTutorial() { return _isTutorial; }
+
 #pragma mark Constructors
     /**
      * Creates a new game mode with the default values.

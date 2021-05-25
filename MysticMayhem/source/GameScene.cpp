@@ -37,8 +37,10 @@ using namespace std;
 #define BACKWARDS_FRICTION 0.3f
 /** how quickly the camera catches up to the player*/
 #define CAMERA_STICKINESS .07f
-/** How much the camera */
+/** How much the camera is zoomed in */
 #define CAMERA_ZOOM 0.73f
+/** how long it takes for tutorial text to update */
+#define TUTORIAL_TIMER 3.5
 /** baseline aspect ratio, 1468.604 is from 1280x720 */
 #define BASELINE_DIAGONAL 1468.60478005
 #define BASELINE_HEIGHT 720 //if we want to scale by height instead just change the places w/ length and diagonal to height
@@ -152,6 +154,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _scoreHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_score"));
     _framesHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_frames"));
     _framesHUD->setPositionX(_framesHUD->getPositionX() + 100);
+    _framesHUD->setVisible(false);
     _timerHUD  = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_timer"));
     _countdownHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_countdown"));
     _countdownHUD->setColor(Color4::YELLOW);
@@ -202,6 +205,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     });
     
+    _tutorialHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_tutorial"));
+    _tutorialHUD->setVisible(false);
+
     addChild(_rootnode);
     addChild(_UInode);
     addChild(_settingsNode);
@@ -228,7 +234,7 @@ void GameScene::dispose() {
     _abilitybar = nullptr;
     _abilityname = nullptr;
     _timerHUD = nullptr;
-    //_framesHUD = nullptr;
+    _framesHUD = nullptr;
     _debug = false;
     _assets = nullptr;
 //        Scene2::dispose();
@@ -241,8 +247,10 @@ void GameScene::dispose() {
     _active = false;
     _rootnode = nullptr;
     _settings = false;
+    _isTutorial = false;
+    _tutorialHUD = nullptr;
+    while (!_tutorialText.empty()) { _tutorialText.pop(); }
 }
-
 
 #pragma mark -
 #pragma mark Gameplay Handling
@@ -296,7 +304,10 @@ void GameScene::reset() {
 
 void GameScene::update(float timestep) {
     
-    if (_playerController.didDebug()) { _world->setDebug(!_world->getDebug()); }
+    if (_playerController.didDebug()) { 
+        _world->setDebug(!_world->getDebug()); 
+        _framesHUD->setVisible(!_framesHUD->isVisible()); 
+    }
     
         // NETWORK //
     
@@ -336,7 +347,7 @@ void GameScene::update(float timestep) {
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
     _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
-    _framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
+    _framesHUD->setText(updateFramesText(_player->getPosition().x));
 
         // CHECK BEGINNING OF GAME
     if (!_startTimePassed) {
@@ -412,7 +423,7 @@ void GameScene::update(float timestep) {
         else {
 
             auto forForce = _player->getForce();
-            auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * .93f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
+            auto turnForce = _player->getForce().getPerp().normalize().scale(pow(vel.length(), 1.0) * cos(offset) * .9f * _player->getMass() * tan(M_PI / TURNS_PER_SPIN) / timestep);
             if (_playerController.getMov().x < 0) {
                 turnForce.scale(-1.0f);
             }
@@ -505,19 +516,65 @@ void GameScene::update(float timestep) {
     }
     if (_player->getOrbScore() == 5 && _abilityController.getQueuedAbility() == AbilityController::Ability::NoAbility) {
         _abilityController.updateAbility(_abilityname);
-//        _abilityname->setVisible(true);
     }
     if (_playerController.isAbilityPressed()) {
         _abilityController.activateAbility(_player);
     }
     _abilityController.deactivateAbility(_player, _abilityname);
     
-    
-    
     for(auto p : _world->getPlayers()){
         p->animateMovement();
     }
     
+    if (_isTutorial) {
+        if (_player->getPosition().x > 55 && _eggTutorial == 0) {
+            _eggTutorial = 1;
+        }
+
+        if (_player->getPosition().x > 90 && _powerupTutorial == 0) {
+            _powerupTutorial = 1;
+        }
+
+        //Queueing up tutorial text
+        if (_startedTutorial == 1) {
+            _tutorialText.push("Turn by holding left or right");
+            _tutorialText.push("Tag other players to score points");
+            _tutorialText.push("Fire/red beats Grass/green");
+            _tutorialText.push("Grass/green beats Water/Blue");
+            _tutorialText.push("Water/Blue beats Fire/red");
+            _tutorialText.push("Run over ancient runes to swap elements");
+            _tutorialText.push("You always swap to the element you beat");
+            _tutorialText.push("Go to the next section to learn about eggs!");
+            _startedTutorial = 2;
+        }
+
+        if (_eggTutorial == 1) {
+            _tutorialText.push("hatch eggs to score more points!");
+            _tutorialText.push("eggs hatch faster the quicker you move");
+            _tutorialText.push("Anyone can tag you when you have an egg");
+            _tutorialText.push("learn about powerups in the last section!");
+            _eggTutorial = 2;
+        }
+
+        if (_powerupTutorial == 1) {
+            _tutorialText.push("Collect orbs to charge a boost");
+            _tutorialText.push("Press left and right to go fast");
+            _powerupTutorial = 2;
+        }
+
+        //Progressing the queue on a timer
+        if (time(NULL) - _lastUpdatedTutorialText > TUTORIAL_TIMER) {
+            if (!_tutorialText.empty()) {
+                _tutorialHUD->setText(_tutorialText.front());
+                _tutorialText.pop();
+            }
+            else {
+                _tutorialHUD->setText("");
+            }
+            _lastUpdatedTutorialText = time(NULL);
+        }
+    }
+
     //send new position
     NetworkController::sendPosition();
     
@@ -529,7 +586,12 @@ void GameScene::update(float timestep) {
     }
 }
 
-
+void GameScene::setTutorialTrue() {
+    _isTutorial = true;
+    _tutorialHUD->setVisible(true);
+    _timerHUD->setVisible(false);
+    _startedTutorial = 1;
+}
 
 void GameScene::addObstacle(const std::shared_ptr<cugl::physics2::Obstacle>& obj,
                             const std::shared_ptr<cugl::scene2::SceneNode>& node,
@@ -561,6 +623,11 @@ void GameScene::setMovementStyle(int m) {
     _playerController.setMoveStyle(static_cast<Movement>(m));
 }
 
+void GameScene::setDebug(bool value) { 
+    _debug = value; 
+    _debugnode->setVisible(value); 
+    _framesHUD->setVisible(value); 
+}
 
 /**
  * Returns the active screen size of this scene.
