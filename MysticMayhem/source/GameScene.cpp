@@ -272,6 +272,9 @@ void GameScene::dispose() {
     _isTutorial = false;
     _tutorialHUD = nullptr;
     while (!_tutorialText.empty()) { _tutorialText.pop(); }
+    _eggTutorial = 0;
+    _startedTutorial = 0;
+    _powerupTutorial = 0;
 }
 
 void GameScene::clearListeners() {
@@ -324,6 +327,11 @@ void GameScene::reset() {
     //Initialize the texture to 0, need this for play again functionality
     _abilitybar->setProgress(0);
     
+    _eggTutorial = 0;
+    _startedTutorial = 0;
+    _powerupTutorial = 0;
+    _timerHUD->setVisible(true);
+
     _world->setDebug(false);
 
     getCamera()->update();
