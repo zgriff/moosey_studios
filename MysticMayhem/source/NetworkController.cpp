@@ -19,8 +19,11 @@ namespace NetworkController {
         //Networked usernames indexed by playerId
         array<std::string, 8> usernames = {"Player 1", "Player 2", "Player 3" , "Player 4" , 
             "Player 5" , "Player 6" , "Player 7" , "Player 8" };
-    
-        std::unordered_map<int,std::tuple<int,int,int>> customizations;
+        
+        bool disconnected = false;
+        std::string disconnectedMessage = "";
+
+        std::unordered_map<int,std::tuple<int,int,Element>> customizations;
     
         int _networkFrame;
         int mapSelected = 1;
@@ -51,6 +54,7 @@ namespace NetworkController {
     void destroyConn() {
         network = nullptr;
         roomId = "";
+        mapSelected = 1;
     }
 
     cugl::CUNetworkConnection::NetStatus getStatus(){
@@ -87,6 +91,10 @@ namespace NetworkController {
         return network->getNumPlayers();
     }
 
+    bool isPlayerActive(uint8_t playerID) {
+        return network->isPlayerActive(playerID);
+    }
+
     std::string getUsername() {
         if (username == "") {
             return "Player";
@@ -106,8 +114,18 @@ namespace NetworkController {
         usernames[playerId] = name;
     }
 
-    std::unordered_map<int,std::tuple<int,int,int>> getCustomizations() {
+    bool getDisconnected() { return disconnected; }
+
+    void setDisconnected(bool b) { disconnected = b; }
+
+    std::string getDisconnectedMessage() { return disconnectedMessage; }
+
+    std::unordered_map<int,std::tuple<int,int,Element>> getCustomizations() {
         return customizations;
+    }
+
+    std::tuple<int,int,Element> getCustomization(int playerId) {
+        return customizations[playerId];
     }
 
     int getMapSelected() {
@@ -148,6 +166,30 @@ struct LobbyHandler {
     void operator()(NetworkData::SetUsername& data) const {
         int id1 = data.playerId;
         string username1 = data.username;
+        char nullChar = 0;
+        for (int i = 0; i < id1; i++) {
+            if (username1 == usernames[i]) {
+                char lastChar = username1.back();
+                if (isdigit(lastChar)) {
+                    if (lastChar == '9') {
+                        username1 = username1.substr(0, username1.size() - 1) + " 2";
+                    }
+                    else {
+                        int charToInt = lastChar - '0' + 1;
+                        username1 = username1.substr(0, username1.size() - 1) + " " + std::to_string(charToInt);
+                    }
+                }
+                else {
+                    username1 = username1 + " 2";
+                }
+                sendSetUsername(id1, username1);
+            }
+        }
+        if (network->getPlayerID().has_value()) {
+            if (network->getPlayerID().value() == id1) {
+                username = username1;
+            }
+        }
         usernames[id1] = username1;
     }
     void operator()(NetworkData::SetCustomization& data) const {
@@ -165,9 +207,19 @@ struct GameHandler {
         auto tagged = world->getPlayer(t.taggedId);
         auto tagger = world->getPlayer(t.taggerId);
         auto self = world->getPlayer(network->getPlayerID().value());
+        auto players = world->getPlayers();
+        for (auto it = players.begin(); it != players.end(); it++) {
+            if (Vec2((*it)->getPosition() - tagged->getPosition()).length() < globals::TAG_ASSIST_DIST &&
+                (*it)->getPreyElement() == tagged->getCurrElement() &&
+                (*it)->getID() != tagger->getID()) {
+                (*it)->incScore(globals::TAG_ASSIST_SCORE);
+            }
+        }
         tagged->setIsTagged(true);
         tagged->setTimeLastTagged(t.timestamp);
+        tagged->animateTagged();
         tagger->incScore(globals::TAG_SCORE);
+        tagger->animateTag();
         SoundController::playSound(SoundController::Type::TAG, tagger->getPosition() - self->getPosition());
         if (tagged->getCurrElement() == Element::None && !t.dropEgg) {
             auto egg = world->getEgg(tagged->getEggId());
@@ -226,8 +278,10 @@ struct GameHandler {
     void operator()(NetworkData::Swap & data) const {
         world->getPlayer(data.playerId)->setElement(data.newElement);
         auto s = world->getSwapStation(data.swapId);
-        s->setLastUsed(clock());
-        s->setActive(false);
+        if (!world->getPlayer(data.playerId)->getIsInvisible() && !world->getPlayer(data.playerId)->getIsIntangible()) {
+            s->setLastUsed(time(NULL));
+            s->setActive(false);
+        }
         auto self = world->getPlayer(network->getPlayerID().value());
         SoundController::playSound(SoundController::Type::SWAP, s->getPosition() - self->getPosition());
     }
@@ -260,6 +314,16 @@ struct GameHandler {
         projectile->getSceneNode()->setVisible(false);
         projectile->setLinearVelocity(Vec2(0, 0));
         projectile->setPosition(Vec2(0, 0));
+    }
+    void operator()(NetworkData::LeftGame& data) const {
+        auto player = world->getPlayer(data.playerId);
+        player->setActive(false);
+        player->getSceneNode()->setVisible(false);
+        player->setLinearVelocity(Vec2(0, 0));
+        player->setPosition(Vec2(0, 0));
+        disconnected = true;
+        disconnectedMessage = usernames[data.playerId] + " has disconnected.";
+        //player->deactivatePhysics(world); 
     }
     //generic. do nothing
     template<typename T>
@@ -399,6 +463,12 @@ struct GameHandler {
         NetworkData::SetMap data;
         data.mapNumber = i;
         CULog("sending set map to %d", i);
+        send(NetworkData(data));
+    }
+
+    void sendLeftGame(int i) {
+        NetworkData::LeftGame data;
+        data.playerId = i;
         send(NetworkData(data));
     }
 

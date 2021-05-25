@@ -14,9 +14,11 @@
 using namespace cugl;
 
 /** This is the ideal size of the logo */
-#define SCENE_SIZE  1024
+#define SCENE_SIZE      1024
+#define NUM_CODE_ICONS  7
+#define NUM_MAPS        4
 
-float PLAYER_POSITION[] = {2.1f,  1.0f};
+float PLAYER_POSITION[] = {2.7f,  1.0f};
 
 bool clientReady;
 
@@ -61,18 +63,11 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     
     _startButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_start"));
     _startButton->setVisible(false);
-    _map1Button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_map1"));
-    _map2Button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_map2"));
-    _map3Button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_map3"));
-    _map4Button = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_map4"));
-    _map1Button->setToggle(true);
-    _map2Button->setToggle(true);
-    _map3Button->setToggle(true);
-    _map4Button->setToggle(true);
-    _map1Button->setDown(false);
-    _map2Button->setDown(false);
-    _map3Button->setDown(false);
-    _map4Button->setDown(false);
+    _map1Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map1"));
+    _map2Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map2"));
+    _map3Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map3"));
+    _map4Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map4"));
+//    _map5Node = std::dynamic_pointer_cast<scene2::PolygonNode>(assets->get<scene2::SceneNode>("lobby_maps_map5"));
     
     
     _mapNextButton = std::dynamic_pointer_cast<scene2::Button>(assets->get<scene2::SceneNode>("lobby_maps_mapnext"));
@@ -88,7 +83,10 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _startButton->setVisible(true);
         _startButton->addListener([&](const std::string& name, bool down) {
             if(true){ //TODO: if everyone ready
-                NetworkController::sendSetCustomization( NetworkController::getPlayerId().value(), _playerCustom->getSkin(), _playerCustom->getCustomization(), _playerCustom->getCurrElement());
+                for (int i = 0; i < NetworkController::getNumPlayers(); i++) {
+                    std::tuple pCust = NetworkController::getCustomization(i);
+                    NetworkController::sendSetCustomization(i, get<0>(pCust), get<1>(pCust), get<2>(pCust));
+                }
                 NetworkController::sendSetMapSelected(NetworkController::getMapSelected());
                 NetworkController::startGame();
                 _active = down;
@@ -99,7 +97,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
         _mapNextButton->setVisible(true);
         _mapNextButton->addListener([&](const std::string& name, bool down) {
             if (down) {
-                int map = NetworkController::getMapSelected()%4 +  1;
+                int map = NetworkController::getMapSelected()%NUM_MAPS +  1;
                 NetworkController::sendSetMapSelected(map);
                 NetworkController::setMapSelected(map);
             }
@@ -110,7 +108,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
             if (down) {
                 int map = NetworkController::getMapSelected() - 1;
                 if (map == 0) {
-                    map = 4;
+                    map = NUM_MAPS;
                 }
                 NetworkController::sendSetMapSelected(map);
                 NetworkController::setMapSelected(map);
@@ -129,6 +127,8 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
 //        });
     }
     
+    _background = assets->get<scene2::SceneNode>("lobby_background");
+    
     _settingsNode = std::make_shared<Settings>(assets, false);
     _settingsNode->setVisible(false);
     _settingsNode->setActive(false);
@@ -139,7 +139,8 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     _settingsButton->addListener([=](const std::string& name, bool down) {
         _settingsNode->setVisible(true);
         _settingsNode->setActive(true);
-        layer->setColor(Color4(255,255,255,100));
+//        _background->setColor(Color4(255,255,255,100));
+//        _layer->setColor(Color4(255,255,255,100));
         _mapPrevButton->deactivate();
         _mapNextButton->deactivate();
         _startButton->deactivate();
@@ -155,7 +156,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     });
 
     
-    _roomId = std::dynamic_pointer_cast<scene2::Label>(assets->get<scene2::SceneNode>("lobby_roomId"));
+    _codeNode = std::dynamic_pointer_cast<scene2::SceneNode>(assets->get<scene2::SceneNode>("lobby_codenode"));
     
     
     auto kids = assets->get<scene2::SceneNode>("lobby_players")->getChildren();
@@ -177,6 +178,7 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     _playerCustom->setStaffKey("player_staff");
     _playerCustom->setStaffTagKey("player_staff_tag");
     _playerCustom->setRingKey("player_direction");
+    _playerCustom->setExplosionKey("player_explosion");
     _playerCustom->setTextures(_assets);
     _playerCustom->setDrawScale(100.0f);
     _playerCustom->flipHorizontal(false);
@@ -202,12 +204,12 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
     _eleForwardButton->activate();
     _eleBackButton->activate();
     
-    _hatForwardButton->setScale(0.2f);
-    _hatBackButton->setScale(0.2f);
-    _skinForwardButton->setScale(0.2f);
-    _skinBackButton->setScale(0.2f);
-    _eleForwardButton->setScale(0.2f);
-    _eleBackButton->setScale(0.2f);
+//    _hatForwardButton->setScale(0.2f);
+//    _hatBackButton->setScale(0.2f);
+//    _skinForwardButton->setScale(0.2f);
+//    _skinBackButton->setScale(0.2f);
+//    _eleForwardButton->setScale(0.2f);
+//    _eleBackButton->setScale(0.2f);
     
     _hatForwardButton->addListener([=](const std::string& name, bool down) {
         CULog("hat forw");
@@ -288,12 +290,13 @@ bool LobbyScene::init(const std::shared_ptr<AssetManager>& assets) {
  * Disposes of all (non-static) resources allocated to this mode.
  */
 void LobbyScene::dispose() {
-//    removeAllChildren();
+    _playerCustom = nullptr;
     _startButton = nullptr;
-    _map1Button = nullptr;
-    _map2Button = nullptr;
-    _map3Button = nullptr;
-    _map4Button = nullptr;
+    _map1Node = nullptr;
+    _map2Node = nullptr;
+    _map3Node = nullptr;
+    _map4Node = nullptr;
+//    _map5Node = nullptr;
     _settingsButton = nullptr;
     _hatForwardButton = nullptr;
     _hatBackButton = nullptr;
@@ -303,6 +306,10 @@ void LobbyScene::dispose() {
     _eleBackButton = nullptr;
     _mapNextButton = nullptr;
     _mapPrevButton = nullptr;
+    _settingsNode = nullptr;
+    _codeNode = nullptr;
+    _layer = nullptr;
+    _background = nullptr;
     _playerLabels.clear();
     _assets = nullptr;
     _active = false;
@@ -339,10 +346,22 @@ void LobbyScene::update(float progress) {
     NetworkController::step();
     if (_currRoomId == "") {
         _currRoomId = NetworkController::getRoomId();
-//        CULog("room id in lobby %s", _currRoomId.c_str());
-        stringstream ss;
-        ss << "Room Id: " << _currRoomId;
-        _roomId->setText(ss.str());
+        if (_currRoomId != "") {
+            int decimalCode = std::stoi(_currRoomId);
+            std::string heptCode = "";
+            int counter = (int) _codeNode->getChildren().size()-1;
+            while (decimalCode != 0) {
+                CUAssertLog(counter >= 0, "Code counter error");
+                _codeNode->getChild(counter)->getChildByName(buttonToCode(decimalCode % 7))->setVisible(true);
+                decimalCode = floor(decimalCode / 7);
+                counter--;
+            }
+            if (counter != -1) {
+                _codeNode->getChild(counter)->getChildByName(buttonToCode(0))->setVisible(true);
+            }
+            
+        }
+        
     }
     std::string s = NetworkController::getRoomId();
     
@@ -363,42 +382,59 @@ void LobbyScene::update(float progress) {
         }
     }
 
+    if (NetworkController::isHost()) {
+        NetworkController::sendSetMapSelected(NetworkController::getMapSelected());
+    }
+
 //    if (!NetworkController::isHost()) {
     if (NetworkController::getMapSelected() == 1) {
-        _map1Button->setVisible(true);
-        _map1Button->setPosition(550, 100);
-        _map2Button->setVisible(false);
-        _map3Button->setVisible(false);
-        _map4Button->setVisible(false);
+        _map1Node->setVisible(true);
+        _map1Node->setPosition(550, 100);
+        _map2Node->setVisible(false);
+        _map3Node->setVisible(false);
+        _map4Node->setVisible(false);
+//        _map5Node->setVisible(false);
     }
     else if (NetworkController::getMapSelected() == 2) {
-        _map2Button->setVisible(true);
-        _map2Button->setPosition(550, 100);
-        _map1Button->setVisible(false);
-        _map3Button->setVisible(false);
-        _map4Button->setVisible(false);
+        _map2Node->setVisible(true);
+        _map2Node->setPosition(550, 100);
+        _map1Node->setVisible(false);
+        _map3Node->setVisible(false);
+        _map4Node->setVisible(false);
+//        _map5Node->setVisible(false);
     }
     else if (NetworkController::getMapSelected() == 3) {
-        _map3Button->setVisible(true);
-        _map3Button->setPosition(550, 100);
-        _map1Button->setVisible(false);
-        _map2Button->setVisible(false);
-        _map4Button->setVisible(false);
+        _map3Node->setVisible(true);
+        _map3Node->setPosition(550, 100);
+        _map1Node->setVisible(false);
+        _map2Node->setVisible(false);
+        _map4Node->setVisible(false);
+//        _map5Node->setVisible(false);
     }
     else if (NetworkController::getMapSelected() == 4) {
         
-        _map4Button->setVisible(true);
-        _map4Button->setPosition(550, 100);
-        _map1Button->setVisible(false);
-        _map2Button->setVisible(false);
-        _map3Button->setVisible(false);
+        _map4Node->setVisible(true);
+        _map4Node->setPosition(550, 100);
+        _map1Node->setVisible(false);
+        _map2Node->setVisible(false);
+        _map3Node->setVisible(false);
+//        _map5Node->setVisible(false);
     }
+//    else if (NetworkController::getMapSelected() == 5) {
+//
+//        _map5Node->setVisible(true);
+//        _map5Node->setPosition(550, 100);
+//        _map1Node->setVisible(false);
+//        _map2Node->setVisible(false);
+//        _map3Node->setVisible(false);
+//        _map4Node->setVisible(false);
+//    }
 //    }
     
     if (_settingsNode->backPressed()) {
         _settingsNode->setActive(false);
         _settingsNode->setVisible(false);
-        _layer->setColor(Color4(255,255,255,255));
+//        _layer->setColor(Color4(255,255,255,255));
         _mapNextButton->activate();
         _mapPrevButton->activate();
         _startButton->activate();
@@ -426,11 +462,15 @@ void LobbyScene::setActive(bool value) {
         _mapNextButton->activate();
         _mapPrevButton->activate();
     } else {
+        for (int i = 0; i < (int)_codeNode->getChildren().size(); i++) {
+            auto nodeChild = _codeNode->getChild(i)->getChildren();
+            for (auto it = nodeChild.begin(); it != nodeChild.end(); it++) {
+                if ((*it)->getName() != "label") {
+                    (*it)->setVisible(false);
+                }
+            }
+        }
         _startButton->deactivate();
-        _map1Button->deactivate();
-        _map2Button->deactivate();
-        _map3Button->deactivate();
-        _map4Button->deactivate();
         _mapNextButton->deactivate();
         _mapPrevButton->deactivate();
         _settingsButton->deactivate();
@@ -450,4 +490,35 @@ void LobbyScene::setActive(bool value) {
 //        _joinButton->deactivate();
 //        _codeField->deactivate();
 //    }
+}
+
+
+std::string LobbyScene::buttonToCode(int button) {
+    std::string result = "";
+    switch (button) {
+        case 0:
+            result = "fire";
+            break;
+        case 1:
+            result = "water";
+            break;
+        case 2:
+            result = "leaf";
+            break;
+        case 3:
+            result = "egg";
+            break;
+        case 4:
+            result = "orb";
+            break;
+        case 5:
+            result = "tree";
+            break;
+        case 6:
+            result = "bush";
+            break;
+        default:
+            break;
+    }
+    return result;
 }

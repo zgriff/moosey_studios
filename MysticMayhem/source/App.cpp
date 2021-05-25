@@ -52,6 +52,7 @@ void App::onStartup() {
     _assets->loadAsync<World>(GRASS_MAP2_KEY, GRASS_MAP2_JSON, nullptr);
     _assets->loadAsync<World>(GRASS_MAP3_KEY, GRASS_MAP3_JSON, nullptr);
     _assets->loadAsync<World>(GRASS_MAP4_KEY, GRASS_MAP4_JSON, nullptr);
+    _assets->loadAsync<World>(GRASS_MAP5_KEY, GRASS_MAP5_JSON, nullptr);
 
     AudioEngine::start();
     SoundController::init(_assets);
@@ -145,8 +146,10 @@ void App::onResume() {
  //                CULog("menu scene");
                  if((_menu.createPressed() || _menu.joinPressed()) && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected){
                      _menu.setActive(false);
+                     _menu.getSettings()->clearListeners();
                      _menu.getSettings()->removeAllChildren();
                      _menu.getSettings()->dispose();
+                     _menu.clearListeners();
                      _menu.removeAllChildren();
                      _menu.dispose();
                      _lobby.init(_assets);
@@ -154,9 +157,25 @@ void App::onResume() {
                      //NetworkController::setLobbyScene(_lobby);
                      _currentScene = SceneSelect::Lobby;
                  }
+                 else if (_menu.tutorialPressed() && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Connected) {
+                     _menu.setActive(false);
+                     _menu.getSettings()->clearListeners();
+                     _menu.getSettings()->removeAllChildren();
+                     _menu.getSettings()->dispose();
+                     _menu.clearListeners();
+                     _menu.removeAllChildren();
+                     _menu.dispose();
+                     _gameplay.init(_assets);
+                     _gameplay.setActive(true);
+                     _gameplay.setMovementStyle(0);
+                     _gameplay.setTutorialTrue();
+                     startTimer = time(NULL);
+                     _currentScene = SceneSelect::Game;
+                 }
              }
              else {
                  _menu.setActive(false);
+                 _menu.clearListeners();
                  _menu.removeAllChildren();
                  _menu.dispose();
                  _lobby.init(_assets);
@@ -170,6 +189,7 @@ void App::onResume() {
                  _lobby.update(0.01f);
              } else {
                  _lobby.setActive(false);
+                 _lobby.getSettings()->clearListeners();
                  _lobby.getSettings()->removeAllChildren();
                  _lobby.getSettings()->dispose();
                  _lobby.clearListeners();
@@ -185,10 +205,12 @@ void App::onResume() {
          }
          case SceneSelect::Game:{
              _gameplay.update(timestep);
-             if (time(NULL) - startTimer >= gameTimer && !_gameplay.isTutorial()) {
-                 _results.init(_assets, _gameplay.getResults(), _gameplay.getWinner());
+             if (time(NULL) - startTimer >= gameTimer || _gameplay.getEndGameEarly()) {
+                 _results.init(_assets, _gameplay.getResults(), _gameplay.getWinner(), _gameplay.getEndGameEarly());
+                 _gameplay.getSettings()->clearListeners();
                  _gameplay.getSettings()->removeAllChildren();
                  _gameplay.getSettings()->dispose();
+                 _gameplay.clearListeners();
                  _gameplay.dispose();
  //                _gameplay.reset();
                  _currentScene = SceneSelect::Results;
@@ -197,9 +219,12 @@ void App::onResume() {
              else {
                  if (_gameplay.getSettings()->leaveGamePressed()) {
                      CULog("leave game in app");
+                     NetworkController::sendLeftGame(NetworkController::getPlayerId().value());
                      NetworkController::destroyConn();
+                     _gameplay.getSettings()->clearListeners();
                      _gameplay.getSettings()->removeAllChildren();
                      _gameplay.getSettings()->dispose();
+                     _gameplay.clearListeners();
                      _gameplay.dispose();
                      _menu.init(_assets);
                      _currentScene = SceneSelect::Menu;

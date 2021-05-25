@@ -42,6 +42,8 @@ public:
     void dispose();
     
     bool init(const std::shared_ptr<cugl::AssetManager>& assets, bool inGame);
+    
+    void clearListeners();
 
     
 #pragma mark -

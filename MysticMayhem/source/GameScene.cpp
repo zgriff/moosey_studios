@@ -40,10 +40,11 @@ using namespace std;
 /** How much the camera is zoomed in */
 #define CAMERA_ZOOM 0.73f
 /** how long it takes for tutorial text to update */
-#define TUTORIAL_TIMER 3.5
+#define TUTORIAL_TIMER 3.75
 /** baseline aspect ratio, 1468.604 is from 1280x720 */
 #define BASELINE_DIAGONAL 1468.60478005
 #define BASELINE_HEIGHT 720 //if we want to scale by height instead just change the places w/ length and diagonal to height
+#define SCENE_SIZE  1024
 
 #pragma mark -
 #pragma mark Constructors
@@ -75,6 +76,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         break;
     case 4:
         mapKey = GRASS_MAP4_KEY;
+        break;
+    case 5:
+        mapKey = GRASS_MAP5_KEY;
         break;
     }
     _world = assets->get<World>(mapKey);
@@ -131,6 +135,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     //TODO: Change from hardcoded 8.0, figure out actual offset for phones
     _worldOffset = Vec2((dimen.width-w)/8.0f,(dimen.height-h)/2.0f);
+    _worldOffset = Vec2(0, 0);
 //    CULog("world off x: %f y: %f", _worldOffset.x, _worldOffset.y);
     
     _rootnode = scene2::SceneNode::alloc();
@@ -160,7 +165,14 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _countdownHUD->setColor(Color4::YELLOW);
     _countdownHUD->setText("READY");
     _countdownHUD->setVisible(true);
+    _disconnectHUD = std::dynamic_pointer_cast<scene2::Label>(_assets->get<scene2::SceneNode>("ui_disconnect"));
+    _disconnectHUD->setColor(Color4::RED);
+    _disconnectHUD->setVisible(false);
+    _disconnectHUD->setScale(0.5);
     _startTimePassed = false;
+
+    _endGameEarly = false;
+    _playersExited = {};
     
     _hatchbar = std::dynamic_pointer_cast<scene2::ProgressBar>(assets->get<scene2::SceneNode>("ui_bar"));
     _hatchbar->setVisible(false);
@@ -180,6 +192,15 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _abilitybarFull->setProgress(1);
     _abilitybarFull->setVisible(false);
     
+    Size dimension = Application::get()->getDisplaySize();
+//    dimension *= SCENE_SIZE/dimension.width;
+    auto elementTriTexture = assets->get<Texture>("element_triangle");
+    _elementTriangle = scene2::AnimationNode::alloc(elementTriTexture, 1, 3, 3);
+    _elementTriangle->setAnchor(Vec2::ANCHOR_CENTER);
+    _elementTriangle->setFrame(1);
+    _elementTriangle->setPosition(120, 2 * dimension.height - 100);
+    
+    _UInode->addChild(_elementTriangle);
     
     _debugnode = _world->getDebugNode();
     
@@ -229,6 +250,7 @@ void GameScene::dispose() {
     _UInode = nullptr;
     _scoreHUD = nullptr;
     _countdownHUD = nullptr;
+    _disconnectHUD = nullptr;
     _hatchnode = nullptr;
     _hatchbar = nullptr;
     _abilitybar = nullptr;
@@ -251,6 +273,11 @@ void GameScene::dispose() {
     _tutorialHUD = nullptr;
     while (!_tutorialText.empty()) { _tutorialText.pop(); }
 }
+
+void GameScene::clearListeners() {
+    _settingsButton->clearListeners();
+}
+
 
 #pragma mark -
 #pragma mark Gameplay Handling
@@ -347,7 +374,9 @@ void GameScene::update(float timestep) {
 
     _scoreHUD->setText(updateScoreText(_player->getScore()));
     _timerHUD->setText(updateTimerText(_startTime + globals::GAME_TIMER - time(NULL)));
-    _framesHUD->setText(updateFramesText(_player->getPosition().x));
+    //_framesHUD->setText(updateFramesText(_player->getLinearVelocity().length()));
+    _framesHUD->setText(updateFramesText(1 / timestep));
+
 
         // CHECK BEGINNING OF GAME
     if (!_startTimePassed) {
@@ -358,6 +387,7 @@ void GameScene::update(float timestep) {
             float cameraZoom = (double)CAMERA_ZOOM * ((Vec2)Application::get()->getDisplaySize()).length() / BASELINE_DIAGONAL;
             static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom( cameraZoom * (2.0 + realTimePassed.count())/4.0 );
             _UInode->setScale(0.47 / (cameraZoom * (2.0 + realTimePassed.count()) / 4.0));
+            _settingsNode->setScale( 1 / (cameraZoom * (2.0 + realTimePassed.count()) / 4.0));
             getCamera()->update();
             return;
         }
@@ -367,6 +397,7 @@ void GameScene::update(float timestep) {
             if (realTimePassed.count() < 2.0) {
                 static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom * (2.0 + realTimePassed.count()) / 4.0);
                 _UInode->setScale(0.47 / (cameraZoom * (2.0 + realTimePassed.count()) / 4.0));
+                _settingsNode->setScale(1 / (cameraZoom * (2.0 + realTimePassed.count()) / 4.0));
             }
             else {
                 if (realTimePassed.count() >= 2.25) {
@@ -375,10 +406,53 @@ void GameScene::update(float timestep) {
                 }
                 static_pointer_cast<cugl::OrthographicCamera>(getCamera())->setZoom(cameraZoom);
                 _UInode->setScale(0.47 / cameraZoom);
+                _settingsNode->setScale(1 / cameraZoom);
             }
             getCamera()->update();
         }
     }
+
+    if (NetworkController::isHost()) {
+        bool anotherPlayerActive = false;
+        for (int i = 1; i < _world->getNumPlayers(); i++) {
+            CULog("checking if player connected %d", i);
+            if (_playersExited.find(i) == _playersExited.end() && !NetworkController::isPlayerActive(i)) {
+                NetworkController::sendLeftGame(i);
+                auto playerExited = _world->getPlayer(i);
+                playerExited->setActive(false);
+                playerExited->getSceneNode()->setVisible(false);
+                playerExited->setLinearVelocity(Vec2(0, 0));
+                playerExited->setPosition(Vec2(0, 0));
+                _playersExited.insert(i);
+            }
+            else if (NetworkController::isPlayerActive(i)) {
+                anotherPlayerActive = true;
+            }
+        }
+        if (!anotherPlayerActive && NetworkController::getNumPlayers() > 1) {
+            //All clients have left the game. Clients don't need this check as host will need to be in game with client.
+            _endGameEarly = true;
+        }
+    }
+    if (!NetworkController::isPlayerActive(0) && NetworkController::getStatus() == cugl::CUNetworkConnection::NetStatus::Reconnecting) {
+        CULog("host is dc");
+        _endGameEarly = true;
+    }
+
+    if (NetworkController::getDisconnected()) {
+        disconnectedMessageTime = time(NULL);
+        _disconnectHUD->setText(NetworkController::getDisconnectedMessage());
+        _disconnectHUD->setVisible(true);
+        NetworkController::setDisconnected(false);
+    }
+    if (_disconnectHUD->isVisible()) {
+        if (time(NULL) - disconnectedMessageTime > 3) {
+            _disconnectHUD->setVisible(false);
+        }
+    }
+    
+
+    CULog("network status is %d", NetworkController::getStatus());
         // BEGIN PLAYER MOVEMENT //
     if (_player->getPC() && !_settings) {
         _playerController.readInput();
@@ -538,13 +612,12 @@ void GameScene::update(float timestep) {
         //Queueing up tutorial text
         if (_startedTutorial == 1) {
             _tutorialText.push("Turn by holding left or right");
-            _tutorialText.push("Tag other players to score points");
-            _tutorialText.push("Fire/red beats Grass/green");
-            _tutorialText.push("Grass/green beats Water/Blue");
-            _tutorialText.push("Water/Blue beats Fire/red");
+            _tutorialText.push("Tag other wizards to score points");
+            _tutorialText.push("Fire  beats  Grass");
+            _tutorialText.push("Grass  beats  Water");
+            _tutorialText.push("Water  beats  Fire");
             _tutorialText.push("Run over ancient runes to swap elements");
-            _tutorialText.push("You always swap to the element you beat");
-            _tutorialText.push("Go to the next section to learn about eggs!");
+            _tutorialText.push("You swap to the element you beat");
             _startedTutorial = 2;
         }
 
@@ -552,7 +625,6 @@ void GameScene::update(float timestep) {
             _tutorialText.push("hatch eggs to score more points!");
             _tutorialText.push("eggs hatch faster the quicker you move");
             _tutorialText.push("Anyone can tag you when you have an egg");
-            _tutorialText.push("learn about powerups in the last section!");
             _eggTutorial = 2;
         }
 
@@ -583,6 +655,23 @@ void GameScene::update(float timestep) {
         _settingsNode->setVisible(false);
         _settingsNode->setActive(false);
         _settings = false;
+    }
+    
+    //showing element triangle
+    if (_player->getCurrElement() == Element::Water) {
+        _elementTriangle->setFrame(1);
+        _elementTriangle->setColor(Color4(255, 255, 255, 255));
+    }
+    else if (_player->getCurrElement() == Element::Fire) {
+        _elementTriangle->setFrame(0);
+        _elementTriangle->setColor(Color4(255, 255, 255, 255));
+    }
+    else if (_player->getCurrElement() == Element::Grass) {
+        _elementTriangle->setFrame(2);
+        _elementTriangle->setColor(Color4(255, 255, 255, 255));
+    }
+    else if (_player->getCurrElement() == Element::None) {
+        _elementTriangle->setColor(Color4(255, 255, 255, 100));
     }
 }
 

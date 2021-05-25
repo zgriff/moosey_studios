@@ -90,6 +90,10 @@ using namespace cugl;
 #define RING_COLS           6
 #define RING_FRAMES         6
 
+#define EXPLO_ROWS           1
+#define EXPLO_COLS           5
+#define EXPLO_FRAMES         5
+
 #define PLAYER_ANIM_FRAMES  4
 
 #define WALKING_VELOCITY    0.5f
@@ -113,8 +117,8 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _sceneNode = scene2::PolygonNode::alloc();
     _sceneNode->setAnchor(Vec2::ANCHOR_CENTER);
     _texture = assets->get<Texture>("player");
-    
-    _animationNode = scene2::AnimationNode::alloc(_texture, PLAYER_ROWS, PLAYER_COLS, PLAYER_FRAMES);
+//    _sceneNode->setContentSize(_texture->getSize());
+
     
     std::shared_ptr<scene2::AnimationNode>  skinNode = scene2::AnimationNode::alloc(assets->get<Texture>(_skinKey), SKIN_ROWS, SKIN_COLS, SKIN_FRAMES);
     std::shared_ptr<scene2::AnimationNode>  colorNode = scene2::AnimationNode::alloc(assets->get<Texture>(_colorKey), COLOR_ROWS, COLOR_COLS, COLOR_FRAMES);
@@ -124,6 +128,8 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     std::shared_ptr<scene2::AnimationNode>  staffNode = scene2::AnimationNode::alloc(assets->get<Texture>(_staffKey), STAFF_ROWS, STAFF_COLS, STAFF_FRAMES);
     std::shared_ptr<scene2::AnimationNode>  staffTagNode = scene2::AnimationNode::alloc(assets->get<Texture>(_staffTagKey), STAFF_TAG_ROWS, STAFF_TAG_COLS, STAFF_TAG_FRAMES);
     std::shared_ptr<scene2::AnimationNode>  ringNode = scene2::AnimationNode::alloc(assets->get<Texture>(_ringKey), RING_ROWS, RING_COLS, RING_FRAMES);
+    std::shared_ptr<scene2::AnimationNode>  explosionNode = scene2::AnimationNode::alloc(assets->get<Texture>(_explosionKey), EXPLO_ROWS, EXPLO_COLS, EXPLO_FRAMES);
+    
     
     _animNodes[_skinKey] = skinNode;
     _animNodes[_colorKey] = colorNode;
@@ -133,9 +139,11 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _animNodes[_staffKey] = staffNode;
     _animNodes[_staffTagKey] = staffTagNode;
     _animNodes[_ringKey] = ringNode;
+    _animNodes[_explosionKey] = explosionNode;
     
     //TODO: fix hat animation
     _animNodes[_hatKey]->setFrame(1);
+    _animNodes[_explosionKey]->setScale(8.0f);
     
     _frameNumbers[_skinKey] = 4;
     _frameNumbers[_colorKey] = 4;
@@ -145,12 +153,15 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _frameNumbers[_staffKey] = 4;
     _frameNumbers[_staffTagKey] = 4;
     _frameNumbers[_ringKey] = 2;
+    _frameNumbers[_explosionKey] = 5;
     
     for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
         (*it).second->setAnchor(Vec2::ANCHOR_CENTER);
         (*it).second->setPosition(0,0);
         _animCycles[(*it).first] = true;
     }
+    
+    _animNodes[_explosionKey]->setPosition(0,800);
     
     
     _sceneNode->addChild(skinNode);
@@ -161,11 +172,14 @@ void Player::setTextures(const std::shared_ptr<AssetManager>& assets) {
     _sceneNode->addChild(staffNode);
     _sceneNode->addChild(staffTagNode);
     _sceneNode->addChild(ringNode);
+    _sceneNode->addChild(explosionNode);
     
     _animNodes[_staffTagKey]->setVisible(false);
+    _animNodes[_explosionKey]->setVisible(false);
     
     
     _sceneNode->setScale(0.1f);
+    
     
     _animationTimer = time(NULL);
     _tagAnimationTimer = time(NULL);
@@ -299,13 +313,13 @@ void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
     _usernameNode->setPosition(-1*_usernameNode->getContentWidth()/2 * 8, 400);
     /*Hardcoded height because not sure how to get dimensions of the Player
     CULog("this width %d", this->getWidth());
-    CULog("sceneNode width %d", _sceneNode->getContentWidth());
-    CULog("animationNode width %d", _animationNode->getContentWidth());*/
+    CULog("sceneNode width %d", _sceneNode->getContentWidth());*/
     _sceneNode->addChild(_usernameNode);
     _usernameNode->setScale(8.0f);
     _usernameNode->setForeground(Color4::WHITE);
     _usernameNode->setVisible(true);
-//    CULog("username is %s", _username.c_str());
+    CULog("username is %s", _username.c_str());
+     
 }
 
 /**
@@ -314,7 +328,6 @@ void Player::allocUsernameNode(const std::shared_ptr<cugl::Font>& font) {
 void Player::dispose() {
     // Garbage collect
     _sceneNode = nullptr;
-    _animationNode = nullptr;
     _texture = nullptr;
     _animNodes.clear();
     _animCycles.clear();
@@ -435,9 +448,19 @@ void Player::update(float delta) {
     
     //set invisible for other players
     if (_isInvisible && !_isLocal) {
-         _sceneNode->setVisible(false);
+        for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
+            if ((*it).first != _explosionKey) {
+                (*it).second->setVisible(false);
+            }
+        }
+        _usernameNode->setVisible(false);
     } else {
-        _sceneNode->setVisible(true);
+        for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
+            if ((*it).first != _explosionKey && (*it).first != _staffTagKey) {
+                (*it).second->setVisible(true);
+            }
+        }
+        _usernameNode->setVisible(true);
     }
 }
 
@@ -511,6 +534,22 @@ void Player::animateTag() {
     
 }
 
+void Player::animateTagged() {
+    _animNodes[_explosionKey]->setFrame(0);
+    _animNodes[_explosionKey]->setVisible(true);
+    
+//    if (_horizFlip) {
+//        _animNodes[_explosionKey]->flipHorizontal(false);
+//    }
+    
+    
+    
+//    if (_horizFlip) {
+//        _animNodes[_explosionKey]->flipHorizontal(true);
+//    }
+    
+}
+
 void Player::finishTagAnim() {
     _animNodes[_staffTagKey]->setVisible(false);
     _animNodes[_staffKey]->setVisible(true);
@@ -550,7 +589,7 @@ void Player::animateMovement() {
     if (clock() - _animationTimer  >= _animationRate) {
 //        CULog("body");
         for (auto it = _animNodes.begin(); it !=  _animNodes.end(); ++it) {
-            if  ((*it).first != _staffTagKey && (*it).first != _ringKey) {
+            if  ((*it).first != _staffTagKey && (*it).first != _ringKey && (*it).first != _explosionKey) {
                 animationCycle((*it).second.get(), &_animCycles[(*it).first], (*it).first);
             }
         }
@@ -575,6 +614,19 @@ void Player::animateMovement() {
         }
         _tagAnimationTimer = clock();
     }
+    
+    if (clock() - _taggedAnimationTimer  >= _taggedAnimationRate) {
+        //TODO: Tidy this up hehe
+        //This checks to see if the tag animation is on its last frame for both
+        //  forward and flipped, then swaps it back to normal staff
+        if (_animNodes[_explosionKey]->getFrame()%_frameNumbers[_explosionKey] == _frameNumbers[_explosionKey]-1) {
+            _animNodes[_explosionKey]->setVisible(false);
+        } else if (_animNodes[_explosionKey]->isVisible()) {
+            animationCycle(_animNodes[_explosionKey].get(), &_animCycles[_explosionKey], _explosionKey);
+        }
+        _taggedAnimationTimer = clock();
+    }
+    
 }
 
 
@@ -625,7 +677,7 @@ void Player::flipHorizontal(bool flip) {
                 (*it).second->setFrame((*it).second->getSize()-(*it).second->getFrame()-1);
                 (*it).second->flipHorizontal(!flip);
             }
-        } else if ((*it).first != _ringKey) {
+        } else if ((*it).first != _ringKey && (*it).first != _explosionKey) {
             if ((*it).second->isFlipHorizontal()!=flip) {
                 (*it).second->setFrame((*it).second->getSize()-(*it).second->getFrame()-1);
                 (*it).second->flipHorizontal(flip);

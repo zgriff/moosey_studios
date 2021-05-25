@@ -57,6 +57,7 @@ private:
     std::string _staffKey;
     std::string _staffTagKey;
     std::string _ringKey;
+    std::string _explosionKey;
     
     //Timers to limit player swap during death so they don't swap 1000000 times a second
     time_t _swapTimer;
@@ -65,9 +66,11 @@ private:
     //Timers to keep track of animation cycles
     clock_t _animationTimer;
     clock_t _tagAnimationTimer;
+    clock_t _taggedAnimationTimer;
     clock_t _ringAnimationTimer;
     clock_t _animationRate = 0.1f * CLOCKS_PER_SEC;
     clock_t _tagAnimationRate = 0.05f * CLOCKS_PER_SEC;
+    clock_t _taggedAnimationRate = 0.01f * CLOCKS_PER_SEC;
     clock_t _ringAnimationRate = 0.5f * CLOCKS_PER_SEC;
         
     /** Cache object for transforming the force according the object angle */
@@ -86,8 +89,6 @@ private:
     // Asset references.  These should be set by GameMode
     /** Reference to the node for the player */
     std::shared_ptr<cugl::scene2::PolygonNode> _sceneNode;
-    /** Reference to player's sprite for drawing */
-    std::shared_ptr<cugl::scene2::AnimationNode> _animationNode;
 
     std::string _username;
     std::shared_ptr<cugl::scene2::Label> _usernameNode;
@@ -286,6 +287,10 @@ public:
         _ringKey = ring;
     }
     
+    void setExplosionKey(std::string expl) {
+        _explosionKey = expl;
+    }
+    
     void setSkin(int i);
     
     int getSkin();
@@ -422,6 +427,8 @@ public:
     
     
     void animateTag();
+    
+    void animateTagged();
     
     void finishTagAnim();
     

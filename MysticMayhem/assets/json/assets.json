@@ -60,26 +60,8 @@
         "player_skin":{
             "file": "textures/Character1_Skin.png"
         },
-        "skin2":{
-            "file": "textures/Character1_Skin2.png"
-        },
-        "aether":{
-            "file": "textures/Character2_ColorAether.png"
-        },
         "player_color":{
             "file": "textures/Character2_Color.png"
-        },
-        "egg_color":{
-            "file": "textures/Character2_ColorEgg.png"
-        },
-        "fire_color":{
-            "file": "textures/Character2_ColorFire.png"
-        },
-        "grass_color":{
-            "file": "textures/Character2_ColorGrass.png"
-        },
-        "water_color":{
-            "file": "textures/Character2_ColorWater.png"
         },
         "player_face":{
             "file": "textures/Character3_Face.png"
@@ -93,47 +75,17 @@
         "player_hat":{
             "file": "textures/Character5_Personalization.png"
         },
-        "hat_star":{
-            "file": "textures/Character5_PersonalizationStar.png"
-        },
-        "hat_swirl":{
-            "file": "textures/Character5_PersonalizationSwirl.png"
-        },
         "player_staff":{
             "file": "textures/Character7_Staff.png"
-        },
-        "staff_egg":{
-            "file": "textures/Character7_StaffEggState.png"
-        },
-        "staff_fire":{
-            "file": "textures/Character7_StaffFire.png"
-        },
-        "staff_grass":{
-            "file": "textures/Character7_StaffGrass.png"
-        },
-        "staff_water":{
-            "file": "textures/Character7_StaffWater.png"
         },
         "player_staff_tag":{
             "file": "textures/Character7_Tag.png"
         },
-        "staff_tag_aether":{
-            "file": "textures/Character7_TagAether.png"
-        },
-        "staff_tag_fire":{
-            "file": "textures/Character7_TagFire.png"
-        },
-        "staff_tag_water":{
-            "file": "textures/Character7_TagWater.png"
-        },
         "player_direction":{
             "file": "textures/Direction_Ring.png"
         },
-        "direction_grass":{
-            "file": "textures/Direction_GrassRing.png"
-        },
-        "direction_water":{
-            "file": "textures/Direction_FireRing.png"
+        "player_explosion":{
+            "file": "textures/explosion_ring.png"
         },
         "ability-bar-full": {
             "file": "textures/AbilityBar.png",
@@ -170,6 +122,20 @@
             "minfilter": "linear",
             "magfilter": "linear"
         },
+        "code_button": {
+            "file": "textures/large_codeblock.png",
+            "wrapS": "clamp",
+            "wrapT": "clamp",
+            "minfilter": "linear",
+            "magfilter": "linear"
+        },
+        "code_display": {
+            "file": "textures/small_codeblock.png",
+            "wrapS": "clamp",
+            "wrapT": "clamp",
+            "minfilter": "linear",
+            "magfilter": "linear"
+        },
         "start": {
             "file": "textures/start.png",
             "wrapS": "clamp",
@@ -190,6 +156,34 @@
             "wrapT": "clamp",
             "minfilter": "linear",
             "magfilter": "linear"
+        },
+        "join_lobby": {
+            "file": "textures/button_joinroom.png",
+            "wrapS": "clamp",
+            "wrapT": "clamp",
+            "minfilter": "linear",
+            "magfilter": "linear"
+        },
+        "code_fire": {
+            "file": "textures/item_fire.png"
+        },
+        "code_leaf": {
+            "file": "textures/item_leaf.png"
+        },
+        "code_water": {
+            "file": "textures/item_water.png"
+        },
+        "code_tree": {
+            "file": "textures/item_tree.png"
+        },
+        "code_egg": {
+            "file": "textures/item_eggreg.png"
+        },
+        "code_orb": {
+            "file": "textures/item_orb.png"
+        },
+        "code_bush": {
+            "file": "textures/item_bush.png"
         },
         "map1": {
             "file": "textures/map1.png"
@@ -235,6 +229,45 @@
         },
         "results_crown": {
             "file": "textures/crown.png"
+        },
+        "backward": {
+            "file": "textures/backward_button.png"
+        },
+        "forward": {
+            "file": "textures/forward_button.png"
+        },
+        "lobby_background": {
+            "file": "textures/lobby_background.png"
+        },
+        "map1_img": {
+            "file": "textures/map1_img.png"
+        },
+        "map2_img": {
+            "file": "textures/map2_img.png"
+        },
+        "map3_img": {
+            "file": "textures/map3_img.png"
+        },
+        "map4_img": {
+            "file": "textures/map4_img.png"
+        },
+        "map5_img": {
+            "file": "textures/map1_img.png"
+        },
+        "select_map": {
+            "file": "textures/select_map.png"
+        },
+        "customization": {
+            "file": "textures/customization.png"
+        },
+        "name_plate": {
+            "file": "textures/name_backplate.png"
+        },
+        "element_triangle": {
+            "file": "textures/elemental_triangle.png"
+        },
+        "tutorial": {
+            "file": "textures/tutorial.png"
         }
     },
     "sounds": {
@@ -287,6 +320,10 @@
         "username": {
             "file": "fonts/SHOWG.TTF",
             "size": 30
+        },
+        "username_label": {
+            "file": "fonts/SHOWG.TTF",
+            "size": 40
         },
         "joincode": {
             "file": "fonts/SHOWG.TTF",
@@ -344,7 +381,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": -60,
+                        "y_offset": -70,
                         "x_offset": 280,
                         "absolute": true
                     }
@@ -370,7 +407,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": -50,
+                        "y_offset": -60,
                         "x_offset": -100,
                         "absolute": true
                     }
@@ -396,26 +433,1098 @@
                         "x_anchor": "center",
                         "y_anchor": "middle",
                         "y_offset": 58,
-                        "x_offset": 300,
+                        "x_offset": -310,
                         "absolute": true
                     }
                 },
-                "joincode": {
-                    "comment": "The scene graph definition for the text field demo",
-                    "type": "TextField",
+                "usernameplate": {
+                    "type": "Image",
                     "data": {
-                        "font": "joincode",
-                        "text": "",
-                        "foreground": [ 255, 255, 255, 255 ],
-                        "background": [ 0, 0, 0, 100 ],
-                        "size": [ 600, 80 ],
+                        "texture": "name_plate",
                         "anchor": [ 0.5, 0.5 ]
                     },
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "middle",
-                        "y_offset": 0,
+                        "x_offset": 0.2,
+                        "y_offset": 0.05
+                    }
+                },
+                "username": {
+                    "type": "TextField",
+                    "data": {
+                        "font": "username",
+                        "text": "",
+                        "foreground": [ 0,0,0, 150 ],
+                        "background": [ 0, 0, 0, 0 ],
+                        "size": [ 300, 50 ],
+                        "anchor": [ 0.5, 0.5 ]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": 0.2,
+                        "y_offset": 0.06
+                    }
+                },
+                "usernamelabel": {
+                    "type": "Label",
+                    "data": {
+                        "font": "username_label",
+                        "text": "Username: ",
+                        "foreground": [ 0, 0, 0, 200 ],
+                        "size": [ 100, 15 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": -0.21,
+                        "y_offset": 0
+                    }
+                },
+                "tutorial": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "visible": true,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 0.6
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "tutorial"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "right",
+                        "y_anchor": "top",
+                        "x_offset": -0.15,
+                        "y_offset": -0.05
+                    }
+                },
+                "joinlobby": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "visible": true,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 0.7
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "join_lobby"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": 0.3,
+                        "y_offset": 0.25
+                    }
+                },
+                "codeback": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "visible": true,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 0.4
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "backward"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": 0.35
+                    }
+                },
+                "joincode1": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "visible" : false,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 1.0
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "code_button"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": -390,
                         "absolute": true
+                    }
+                },
+                "joincode2": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "visible" : false,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 1.0
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "code_button"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": -260,
+                        "absolute": true
+                    }
+                },
+                "joincode3": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "visible" : false,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 1.0
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "code_button"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": -130,
+                        "absolute": true
+                    }
+                },
+                "joincode4": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "visible" : false,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 1.0
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "code_button"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": 0,
+                        "absolute": true
+                    }
+                },
+                "joincode5": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "visible" : false,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 1.0
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "code_button"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": 130,
+                        "absolute": true
+                    }
+                },
+                "joincode6": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "visible" : false,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 1.0
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "code_button"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": 260,
+                        "absolute": true
+                    }
+                },
+                "joincode7": {
+                    "type": "Button",
+                    "data": {
+                        "upnode": "up",
+                        "visible" : false,
+                        "pushsize": true,
+                        "anchor": [ 0.5, 0.5 ],
+                        "scale": 1.0
+                    },
+                    "children": {
+                        "up": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "code_button"
+                            }
+                        }
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": 390,
+                        "absolute": true
+                    }
+                },
+                "codeicon1": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "code_fire",
+                        "anchor": [0.5,0.5]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": -390,
+                        "absolute": true
+                    }
+                },
+                "codeicon2": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "code_water",
+                        "anchor": [0.5,0.5]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": -260,
+                        "absolute": true
+                    }
+                },
+                "codeicon3": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "code_leaf",
+                        "anchor": [0.5,0.5]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": -130,
+                        "absolute": true
+                    }
+                },
+                "codeicon4": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "code_egg",
+                        "anchor": [0.5,0.5]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": 0,
+                        "absolute": true
+                    }
+                },
+                "codeicon5": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "code_orb",
+                        "anchor": [0.5,0.5]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": 130,
+                        "absolute": true
+                    }
+                },
+                "codeicon6": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "code_tree",
+                        "anchor": [0.5,0.5]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": 260,
+                        "absolute": true
+                    }
+                },
+                "codeicon7": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "code_bush",
+                        "anchor": [0.5,0.5]
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "y_offset": -150,
+                        "x_offset": 390,
+                        "absolute": true
+                    }
+                },
+                "codenode": {
+                    "type": "Node",
+                    "format": {
+                        "type": "Anchored"
+                    },
+                    "data": {
+                        "anchor": [ 0.5, 0.5 ]
+                    },
+                    "layout": {
+                        "x_anchor": "fill",
+                        "y_anchor": "fill"
+                    },
+                    "children": {
+                        "code1": {
+                            "type": "Node",
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "middle",
+                                "x_offset": -0.25
+                            },
+                            "children": {
+                                "label": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_button",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "fire": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_fire",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "leaf": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_leaf",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                                ,
+                                "water": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_water",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "tree": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_tree",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "egg": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_egg",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "orb": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_orb",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "bush": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_bush",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                            }
+                        },
+                        "code2": {
+                            "type": "Node",
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "middle",
+                                "x_offset": -0.15
+                            },
+                            "children": {
+                                "label": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_button",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "fire": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_fire",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "leaf": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_leaf",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                                ,
+                                "water": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_water",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "tree": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_tree",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "egg": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_egg",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "orb": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_orb",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "bush": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_bush",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                            }
+                        },
+                        "code3": {
+                            "type": "Node",
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "middle",
+                                "x_offset": -0.05
+                            },
+                            "children": {
+                                "label": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_button",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "fire": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_fire",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "leaf": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_leaf",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                                ,
+                                "water": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_water",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "tree": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_tree",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "egg": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_egg",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "orb": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_orb",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "bush": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_bush",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                            }
+                        },
+                        "code4": {
+                            "type": "Node",
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "middle",
+                                "x_offset": 0.05
+                            },
+                            "children": {
+                                "label": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_button",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "fire": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_fire",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "leaf": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_leaf",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                                ,
+                                "water": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_water",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "tree": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_tree",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "egg": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_egg",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "orb": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_orb",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "bush": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_bush",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                            }
+                        },
+                        "code5": {
+                            "type": "Node",
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "middle",
+                                "x_offset": 0.15
+                            },
+                            "children": {
+                                "label": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_button",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "fire": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_fire",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "leaf": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_leaf",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                                ,
+                                "water": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_water",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "tree": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_tree",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "egg": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_egg",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "orb": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_orb",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "bush": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_bush",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                            }
+                        },
+                        "code6": {
+                            "type": "Node",
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "middle",
+                                "x_offset": 0.25
+                            },
+                            "children": {
+                                "label": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_button",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "fire": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_fire",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "leaf": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_leaf",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                                ,
+                                "water": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_water",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "tree": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_tree",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "egg": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_egg",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "orb": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_orb",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "bush": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_bush",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.7
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 "settings": {
@@ -443,40 +1552,6 @@
                         "y_offset": -40,
                         "absolute": true
                     }
-                },
-                "username": {
-                    "type": "TextField",
-                    "data": {
-                        "font": "username",
-                        "text": "",
-                        "foreground": [ 255, 255, 255, 255 ],
-                        "background": [ 0, 0, 0, 255 ],
-                        "size": [ 300, 50 ],
-                        "anchor": [ 0.5, 0.5 ]
-                    },
-                    "layout": {
-                        "x_anchor": "center",
-                        "y_anchor": "middle",
-                        "x_offset": 0.2,
-                        "y_offset": 0.05
-                    }
-                },
-                "usernamelabel": {
-                    "type": "Label",
-                    "data": {
-                        "font": "username",
-                        "text": "Enter username: ",
-                        "foreground": [ 0, 0, 0, 255 ],
-                        "size": [ 100, 15 ],
-                        "valign": "bottom",
-                        "halign": "left"
-                    },
-                    "layout": {
-                        "x_anchor": "center",
-                        "y_anchor": "middle",
-                        "x_offset": -0.21,
-                        "y_offset": 0
-                    }
                 }
             }
         },
@@ -487,28 +1562,745 @@
             },
             "data" : {
                 "anchor" :[0.5,0.5],
-                "color": [240,220,255,255]
+                "color": [255, 255, 255,255]
             },
             "layout" : {
                 "x_anchor" : "center",
                 "y_anchor" : "middle"
             },
             "children": {
+                "background": {
+                    "type": "Image",
+                    "data": {
+                        "texture": "lobby_background",
+                        "anchor": [ 0.0, 0.5 ],
+                        "color": [255,255,255,200]
+                    },
+                    "layout": {
+                        "x_anchor": "fill",
+                        "y_anchor": "fill"
+                    }
+                },
                 "roomId": {
                     "type": "Label",
                     "data": {
                         "font": "roomid",
-                        "text": "",
-                        "foreground": [ 0, 0, 0, 255 ],
+                        "text": "Room ID:",
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 100, 15 ],
                         "valign": "bottom",
                         "halign": "left"
                     },
                     "layout": {
                         "x_anchor": "center",
-                        "y_anchor": "middle",
-                        "x_offset": -0.4,
-                        "y_offset": 0.35
+                        "y_anchor": "top",
+                        "x_offset": -0.3,
+                        "y_offset": -0.15
+                    }
+                },
+                "codenode": {
+                    "type": "Node",
+                    "format": {
+                        "type": "Anchored"
+                    },
+                    "data": {
+                        "anchor": [ 0.5, 0.5 ]
+                    },
+                    "layout": {
+                        "x_anchor": "fill",
+                        "y_anchor": "fill"
+                    },
+                    "children": {
+                        "code1": {
+                            "type": "Node",
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "top",
+                                "y_offset": -0.075,
+                                "x_offset": 0
+                            },
+                            "children": {
+                                "label": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_button",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "fire": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_fire",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "leaf": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_leaf",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                                ,
+                                "water": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_water",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "tree": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_tree",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "egg": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_egg",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "orb": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_orb",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "bush": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_bush",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                            }
+                        },
+                        "code2": {
+                            "type": "Node",
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "top",
+                                "y_offset": -0.075,
+                                "x_offset": 0.075
+                            },
+                            "children": {
+                                "label": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_button",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "fire": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_fire",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "leaf": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_leaf",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                                ,
+                                "water": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_water",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "tree": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_tree",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "egg": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_egg",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "orb": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_orb",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "bush": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_bush",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                            }
+                        },
+                        "code3": {
+                            "type": "Node",
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "top",
+                                "y_offset": -0.075,
+                                "x_offset": 0.15
+                            },
+                            "children": {
+                                "label": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_button",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "fire": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_fire",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "leaf": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_leaf",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                                ,
+                                "water": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_water",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "tree": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_tree",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "egg": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_egg",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "orb": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_orb",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "bush": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_bush",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                            }
+                        },
+                        "code4": {
+                            "type": "Node",
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "top",
+                                "y_offset": -0.075,
+                                "x_offset": 0.225
+                            },
+                            "children": {
+                                "label": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_button",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "fire": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_fire",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "leaf": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_leaf",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                                ,
+                                "water": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_water",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "tree": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_tree",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "egg": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_egg",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "orb": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_orb",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "bush": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_bush",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                            }
+                        },
+                        "code5": {
+                            "type": "Node",
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "top",
+                                "y_offset": -0.075,
+                                "x_offset": 0.3
+                            },
+                            "children": {
+                                "label": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_button",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "fire": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_fire",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "leaf": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_leaf",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                                ,
+                                "water": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_water",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "tree": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_tree",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "egg": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_egg",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "orb": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_orb",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "bush": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_bush",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                            }
+                        },
+                        "code6": {
+                            "type": "Node",
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "top",
+                                "y_offset": -0.075,
+                                "x_offset": 0.375
+                            },
+                            "children": {
+                                "label": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_button",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "fire": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_fire",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "leaf": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_leaf",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                                ,
+                                "water": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_water",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "tree": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_tree",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "egg": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_egg",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "orb": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_orb",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                },
+                                "bush": {
+                                    "type": "Image",
+                                    "data": {
+                                        "texture": "code_bush",
+                                        "anchor": [ 0.5, 0.5 ],
+                                        "visible": false,
+                                        "scale" : 0.5
+                                    },
+                                    "layout": {
+                                        "x_anchor": "center",
+                                        "y_anchor": "middle"
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 "players": {
@@ -529,7 +2321,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 1",
-                                "foreground": [ 0, 0, 0, 255 ],
+                                "foreground": [ 255, 255, 255, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -547,7 +2339,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 2",
-                                "foreground": [ 0, 0, 0, 255 ],
+                                "foreground": [ 255, 255, 255, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -565,7 +2357,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 3",
-                                "foreground": [ 0, 0, 0, 255 ],
+                                "foreground": [ 255, 255, 255, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -583,7 +2375,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 4",
-                                "foreground": [ 0, 0, 0, 255 ],
+                                "foreground": [ 255, 255, 255, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -601,7 +2393,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 5",
-                                "foreground": [ 0, 0, 0, 255 ],
+                                "foreground": [ 255, 255, 255, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -619,7 +2411,7 @@
                             "data": {
                                 "font": "username",
                                 "text": "Player 6",
-                                "foreground": [ 0, 0, 0, 255 ],
+                                "foreground": [ 255, 255, 255, 255 ],
                                 "size": [ 600, 70 ],
                                 "valign": "middle",
                                 "halign": "center",
@@ -678,7 +2470,7 @@
                         "visible": true,
                         "pushsize": true,
                         "anchor": [ 0.7, 0.4 ],
-                        "scale": 0.6
+                        "scale": 0.5
                     },
                     "children": {
                         "up": {
@@ -736,22 +2528,12 @@
                     },
                     "children": {
                         "map1": {
-                            "type": "Button",
+                            "type": "Image",
                             "data": {
-                                "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
-                                "pushsize": true,
-                                "anchor": [ 0.7, 0.4 ],
-                                "scale": 0.3
-                            },
-                            "children": {
-                                "up": {
-                                    "type": "Image",
-                                    "data": {
-                                        "texture": "map1"
-                                    }
-                                }
+                                "anchor": [ 0.39, 0.4 ],
+                                "scale": 0.9,
+                                "texture": "map5_img"
                             },
                             "layout": {
                                 "x_anchor": "center",
@@ -762,105 +2544,88 @@
                             }
                         },
                         "map2": {
-                            "type": "Button",
+                            "type": "Image",
                             "data": {
-                                "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
-                                "pushsize": true,
-                                "anchor": [ 0.7, 0.4 ],
-                                "scale": 0.3
-                            },
-                            "children": {
-                                "up": {
-                                    "type": "Image",
-                                    "data": {
-                                        "texture": "map2"
-                                    }
-                                }
+                                "anchor": [ 0.39, 0.4 ],
+                                "scale": 0.9,
+                                "texture": "map2_img"
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -200,
-                                "y_offset": 250,
+                                "x_offset": -350,
+                                "y_offset": 350,
                                 "absolute": true
                             }
                         },
                         "map3": {
-                            "type": "Button",
+                            "type": "Image",
                             "data": {
-                                "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
-                                "pushsize": true,
-                                "anchor": [ 0.7, 0.4 ],
-                                "scale": 0.3
-                            },
-                            "children": {
-                                "up": {
-                                    "type": "Image",
-                                    "data": {
-                                        "texture": "map3"
-                                    }
-                                }
+                                "anchor": [ 0.39, 0.4 ],
+                                "scale": 0.9,
+                                "texture": "map3_img"
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -50,
+                                "x_offset": -350,
                                 "y_offset": 350,
                                 "absolute": true
                             }
                         },
                         "map4": {
-                            "type": "Button",
+                            "type": "Image",
                             "data": {
-                                "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
-                                "pushsize": true,
-                                "anchor": [ 0.7, 0.4 ],
-                                "scale": 0.3
-                            },
-                            "children": {
-                                "up": {
-                                    "type": "Image",
-                                    "data": {
-                                        "texture": "map4"
-                                    }
-                                }
+                                "anchor": [ 0.39, 0.4 ],
+                                "scale": 0.9,
+                                "texture": "map4_img"
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": 100,
+                                "x_offset": -350,
                                 "y_offset": 350,
                                 "absolute": true
+                            }
+                        },
+                        "selectmap": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "select_map",
+                                "anchor": [ 0.0, 0.5 ],
+                                "scale": 0.7
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "middle",
+                                "x_offset": -0.045,
+                                "y_offset": -0.04
                             }
                         },
                         "mapnext": {
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
-                                "scale": 0.3
+                                "scale": 0.4
                             },
                             "children": {
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "forward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": 140,
+                                "x_offset": 200,
                                 "y_offset": 100,
                                 "absolute": true
                             }
@@ -869,17 +2634,16 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
-                                "scale": 0.3
+                                "scale": 0.4
                             },
                             "children": {
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "backward"
                                     }
                                 }
                             },
@@ -906,11 +2670,24 @@
                         "y_anchor": "fill"
                     },
                     "children": {
+                        "customizationlabel": {
+                            "type": "Image",
+                            "data": {
+                                "texture": "customization",
+                                "anchor": [ 0.5, 0.5 ],
+                                "scale" : 0.7
+                            },
+                            "layout": {
+                                "x_anchor": "center",
+                                "y_anchor": "middle",
+                                "x_offset": -0.25,
+                                "y_offset": -0.04
+                            }
+                        },
                         "hatforw": {
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
@@ -920,15 +2697,15 @@
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "forward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -200,
-                                "y_offset": 175,
+                                "x_offset": -150,
+                                "y_offset": 155,
                                 "absolute": true
                             }
                         },
@@ -936,7 +2713,6 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
@@ -946,15 +2722,15 @@
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "backward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -400,
-                                "y_offset": 175,
+                                "x_offset": -350,
+                                "y_offset": 155,
                                 "absolute": true
                             }
                         },
@@ -962,7 +2738,6 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
@@ -972,15 +2747,15 @@
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "forward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -200,
-                                "y_offset": 100,
+                                "x_offset": -150,
+                                "y_offset": 90,
                                 "absolute": true
                             }
                         },
@@ -988,7 +2763,6 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
@@ -998,15 +2772,15 @@
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "backward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -400,
-                                "y_offset": 100,
+                                "x_offset": -350,
+                                "y_offset": 90,
                                 "absolute": true
                             }
                         },
@@ -1014,7 +2788,6 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
@@ -1024,14 +2797,14 @@
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "forward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -200,
+                                "x_offset": -150,
                                 "y_offset": 25,
                                 "absolute": true
                             }
@@ -1040,7 +2813,6 @@
                             "type": "Button",
                             "data": {
                                 "upnode": "up",
-                                "pushable": [ 160, 280, 190, 370, 280, 400, 370, 370, 400, 280, 370, 190, 280, 160, 190, 190 ],
                                 "visible": true,
                                 "pushsize": true,
                                 "anchor": [ 0.7, 0.4 ],
@@ -1050,14 +2822,14 @@
                                 "up": {
                                     "type": "Image",
                                     "data": {
-                                        "texture": "back"
+                                        "texture": "backward"
                                     }
                                 }
                             },
                             "layout": {
                                 "x_anchor": "center",
                                 "y_anchor": "bottom",
-                                "x_offset": -400,
+                                "x_offset": -350,
                                 "y_offset": 25,
                                 "absolute": true
                             }
@@ -1128,7 +2900,8 @@
                         "size": [ 30,  15],
                         "valign": "bottom",
                         "halign": "left",
-                        "anchor" : [0.5,0.5]
+                        "anchor" : [0.5,0.5],
+                        "visible": false
                     },
                     "layout": {
                         "x_anchor": "center",
@@ -1266,7 +3039,7 @@
                     "data": {
                         "font": "results",
                         "text": "Winner: ",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1278,12 +3051,29 @@
                         "y_offset": 0.27
                     }
                 },
+                "hostDisconnect": {
+                    "type": "Label",
+                    "data": {
+                        "font": "results",
+                        "text": "*Host disconnected",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 30, 15 ],
+                        "valign": "bottom",
+                        "halign": "center"
+                    },
+                    "layout": {
+                        "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": 0,
+                        "y_offset": 0.35
+                    }
+                },
                 "playerscore1": {
                     "type": "Label",
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1300,7 +3090,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1315,7 +3105,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1330,7 +3120,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1345,7 +3135,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1360,7 +3150,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1375,7 +3165,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1390,7 +3180,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1405,7 +3195,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1422,7 +3212,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1437,7 +3227,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1452,7 +3242,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1467,7 +3257,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1482,7 +3272,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1497,7 +3287,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1512,7 +3302,7 @@
                     "data": {
                         "font": "results",
                         "text": "",
-                        "foreground": [ 255, 255, 255, 255],
+                        "foreground": [ 255, 255, 255, 255 ],
                         "size": [ 30, 15 ],
                         "valign": "bottom",
                         "halign": "left"
@@ -1522,7 +3312,7 @@
                         "y_anchor": "middle"
                     }
                 },
-                "message" : {
+                "message": {
                     "type": "Label",
                     "data": {
                         "font": "results",
@@ -1620,7 +3410,7 @@
                     "layout": {
                         "x_anchor": "center",
                         "y_anchor": "top",
-                        "y_offset": -0.1,
+                        "y_offset": -0.06,
                         "x_offset": -0.1
                     }
                 },
@@ -1638,7 +3428,7 @@
                         "x_anchor": "center",
                         "y_anchor": "top",
                         "x_offset": -0.04,
-                        "y_offset": -0.13
+                        "y_offset": -0.1
                     }
                 },
                 "score": {
@@ -1670,6 +3460,23 @@
                     },
                     "layout": {
                         "x_anchor": "center",
+                        "y_anchor": "middle",
+                        "x_offset": -0.05,
+                        "y_offset": 0
+                    }
+                },
+                "disconnect": {
+                    "type": "Label",
+                    "data": {
+                        "font": "ingame",
+                        "text": "Ready",
+                        "foreground": [ 255, 255, 255, 255 ],
+                        "size": [ 500, 70 ],
+                        "valign": "bottom",
+                        "halign": "left"
+                    },
+                    "layout": {
+                        "x_anchor": "left",
                         "y_anchor": "middle",
                         "x_offset": 0,
                         "y_offset": 0
@@ -1730,7 +3537,7 @@
                         "x_anchor": "right",
                         "y_anchor": "top",
                         "x_offset": 0,
-                        "y_offset": -0.1
+                        "y_offset": -0.065
                     }
                 },
                 "abilityBarFull": {
@@ -1743,8 +3550,8 @@
                     "layout": {
                         "x_anchor": "right",
                         "y_anchor": "top",
-                        "x_offset" : -0.15,
-                        "y_offset" : -0.1
+                        "x_offset": -0.15,
+                        "y_offset": -0.06
                     }
                 },
                 "abilityBar": {
@@ -1758,7 +3565,7 @@
                         "x_anchor": "right",
                         "y_anchor": "top",
                         "x_offset": -0.15,
-                        "y_offset": -0.1
+                        "y_offset": -0.06
                     },
                     "children": {
                         "abilityName": {

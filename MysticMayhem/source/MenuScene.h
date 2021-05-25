@@ -41,21 +41,31 @@ protected:
     std::shared_ptr<cugl::scene2::Button> _settingsButton;
     std::shared_ptr<cugl::scene2::Button> _exitJoinButton;
     /**join code text field*/
+    std::vector<std::shared_ptr<cugl::scene2::Button>> _codeButtons;
+    std::vector<std::shared_ptr<cugl::scene2::PolygonNode>> _codeIcons;
+    std::shared_ptr<cugl::scene2::SceneNode> _codeNode;
+    std::shared_ptr<cugl::scene2::Button> _deleteButton;
+    std::shared_ptr<cugl::scene2::Button> _lobbyButton;
+    std::shared_ptr<cugl::scene2::Button> _tutorialButton;
     std::shared_ptr<cugl::scene2::TextField> _codeField;
     std::shared_ptr<cugl::scene2::TextField> _usernameField;
     std::shared_ptr<cugl::scene2::Label> _usernameLabel;
-    std::shared_ptr<cugl::scene2::Slider> _slider;
+
+    std::shared_ptr<cugl::scene2::SceneNode> _usernamePlate;
     std::shared_ptr<cugl::scene2::Label> _label;
     std::shared_ptr<Settings> _settingsNode;
     std::shared_ptr<cugl::scene2::SceneNode> _background;
-    float _sliderValue;
     /**true host false client*/
     bool _host;
     int _movement;
     bool _create;
     bool _join;
     bool _settings;
+    bool _tutorial;
+    int _codeCount;
+    std::vector<int> _joinCode;
         
+    std::string buttonToCode(int button);
 
 public:
     
@@ -83,6 +93,8 @@ public:
      * Disposes of all (non-static) resources allocated to this mode.
      */
     virtual void dispose() override;
+    
+    void clearListeners();
 
     /**
      * Initializes the scene contents, making it ready for loading
@@ -125,6 +137,7 @@ public:
     bool createPressed() { return _create; }
     bool joinPressed() { return _join; }
     bool settingsPressed() { return _settings; }
+    bool tutorialPressed() { return _tutorial; }
     
     std::shared_ptr<Settings> getSettings() { return _settingsNode; }
 

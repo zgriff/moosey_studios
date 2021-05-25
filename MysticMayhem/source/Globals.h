@@ -26,6 +26,9 @@ constexpr uint8_t MAX_SWAP_STATIONS = 5;
 constexpr int TAG_SCORE = 15;
 constexpr int HATCH_SCORE = 10;
 
+constexpr float TAG_ASSIST_DIST = 7.5f;
+constexpr int TAG_ASSIST_SCORE = 5;
+
 constexpr int GAME_TIMER= 120;
 
 /**convert Tiled coords to box2d w/ scalar*/

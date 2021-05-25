@@ -145,7 +145,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         station->setLastUsed(time(NULL));
         station->setDebugColor(Color4::YELLOW);
         station->setDebugScene(_debugNode);
-        station->setID(0);
+        station->setID(it - _swapStations.begin());
         station->setTextures(swapStTexture);
         _worldNode->addChild(station->getSceneNode(),1);
     }
@@ -207,6 +207,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         player->setStaffKey("player_staff");
         player->setStaffTagKey("player_staff_tag");
         player->setRingKey("player_direction");
+        player->setExplosionKey("player_explosion");
         
         _physicsWorld->addObstacle(player);
         player->setTextures(_assets);
@@ -221,7 +222,7 @@ void World::setRootNode(const std::shared_ptr<scene2::SceneNode>& root, float sc
         //player id is set to i right now, if that is changed, projectile's associated userid needs to change too
         player->setSkin(std::get<0>(_customizations[i]));
         player->setCustomization(std::get<1>(_customizations[i]));
-        if(i < _numPlayers) player->setElement((Element) std::get<2>(_customizations[i]));
+        if(i < _numPlayers) player->setElement(std::get<2>(_customizations[i]));
         if(i < _numPlayers) player->setProjectile(_projectiles[i]);
         player->allocUsernameNode(_assets->get<Font>("username"));
         _worldNode->addChild(player->getSceneNode(),1);
